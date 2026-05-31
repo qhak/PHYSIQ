@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PHYSIQ — Honest Physique Grading</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnb2xkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjBkOTlhIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNkNGM0OTYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNiOTkyM2YiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHJ4PSI4IiBmaWxsPSIjMDgwOTBjIi8+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSJ1cmwoI2dvbGQpIiBvcGFjaXR5PSIwLjgiLz48dGV4dCB4PSIxNiIgeT0iMjMiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIxOCIgZmlsbD0idXJsKCNnb2xkKSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgbGV0dGVyLXNwYWNpbmc9IjEiPlA8L3RleHQ+PC9zdmc+">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap');
   *{margin:0;padding:0;box-sizing:border-box}
@@ -528,9 +529,9 @@
 // ============================================================
 const WORKER_URL   = "https://physiqworker.nichodrew1.workers.dev";
 const EMAIL_ENDPOINT = "";   // POST {email, source} here (Beehiiv/Kit/etc webhook)
-const PAYMENT_LINK   = "";   // Your Stripe payment link — e.g. https://buy.stripe.com/xxx
+const PAYMENT_LINK   = "https://buy.stripe.com/6oU5kF5Ac2nh63b3X3b3q00";   // Your Stripe payment link — e.g. https://buy.stripe.com/xxx
                              // Stripe success URL should be: yourdomain.com?paid=true
-const UNLOCK_PRICE   = "$7"; // shown in upsell — change when you update Stripe
+const UNLOCK_PRICE   = "$7.99"; // shown in upsell — change when you update Stripe
 // ============================================================
 
 const VIEWS=[
