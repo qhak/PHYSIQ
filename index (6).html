@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHYSIQ — Honest Physique Grading</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#08090c;--bg2:#0b0d12;--surface:#13151c;--surface2:#0e0f15;--line:#23262f;--line2:#2a2d3a;
+    --ink:#f3f5fa;--soft:#c4c9d6;--dim:#7e8393;--faint:#5d6273;
+    --gold:#d4c496;--gold-bright:#f0d99a;--gold-deep:#b9923f;--red:#f0857f}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Sora',sans-serif;min-height:100vh;position:relative;
+    background-image:radial-gradient(1100px 600px at 80% -10%,rgba(212,196,150,.07) 0,transparent 55%),radial-gradient(900px 500px at 10% 110%,rgba(120,140,90,.05) 0,transparent 50%)}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .r{opacity:0;transform:translateY(16px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  .nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+    padding:18px 40px;border-bottom:1px solid var(--line);background:rgba(8,9,12,.72);backdrop-filter:blur(16px)}
+  .nav .brand{font-family:'Spline Sans Mono',monospace;font-weight:600;letter-spacing:.34em;font-size:17px;color:var(--gold)}
+  .nav .links{display:flex;gap:30px;align-items:center}
+  .nav .links a{color:var(--soft);text-decoration:none;font-size:14px;font-weight:500;transition:.15s;cursor:pointer}
+  .nav .links a:hover{color:var(--gold)}
+  .nav .links a.navcta{background:var(--gold);color:#0c0d12;padding:9px 18px;border-radius:9px;font-weight:700}
+  .nav .links a.navcta:hover{background:var(--gold-bright);color:#0c0d12}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 40px}
+
+  .screen{display:none;animation:fadeIn .45s ease both}.screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;padding:84px 0 64px}
+  .hero-l .eyebrow{font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+  .hero-l h1{font-size:clamp(40px,5vw,62px);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin-bottom:22px}
+  .hero-l h1 b{background:linear-gradient(180deg,var(--gold-bright),var(--gold-deep));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:800}
+  .hero-l p{color:var(--soft);font-size:18px;line-height:1.6;max-width:46ch;margin-bottom:32px}
+  .hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .bigcta{background:var(--gold);color:#0c0d12;border:none;border-radius:11px;padding:16px 30px;font-family:'Sora';font-weight:700;font-size:16px;cursor:pointer;transition:.18s}
+  .bigcta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 16px 34px -16px rgba(212,196,150,.55)}
+  .hero-note{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--faint)}
+  .hero-r{display:flex;justify-content:center}
+
+  .setup{max-width:760px;margin:0 auto 8px;background:#1c1206;border:1px solid #4a3416;border-radius:12px;padding:14px 18px;font-size:13px;color:#e3b765;line-height:1.5}
+  .setup b{color:var(--gold-bright)}
+
+  .cred{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:8px 0 8px}
+  .cred-item{background:var(--bg);padding:26px 18px;text-align:center}
+  .cred-item .cn{font-family:'Bebas Neue';font-size:42px;line-height:1;color:var(--gold)}
+  .cred-item .cn .us{font-size:.5em;color:var(--gold-deep);vertical-align:super}
+  .cred-item .cl{font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:10px}
+
+  .dist{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  .distrow{display:grid;grid-template-columns:40px 1fr 110px;align-items:center;gap:16px}
+  .distrow .dg{font-family:'Bebas Neue';font-size:32px;color:var(--gold);text-align:center;line-height:1}
+  .distrow .dbar{height:12px;background:#15171f;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .distrow .dbar span{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));border-radius:8px}
+  .distrow .dp{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:.06em;text-align:right}
+
+  .sec{padding:24px 0 80px}
+  .sec-head{text-align:center;margin-bottom:40px}
+  .sec-head .eyebrow{font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .sec-head h2{font-size:34px;font-weight:800;letter-spacing:-.02em}
+  .sec-head p{color:var(--dim);font-size:16px;margin-top:10px;max-width:52ch;margin-left:auto;margin-right:auto;line-height:1.55}
+
+  .views{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:980px;margin:0 auto 30px}
+  .vtile{background:var(--surface);border:1px solid var(--line2);border-radius:18px;padding:26px 22px;cursor:pointer;
+    transition:.22s cubic-bezier(.2,.8,.2,1);text-align:left;position:relative;overflow:hidden}
+  .vtile:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 18px 38px -18px rgba(212,196,150,.45)}
+  .vtile.done{border-color:#2f6d4f66;background:linear-gradient(160deg,#10180f,var(--surface))}
+  .vtile .chk{position:absolute;top:14px;right:14px;font-family:'Spline Sans Mono',monospace;font-size:10px;color:#5fd08a;display:none}
+  .vtile.done .chk{display:block}
+  .vtile .ic{font-family:'Bebas Neue';font-size:44px;color:var(--gold);line-height:1;margin-bottom:12px}
+  .vtile .t{font-size:18px;font-weight:600;color:var(--gold);margin-bottom:5px}
+  .vtile .d{font-size:12.5px;color:var(--dim);line-height:1.4}
+  /* locked tiles — after free scan used, before paying */
+  .vtile.pay-locked{opacity:.5;cursor:default}
+  .vtile.pay-locked:hover{transform:none;border-color:var(--line2);box-shadow:none}
+  .vtile.pay-locked .lock-badge{display:flex}
+  .lock-badge{display:none;position:absolute;inset:0;align-items:center;justify-content:center;
+    background:rgba(8,9,12,.55);backdrop-filter:blur(3px);border-radius:18px}
+  .lock-badge svg{width:28px;height:28px;stroke:var(--gold-deep);stroke-width:1.6;fill:none}
+
+  .overall{max-width:560px;margin:0 auto;background:linear-gradient(160deg,#141821,#0d0f15);border:1px solid var(--line2);border-radius:18px;padding:30px;text-align:center}
+  .overall .lab{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;margin-bottom:10px}
+  .overall .g{font-family:'Bebas Neue';font-size:84px;line-height:.9;color:var(--gold)}.overall .g.locked{color:var(--faint)}
+  .overall .sc{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--dim);margin-top:4px}
+  .overall .cta{font-size:14px;color:var(--dim);margin-top:12px;line-height:1.55}.overall .cta b{color:var(--gold)}
+  .overall .seebtn{margin-top:18px;background:var(--gold);color:#0c0d12;border:none;border-radius:10px;padding:13px 24px;font-family:'Sora';font-weight:700;font-size:15px;cursor:pointer}
+  .overall .seebtn:hover{background:var(--gold-bright)}
+
+  .result-wrap,.analyse-wrap{min-height:78vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 0}
+  .card-area{width:100%;max-width:460px}
+  .card{width:100%;border-radius:24px;position:relative;overflow:hidden;margin-bottom:20px;
+    background:linear-gradient(160deg,#1a1c24,#0c0d12 55%,#101218);border:1px solid var(--line2);
+    box-shadow:0 40px 80px -30px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.06)}
+  .card::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+    background:linear-gradient(115deg,transparent 30%,rgba(212,196,150,.09) 47%,rgba(212,196,150,.2) 50%,rgba(212,196,150,.09) 53%,transparent 70%);
+    background-size:250% 250%;animation:sweep 6s ease-in-out infinite}
+  @keyframes sweep{0%,100%{background-position:0 0}50%{background-position:100% 100%}}
+  .card-photo{position:absolute;top:0;left:0;right:0;height:72%;background-size:cover;background-position:center 22%;z-index:1;
+    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 60%,transparent 100%);
+    mask-image:linear-gradient(180deg,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 60%,transparent 100%);opacity:.8}
+  .card.has-photo .card-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,13,18,.25),rgba(12,13,18,.55))}
+  .card-inner{position:relative;z-index:3;padding:30px 28px}
+  .c-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .brand{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.24em;color:var(--gold);font-weight:600}
+  .tier{font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--dim);border:1px solid var(--line2);border-radius:20px;padding:4px 10px;text-transform:uppercase}
+  .grade-block{text-align:center;margin:6px 0 16px}
+  .grade{font-family:'Bebas Neue',sans-serif;font-size:140px;line-height:.82;
+    background:linear-gradient(180deg,#fceabb,#d4c496 38%,#b9923f 75%,#8a6a26);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 4px 16px rgba(201,167,92,.28))}
+  .grade-sub{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.26em;color:var(--soft);text-transform:uppercase;margin-top:2px}
+  .score-pill{display:inline-flex;align-items:baseline;gap:6px;margin-top:14px;background:var(--surface2);border:1px solid var(--line2);border-radius:30px;padding:8px 18px}
+  .score-pill b{font-size:20px;font-weight:800}.score-pill .lbl{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:.1em}
+  .stats{display:flex;flex-direction:column;gap:13px;margin:18px 2px 18px}
+  .stat-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .stat-name{font-size:13.5px;font-weight:500;color:var(--soft)}
+  .stat-val{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--gold);font-weight:600}.stat-val.na{color:var(--faint)}
+  .track{height:7px;background:#15171f;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+  .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));transform-origin:left;animation:grow 1s cubic-bezier(.2,.8,.2,1) both}
+  .track.na .fill{background:repeating-linear-gradient(45deg,#1d2029,#1d2029 5px,#23262f 5px,#23262f 10px);width:100%!important}
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .capnote{background:#241f10;border:1px solid #4a3d1c;border-radius:10px;padding:11px 14px;margin-bottom:14px;font-size:12.5px;color:var(--gold);line-height:1.45}
+  .verdict{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:15px 17px;margin-bottom:14px}
+  .verdict-h{font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:7px}
+  .verdict-t{font-size:14px;line-height:1.5;color:#dfe3ec}.verdict-t b{color:var(--gold-bright)}
+  .c-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:14px}
+  .foot-l{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.08em}
+  .rank{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:.05em}.rank b{color:#fff}
+
+  .sample-tag{position:absolute;top:16px;left:20px;z-index:4;font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);background:#0e0f15cc;border:1px solid var(--line2);border-radius:20px;padding:4px 10px}
+  #sampleCard .card-inner{padding-top:46px}
+
+  .btn{display:block;width:100%;text-align:center;font-family:'Sora';font-weight:700;font-size:15px;background:var(--gold);color:#0c0d12;border:none;border-radius:12px;padding:15px;cursor:pointer;transition:.15s;margin:6px 0 8px}
+  .btn:hover{background:var(--gold-bright)}.btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--soft)}.btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+  .btn.gold-btn{background:linear-gradient(135deg,var(--gold-bright),var(--gold-deep));color:#0c0d12}
+  .btn.gold-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+
+  .scanner{width:140px;height:140px;margin:0 auto 30px;position:relative}
+  .scanner .ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--line2)}
+  .scanner .ring.spin{border-top-color:var(--gold);animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .scanner .core{position:absolute;inset:28px;border-radius:50%;background:radial-gradient(circle,#1a1c24,#0c0d12);display:flex;align-items:center;justify-content:center}
+  .scanner .core span{font-family:'Bebas Neue';font-size:34px;color:var(--gold);animation:pulse 1.2s ease infinite}
+  @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+  .analyse-status{font-family:'Spline Sans Mono',monospace;font-size:14px;color:var(--soft);letter-spacing:.05em;min-height:20px;text-align:center}
+  .analyse-sub{color:var(--faint);font-size:12px;margin-top:8px;font-family:'Spline Sans Mono',monospace;text-align:center}
+
+  .refuse{text-align:center;padding:30px 10px}
+  .refuse .big{width:64px;height:64px;margin:0 auto 22px;border-radius:50%;background:#241410;border:1px solid #4a2420;display:flex;align-items:center;justify-content:center}
+  .refuse .big svg{width:30px;height:30px;stroke:var(--red);stroke-width:1.8;fill:none}
+  .refuse h2{font-size:22px;font-weight:700;margin-bottom:10px}.refuse p{color:var(--dim);font-size:14px;line-height:1.55;max-width:34ch;margin:0 auto}
+
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:980px;margin:0 auto}
+  .how .step{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px}
+  .how .step .n{font-family:'Bebas Neue';font-size:30px;color:var(--gold-deep);margin-bottom:8px}
+  .how .step h3{font-size:17px;font-weight:600;margin-bottom:8px}
+  .how .step p{font-size:13.5px;color:var(--dim);line-height:1.55}
+
+  footer{border-top:1px solid var(--line);padding:30px 40px;text-align:center;color:var(--faint);font-family:'Spline Sans Mono',monospace;font-size:12px;line-height:1.7}
+
+  /* =====================================================
+     VIRAL CARD — the shareable result card
+     ===================================================== */
+  .vc{
+    width:100%;border-radius:20px;position:relative;overflow:hidden;margin-bottom:20px;
+    background:
+      repeating-linear-gradient(-45deg,transparent,transparent 36px,rgba(212,196,150,.016) 36px,rgba(212,196,150,.016) 37px),
+      linear-gradient(155deg,#16181f 0%,#09090e 50%,#0d0e14 100%);
+    border:1px solid rgba(212,196,150,.18);
+    box-shadow:0 0 0 1px rgba(212,196,150,.04),0 32px 64px -22px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.04)
+  }
+  /* sweep shimmer */
+  .vc::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+    background:linear-gradient(115deg,transparent 28%,rgba(212,196,150,.06) 45%,rgba(212,196,150,.16) 50%,rgba(212,196,150,.06) 55%,transparent 72%);
+    background-size:260% 260%;animation:sweep 9s ease-in-out infinite
+  }
+  /* gold foil stripe */
+  .vc-stripe{
+    position:absolute;top:0;left:0;right:0;height:2px;z-index:6;
+    background:linear-gradient(90deg,transparent 0%,var(--gold-deep) 18%,var(--gold-bright) 50%,var(--gold-deep) 82%,transparent 100%)
+  }
+  .vc.overall-vc{
+    box-shadow:0 0 0 1px rgba(212,196,150,.1),0 0 50px -12px rgba(212,196,150,.12),0 36px 72px -24px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.05)
+  }
+  .vc-photo{
+    position:absolute;top:0;left:0;right:0;height:62%;background-size:cover;background-position:center 18%;
+    z-index:1;opacity:.45;
+    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.35) 60%,transparent 100%);
+    mask-image:linear-gradient(180deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.35) 60%,transparent 100%)
+  }
+  .vc-inner{position:relative;z-index:3;padding:22px 22px 18px}
+
+  /* header */
+  .vc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+  .vc-brand-tag{font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.34em;color:var(--gold);font-weight:600}
+  .vc-badge{font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--faint);
+    border:1px solid var(--line2);border-radius:20px;padding:3px 9px;text-transform:uppercase}
+
+  /* grade hero */
+  .vc-grade-section{text-align:center;padding:8px 0 14px}
+  .vc-grade-letter{
+    font-family:'Bebas Neue';font-size:clamp(144px,42vw,184px);line-height:.82;
+    background:linear-gradient(180deg,#fff8d6 0%,#f5e09a 20%,#d4c496 52%,#b9923f 78%,#7a5c1e 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 32px rgba(212,196,150,.38)) drop-shadow(0 8px 22px rgba(0,0,0,.75))
+  }
+  .vc-grade-label{
+    font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.3em;
+    color:var(--soft);text-transform:uppercase;margin-top:6px
+  }
+
+  /* three-stat strip */
+  .vc-strip{
+    display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;
+    border-top:1px solid rgba(212,196,150,.1);border-bottom:1px solid rgba(212,196,150,.1);
+    padding:14px 0;margin:0 0 18px;text-align:center
+  }
+  .vc-strip-div{background:rgba(212,196,150,.1)}
+  .vc-strip-val{
+    font-family:'Bebas Neue';font-size:27px;line-height:1;color:var(--gold-bright);
+    letter-spacing:.02em
+  }
+  .vc-strip-lbl{
+    font-family:'Spline Sans Mono',monospace;font-size:8px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--faint);margin-top:4px
+  }
+
+  /* muscle rows */
+  .vc-section-title{
+    font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:12px
+  }
+  .vc-muscle{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .vc-muscle-name{font-size:12px;font-weight:500;color:var(--soft);width:88px;flex-shrink:0}
+  .vc-muscle-track{flex:1;height:5px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+  .vc-muscle-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));transform-origin:left;animation:grow 1s cubic-bezier(.2,.8,.2,1) both}
+  .vc-muscle-val{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--gold);font-weight:600;width:22px;text-align:right;flex-shrink:0}
+  .vc-muscle-na .vc-muscle-name{color:var(--faint)}
+  .vc-muscle-na .vc-muscle-fill{background:repeating-linear-gradient(45deg,#1d2029,#1d2029 4px,#23262f 4px,#23262f 8px);width:100%!important}
+  .vc-muscle-na .vc-muscle-val{color:var(--faint);font-size:10px}
+
+  /* verdict */
+  .vc-verdict{
+    font-size:12px;color:var(--dim);line-height:1.55;font-style:italic;
+    border-top:1px solid rgba(255,255,255,.05);padding-top:13px;margin-top:4px;margin-bottom:14px
+  }
+
+  /* cap note */
+  .vc-cap{background:#201a0c;border:1px solid #4a3d1c;border-radius:9px;padding:10px 13px;margin-bottom:14px;font-size:12px;color:var(--gold);line-height:1.45}
+
+  /* footer */
+  .vc-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(212,196,150,.07);padding-top:12px}
+  .vc-serial{font-family:'Spline Sans Mono',monospace;font-size:9px;color:var(--faint);letter-spacing:.08em}
+  .vc-certified{font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--gold-deep);text-transform:uppercase}
+
+  /* blur state */
+  .vc.blurred .vc-inner{filter:blur(14px);user-select:none;pointer-events:none}
+  .vc.blurred .vc-photo{filter:blur(5px)}
+
+  /* =====================================================
+     BLUR GATE — overlays the card until email submitted
+     ===================================================== */
+  .card.blurred .card-inner{filter:blur(15px);user-select:none;pointer-events:none}
+  .card.blurred .card-photo{filter:blur(6px)}
+  .card.blurred .card::before{display:none}
+
+  .gate-overlay{
+    position:absolute;inset:0;z-index:20;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:32px 26px;text-align:center;
+    background:rgba(8,9,12,.78);backdrop-filter:blur(10px);
+    border-radius:20px;
+    animation:fadeIn .3s ease both
+  }
+  .gate-grade-tease{
+    font-family:'Bebas Neue';font-size:96px;line-height:.9;
+    color:var(--gold);filter:blur(10px);opacity:.7;margin-bottom:14px;
+    pointer-events:none;user-select:none
+  }
+  .gate-overlay h3{font-size:21px;font-weight:800;margin-bottom:8px;letter-spacing:-.01em}
+  .gate-overlay p{font-size:13.5px;color:var(--dim);line-height:1.5;max-width:26ch;margin-bottom:20px}
+  .gate-input{
+    width:100%;background:rgba(30,32,44,.85);border:1px solid var(--line2);border-radius:10px;
+    padding:13px 16px;font-family:'Sora';font-size:15px;color:var(--ink);
+    outline:none;transition:.18s;margin-bottom:10px
+  }
+  .gate-input:focus{border-color:var(--gold);background:rgba(38,40,54,.9)}
+  .gate-input::placeholder{color:var(--faint)}
+  .gate-input.err{border-color:var(--red);animation:shake .3s ease}
+  @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .gate-fine{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--faint);margin-top:8px;letter-spacing:.06em}
+
+  /* =====================================================
+     UPSELL PANEL
+     ===================================================== */
+  .upsell{
+    background:linear-gradient(160deg,#1e1608,#0f0c14);
+    border:1px solid #5a4520;border-radius:18px;padding:26px 22px;
+    text-align:center;margin-bottom:10px;
+    animation:fadeIn .4s .1s ease both
+  }
+  .upsell .us-eye{font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold-deep);margin-bottom:10px}
+  .upsell h3{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:7px}
+  .upsell .us-p{font-size:13px;color:var(--dim);line-height:1.5;max-width:30ch;margin:0 auto 18px}
+  .upsell-feats{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:20px;text-align:left}
+  .upsell-feats li{font-size:13px;color:var(--soft);display:flex;align-items:center;gap:10px}
+  .upsell-feats li::before{content:"✓";color:var(--gold);font-weight:700;flex-shrink:0}
+  .upsell-price{font-family:'Bebas Neue';font-size:52px;color:var(--gold);line-height:1}
+  .upsell-price-sub{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.1em;margin-bottom:16px}
+
+  /* =====================================================
+     SHARE BUTTON ROW
+     ===================================================== */
+  .share-row{display:flex;gap:10px;margin:0 0 8px}
+  .share-row .btn{margin:0;flex:1;display:flex;align-items:center;justify-content:center;gap:8px}
+  .share-row .btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+
+  /* =====================================================
+     TOAST NOTIFICATION
+     ===================================================== */
+  .toast{
+    position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(10px);
+    background:#1e2030;border:1px solid var(--line2);border-radius:12px;
+    padding:13px 22px;font-family:'Spline Sans Mono',monospace;font-size:13px;
+    color:var(--gold);opacity:0;transition:opacity .25s,transform .25s;
+    pointer-events:none;z-index:10000;white-space:nowrap
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* =====================================================
+     RESPONSIVE
+     ===================================================== */
+  @media (max-width:860px){
+    .nav{padding:14px 20px}.nav .links{gap:16px}.nav .links a:not(.navcta){display:none}
+    .wrap{padding:0 20px}
+    .hero{grid-template-columns:1fr;gap:36px;padding:48px 0 40px;text-align:center}
+    .hero-l p{margin-left:auto;margin-right:auto}.hero-actions{justify-content:center}
+    .views{grid-template-columns:1fr 1fr;gap:12px;max-width:none}
+    .vtile{padding:18px 16px}.vtile .ic{font-size:34px}
+    .how{grid-template-columns:1fr;gap:14px}
+    .cred{grid-template-columns:1fr 1fr}
+    .distrow{grid-template-columns:32px 1fr 84px;gap:10px}
+    .sec{padding:16px 0 56px}.sec-head h2{font-size:26px}
+    .grade{font-size:120px}
+  }
+  @media (max-width:480px){.views{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+  <input type="file" id="filein" accept="image/*" style="display:none">
+  <div class="toast" id="toast"></div>
+
+  <nav class="nav">
+    <div class="brand">PHYSIQ</div>
+    <div class="links">
+      <a onclick="show('screen-home');document.getElementById('scanSection').scrollIntoView()">Scan</a>
+      <a onclick="show('screen-home');document.getElementById('howSection').scrollIntoView()">How it works</a>
+      <a id="nav-overall" onclick="showOverall()">My grade</a>
+      <a class="navcta" onclick="show('screen-home');document.getElementById('scanSection').scrollIntoView()">Get graded</a>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <section class="screen active" id="screen-home">
+    <div class="wrap">
+      <div class="hero">
+        <div class="hero-l">
+          <div class="eyebrow r" style="animation-delay:.05s">No participation trophies · AI physique grading</div>
+          <h1 class="r" style="animation-delay:.15s">Most lifters<br>are <b>C-tier</b>.<br>Where are you?</h1>
+          <p class="r" style="animation-delay:.28s">PHYSIQ grades your physique against real lifters — zero inflation, zero ego protection. Upload a photo and find out where you actually stand. Most people won't like the answer.</p>
+          <div class="hero-actions r" style="animation-delay:.4s">
+            <button class="bigcta" onclick="document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get my real grade →</button>
+            <span class="hero-note">adults only · free first scan · can you handle it</span>
+          </div>
+        </div>
+        <div class="hero-r r" style="animation-delay:.5s">
+          <div class="card-area">
+            <!-- Sample card using new viral card design -->
+            <div class="vc" id="sampleCard">
+              <div class="vc-stripe"></div>
+              <div class="vc-inner">
+                <div class="vc-header">
+                  <span class="vc-brand-tag">PHYSIQ</span>
+                  <span class="vc-badge">SAMPLE · NATURAL</span>
+                </div>
+                <div class="vc-grade-section">
+                  <div class="vc-grade-letter">A</div>
+                  <div class="vc-grade-label">Advanced Lifter</div>
+                </div>
+                <div class="vc-strip">
+                  <div><div class="vc-strip-val">83/100</div><div class="vc-strip-lbl">Score</div></div>
+                  <div class="vc-strip-div"></div>
+                  <div><div class="vc-strip-val">11-13%</div><div class="vc-strip-lbl">Body Fat</div></div>
+                  <div class="vc-strip-div"></div>
+                  <div><div class="vc-strip-val">TOP 5%</div><div class="vc-strip-lbl">Percentile</div></div>
+                </div>
+                <div class="vc-section-title">Breakdown — Front view</div>
+                <div class="vc-muscle">
+                  <span class="vc-muscle-name">Shoulders</span>
+                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:86%;animation-delay:.1s"></div></div>
+                  <span class="vc-muscle-val">86</span>
+                </div>
+                <div class="vc-muscle">
+                  <span class="vc-muscle-name">Chest</span>
+                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:81%;animation-delay:.17s"></div></div>
+                  <span class="vc-muscle-val">81</span>
+                </div>
+                <div class="vc-muscle">
+                  <span class="vc-muscle-name">Arms</span>
+                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:84%;animation-delay:.24s"></div></div>
+                  <span class="vc-muscle-val">84</span>
+                </div>
+                <div class="vc-footer">
+                  <span class="vc-serial">PQ-SMPL-2025</span>
+                  <span class="vc-certified">PHYSIQ AI Graded</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="setup" id="setupNote" style="display:none"></div>
+
+      <div class="cred">
+        <div class="cred-item"><div class="cn">10</div><div class="cl">muscle groups read</div></div>
+        <div class="cred-item"><div class="cn">4</div><div class="cl">angles, no hiding</div></div>
+        <div class="cred-item"><div class="cn">S–E</div><div class="cl">no grade inflation</div></div>
+        <div class="cred-item"><div class="cn">&lt;3<span class="us">%</span></div><div class="cl">ever reach A or above</div></div>
+      </div>
+
+      <section class="sec" id="scanSection">
+        <div class="sec-head">
+          <div class="eyebrow">Get graded</div>
+          <h2>Upload a view. Get the truth.</h2>
+          <p>First scan is free. Pick any angle — each one builds your real profile. The more views, the higher the grade can go.</p>
+        </div>
+        <div class="views" id="viewGrid"></div>
+        <div class="overall">
+          <div class="lab">Overall PHYSIQ</div>
+          <div class="g locked" id="ov-grade">—</div>
+          <div class="sc" id="ov-score"></div>
+          <div class="cta" id="ov-cta">Scan a view to start building your grade.</div>
+          <button class="seebtn" id="ov-see" style="display:none" onclick="showOverall()">See full breakdown →</button>
+        </div>
+      </section>
+
+      <section class="sec" id="howSection">
+        <div class="sec-head">
+          <div class="eyebrow">Why it hits different</div>
+          <h2>Built to be honest.<br>Not to make you feel good.</h2>
+          <p>Every other physique app inflates your score so you share it. PHYSIQ does the opposite.</p>
+        </div>
+        <div class="how">
+          <div class="step">
+            <div class="n">01</div>
+            <h3>Zero inflation. Zero ego.</h3>
+            <p>Graded against people who actually compete. A C grade means you train — it doesn't mean you're impressive. Most people land here and that's the honest truth.</p>
+          </div>
+          <div class="step">
+            <div class="n">02</div>
+            <h3>Can't see it, won't score it.</h3>
+            <p>No back photo? Grade capped. PHYSIQ won't pretend to assess what it can't actually see. No flattery, no guesses.</p>
+          </div>
+          <div class="step">
+            <div class="n">03</div>
+            <h3>Nowhere to hide.</h3>
+            <p>Every angle fills in your real profile. You can't skip legs and claim a full grade. The weak points show up — because that's the point.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="scaleSection">
+        <div class="sec-head">
+          <div class="eyebrow">The scale</div>
+          <h2>Most people won't reach A.<br>That's the point.</h2>
+          <p>An A on PHYSIQ means something. An S means everything. Earning one isn't luck — it's years of real work, visible in every photo.</p>
+        </div>
+        <div class="dist">
+          <div class="distrow"><span class="dg">S</span><div class="dbar"><span style="width:3%"></span></div><span class="dp">top ~0.5% · elite</span></div>
+          <div class="distrow"><span class="dg">A</span><div class="dbar"><span style="width:10%"></span></div><span class="dp">top ~3% · advanced</span></div>
+          <div class="distrow"><span class="dg">B</span><div class="dbar"><span style="width:28%"></span></div><span class="dp">top ~18% · dedicated</span></div>
+          <div class="distrow"><span class="dg">C</span><div class="dbar"><span style="width:88%"></span></div><span class="dp">most lifters · average</span></div>
+          <div class="distrow"><span class="dg">D</span><div class="dbar"><span style="width:44%"></span></div><span class="dp">early stage</span></div>
+          <div class="distrow"><span class="dg">E</span><div class="dbar"><span style="width:18%"></span></div><span class="dp">just starting</span></div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ANALYSING -->
+  <section class="screen" id="screen-analyse">
+    <div class="wrap"><div class="analyse-wrap">
+      <div class="scanner"><div class="ring"></div><div class="ring spin"></div><div class="core"><span id="scanLetter">F</span></div></div>
+      <div class="analyse-status" id="aStatus">reading image…</div>
+      <div class="analyse-sub" id="aSub">grading</div>
+    </div></div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="screen-result">
+    <div class="wrap"><div class="result-wrap"><div class="card-area">
+      <div id="resultBody"></div>
+      <button class="btn" id="resPrimary" onclick="show('screen-home')">← Back to scans</button>
+    </div></div></div>
+  </section>
+
+  <!-- OVERALL -->
+  <section class="screen" id="screen-overall">
+    <div class="wrap"><div class="result-wrap"><div class="card-area">
+      <div id="overallBody"></div>
+      <button class="btn ghost" id="overallBack" onclick="show('screen-home')">← Back</button>
+    </div></div></div>
+  </section>
+
+  <footer>PHYSIQ · adults only · training feedback, not medical advice</footer>
+
+<script>
+// ============================================================
+//  CONFIG — swap these two values and the app is fully live
+// ============================================================
+const WORKER_URL   = "https://physiqworker.nichodrew1.workers.dev";
+const EMAIL_ENDPOINT = "";   // POST {email, source} here (Beehiiv/Kit/etc webhook)
+const PAYMENT_LINK   = "";   // Your Stripe payment link — e.g. https://buy.stripe.com/xxx
+                             // Stripe success URL should be: yourdomain.com?paid=true
+const UNLOCK_PRICE   = "$7"; // shown in upsell — change when you update Stripe
+// ============================================================
+
+const VIEWS=[
+  {id:"front",  letter:"F",t:"Front",     d:"chest · shoulders · arms · abs"},
+  {id:"back",   letter:"B",t:"Back",      d:"back · traps · rear delts"},
+  {id:"legs",   letter:"L",t:"Legs",      d:"quads · hams · glutes · calves"},
+  {id:"arms_side",letter:"A",t:"Arms / Side",d:"arms · side delts (best arm read)"}
+];
+const MUSCLES=["shoulders","chest","arms","back","traps","quads","hamstrings","glutes","calves","conditioning"];
+const CONF_RANK={high:3,medium:2,low:1};
+
+// ---- state ----
+let profile={};
+let viewsDone={};
+let photos={};
+let pendingView=null;
+
+// ---- account / payment state ----
+let hasAccount = false;   // true once email submitted
+let hasPaid    = false;   // true once paid (or ?paid=true on URL)
+let userEmail  = null;
+
+// ---- localStorage helpers ----
+function saveState(){
+  try{
+    localStorage.setItem('pq_account', hasAccount?'1':'');
+    localStorage.setItem('pq_paid',    hasPaid?'1':'');
+    localStorage.setItem('pq_email',   userEmail||'');
+    localStorage.setItem('pq_profile', JSON.stringify(profile));
+    localStorage.setItem('pq_views',   JSON.stringify(Object.keys(viewsDone)));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    hasAccount = !!localStorage.getItem('pq_account');
+    hasPaid    = !!localStorage.getItem('pq_paid');
+    userEmail  = localStorage.getItem('pq_email')||null;
+    const p=localStorage.getItem('pq_profile'); if(p) profile=JSON.parse(p);
+    const v=localStorage.getItem('pq_views');   if(v) JSON.parse(v).forEach(id=>viewsDone[id]=true);
+  }catch(e){}
+}
+
+// ---- build view tiles ----
+const grid=document.getElementById('viewGrid');
+VIEWS.forEach(v=>{
+  const b=document.createElement('button');b.className='vtile';b.id='vt-'+v.id;
+  b.onclick=()=>pick(v.id);
+  b.innerHTML=
+    '<span class="chk">✓ done</span>'+
+    '<div class="lock-badge"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>'+
+    '<div class="ic">'+v.letter+'</div><div class="t">'+v.t+'</div><div class="d">'+v.d+'</div>';
+  grid.appendChild(b);
+});
+
+// ---- init ----
+window.addEventListener('DOMContentLoaded',()=>{
+  loadState();
+  refreshHome();
+
+  // Handle Stripe success redirect (?paid=true)
+  if(new URLSearchParams(location.search).get('paid')==='true'){
+    hasPaid=true; saveState();
+    history.replaceState({},'',location.pathname);
+    showToast('🔓 Full body scan unlocked!');
+  }
+
+  if(!WORKER_URL){
+    const n=document.getElementById('setupNote');
+    n.style.display='block';
+    n.innerHTML='<b>Not connected.</b> Set WORKER_URL at the top of the script.';
+  }
+});
+
+// ---- pick a view ----
+function pick(viewId){
+  if(!WORKER_URL){alert("Set WORKER_URL first.");return;}
+
+  const scansUsed=Object.keys(viewsDone).length;
+
+  // Already scanned this view — allow re-scan only if paid
+  if(viewsDone[viewId] && !hasPaid){ showPaywall(); return; }
+
+  // Free scan used and not paid — show paywall
+  if(scansUsed >= 1 && !hasPaid){ showPaywall(); return; }
+
+  pendingView=viewId;
+  document.getElementById('filein').click();
+}
+
+// ---- file selected ----
+document.getElementById('filein').addEventListener('change',async e=>{
+  const file=e.target.files[0]; if(!file||!pendingView) return;
+  e.target.value='';
+  const view=pendingView; pendingView=null;
+  const photoURL=URL.createObjectURL(file);
+  document.getElementById('scanLetter').textContent=VIEWS.find(v=>v.id===view).letter;
+  document.getElementById('aSub').textContent='grading '+VIEWS.find(v=>v.id===view).t.toLowerCase();
+  document.getElementById('aStatus').textContent='reading image…';
+  show('screen-analyse');
+  try{
+    const data=await analyzeView(view,file);
+    if(data.refused){renderRefusal(data.reason);show('screen-result');return;}
+    photos[view]=photoURL;
+    mergeIntoProfile(view,data);
+    viewsDone[view]=true;
+    saveState();
+    renderViewResult(view,data,photoURL);
+    refreshHome();
+    show('screen-result');
+  }catch(err){renderError(String(err));show('screen-result');}
+});
+
+function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});}
+async function analyzeView(view,file){
+  const image=await fileToBase64(file);
+  const media_type=file.type||"image/jpeg";
+  const res=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({region:view,image,media_type})});
+  const data=await res.json().catch(()=>null);
+  if(!res.ok){const reason=data&&(data.detail||data.error)?(": "+(data.detail||data.error)):"";throw new Error("scan failed ("+res.status+")"+reason);}
+  return data;
+}
+
+function mergeIntoProfile(view,data){
+  const m=data.muscles||{};
+  MUSCLES.forEach(k=>{
+    const incoming=m[k];
+    if(!incoming||incoming.score==null) return;
+    const cur=profile[k];
+    const better=!cur||(CONF_RANK[incoming.confidence]||0)>(CONF_RANK[cur.confidence]||0);
+    if(better) profile[k]={score:incoming.score,confidence:incoming.confidence||'medium',fromView:view};
+  });
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function scoreToGrade(s){if(s>=90)return'S';if(s>=75)return'A';if(s>=61)return'B';if(s>=40)return'C';if(s>=25)return'D';return'E';}
+function gradeLabel(g){return{S:'Elite',A:'Advanced',B:'Experienced',C:'Developing',D:'Beginner',E:'Starting Out'}[g[0]]||'';}
+
+function computeOverall(){
+  const have=MUSCLES.filter(k=>profile[k]);
+  if(have.length===0) return null;
+  const avg=Math.round(have.reduce((s,k)=>s+profile[k].score,0)/have.length);
+  const missing=MUSCLES.filter(k=>!profile[k]);
+  const haveBack=!!profile.back, haveLegs=!!(profile.quads||profile.hamstrings||profile.calves);
+  let capScore=avg,capped=false;
+  if(!haveBack||!haveLegs){const c=Math.min(avg,67);capped=c<avg;capScore=c;}
+  return{avg,capScore,grade:scoreToGrade(capScore),missing,capped,haveBack,haveLegs,nViews:Object.keys(viewsDone).length};
+}
+
+function refreshHome(){
+  const scansUsed=Object.keys(viewsDone).length;
+  VIEWS.forEach(v=>{
+    const tile=document.getElementById('vt-'+v.id);
+    const isDone=!!viewsDone[v.id];
+    const isLocked=!hasPaid && scansUsed>=1 && !isDone;
+    tile.classList.toggle('done',isDone);
+    tile.classList.toggle('pay-locked',isLocked);
+    // unlock clicking on locked tile goes to paywall
+  });
+  const o=computeOverall();
+  const sample=document.getElementById('sampleCard');
+  if(sample) sample.style.display=o?'none':'';
+  const g=document.getElementById('ov-grade'),sc=document.getElementById('ov-score'),
+        cta=document.getElementById('ov-cta'),see=document.getElementById('ov-see');
+  if(!o){g.textContent='—';g.className='g locked';sc.textContent='';cta.textContent='Scan a view to begin building your grade.';see.style.display='none';return;}
+  g.textContent=o.grade;g.className='g';sc.textContent=o.capScore+'/100';see.style.display='inline-block';
+  if(o.missing.length){
+    const nm=!o.haveBack?'back':(!o.haveLegs?'legs':o.missing[0]);
+    cta.innerHTML='Grade capped while parts are unseen. <b>Scan your '+nm+'</b> to fill the gap and raise the ceiling.';
+  } else { cta.textContent='Full profile — every region covered.'; }
+}
+
+// ============================================================
+//  RESULT RENDERING
+// ============================================================
+function renderViewResult(view,data,photoURL){
+  const m=data.muscles||{};
+  const seen=MUSCLES.filter(k=>m[k]&&m[k].score!=null);
+
+  // Per-view grade from average of scored muscles
+  const viewAvg=seen.length?Math.round(seen.reduce((s,k)=>s+m[k].score,0)/seen.length):null;
+  const viewGrade=viewAvg!=null?scoreToGrade(viewAvg):'—';
+
+  // Muscle rows
+  let muscleRows='';
+  seen.forEach((k,i)=>{const v=m[k];
+    muscleRows+='<div class="vc-muscle">'+
+      '<span class="vc-muscle-name">'+cap(k)+'</span>'+
+      '<div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:'+v.score+'%;animation-delay:'+(.12+i*.06)+'s"></div></div>'+
+      '<span class="vc-muscle-val">'+v.score+'</span>'+
+    '</div>';});
+
+  const cardId=makeCardId();
+  const bf=data.bodyfat_range||'—';
+  const pct=viewAvg!=null?scoreToPct(viewAvg):'—';
+  const viewName=VIEWS.find(v=>v.id===view).t.toUpperCase();
+  const photoLayer=photoURL?'<div class="vc-photo" style="background-image:url('+photoURL+')"></div>':'';
+
+  // Overall for gate tease and button config
+  const o=computeOverall();
+  const tease=o?o.grade:(viewGrade!=='—'?viewGrade:'?');
+
+  // Gate overlay
+  const gateHTML=hasAccount?'':
+    '<div class="gate-overlay" id="gateDiv">'+
+      '<div class="gate-grade-tease">'+tease+'</div>'+
+      '<h3>Your grade is ready</h3>'+
+      '<p>Free account to reveal it — no password needed.</p>'+
+      '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email">'+
+      '<button class="btn" onclick="submitGate()">Reveal my grade →</button>'+
+      '<div class="gate-fine">No spam · unsubscribe any time</div>'+
+    '</div>';
+
+  document.getElementById('resultBody').innerHTML=
+    '<div class="vc'+(hasAccount?'':' blurred')+'">'+
+      '<div class="vc-stripe"></div>'+
+      photoLayer+
+      '<div class="vc-inner">'+
+        '<div class="vc-header">'+
+          '<span class="vc-brand-tag">PHYSIQ</span>'+
+          '<span class="vc-badge">'+viewName+' · NATURAL</span>'+
+        '</div>'+
+        '<div class="vc-grade-section">'+
+          '<div class="vc-grade-letter">'+(viewGrade!=='—'?viewGrade:'?')+'</div>'+
+          '<div class="vc-grade-label">'+(viewGrade!=='—'?gradeLabel(viewGrade)+' Lifter':'Scan to grade')+'</div>'+
+        '</div>'+
+        '<div class="vc-strip">'+
+          '<div><div class="vc-strip-val">'+(viewAvg!=null?viewAvg+'/100':'—')+'</div><div class="vc-strip-lbl">Score</div></div>'+
+          '<div class="vc-strip-div"></div>'+
+          '<div><div class="vc-strip-val">'+bf+'</div><div class="vc-strip-lbl">Body Fat</div></div>'+
+          '<div class="vc-strip-div"></div>'+
+          '<div><div class="vc-strip-val">'+pct+'</div><div class="vc-strip-lbl">Percentile</div></div>'+
+        '</div>'+
+        (seen.length?
+          '<div class="vc-section-title">Breakdown — '+viewName+' view</div>'+muscleRows
+          :'<div class="vc-cap">This view didn\'t clearly show a gradeable region. Try better lighting or framing.</div>')+
+        (data.verdict?'<div class="vc-verdict">"'+data.verdict+'"</div>':'')+
+        '<div class="vc-footer">'+
+          '<span class="vc-serial">'+cardId+'</span>'+
+          '<span class="vc-certified">PHYSIQ AI Graded</span>'+
+        '</div>'+
+      '</div>'+
+      gateHTML+
+    '</div>';
+
+  const btn=document.getElementById('resPrimary');
+  if(!hasAccount){
+    btn.style.display='none';
+  } else {
+    btn.style.display='block';
+    configurePrimaryBtn(o);
+    if(!hasPaid) injectUpsell();
+    injectShareBtn(viewGrade, viewAvg||0);
+  }
+}
+
+// Called from gate submit and from the case where we already have an account
+function configurePrimaryBtn(o){
+  const btn=document.getElementById('resPrimary');
+  if(!btn) return;
+  btn.style.display='block';
+  if(o && o.missing.length===0 && hasPaid){
+    btn.textContent='See your full grade →';
+    btn.onclick=showOverall;
+  } else {
+    btn.textContent='← Back to scans';
+    btn.onclick=()=>show('screen-home');
+  }
+}
+
+// ============================================================
+//  GATE SUBMIT — email entered, reveal the card
+// ============================================================
+function submitGate(){
+  const inp=document.getElementById('gateEmail');
+  const email=(inp&&inp.value||'').trim();
+  if(!email||!email.includes('@')||!email.includes('.')){
+    if(inp){inp.classList.add('err');setTimeout(()=>inp.classList.remove('err'),400);}
+    return;
+  }
+
+  hasAccount=true;
+  userEmail=email;
+  saveState();
+
+  // Fire to email list endpoint (non-blocking — failure is silent)
+  if(EMAIL_ENDPOINT){
+    fetch(EMAIL_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,source:'physiq-scan-gate'})}).catch(()=>{});
+  }
+
+  // Unblur card
+  const card=document.querySelector('#resultBody .vc, #resultBody .card');
+  if(card) card.classList.remove('blurred');
+
+  // Remove gate overlay
+  const gate=document.getElementById('gateDiv');
+  if(gate) gate.remove();
+
+  // Show primary button, upsell, share
+  const o=computeOverall();
+  configurePrimaryBtn(o);
+  injectUpsell();
+  injectShareBtn(o?o.grade:'?', o?o.capScore:0);
+  refreshHome(); // update tile lock states
+
+  showToast('Welcome to PHYSIQ — your grade is revealed.');
+}
+
+// ============================================================
+//  PAYWALL — shown when trying to scan a 2nd+ view unpaid
+// ============================================================
+function showPaywall(){
+  document.getElementById('resultBody').innerHTML=
+    '<div class="refuse" style="padding:20px 0 12px">'+
+      '<h2 style="margin-bottom:8px">One view is free</h2>'+
+      '<p>You\'ve used your free scan. Unlock the full body scan to grade every angle.</p>'+
+    '</div>';
+  const btn=document.getElementById('resPrimary');
+  btn.style.display='none';
+  // Remove any previous upsell before injecting fresh
+  const old=document.getElementById('upsellPanel'); if(old) old.remove();
+  injectUpsell(true); // pass true = paywall mode (slightly different copy)
+  show('screen-result');
+}
+
+// ============================================================
+//  UPSELL PANEL
+// ============================================================
+function injectUpsell(paywallMode){
+  // Remove existing
+  const old=document.getElementById('upsellPanel'); if(old) old.remove();
+
+  const title  = paywallMode ? 'Unlock the full body scan' : 'Want your real grade?';
+  const sub    = paywallMode
+    ? 'Scan all 4 angles, get your true uncapped overall grade.'
+    : 'One view tells part of the story. Scan all 4 to get the grade you actually deserve.';
+
+  const div=document.createElement('div');
+  div.id='upsellPanel';
+  div.className='upsell';
+  div.innerHTML=
+    '<div class="us-eye">Upgrade</div>'+
+    '<h3>'+title+'</h3>'+
+    '<p class="us-p">'+sub+'</p>'+
+    '<ul class="upsell-feats">'+
+      '<li>All 4 views: Front, Back, Legs, Arms</li>'+
+      '<li>Uncapped overall grade</li>'+
+      '<li>Full muscle-by-muscle breakdown</li>'+
+      '<li>Conditioning &amp; body fat read</li>'+
+    '</ul>'+
+    '<div class="upsell-price">'+UNLOCK_PRICE+'</div>'+
+    '<div class="upsell-price-sub">ONE-TIME · YOURS FOREVER</div>'+
+    '<button class="btn gold-btn" onclick="handlePurchase()">Unlock full body scan →</button>'+
+    '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">Not now</button>';
+
+  // Insert before resPrimary
+  const ref=document.getElementById('resPrimary');
+  if(ref) ref.parentNode.insertBefore(div,ref);
+}
+
+// ============================================================
+//  PURCHASE HANDLER
+// ============================================================
+function handlePurchase(){
+  if(PAYMENT_LINK){
+    // Go to Stripe — success URL should be yourdomain.com?paid=true
+    window.location.href=PAYMENT_LINK;
+    return;
+  }
+
+  // ---- DEV / TESTING: no Stripe link set — auto-unlock ----
+  // TODO: Remove this block in production and set PAYMENT_LINK above
+  hasPaid=true;
+  saveState();
+  const panel=document.getElementById('upsellPanel');
+  if(panel){
+    panel.innerHTML=
+      '<div style="text-align:center;padding:8px 0">'+
+        '<div style="font-family:Bebas Neue;font-size:32px;color:var(--gold);margin-bottom:8px">All views unlocked 🔓</div>'+
+        '<div style="color:var(--dim);font-size:13px">Scan your remaining angles to complete your profile.</div>'+
+      '</div>';
+  }
+  const btn=document.getElementById('resPrimary');
+  if(btn){btn.style.display='block';btn.textContent='← Back to scans';btn.onclick=()=>show('screen-home');}
+  refreshHome();
+  showToast('Full body scan unlocked!');
+}
+
+// ============================================================
+//  SHARE BUTTON
+// ============================================================
+function injectShareBtn(grade, score){
+  const old=document.getElementById('shareRow'); if(old) old.remove();
+  const row=document.createElement('div');
+  row.id='shareRow';
+  row.className='share-row';
+  row.innerHTML=
+    '<button class="btn ghost" onclick="shareGrade(\''+grade+'\','+score+')" style="display:flex;align-items:center;justify-content:center;gap:8px">'+
+      '<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>'+
+      'Share my grade'+
+    '</button>';
+  const ref=document.getElementById('upsellPanel')||document.getElementById('resPrimary');
+  if(ref) ref.parentNode.insertBefore(row,ref);
+}
+
+function shareGrade(grade, score){
+  const text='I just scored '+grade+' ('+score+'/100) on PHYSIQ — the AI physique grader that doesn\'t lie. Find out yours: '+location.href;
+  if(navigator.share){
+    navigator.share({title:'My PHYSIQ Grade',text,url:location.href}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text)
+      .then(()=>showToast('Copied to clipboard!'))
+      .catch(()=>showToast('Share: '+location.href));
+  }
+}
+
+// ============================================================
+//  OVERALL SCREEN
+// ============================================================
+function showOverall(){
+  const o=computeOverall();
+  if(!o){show('screen-home');return;}
+
+  // Muscle rows — scored ones full, unscored dimmed
+  let muscleRows='';
+  MUSCLES.forEach((k,i)=>{
+    const p=profile[k];const na=!p;
+    muscleRows+='<div class="vc-muscle'+(na?' vc-muscle-na':'')+'">'+
+      '<span class="vc-muscle-name">'+cap(k)+'</span>'+
+      '<div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:'+(na?100:p.score)+'%;animation-delay:'+(.1+i*.045)+'s"></div></div>'+
+      '<span class="vc-muscle-val">'+(na?'—':p.score)+'</span>'+
+    '</div>';});
+
+  const cardId=makeCardId();
+  const pct=scoreToPct(o.capScore);
+  const heroPhoto=photos.front||photos.arms_side||photos.back||photos.legs||null;
+  const photoLayer=heroPhoto?'<div class="vc-photo" style="background-image:url('+heroPhoto+')"></div>':'';
+  const capHTML=o.capped?
+    '<div class="vc-cap">⚠ Grade capped — '+
+      (!o.haveBack?'no back view':'')+((!o.haveBack&&!o.haveLegs)?' and ':'')+(!o.haveLegs?'no legs view':'')+
+      '. Unlock to remove the ceiling.</div>':'';
+
+  document.getElementById('overallBody').innerHTML=
+    '<div class="vc overall-vc">'+
+      '<div class="vc-stripe"></div>'+
+      photoLayer+
+      '<div class="vc-inner">'+
+        '<div class="vc-header">'+
+          '<span class="vc-brand-tag">PHYSIQ</span>'+
+          '<span class="vc-badge">'+o.nViews+' VIEW'+(o.nViews!==1?'S':'')+' · OVERALL</span>'+
+        '</div>'+
+        '<div class="vc-grade-section">'+
+          '<div class="vc-grade-letter">'+o.grade+'</div>'+
+          '<div class="vc-grade-label">'+gradeLabel(o.grade)+' Lifter</div>'+
+        '</div>'+
+        '<div class="vc-strip">'+
+          '<div><div class="vc-strip-val">'+o.capScore+'/100</div><div class="vc-strip-lbl">Score</div></div>'+
+          '<div class="vc-strip-div"></div>'+
+          '<div><div class="vc-strip-val">'+(o.missing.length===0?'FULL':o.missing.length+' left')+'</div><div class="vc-strip-lbl">Profile</div></div>'+
+          '<div class="vc-strip-div"></div>'+
+          '<div><div class="vc-strip-val">'+pct+'</div><div class="vc-strip-lbl">Percentile</div></div>'+
+        '</div>'+
+        capHTML+
+        '<div class="vc-section-title">Full muscle breakdown</div>'+
+        muscleRows+
+        '<div class="vc-footer">'+
+          '<span class="vc-serial">'+cardId+'</span>'+
+          '<span class="vc-certified">PHYSIQ AI Graded</span>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+
+  const backBtn=document.getElementById('overallBack');
+  ['overallShareRow','overallUpsell'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
+  backBtn.style.display='block';
+
+  // Share row
+  const shareRow=document.createElement('div');
+  shareRow.id='overallShareRow'; shareRow.className='share-row';
+  shareRow.innerHTML=
+    '<button class="btn ghost" onclick="shareGrade(\''+o.grade+'\','+o.capScore+')" style="display:flex;align-items:center;justify-content:center;gap:8px">'+
+      '<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>'+
+      'Share my grade'+
+    '</button>';
+  backBtn.parentNode.insertBefore(shareRow,backBtn);
+
+  if(!hasPaid){
+    const upsellDiv=document.createElement('div');
+    upsellDiv.id='overallUpsell'; upsellDiv.className='upsell';
+    upsellDiv.innerHTML=
+      '<div class="us-eye">Your grade is capped</div>'+
+      '<h3>See your true overall grade</h3>'+
+      '<p class="us-p">Without a back and legs scan, PHYSIQ caps your grade. Unlock to remove the ceiling.</p>'+
+      '<div class="upsell-price">'+UNLOCK_PRICE+'</div>'+
+      '<div class="upsell-price-sub">ONE-TIME · ALL 4 VIEWS</div>'+
+      '<button class="btn gold-btn" onclick="handlePurchase()">Unlock full body scan →</button>'+
+      '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">Back to scans</button>';
+    backBtn.parentNode.insertBefore(upsellDiv,backBtn);
+    backBtn.style.display='none';
+  }
+
+  show('screen-overall');
+}
+
+// ============================================================
+//  REFUSAL / ERROR RENDERING
+// ============================================================
+function renderRefusal(reason){
+  const msg=reason==='age'
+    ?{h:"We can't grade this one",p:"This tool is for adults only, and we can only assess photos where the subject is clearly 18 or over."}
+    :reason==='unclear_subject'
+    ?{h:"Couldn't tell who to grade",p:"There seem to be multiple people. Use a photo where one person is clearly the subject."}
+    :{h:"Couldn't read this view",p:"Need a clear, well-lit photo of an adult — shorts only, full region in frame, plain background."};
+  document.getElementById('resultBody').innerHTML=
+    '<div class="refuse"><div class="big"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg></div>'+
+    '<h2>'+msg.h+'</h2><p>'+msg.p+'</p></div>';
+  const btn=document.getElementById('resPrimary');
+  btn.style.display='block';btn.textContent='← Try again';btn.onclick=()=>show('screen-home');
+}
+function renderError(detail){
+  document.getElementById('resultBody').innerHTML=
+    '<div class="refuse"><div class="big"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg></div>'+
+    '<h2>Scan failed</h2><p>'+detail+'</p></div>';
+  const btn=document.getElementById('resPrimary');
+  btn.style.display='block';btn.textContent='← Back';btn.onclick=()=>show('screen-home');
+}
+
+// ============================================================
+//  TOAST
+// ============================================================
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// Percentile from score — the flex number on the card
+function scoreToPct(s){
+  if(s>=92)return'TOP 1%';if(s>=85)return'TOP 5%';if(s>=78)return'TOP 10%';
+  if(s>=70)return'TOP 18%';if(s>=63)return'TOP 28%';if(s>=55)return'TOP 42%';
+  if(s>=40)return'TOP 58%';if(s>=28)return'TOP 75%';return'TOP 90%';
+}
+// Unique card ID for the serial number — authenticity feel
+function makeCardId(){
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let id='PQ-';for(let i=0;i<8;i++){if(i===4)id+='-';id+=c[Math.floor(Math.random()*c.length)];}
+  return id;
+}
+
+function cap(s){return s[0].toUpperCase()+s.slice(1);}
+</script>
+</body>
+</html>
