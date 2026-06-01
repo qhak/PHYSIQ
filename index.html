@@ -2,11 +2,37 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PHYSIQ — Honest Physique Grading</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PHYSIQ — AI Physique Grading</title>
+<meta name="description" content="Find out where you actually stand. AI physique grading with no flattery — scored against real lifters globally. Free first scan, results in seconds.">
+
+<!-- Open Graph / social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="PHYSIQ — AI Physique Grading">
+<meta property="og:description" content="Most lifters are C-tier. Find out where you actually stand. Brutally honest AI physique grading — free first scan.">
+<meta property="og:url" content="https://physiq.app">
+<meta property="og:site_name" content="PHYSIQ">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHYSIQ — AI Physique Grading">
+<meta name="twitter:description" content="Most lifters are C-tier. Find out where you actually stand. Free first scan.">
+
+<!-- Mobile / PWA -->
+<meta name="theme-color" content="#08090c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PHYSIQ">
+
+<!-- Favicon — inline SVG (works in all modern browsers) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnb2xkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjBkOTlhIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNkNGM0OTYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNiOTkyM2YiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHJ4PSI4IiBmaWxsPSIjMDgwOTBjIi8+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSJ1cmwoI2dvbGQpIiBvcGFjaXR5PSIwLjgiLz48dGV4dCB4PSIxNiIgeT0iMjMiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIxOCIgZmlsbD0idXJsKCNnb2xkKSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgbGV0dGVyLXNwYWNpbmc9IjEiPlA8L3RleHQ+PC9zdmc+">
+<!-- Fallback ICO for older browsers / link previews that need it -->
+<link rel="alternate icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADASURBVFhH7ZYxCsJAEEX3kII3sBJ7T6C9F/AEXsCNZzAg2AgK2USSQrDxJtmFkJm8HdlFCGQT2AVnHgz7YWD4zPIXIiIiIqJqAbgDNgAPOp4Bl6p6K6VGA2wBW8AG2AOaVu9V4ATsAAOgu88JcAZOJT8DWAFbYAv0gB7oAb22X8AROAIHoAP6dj4Dz8ANuAK9vg94A3bgAvT6PuANuAIXYPfvAN+AHbgCPfsdeAFO4Aj0+j7gDbgCF2D37wDfgB24Aj37HXgBTuAI9Po+4A24AhdguzcHmBJVOsEAAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMDgwOTBjIi8+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxMiIgcng9IjYiIGZpbGw9IiNkNGM0OTYiIG9wYWNpdHk9IjAuOCIvPjx0ZXh0IHg9IjkwIiB5PSIxMjgiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIxMTAiIGZpbGw9IiNkNGM0OTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlA8L3RleHQ+PC9zdmc+">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap');
   *{margin:0;padding:0;box-sizing:border-box}
   :root{--bg:#08090c;--bg2:#0b0d12;--surface:#13151c;--surface2:#0e0f15;--line:#23262f;--line2:#2a2d3a;
     --ink:#f3f5fa;--soft:#c4c9d6;--dim:#7e8393;--faint:#5d6273;
@@ -14,8 +40,58 @@
   html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--ink);font-family:'Sora',sans-serif;min-height:100vh;position:relative;
     background-image:radial-gradient(1100px 600px at 80% -10%,rgba(212,196,150,.07) 0,transparent 55%),radial-gradient(900px 500px at 10% 110%,rgba(120,140,90,.05) 0,transparent 50%)}
-  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.035;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  /* grain overlay — isolated element, GPU composited, doesn't repaint with scroll */
+  #grain{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    will-change:transform;transform:translateZ(0)}
+
+  /* ── CINEMATIC STAGE SPOTLIGHT ──────────────────────────
+     Fixed to viewport, sits between body background and all
+     content. No animation, no JS, zero repaints.
+     z-index 1 — above body bg, below nav (z-index:100) and
+     all screen content which stacks in normal flow above.
+     ─────────────────────────────────────────────────────── */
+  #spotlight{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+    /* Secondary fill: wider, softer — creates depth behind primary beam.
+       Centred top, ~1000px wide equivalent, fades to transparent by 50vh. */
+    background:
+      radial-gradient(
+        ellipse 500px 50vh at 50% 0%,
+        rgba(212,196,150,.04) 0%,
+        transparent 100%
+      ),
+      /* Primary beam: narrower, brighter, falls from directly above.
+         Centred top, ~600px wide equivalent, fades by 65vh. */
+      radial-gradient(
+        ellipse 300px 65vh at 50% 0%,
+        rgba(212,196,150,.09) 0%,
+        rgba(212,196,150,.04) 30%,
+        transparent 100%
+      );
+  }
+  /* Mobile: scale beam proportionally — narrower viewport means
+     percentage widths naturally compress the beam correctly.
+     The vh heights stay consistent so the fade point is unchanged. */
+  @media (max-width:480px){
+    #spotlight{
+      background:
+        radial-gradient(
+          ellipse 80vw 50vh at 50% 0%,
+          rgba(212,196,150,.04) 0%,
+          transparent 100%
+        ),
+        radial-gradient(
+          ellipse 48vw 65vh at 50% 0%,
+          rgba(212,196,150,.09) 0%,
+          rgba(212,196,150,.04) 30%,
+          transparent 100%
+        );
+    }
+  }
 
   .r{opacity:0;transform:translateY(16px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
   @keyframes rise{to{opacity:1;transform:none}}
@@ -34,16 +110,49 @@
   .screen{display:none;animation:fadeIn .45s ease both}.screen.active{display:block}
   @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;padding:84px 0 64px}
+  /* hero needs position:relative so hero-r/hero-l z-index context works */
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;padding:84px 0 64px;position:relative}
   .hero-l .eyebrow{font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+  .hero-l{position:relative;z-index:1}
   .hero-l h1{font-size:clamp(40px,5vw,62px);font-weight:800;letter-spacing:-.03em;line-height:1.02;margin-bottom:22px}
   .hero-l h1 b{background:linear-gradient(180deg,var(--gold-bright),var(--gold-deep));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:800}
   .hero-l p{color:var(--soft);font-size:18px;line-height:1.6;max-width:46ch;margin-bottom:32px}
   .hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-  .bigcta{background:var(--gold);color:#0c0d12;border:none;border-radius:11px;padding:16px 30px;font-family:'Sora';font-weight:700;font-size:16px;cursor:pointer;transition:.18s}
-  .bigcta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 16px 34px -16px rgba(212,196,150,.55)}
+  .bigcta{background:var(--gold);color:#0c0d12;border:none;border-radius:11px;padding:16px 30px;font-family:'Sora';font-weight:700;font-size:16px;cursor:pointer;transition:.18s;min-height:52px;position:relative;overflow:hidden}
+  .bigcta::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.18) 50%,transparent 100%);transform:translateX(-100%);transition:transform .45s ease}
+  .bigcta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 16px 34px -16px rgba(212,196,150,.6)}
+  .bigcta:hover::after{transform:translateX(100%)}
   .hero-note{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--faint)}
-  .hero-r{display:flex;justify-content:center}
+  .hero-r{display:flex;justify-content:center;position:relative;z-index:1}
+
+  /* ── TRUST BAR ───────────────────────────────────────── */
+  .trust-bar{
+    display:flex;align-items:center;gap:0;
+    margin-top:20px;
+    font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.08em;
+    color:var(--faint);flex-wrap:wrap;
+  }
+  .trust-item{display:flex;align-items:center;gap:6px;white-space:nowrap}
+  .trust-item svg{width:12px;height:12px;flex-shrink:0;opacity:.7}
+  .trust-sep{margin:0 10px;opacity:.3}
+  @media(max-width:860px){
+    .trust-bar{justify-content:center;gap:0;margin-top:16px}
+  }
+
+  .hero-secondary-cta{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--dim);text-decoration:none;cursor:pointer;transition:.15s;border-bottom:1px solid transparent;padding-bottom:1px}
+  .hero-secondary-cta:hover{color:var(--gold);border-bottom-color:var(--gold)}
+
+  /* =====================================================
+     INLINE HOW-IT-WORKS STRIP — below hero, above cred
+     ===================================================== */
+  .how-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:860px;margin:0 auto 48px;
+    background:var(--surface);border:1px solid var(--line2);border-radius:18px;overflow:hidden}
+  .how-strip-step{padding:24px 28px;display:flex;align-items:flex-start;gap:16px;position:relative}
+  .how-strip-step+.how-strip-step::before{content:'';position:absolute;left:0;top:20%;height:60%;width:1px;background:var(--line2)}
+  .how-strip-num{font-family:'Bebas Neue';font-size:38px;color:var(--gold-deep);line-height:1;flex-shrink:0;margin-top:-2px}
+  .how-strip-body{}
+  .how-strip-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px;letter-spacing:-.01em}
+  .how-strip-desc{font-size:12.5px;color:var(--dim);line-height:1.45}
 
   .setup{max-width:760px;margin:0 auto 8px;background:#1c1206;border:1px solid #4a3416;border-radius:12px;padding:14px 18px;font-size:13px;color:#e3b765;line-height:1.5}
   .setup b{color:var(--gold-bright)}
@@ -54,11 +163,43 @@
   .cred-item .cn .us{font-size:.5em;color:var(--gold-deep);vertical-align:super}
   .cred-item .cl{font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:10px}
 
-  .dist{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
-  .distrow{display:grid;grid-template-columns:40px 1fr 110px;align-items:center;gap:16px}
-  .distrow .dg{font-family:'Bebas Neue';font-size:32px;color:var(--gold);text-align:center;line-height:1}
-  .distrow .dbar{height:12px;background:#15171f;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-  .distrow .dbar span{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));border-radius:8px}
+  .dist{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:0;
+    background:var(--surface);border:1px solid var(--line2);border-radius:18px;overflow:hidden;
+    position:relative}
+  /* vertical gradient bar — the visual anchor running top-to-bottom */
+  .dist::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,
+      #f0d99a 0%,   /* S — gold-bright */
+      #d4c496 18%,  /* A */
+      #b9923f 36%,  /* B */
+      #7e8393 54%,  /* C */
+      #5d6273 72%,  /* D */
+      #3a3d4a 100%  /* E */
+    );
+    border-radius:3px 0 0 3px
+  }
+  .distrow{display:grid;grid-template-columns:56px 1fr 110px;align-items:center;gap:16px;
+    padding:14px 20px;border-bottom:1px solid var(--line);transition:.15s}
+  .distrow:last-child{border-bottom:none}
+  .distrow:hover{background:rgba(255,255,255,.02)}
+  .distrow .dg{font-family:'Bebas Neue';font-size:36px;text-align:center;line-height:1;padding-left:8px}
+  /* grade-specific colours on the letter */
+  .distrow:nth-child(1) .dg{color:#f0d99a}
+  .distrow:nth-child(2) .dg{color:#d4c496}
+  .distrow:nth-child(3) .dg{color:#b9923f}
+  .distrow:nth-child(4) .dg{color:var(--dim)}
+  .distrow:nth-child(5) .dg{color:var(--faint)}
+  .distrow:nth-child(6) .dg{color:#3a3d4a;font-size:30px}
+  .distrow .dbar{height:10px;background:#0e0f15;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .distrow .dbar span{display:block;height:100%;border-radius:6px}
+  /* bar colours per tier */
+  .distrow:nth-child(1) .dbar span{background:linear-gradient(90deg,#b9923f,#f0d99a)}
+  .distrow:nth-child(2) .dbar span{background:linear-gradient(90deg,#8a6a26,#d4c496)}
+  .distrow:nth-child(3) .dbar span{background:linear-gradient(90deg,#6a4e1a,#b9923f)}
+  .distrow:nth-child(4) .dbar span{background:linear-gradient(90deg,#3a3d4a,#7e8393)}
+  .distrow:nth-child(5) .dbar span{background:linear-gradient(90deg,#2a2d3a,#5d6273)}
+  .distrow:nth-child(6) .dbar span{background:linear-gradient(90deg,#1a1c24,#3a3d4a)}
   .distrow .dp{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:.06em;text-align:right}
 
   .sec{padding:24px 0 80px}
@@ -260,36 +401,53 @@
   .vc-serial{font-family:'Spline Sans Mono',monospace;font-size:9px;color:var(--faint);letter-spacing:.08em}
   .vc-certified{font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--gold-deep);text-transform:uppercase}
 
-  /* blur state */
+  /* blur state — card pulses while gate is active */
   .vc.blurred .vc-inner{filter:blur(14px);user-select:none;pointer-events:none}
   .vc.blurred .vc-photo{filter:blur(5px)}
-
-  /* =====================================================
-     BLUR GATE — overlays the card until email submitted
-     ===================================================== */
-  .card.blurred .card-inner{filter:blur(15px);user-select:none;pointer-events:none}
-  .card.blurred .card-photo{filter:blur(6px)}
-  .card.blurred .card::before{display:none}
+  .vc.blurred{animation:cardBlurPulse 3s ease-in-out infinite}
+  @keyframes cardBlurPulse{
+    0%,100%{box-shadow:0 40px 80px -30px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.06)}
+    50%{box-shadow:0 40px 80px -30px rgba(0,0,0,.85),0 0 60px -10px rgba(212,196,150,.14),inset 0 1px 0 rgba(255,255,255,.06)}
+  }
 
   .gate-overlay{
     position:absolute;inset:0;z-index:20;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     padding:32px 26px;text-align:center;
-    background:rgba(8,9,12,.78);backdrop-filter:blur(10px);
+    background:rgba(8,9,12,.82);backdrop-filter:blur(12px);
     border-radius:20px;
     animation:fadeIn .3s ease both
   }
   .gate-grade-tease{
-    font-family:'Bebas Neue';font-size:96px;line-height:.9;
-    color:var(--gold);filter:blur(10px);opacity:.7;margin-bottom:14px;
-    pointer-events:none;user-select:none
+    font-family:'Bebas Neue';font-size:110px;line-height:.85;
+    color:var(--gold);filter:blur(12px);opacity:.6;margin-bottom:0;
+    pointer-events:none;user-select:none;
+    animation:gradePulse 2.4s ease-in-out infinite
   }
-  .gate-overlay h3{font-size:21px;font-weight:800;margin-bottom:8px;letter-spacing:-.01em}
-  .gate-overlay p{font-size:13.5px;color:var(--dim);line-height:1.5;max-width:26ch;margin-bottom:20px}
+  @keyframes gradePulse{
+    0%,100%{opacity:.45;filter:blur(14px);text-shadow:none}
+    50%{opacity:.9;filter:blur(6px);text-shadow:0 0 60px rgba(212,196,150,.7),0 0 20px rgba(212,196,150,.4)}
+  }
+  /* "grade ready" indicator pill */
+  .gate-ready-pill{
+    display:inline-flex;align-items:center;gap:7px;
+    background:rgba(212,196,150,.08);border:1px solid rgba(212,196,150,.2);
+    border-radius:20px;padding:6px 14px;margin-bottom:14px;
+    font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--gold)
+  }
+  .gate-ready-dot{
+    width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;
+    animation:dotPulse 1.4s ease-in-out infinite
+  }
+  @keyframes dotPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+  .gate-overlay h3{font-size:20px;font-weight:800;margin-bottom:8px;letter-spacing:-.01em}
+  .gate-overlay p{font-size:13.5px;color:var(--dim);line-height:1.5;max-width:28ch;margin-bottom:18px}
   .gate-input{
     width:100%;background:rgba(30,32,44,.85);border:1px solid var(--line2);border-radius:10px;
-    padding:13px 16px;font-family:'Sora';font-size:15px;color:var(--ink);
-    outline:none;transition:.18s;margin-bottom:10px
+    padding:14px 16px;font-family:'Sora';font-size:16px;color:var(--ink);
+    outline:none;transition:.18s;margin-bottom:10px;min-height:52px
   }
   .gate-input:focus{border-color:var(--gold);background:rgba(38,40,54,.9)}
   .gate-input::placeholder{color:var(--faint)}
@@ -298,8 +456,124 @@
   .gate-fine{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--faint);margin-top:8px;letter-spacing:.06em}
 
   /* =====================================================
-     UPSELL PANEL
+     SHARE MOMENT — immediate post-reveal card (item 21)
      ===================================================== */
+  .share-moment{
+    background:linear-gradient(155deg,#0f1a10,#09110a);
+    border:1px solid rgba(95,208,138,.2);border-radius:18px;
+    padding:22px 22px 20px;margin-bottom:12px;text-align:center;
+    animation:fadeIn .35s ease both
+  }
+  .share-moment .sm-eye{
+    font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:#5fd08a;margin-bottom:9px
+  }
+  .share-moment h3{font-size:17px;font-weight:800;letter-spacing:-.01em;margin-bottom:5px}
+  .share-moment p{font-size:12.5px;color:var(--dim);line-height:1.45;max-width:28ch;margin:0 auto 16px}
+  .share-moment .share-btn-big{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;background:#1a2e1c;border:1px solid rgba(95,208,138,.3);
+    color:#5fd08a;border-radius:12px;padding:14px;
+    font-family:'Sora';font-weight:700;font-size:14px;cursor:pointer;
+    transition:.18s;min-height:50px
+  }
+  .share-moment .share-btn-big:hover{background:#213524;border-color:#5fd08a;transform:translateY(-1px)}
+  .share-moment .share-btn-big svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+  .share-moment .sm-skip{
+    font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--faint);
+    cursor:pointer;margin-top:10px;display:block;transition:.12s
+  }
+  .share-moment .sm-skip:hover{color:var(--dim)}
+
+  /* =====================================================
+     POST-PURCHASE CONFIRMATION SCREEN (item 23)
+     ===================================================== */
+  .confirm-wrap{min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 0}
+  .confirm-card{
+    width:100%;max-width:460px;
+    background:linear-gradient(155deg,#14180f,#0a0d0b);
+    border:1px solid rgba(95,208,138,.25);border-radius:22px;
+    padding:40px 32px;text-align:center
+  }
+  .confirm-card::before{
+    content:'';display:block;width:56px;height:56px;border-radius:50%;
+    background:rgba(95,208,138,.1);border:1px solid rgba(95,208,138,.3);
+    margin:0 auto 20px;
+    display:flex;align-items:center;justify-content:center
+  }
+  .confirm-icon{
+    width:56px;height:56px;border-radius:50%;
+    background:rgba(95,208,138,.1);border:1px solid rgba(95,208,138,.3);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 20px
+  }
+  .confirm-icon svg{width:26px;height:26px;stroke:#5fd08a;stroke-width:2;fill:none}
+  .confirm-card h2{font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+  .confirm-card .confirm-sub{font-size:15px;color:var(--dim);line-height:1.55;max-width:30ch;margin:0 auto 28px}
+  .confirm-angles{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;text-align:left}
+  .confirm-angle-btn{
+    display:flex;align-items:center;gap:14px;
+    background:var(--surface);border:1px solid var(--line2);border-radius:13px;
+    padding:15px 18px;cursor:pointer;transition:.18s;width:100%
+  }
+  .confirm-angle-btn:hover{border-color:var(--gold-deep);background:var(--surface2)}
+  .confirm-angle-btn.done-angle{border-color:rgba(95,208,138,.25);background:#0e150f}
+  .confirm-angle-letter{
+    font-family:'Bebas Neue';font-size:28px;color:var(--gold);line-height:1;
+    width:28px;flex-shrink:0;text-align:center
+  }
+  .confirm-angle-btn.done-angle .confirm-angle-letter{color:#5fd08a}
+  .confirm-angle-info{flex:1;text-align:left}
+  .confirm-angle-name{font-size:14px;font-weight:600;color:var(--ink)}
+  .confirm-angle-desc{font-size:12px;color:var(--dim);margin-top:2px}
+  .confirm-angle-status{font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.1em;flex-shrink:0}
+  .confirm-angle-status.pending{color:var(--gold)}
+  .confirm-angle-status.done{color:#5fd08a}
+
+  /* =====================================================
+     PROGRESS PLACEHOLDER SCREEN (item 24)
+     ===================================================== */
+  .progress-wrap{min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
+  .progress-card{width:100%;max-width:460px}
+  .progress-lock-icon{
+    width:64px;height:64px;border-radius:50%;
+    background:linear-gradient(155deg,#1e1608,#110e05);
+    border:1px solid var(--gold-deep);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
+    box-shadow:0 0 30px -10px rgba(212,196,150,.2)
+  }
+  .progress-lock-icon svg{width:28px;height:28px;stroke:var(--gold);stroke-width:1.8;fill:none}
+  .progress-card .pr-eye{
+    font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold-deep);margin-bottom:10px
+  }
+  .progress-card h2{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px}
+  .progress-card .pr-sub{font-size:14px;color:var(--dim);line-height:1.6;max-width:34ch;margin:0 auto 28px}
+  /* fake chart preview */
+  .pr-chart-preview{
+    background:var(--surface);border:1px solid var(--line2);border-radius:16px;
+    padding:20px;margin-bottom:24px;position:relative;overflow:hidden
+  }
+  .pr-chart-preview::after{
+    content:'';position:absolute;inset:0;
+    background:rgba(8,9,12,.65);backdrop-filter:blur(5px);border-radius:16px
+  }
+  .pr-chart-label{
+    font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:14px;text-align:left
+  }
+  .pr-chart-bars{display:flex;align-items:flex-end;gap:8px;height:64px}
+  .pr-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--gold-deep),#5a3e1a);opacity:.5}
+  .pr-coming-badge{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold-deep));
+    color:#0c0d12;font-family:'Spline Sans Mono',monospace;font-size:10px;
+    letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+    border-radius:20px;padding:8px 18px;white-space:nowrap
+  }
+  .pr-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px;text-align:left;
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .pr-feats li{font-size:13.5px;color:var(--dim);display:flex;align-items:center;gap:10px}
+  .pr-feats li::before{content:'○';color:var(--faint);font-size:10px;flex-shrink:0}
   .upsell{
     background:linear-gradient(160deg,#1e1608,#0f0c14);
     border:1px solid #5a4520;border-radius:18px;padding:26px 22px;
@@ -336,25 +610,193 @@
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
   /* =====================================================
+     PRICING SECTION
+     ===================================================== */
+  .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:780px;margin:0 auto}
+
+  /* base card */
+  .pc{border-radius:20px;padding:36px 32px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+
+  /* left — one scan */
+  .pc-basic{
+    background:var(--surface);
+    border:1px solid var(--line2);
+  }
+
+  /* right — pro, visually dominant */
+  .pc-pro{
+    background:linear-gradient(155deg,#1a1608 0%,#110e05 55%,#15120a 100%);
+    border:1px solid var(--gold-deep);
+    box-shadow:0 0 0 1px rgba(212,196,150,.06),0 28px 60px -20px rgba(212,196,150,.18),0 0 80px -30px rgba(212,196,150,.08);
+    transform:scale(1.03);
+    transform-origin:center;
+  }
+  .pc-pro::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(115deg,transparent 30%,rgba(212,196,150,.05) 47%,rgba(212,196,150,.12) 50%,rgba(212,196,150,.05) 53%,transparent 70%);
+    background-size:250% 250%;animation:sweep 8s ease-in-out infinite;
+  }
+  .pc-pro::after{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent 0%,var(--gold-deep) 15%,var(--gold-bright) 50%,var(--gold-deep) 85%,transparent 100%);
+  }
+
+  .pc-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+    color:#0c0d12;background:var(--gold);
+    border-radius:20px;padding:5px 13px;
+    margin-bottom:22px;align-self:flex-start;font-weight:700;
+    position:relative;z-index:1;
+  }
+  .pc-badge-spacer{height:36px;margin-bottom:22px}
+
+  .pc-name{
+    font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--dim);margin-bottom:10px;position:relative;z-index:1;
+  }
+  .pc-price{
+    font-family:'Bebas Neue';font-size:64px;line-height:.9;
+    color:var(--gold);margin-bottom:4px;position:relative;z-index:1;
+  }
+  .pc-pro .pc-price{
+    background:linear-gradient(180deg,#fceabb,#d4c496 40%,#b9923f 80%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 2px 8px rgba(212,196,150,.3));
+  }
+  .pc-period{
+    font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--faint);
+    letter-spacing:.08em;margin-bottom:6px;position:relative;z-index:1;
+  }
+  .pc-anchor{
+    font-size:13px;color:var(--gold-deep);font-weight:600;
+    margin-bottom:24px;position:relative;z-index:1;font-style:italic;
+  }
+  .pc-basic .pc-anchor{visibility:hidden}
+
+  .pc-divider{height:1px;background:var(--line);margin-bottom:22px;position:relative;z-index:1}
+  .pc-pro .pc-divider{background:rgba(212,196,150,.15)}
+
+  .pc-feats{list-style:none;display:flex;flex-direction:column;gap:11px;flex:1;margin-bottom:28px;position:relative;z-index:1}
+  .pc-feats li{font-size:14px;color:var(--soft);display:flex;align-items:flex-start;gap:10px;line-height:1.35}
+  .pc-feats li::before{content:'✓';font-weight:700;flex-shrink:0;margin-top:1px}
+  .pc-basic .pc-feats li::before{color:var(--dim)}
+  .pc-pro .pc-feats li::before{color:var(--gold)}
+  .pc-feats li.pc-no{color:var(--faint)}
+  .pc-feats li.pc-no::before{content:'—';color:var(--faint)}
+
+  .pc-cta{
+    display:block;width:100%;text-align:center;
+    font-family:'Sora';font-weight:700;font-size:15px;
+    border-radius:12px;padding:15px;cursor:pointer;
+    transition:.18s;border:none;position:relative;z-index:1;
+  }
+  .pc-basic .pc-cta{background:transparent;border:1px solid var(--line2);color:var(--soft)}
+  .pc-basic .pc-cta:hover{border-color:var(--gold-deep);color:var(--gold)}
+  .pc-pro .pc-cta{
+    background:var(--gold);color:#0c0d12;
+    box-shadow:0 8px 24px -8px rgba(212,196,150,.45);
+    min-height:52px;font-size:16px;
+  }
+  .pc-pro .pc-cta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(212,196,150,.55)}
+
+  /* =====================================================
+     FAQ SECTION
+     ===================================================== */
+  .faq{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+  .faq-item{border-bottom:1px solid var(--line);padding:22px 0}
+  .faq-item:first-child{border-top:1px solid var(--line)}
+  .faq-q{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:9px;letter-spacing:-.01em}
+  .faq-a{font-size:14px;color:var(--dim);line-height:1.6;max-width:54ch}
+
+  /* ── PRICING CARD SCROLL-REVEAL ─────────────────────── */
+  .pc{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .55s cubic-bezier(.2,.8,.2,1), transform .55s cubic-bezier(.2,.8,.2,1);
+  }
+  .pc.in-view{opacity:1;transform:translateY(0)}
+  /* pro card slightly delayed so they stagger */
+  .pc-pro.in-view{transition-delay:.1s}
+  /* override: when JS is disabled or scroll API unavailable, show immediately */
+  @media(prefers-reduced-motion:reduce){
+    .pc{opacity:1;transform:none;transition:none}
+  }
+
+  /* item 28 — sample card entrance animation */
+  #sampleCard{
+    animation:cardEntrance 1s cubic-bezier(.18,.85,.22,1) .6s both
+  }
+  @keyframes cardEntrance{
+    from{opacity:0;transform:translateY(22px) scale(.97)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+  }
+
+  /* =====================================================
      RESPONSIVE
      ===================================================== */
   @media (max-width:860px){
     .nav{padding:14px 20px}.nav .links{gap:16px}.nav .links a:not(.navcta){display:none}
     .wrap{padding:0 20px}
-    .hero{grid-template-columns:1fr;gap:36px;padding:48px 0 40px;text-align:center}
-    .hero-l p{margin-left:auto;margin-right:auto}.hero-actions{justify-content:center}
+    /* item 27 — hero breathing room on mobile */
+    .hero{grid-template-columns:1fr;gap:32px;padding:52px 0 44px;text-align:center}
+    .hero-l .eyebrow{margin-bottom:16px}
+    .hero-l h1{margin-bottom:20px;font-size:clamp(36px,10vw,52px)}
+    .hero-l p{margin-left:auto;margin-right:auto;margin-bottom:28px;font-size:16px}
+    .hero-actions{justify-content:center;flex-direction:column;align-items:stretch;gap:12px}
+    .hero-secondary-cta{text-align:center}
+    /* item 25 — full-width CTA under 860px */
+    .bigcta{width:100%;min-height:56px;font-size:17px;border-radius:14px}
     .views{grid-template-columns:1fr 1fr;gap:12px;max-width:none}
     .vtile{padding:18px 16px}.vtile .ic{font-size:34px}
     .how{grid-template-columns:1fr;gap:14px}
+    .how-strip{grid-template-columns:1fr;border-radius:14px;margin-bottom:32px}
+    .how-strip-step+.how-strip-step::before{left:20%;top:0;height:1px;width:60%;background:var(--line2)}
+    .how-strip-step{padding:18px 20px}
     .cred{grid-template-columns:1fr 1fr}
-    .distrow{grid-template-columns:32px 1fr 84px;gap:10px}
+    .pricing-grid{grid-template-columns:1fr;max-width:420px}
+    .pc-pro{transform:none}
+    .pc{padding:28px 24px}
+    /* item 26 — dist responsive */
+    .distrow{grid-template-columns:48px 1fr 88px;gap:10px;padding:12px 16px}
     .sec{padding:16px 0 56px}.sec-head h2{font-size:26px}
     .grade{font-size:120px}
   }
-  @media (max-width:480px){.views{grid-template-columns:1fr 1fr}}
+  /* item 25 — 480px: ensure full-width and thumb-friendly */
+  @media (max-width:480px){
+    .views{grid-template-columns:1fr 1fr}
+    .bigcta{width:100%;min-height:58px;font-size:17px;padding:16px 20px}
+    /* item 27 — tightest mobile hero */
+    .hero{padding:40px 0 36px;gap:28px}
+    .hero-l h1{font-size:clamp(34px,11vw,48px);line-height:1.0}
+    .hero-l p{font-size:15px;margin-bottom:24px}
+    .hero-actions{gap:10px}
+    .hero-note{font-size:11px}
+    .sec-head h2{font-size:22px}
+    .cred-item .cn{font-size:34px}
+    .cred-item .cl{font-size:9px}
+  }
+  /* 375px — smallest common viewport, how-strip audit */
+  @media (max-width:375px){
+    .wrap{padding:0 16px}
+    .how-strip{border-radius:12px;margin-bottom:24px}
+    .how-strip-step{padding:16px 16px;gap:12px}
+    .how-strip-num{font-size:30px}
+    .how-strip-title{font-size:13px}
+    .how-strip-desc{font-size:12px}
+    /* pricing at 375 — collapse any lingering scale */
+    .pc{padding:24px 18px}
+    .pc-price{font-size:52px}
+    .pc-feats li{font-size:13px}
+    .pc-cta{font-size:14px}
+    /* nav brand stays readable */
+    .nav .brand{font-size:14px;letter-spacing:.22em}
+  }
 </style>
 </head>
 <body>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="spotlight" aria-hidden="true"></div>
   <input type="file" id="filein" accept="image/*" style="display:none">
   <div class="toast" id="toast"></div>
 
@@ -363,7 +805,9 @@
     <div class="links">
       <a onclick="show('screen-home');document.getElementById('scanSection').scrollIntoView()">Scan</a>
       <a onclick="show('screen-home');document.getElementById('howSection').scrollIntoView()">How it works</a>
+      <a onclick="show('screen-home');setTimeout(()=>document.getElementById('pricingSection').scrollIntoView({behavior:'smooth'}),50)">Pricing</a>
       <a id="nav-overall" onclick="showOverall()">My grade</a>
+      <a onclick="show('screen-progress')">Progress</a>
       <a class="navcta" onclick="show('screen-home');document.getElementById('scanSection').scrollIntoView()">Get graded</a>
     </div>
   </nav>
@@ -373,12 +817,33 @@
     <div class="wrap">
       <div class="hero">
         <div class="hero-l">
-          <div class="eyebrow r" style="animation-delay:.05s">No participation trophies · AI physique grading</div>
+          <div class="eyebrow r" style="animation-delay:.05s">AI Physique Grading · No Flattery</div>
+          <!-- A/B HEADLINE TEST:
+               Variant A (current): "Most lifters are C-tier. Where are you?"
+               Variant B (test):    "The AI physique grader that doesn't lie."
+               To switch, replace the h1 text below with Variant B. -->
           <h1 class="r" style="animation-delay:.15s">Most lifters<br>are <b>C-tier</b>.<br>Where are you?</h1>
-          <p class="r" style="animation-delay:.28s">PHYSIQ grades your physique against real lifters — zero inflation, zero ego protection. Upload a photo and find out where you actually stand. Most people won't like the answer.</p>
+          <p class="r" style="animation-delay:.28s">Upload a photo.<br>Find out where you actually stand.<br>No flattery.</p>
           <div class="hero-actions r" style="animation-delay:.4s">
             <button class="bigcta" onclick="document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get my real grade →</button>
-            <span class="hero-note">adults only · free first scan · can you handle it</span>
+            <a class="hero-secondary-cta" onclick="document.getElementById('howStrip').scrollIntoView({behavior:'smooth'})">See how it works ↓</a>
+            <span class="hero-note">Free first scan · Just your email to reveal · Results in seconds</span>
+          </div>
+          <div class="trust-bar r" style="animation-delay:.52s" aria-label="Trust signals">
+            <span class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              Graded by Claude AI
+            </span>
+            <span class="trust-sep">·</span>
+            <span class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Results in seconds
+            </span>
+            <span class="trust-sep">·</span>
+            <span class="trust-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              No credit card
+            </span>
           </div>
         </div>
         <div class="hero-r r" style="animation-delay:.5s">
@@ -419,7 +884,7 @@
                   <span class="vc-muscle-val">84</span>
                 </div>
                 <div class="vc-footer">
-                  <span class="vc-serial">PQ-SMPL-2025</span>
+                  <span class="vc-serial">PQ-SMPL-2026</span>
                   <span class="vc-certified">PHYSIQ AI Graded</span>
                 </div>
               </div>
@@ -429,6 +894,31 @@
       </div>
 
       <div class="setup" id="setupNote" style="display:none"></div>
+
+      <!-- HOW IT WORKS STRIP — immediately below hero -->
+      <div class="how-strip r" id="howStrip" style="animation-delay:.55s">
+        <div class="how-strip-step">
+          <div class="how-strip-num">01</div>
+          <div class="how-strip-body">
+            <div class="how-strip-title">Upload a photo</div>
+            <div class="how-strip-desc">Any angle — front, back, legs, or arms. One photo to start.</div>
+          </div>
+        </div>
+        <div class="how-strip-step">
+          <div class="how-strip-num">02</div>
+          <div class="how-strip-body">
+            <div class="how-strip-title">AI grades your physique</div>
+            <div class="how-strip-desc">Calibrated against real lifters globally. No flattery. No inflation.</div>
+          </div>
+        </div>
+        <div class="how-strip-step">
+          <div class="how-strip-num">03</div>
+          <div class="how-strip-body">
+            <div class="how-strip-title">See your score & breakdown</div>
+            <div class="how-strip-desc">Grade, percentile, and a muscle-by-muscle breakdown in seconds.</div>
+          </div>
+        </div>
+      </div>
 
       <div class="cred">
         <div class="cred-item"><div class="cn">10</div><div class="cl">muscle groups read</div></div>
@@ -455,7 +945,7 @@
 
       <section class="sec" id="howSection">
         <div class="sec-head">
-          <div class="eyebrow">Why it hits different</div>
+          <div class="eyebrow">How it works</div>
           <h2>Built to be honest.<br>Not to make you feel good.</h2>
           <p>Every other physique app inflates your score so you share it. PHYSIQ does the opposite.</p>
         </div>
@@ -463,17 +953,17 @@
           <div class="step">
             <div class="n">01</div>
             <h3>Zero inflation. Zero ego.</h3>
-            <p>Graded against people who actually compete. A C grade means you train — it doesn't mean you're impressive. Most people land here and that's the honest truth.</p>
+            <p>A C grade means you train. It doesn't mean you're impressive.</p>
           </div>
           <div class="step">
             <div class="n">02</div>
             <h3>Can't see it, won't score it.</h3>
-            <p>No back photo? Grade capped. PHYSIQ won't pretend to assess what it can't actually see. No flattery, no guesses.</p>
+            <p>No back photo? Grade capped. PHYSIQ won't score what it can't see.</p>
           </div>
           <div class="step">
             <div class="n">03</div>
             <h3>Nowhere to hide.</h3>
-            <p>Every angle fills in your real profile. You can't skip legs and claim a full grade. The weak points show up — because that's the point.</p>
+            <p>Skip legs and your grade shows it. The weak points don't hide — that's the point.</p>
           </div>
         </div>
       </section>
@@ -491,6 +981,77 @@
           <div class="distrow"><span class="dg">C</span><div class="dbar"><span style="width:88%"></span></div><span class="dp">most lifters · average</span></div>
           <div class="distrow"><span class="dg">D</span><div class="dbar"><span style="width:44%"></span></div><span class="dp">early stage</span></div>
           <div class="distrow"><span class="dg">E</span><div class="dbar"><span style="width:18%"></span></div><span class="dp">just starting</span></div>
+        </div>
+      </section>
+
+      <!-- PRICING -->
+      <section class="sec" id="pricingSection">
+        <div class="sec-head">
+          <div class="eyebrow">Pricing</div>
+          <h2>Simple. No tricks.</h2>
+          <p>One free scan to find out where you stand. Pro to track where you're going.</p>
+        </div>
+        <div class="pricing-grid">
+
+          <!-- LEFT — One Scan -->
+          <div class="pc pc-basic">
+            <div class="pc-badge-spacer"></div>
+            <div class="pc-name">One Scan</div>
+            <div class="pc-price">£5.99</div>
+            <div class="pc-period">one-time</div>
+            <div class="pc-anchor">&nbsp;</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-feats">
+              <li>One angle graded</li>
+              <li>Full muscle breakdown</li>
+              <li class="pc-no">No scan history</li>
+              <li class="pc-no">No progress tracking</li>
+              <li class="pc-no">No monthly comparisons</li>
+            </ul>
+            <button class="pc-cta" onclick="document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get one scan</button>
+          </div>
+
+          <!-- RIGHT — Pro -->
+          <div class="pc pc-pro">
+            <div class="pc-badge">★ Most Popular</div>
+            <div class="pc-name">PHYSIQ Pro</div>
+            <div class="pc-price">£9.99</div>
+            <div class="pc-period">per month</div>
+            <div class="pc-anchor">Less than a protein bar per week.</div>
+            <div class="pc-anchor" style="font-size:12px;opacity:.7;margin-top:-18px">£0.33 / day</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-feats">
+              <li>Unlimited scans</li>
+              <li>All 4 angles graded</li>
+              <li>Monthly progress tracking</li>
+              <li>Score history &amp; trends</li>
+              <li>Full muscle-by-muscle breakdown</li>
+            </ul>
+            <button class="pc-cta" onclick="handlePurchase()">Start tracking progress</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="sec" id="faqSection" style="padding-top:0">
+        <div class="sec-head">
+          <div class="eyebrow">Questions</div>
+          <h2>Plain answers.</h2>
+        </div>
+        <div class="faq">
+          <div class="faq-item">
+            <div class="faq-q">Is the free scan really free?</div>
+            <div class="faq-a">Yes. One angle, fully graded, no card required. Just an email to reveal your result.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I cancel anytime?</div>
+            <div class="faq-a">Yes. No contracts, no questions.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">How accurate is the grading?</div>
+            <div class="faq-a">It uses Claude AI vision to assess visible muscle development against competitive standards. It's honest, not flattering.</div>
+          </div>
         </div>
       </section>
     </div>
@@ -521,7 +1082,59 @@
     </div></div></div>
   </section>
 
-  <footer>PHYSIQ · adults only · training feedback, not medical advice</footer>
+  <!-- POST-PURCHASE CONFIRMATION (item 23) -->
+  <section class="screen" id="screen-confirm">
+    <div class="wrap"><div class="confirm-wrap"><div class="confirm-card" id="confirmBody">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>You're in.</h2>
+      <p class="confirm-sub">Scan your remaining angles to complete your PHYSIQ profile.</p>
+      <div class="confirm-angles" id="confirmAngles"></div>
+      <button class="btn ghost" style="margin-top:4px" onclick="show('screen-home')">← Back to home</button>
+    </div></div></div>
+  </section>
+
+  <!-- PROGRESS PLACEHOLDER (item 24) -->
+  <section class="screen" id="screen-progress">
+    <div class="wrap"><div class="progress-wrap"><div class="progress-card">
+      <div class="progress-lock-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="pr-eye">Coming soon</div>
+      <h2>Track your progress<br>month by month.</h2>
+      <p class="pr-sub">Monthly score tracking, full scan history, and improvement reports. Available with PHYSIQ Pro.</p>
+      <div class="pr-chart-preview">
+        <div class="pr-chart-label">Score over time</div>
+        <div class="pr-chart-bars">
+          <div class="pr-bar" style="height:38%"></div>
+          <div class="pr-bar" style="height:52%"></div>
+          <div class="pr-bar" style="height:47%"></div>
+          <div class="pr-bar" style="height:61%"></div>
+          <div class="pr-bar" style="height:58%"></div>
+          <div class="pr-bar" style="height:74%"></div>
+        </div>
+        <div class="pr-coming-badge">Coming with Pro</div>
+      </div>
+      <ul class="pr-feats">
+        <li>Monthly progress scores</li>
+        <li>Scan history across all angles</li>
+        <li>Muscle-by-muscle improvement reports</li>
+        <li>Grade trend over time</li>
+      </ul>
+      <button class="btn gold-btn" onclick="handlePurchase()">Get PHYSIQ Pro →</button>
+      <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
+    </div></div></div>
+  </section>
+
+  <footer>
+    <div>© 2026 PHYSIQ · AI physique grading, not medical advice · Adults only</div>
+    <div style="margin-top:6px">
+      <a onclick="show('screen-home');document.getElementById('howSection').scrollIntoView({behavior:'smooth'})" style="color:inherit;text-decoration:none;cursor:pointer;margin:0 10px">How it works</a>·
+      <a onclick="show('screen-home');setTimeout(()=>document.getElementById('pricingSection').scrollIntoView({behavior:'smooth'}),50)" style="color:inherit;text-decoration:none;cursor:pointer;margin:0 10px">Pricing</a>·
+      <a onclick="show('screen-home');setTimeout(()=>document.getElementById('faqSection').scrollIntoView({behavior:'smooth'}),50)" style="color:inherit;text-decoration:none;cursor:pointer;margin:0 10px">FAQ</a>
+    </div>
+  </footer>
 
 <script>
 // ============================================================
@@ -595,7 +1208,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(new URLSearchParams(location.search).get('paid')==='true'){
     hasPaid=true; saveState();
     history.replaceState({},'',location.pathname);
-    showToast('🔓 Full body scan unlocked!');
+    showConfirmScreen();
   }
 
   if(!WORKER_URL){
@@ -737,14 +1350,15 @@ function renderViewResult(view,data,photoURL){
   const o=computeOverall();
   const tease=o?o.grade:(viewGrade!=='—'?viewGrade:'?');
 
-  // Gate overlay
+  // Gate overlay — rewritten copy + urgency indicator (items 19 & 20)
   const gateHTML=hasAccount?'':
     '<div class="gate-overlay" id="gateDiv">'+
       '<div class="gate-grade-tease">'+tease+'</div>'+
-      '<h3>Your grade is ready</h3>'+
-      '<p>Free account to reveal it — no password needed.</p>'+
-      '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email">'+
-      '<button class="btn" onclick="submitGate()">Reveal my grade →</button>'+
+      '<div class="gate-ready-pill"><div class="gate-ready-dot"></div>Grade ready</div>'+
+      '<h3>Your grade is ready.</h3>'+
+      '<p>Enter your email to reveal it — takes 2 seconds.</p>'+
+      '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email" inputmode="email">'+
+      '<button class="btn" onclick="submitGate()">Show me my grade →</button>'+
       '<div class="gate-fine">No spam · unsubscribe any time</div>'+
     '</div>';
 
@@ -786,8 +1400,9 @@ function renderViewResult(view,data,photoURL){
   } else {
     btn.style.display='block';
     configurePrimaryBtn(o);
+    // Share moment first, then upsell
+    injectShareMoment(viewGrade, viewAvg||0);
     if(!hasPaid) injectUpsell();
-    injectShareBtn(viewGrade, viewAvg||0);
   }
 }
 
@@ -834,14 +1449,18 @@ function submitGate(){
   const gate=document.getElementById('gateDiv');
   if(gate) gate.remove();
 
-  // Show primary button, upsell, share
+  // Show primary button
   const o=computeOverall();
   configurePrimaryBtn(o);
-  injectUpsell();
-  injectShareBtn(o?o.grade:'?', o?o.capScore:0);
-  refreshHome(); // update tile lock states
 
-  showToast('Welcome to PHYSIQ — your grade is revealed.');
+  // Item 21 — share moment FIRST, before upsell
+  injectShareMoment(o?o.grade:(document.querySelector('.vc-grade-letter')||{}).textContent||'?', o?o.capScore:0);
+
+  // Upsell below the share moment
+  if(!hasPaid) injectUpsell();
+
+  refreshHome();
+  showToast('Grade revealed. Share it while it\u2019s fresh.');
 }
 
 // ============================================================
@@ -862,33 +1481,54 @@ function showPaywall(){
 }
 
 // ============================================================
-//  UPSELL PANEL
+//  SHARE MOMENT — injected immediately after reveal (item 21)
+// ============================================================
+function injectShareMoment(grade, score){
+  const old=document.getElementById('shareMoment'); if(old) old.remove();
+  const div=document.createElement('div');
+  div.id='shareMoment';
+  div.className='share-moment';
+  div.innerHTML=
+    '<div class="sm-eye">Your result is in</div>'+
+    '<h3>Share your grade</h3>'+
+    '<p>People share in the moment. Don\'t lose the window.</p>'+
+    '<button class="share-btn-big" onclick="shareGrade(\''+grade+'\','+score+',true)">'+
+      '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>'+
+      'Share my '+grade+' grade →'+
+    '</button>'+
+    '<span class="sm-skip" onclick="this.closest(\'.share-moment\').remove()">Maybe later</span>';
+  const ref=document.getElementById('resPrimary');
+  if(ref) ref.parentNode.insertBefore(div,ref);
+}
+
+// ============================================================
+//  UPSELL PANEL (item 22 — rewritten outcome-led copy)
 // ============================================================
 function injectUpsell(paywallMode){
   // Remove existing
   const old=document.getElementById('upsellPanel'); if(old) old.remove();
 
-  const title  = paywallMode ? 'Unlock the full body scan' : 'Want your real grade?';
-  const sub    = paywallMode
-    ? 'Scan all 4 angles, get your true uncapped overall grade.'
-    : 'One view tells part of the story. Scan all 4 to get the grade you actually deserve.';
+  const title  = paywallMode
+    ? 'You\'ve seen one angle. Your real grade needs all four.'
+    : 'You\'ve seen one angle. Your real grade needs all four.';
+  const sub    = 'Most people score significantly different across angles. Legs are usually the weak point nobody wants to see.';
 
   const div=document.createElement('div');
   div.id='upsellPanel';
   div.className='upsell';
   div.innerHTML=
-    '<div class="us-eye">Upgrade</div>'+
+    '<div class="us-eye">One view isn\'t the full picture</div>'+
     '<h3>'+title+'</h3>'+
     '<p class="us-p">'+sub+'</p>'+
     '<ul class="upsell-feats">'+
-      '<li>All 4 views: Front, Back, Legs, Arms</li>'+
+      '<li>All 4 views graded: Front, Back, Legs, Arms</li>'+
       '<li>Uncapped overall grade</li>'+
       '<li>Full muscle-by-muscle breakdown</li>'+
       '<li>Conditioning &amp; body fat read</li>'+
     '</ul>'+
     '<div class="upsell-price">'+UNLOCK_PRICE+'</div>'+
     '<div class="upsell-price-sub">ONE-TIME · YOURS FOREVER</div>'+
-    '<button class="btn gold-btn" onclick="handlePurchase()">Unlock full body scan →</button>'+
+    '<button class="btn gold-btn" onclick="handlePurchase()">See my real grade →</button>'+
     '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">Not now</button>';
 
   // Insert before resPrimary
@@ -897,7 +1537,7 @@ function injectUpsell(paywallMode){
 }
 
 // ============================================================
-//  PURCHASE HANDLER
+//  PURCHASE HANDLER (item 23 — confirmation screen)
 // ============================================================
 function handlePurchase(){
   if(PAYMENT_LINK){
@@ -907,21 +1547,28 @@ function handlePurchase(){
   }
 
   // ---- DEV / TESTING: no Stripe link set — auto-unlock ----
-  // TODO: Remove this block in production and set PAYMENT_LINK above
   hasPaid=true;
   saveState();
-  const panel=document.getElementById('upsellPanel');
-  if(panel){
-    panel.innerHTML=
-      '<div style="text-align:center;padding:8px 0">'+
-        '<div style="font-family:Bebas Neue;font-size:32px;color:var(--gold);margin-bottom:8px">All views unlocked 🔓</div>'+
-        '<div style="color:var(--dim);font-size:13px">Scan your remaining angles to complete your profile.</div>'+
-      '</div>';
-  }
-  const btn=document.getElementById('resPrimary');
-  if(btn){btn.style.display='block';btn.textContent='← Back to scans';btn.onclick=()=>show('screen-home');}
+  showConfirmScreen();
+}
+
+function showConfirmScreen(){
+  // Build angle buttons — done ones marked, pending ones clickable
+  const anglesHTML=VIEWS.map(v=>{
+    const done=!!viewsDone[v.id];
+    return '<button class="confirm-angle-btn'+(done?' done-angle':'')+'" '+
+      (done?'disabled':('onclick="show(\'screen-home\');setTimeout(()=>pick(\''+v.id+'\'),120)"'))+'>'+
+      '<span class="confirm-angle-letter">'+v.letter+'</span>'+
+      '<span class="confirm-angle-info">'+
+        '<span class="confirm-angle-name">'+v.t+'</span>'+
+        '<span class="confirm-angle-desc">'+v.d+'</span>'+
+      '</span>'+
+      '<span class="confirm-angle-status '+(done?'done':'pending')+'">'+(done?'✓ done':'Scan →')+'</span>'+
+    '</button>';
+  }).join('');
+  document.getElementById('confirmAngles').innerHTML=anglesHTML;
   refreshHome();
-  showToast('Full body scan unlocked!');
+  show('screen-confirm');
 }
 
 // ============================================================
@@ -941,13 +1588,18 @@ function injectShareBtn(grade, score){
   if(ref) ref.parentNode.insertBefore(row,ref);
 }
 
-function shareGrade(grade, score){
+function shareGrade(grade, score, fromMoment){
   const text='I just scored '+grade+' ('+score+'/100) on PHYSIQ — the AI physique grader that doesn\'t lie. Find out yours: '+location.href;
   if(navigator.share){
-    navigator.share({title:'My PHYSIQ Grade',text,url:location.href}).catch(()=>{});
+    navigator.share({title:'My PHYSIQ Grade',text,url:location.href})
+      .then(()=>{ if(fromMoment){ const m=document.getElementById('shareMoment'); if(m) m.remove(); }})
+      .catch(()=>{});
   } else {
     navigator.clipboard.writeText(text)
-      .then(()=>showToast('Copied to clipboard!'))
+      .then(()=>{
+        showToast('Copied to clipboard!');
+        if(fromMoment){ setTimeout(()=>{ const m=document.getElementById('shareMoment'); if(m) m.remove(); },1200); }
+      })
       .catch(()=>showToast('Share: '+location.href));
   }
 }
@@ -1087,6 +1739,27 @@ function makeCardId(){
 }
 
 function cap(s){return s[0].toUpperCase()+s.slice(1);}
+
+// ============================================================
+//  PRICING CARD SCROLL-REVEAL
+// ============================================================
+(function(){
+  if(!('IntersectionObserver' in window)) {
+    // Fallback — just show everything immediately
+    document.querySelectorAll('.pc').forEach(el=>el.classList.add('in-view'));
+    return;
+  }
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in-view');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.15});
+  // Observe on DOMContentLoaded (elements already in DOM)
+  document.querySelectorAll('.pc').forEach(el=>io.observe(el));
+})();
 </script>
 </body>
 </html>
