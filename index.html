@@ -540,7 +540,7 @@ const VIEWS=[
   {id:"legs",   letter:"L",t:"Legs",      d:"quads · hams · glutes · calves"},
   {id:"arms_side",letter:"A",t:"Arms / Side",d:"arms · side delts (best arm read)"}
 ];
-const MUSCLES=["shoulders","chest","arms","back","traps","quads","hamstrings","glutes","calves","conditioning"];
+const MUSCLES=["shoulders","chest","arms","abs","back","traps","quads","hamstrings","glutes","calves","conditioning"];
 const CONF_RANK={high:3,medium:2,low:1};
 
 // ---- state ----
@@ -1074,9 +1074,10 @@ function showToast(msg){
 
 // Percentile from score — the flex number on the card
 function scoreToPct(s){
-  if(s>=92)return'TOP 1%';if(s>=85)return'TOP 5%';if(s>=78)return'TOP 10%';
-  if(s>=70)return'TOP 18%';if(s>=63)return'TOP 28%';if(s>=55)return'TOP 42%';
-  if(s>=40)return'TOP 58%';if(s>=28)return'TOP 75%';return'TOP 90%';
+  if(s>=95)return'TOP 0.1%';if(s>=90)return'TOP 0.5%';if(s>=85)return'TOP 1%';
+  if(s>=78)return'TOP 5%';if(s>=70)return'TOP 10%';if(s>=63)return'TOP 20%';
+  if(s>=55)return'TOP 35%';if(s>=40)return'TOP 55%';if(s>=28)return'TOP 75%';
+  return'TOP 90%';
 }
 // Unique card ID for the serial number — authenticity feel
 function makeCardId(){
