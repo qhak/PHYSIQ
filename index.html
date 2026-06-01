@@ -528,7 +528,7 @@
 //  CONFIG — swap these two values and the app is fully live
 // ============================================================
 const WORKER_URL   = "https://physiqworker.nichodrew1.workers.dev";
-const EMAIL_ENDPOINT = "";   // POST {email, source} here (Beehiiv/Kit/etc webhook)
+const EMAIL_ENDPOINT = WORKER_URL; // emails go to the same worker via action:"subscribe"
 const PAYMENT_LINK   = "https://buy.stripe.com/6oU5kF5Ac2nh63b3X3b3q00";   // Your Stripe payment link — e.g. https://buy.stripe.com/xxx
                              // Stripe success URL should be: yourdomain.com?paid=true
 const UNLOCK_PRICE   = "$7.99"; // shown in upsell — change when you update Stripe
@@ -823,7 +823,7 @@ function submitGate(){
   // Fire to email list endpoint (non-blocking — failure is silent)
   if(EMAIL_ENDPOINT){
     fetch(EMAIL_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email,source:'physiq-scan-gate'})}).catch(()=>{});
+      body:JSON.stringify({action:'subscribe',email})}).catch(()=>{});
   }
 
   // Unblur card
