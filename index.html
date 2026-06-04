@@ -612,24 +612,28 @@
   /* =====================================================
      PRICING SECTION
      ===================================================== */
-  .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:780px;margin:0 auto}
+  .pricing-free-line{
+    text-align:center;margin-bottom:20px;
+    font-family:'Spline Sans Mono',monospace;font-size:12px;
+    color:var(--faint);letter-spacing:.08em;
+  }
+
+  .pricing-grid{display:grid;grid-template-columns:1fr 1.06fr 1fr;gap:18px;max-width:960px;margin:0 auto;align-items:stretch}
 
   /* base card */
   .pc{border-radius:20px;padding:36px 32px;display:flex;flex-direction:column;position:relative;overflow:hidden}
 
-  /* left — one scan */
+  /* entry card — £5.99 one-time, ghost/subtle */
   .pc-basic{
     background:var(--surface);
     border:1px solid var(--line2);
   }
 
-  /* right — pro, visually dominant */
+  /* middle card — £9.99/month Pro, visually dominant */
   .pc-pro{
     background:linear-gradient(155deg,#1a1608 0%,#110e05 55%,#15120a 100%);
     border:1px solid var(--gold-deep);
     box-shadow:0 0 0 1px rgba(212,196,150,.06),0 28px 60px -20px rgba(212,196,150,.18),0 0 80px -30px rgba(212,196,150,.08);
-    transform:scale(1.03);
-    transform-origin:center;
   }
   .pc-pro::before{
     content:'';position:absolute;inset:0;pointer-events:none;
@@ -641,6 +645,17 @@
     background:linear-gradient(90deg,transparent 0%,var(--gold-deep) 15%,var(--gold-bright) 50%,var(--gold-deep) 85%,transparent 100%);
   }
 
+  /* right card — £29.99 lifetime, gold border, distinct */
+  .pc-lifetime{
+    background:linear-gradient(155deg,#16130a 0%,#0e0c07 55%,#121008 100%);
+    border:1px solid var(--gold);
+    box-shadow:0 0 0 1px rgba(212,196,150,.1),0 20px 48px -18px rgba(212,196,150,.12);
+  }
+  .pc-lifetime::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent 0%,var(--gold) 30%,var(--gold-bright) 50%,var(--gold) 70%,transparent 100%);
+  }
+
   .pc-badge{
     display:inline-flex;align-items:center;gap:6px;
     font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
@@ -648,6 +663,11 @@
     border-radius:20px;padding:5px 13px;
     margin-bottom:22px;align-self:flex-start;font-weight:700;
     position:relative;z-index:1;
+  }
+  /* "Best Value" badge on lifetime — slightly different tint */
+  .pc-lifetime .pc-badge{
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    color:#0a0800;
   }
   .pc-badge-spacer{height:36px;margin-bottom:22px}
 
@@ -660,28 +680,36 @@
     color:var(--gold);margin-bottom:4px;position:relative;z-index:1;
   }
   .pc-pro .pc-price{
+    font-size:76px;
     background:linear-gradient(180deg,#fceabb,#d4c496 40%,#b9923f 80%);
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
     filter:drop-shadow(0 2px 8px rgba(212,196,150,.3));
+  }
+  .pc-lifetime .pc-price{
+    background:linear-gradient(180deg,#fceabb,#d4c496 40%,#b9923f 80%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   }
   .pc-period{
     font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--faint);
     letter-spacing:.08em;margin-bottom:6px;position:relative;z-index:1;
   }
   .pc-anchor{
-    font-size:13px;color:var(--gold-deep);font-weight:600;
+    font-size:12px;color:var(--gold-deep);font-weight:600;
     margin-bottom:24px;position:relative;z-index:1;font-style:italic;
+    min-height:18px;
   }
   .pc-basic .pc-anchor{visibility:hidden}
 
   .pc-divider{height:1px;background:var(--line);margin-bottom:22px;position:relative;z-index:1}
   .pc-pro .pc-divider{background:rgba(212,196,150,.15)}
+  .pc-lifetime .pc-divider{background:rgba(212,196,150,.12)}
 
   .pc-feats{list-style:none;display:flex;flex-direction:column;gap:11px;flex:1;margin-bottom:28px;position:relative;z-index:1}
   .pc-feats li{font-size:14px;color:var(--soft);display:flex;align-items:flex-start;gap:10px;line-height:1.35}
   .pc-feats li::before{content:'✓';font-weight:700;flex-shrink:0;margin-top:1px}
   .pc-basic .pc-feats li::before{color:var(--dim)}
   .pc-pro .pc-feats li::before{color:var(--gold)}
+  .pc-lifetime .pc-feats li::before{color:var(--gold-bright)}
   .pc-feats li.pc-no{color:var(--faint)}
   .pc-feats li.pc-no::before{content:'—';color:var(--faint)}
 
@@ -699,6 +727,12 @@
     min-height:52px;font-size:16px;
   }
   .pc-pro .pc-cta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(212,196,150,.55)}
+  .pc-lifetime .pc-cta{
+    background:linear-gradient(135deg,#2a2010,#1e1808);
+    border:1px solid var(--gold);color:var(--gold);
+    min-height:48px;
+  }
+  .pc-lifetime .pc-cta:hover{background:linear-gradient(135deg,#352a14,#26200c);color:var(--gold-bright);border-color:var(--gold-bright);transform:translateY(-1px)}
 
   /* =====================================================
      FAQ SECTION
@@ -718,6 +752,7 @@
   .pc.in-view{opacity:1;transform:translateY(0)}
   /* pro card slightly delayed so they stagger */
   .pc-pro.in-view{transition-delay:.1s}
+  .pc-lifetime.in-view{transition-delay:.2s}
   /* override: when JS is disabled or scroll API unavailable, show immediately */
   @media(prefers-reduced-motion:reduce){
     .pc{opacity:1;transform:none;transition:none}
@@ -725,7 +760,13 @@
 
   /* item 28 — sample card entrance animation */
   #sampleCard{
-    animation:cardEntrance 1s cubic-bezier(.18,.85,.22,1) .6s both
+    animation:cardEntrance .7s cubic-bezier(.18,.85,.22,1) .15s both;
+    display:block !important;
+  }
+  #sampleCard .vc-grade-letter{
+    background:none;
+    -webkit-text-fill-color:var(--dim);
+    filter:none;
   }
   @keyframes cardEntrance{
     from{opacity:0;transform:translateY(22px) scale(.97)}
@@ -755,8 +796,8 @@
     .how-strip-step{padding:18px 20px}
     .cred{grid-template-columns:1fr 1fr}
     .pricing-grid{grid-template-columns:1fr;max-width:420px}
-    .pc-pro{transform:none}
     .pc{padding:28px 24px}
+    .pricing-free-line{font-size:11px}
     /* item 26 — dist responsive */
     .distrow{grid-template-columns:48px 1fr 88px;gap:10px;padding:12px 16px}
     .sec{padding:16px 0 56px}.sec-head h2{font-size:26px}
@@ -803,11 +844,8 @@
   <nav class="nav">
     <div class="brand">PHYSIQ</div>
     <div class="links">
-      <a onclick="show('screen-home');document.getElementById('scanSection').scrollIntoView()">Scan</a>
-      <a onclick="show('screen-home');document.getElementById('howSection').scrollIntoView()">How it works</a>
+      <a onclick="show('screen-home');document.getElementById('howStrip').scrollIntoView({behavior:'smooth'})">How it works</a>
       <a onclick="show('screen-home');setTimeout(()=>document.getElementById('pricingSection').scrollIntoView({behavior:'smooth'}),50)">Pricing</a>
-      <a id="nav-overall" onclick="showOverall()">My grade</a>
-      <a onclick="show('screen-progress')">Progress</a>
       <a class="navcta" onclick="show('screen-home');document.getElementById('scanSection').scrollIntoView()">Get graded</a>
     </div>
   </nav>
@@ -823,7 +861,7 @@
                Variant B (test):    "The AI physique grader that doesn't lie."
                To switch, replace the h1 text below with Variant B. -->
           <h1 class="r" style="animation-delay:.15s">Most lifters<br>are <b>C-tier</b>.<br>Where are you?</h1>
-          <p class="r" style="animation-delay:.28s">Upload a photo.<br>Find out where you actually stand.<br>No flattery.</p>
+          <p class="r" style="animation-delay:.28s">Upload a photo. Find out where you actually stand — scored against real lifters, not flattered.</p>
           <div class="hero-actions r" style="animation-delay:.4s">
             <button class="bigcta" onclick="document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get my real grade →</button>
             <a class="hero-secondary-cta" onclick="document.getElementById('howStrip').scrollIntoView({behavior:'smooth'})">See how it works ↓</a>
@@ -831,17 +869,14 @@
           </div>
           <div class="trust-bar r" style="animation-delay:.52s" aria-label="Trust signals">
             <span class="trust-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-              Graded by Claude AI
+              Powered by advanced AI vision
             </span>
             <span class="trust-sep">·</span>
             <span class="trust-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               Results in seconds
             </span>
             <span class="trust-sep">·</span>
             <span class="trust-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
               No credit card
             </span>
           </div>
@@ -857,31 +892,31 @@
                   <span class="vc-badge">SAMPLE · NATURAL</span>
                 </div>
                 <div class="vc-grade-section">
-                  <div class="vc-grade-letter">A</div>
-                  <div class="vc-grade-label">Advanced Lifter</div>
+                  <div class="vc-grade-letter">C</div>
+                  <div class="vc-grade-label">Developing Lifter</div>
                 </div>
                 <div class="vc-strip">
-                  <div><div class="vc-strip-val">83/100</div><div class="vc-strip-lbl">Score</div></div>
+                  <div><div class="vc-strip-val">54/100</div><div class="vc-strip-lbl">Score</div></div>
                   <div class="vc-strip-div"></div>
-                  <div><div class="vc-strip-val">11-13%</div><div class="vc-strip-lbl">Body Fat</div></div>
+                  <div><div class="vc-strip-val">18-21%</div><div class="vc-strip-lbl">Body Fat</div></div>
                   <div class="vc-strip-div"></div>
-                  <div><div class="vc-strip-val">TOP 5%</div><div class="vc-strip-lbl">Percentile</div></div>
+                  <div><div class="vc-strip-val">TOP 35%</div><div class="vc-strip-lbl">Percentile</div></div>
                 </div>
                 <div class="vc-section-title">Breakdown — Front view</div>
                 <div class="vc-muscle">
                   <span class="vc-muscle-name">Shoulders</span>
-                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:86%;animation-delay:.1s"></div></div>
-                  <span class="vc-muscle-val">86</span>
+                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:58%;animation-delay:.1s"></div></div>
+                  <span class="vc-muscle-val">58</span>
                 </div>
                 <div class="vc-muscle">
                   <span class="vc-muscle-name">Chest</span>
-                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:81%;animation-delay:.17s"></div></div>
-                  <span class="vc-muscle-val">81</span>
+                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:49%;animation-delay:.17s"></div></div>
+                  <span class="vc-muscle-val">49</span>
                 </div>
                 <div class="vc-muscle">
                   <span class="vc-muscle-name">Arms</span>
-                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:84%;animation-delay:.24s"></div></div>
-                  <span class="vc-muscle-val">84</span>
+                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:55%;animation-delay:.24s"></div></div>
+                  <span class="vc-muscle-val">55</span>
                 </div>
                 <div class="vc-footer">
                   <span class="vc-serial">PQ-SMPL-2026</span>
@@ -914,8 +949,8 @@
         <div class="how-strip-step">
           <div class="how-strip-num">03</div>
           <div class="how-strip-body">
-            <div class="how-strip-title">See your score & breakdown</div>
-            <div class="how-strip-desc">Grade, percentile, and a muscle-by-muscle breakdown in seconds.</div>
+            <div class="how-strip-title">Enter your email to unlock</div>
+            <div class="how-strip-desc">Free and instant. Your grade, percentile, and muscle-by-muscle breakdown.</div>
           </div>
         </div>
       </div>
@@ -943,44 +978,19 @@
         </div>
       </section>
 
-      <section class="sec" id="howSection">
-        <div class="sec-head">
-          <div class="eyebrow">How it works</div>
-          <h2>Built to be honest.<br>Not to make you feel good.</h2>
-          <p>Every other physique app inflates your score so you share it. PHYSIQ does the opposite.</p>
-        </div>
-        <div class="how">
-          <div class="step">
-            <div class="n">01</div>
-            <h3>Zero inflation. Zero ego.</h3>
-            <p>A C grade means you train. It doesn't mean you're impressive.</p>
-          </div>
-          <div class="step">
-            <div class="n">02</div>
-            <h3>Can't see it, won't score it.</h3>
-            <p>No back photo? Grade capped. PHYSIQ won't score what it can't see.</p>
-          </div>
-          <div class="step">
-            <div class="n">03</div>
-            <h3>Nowhere to hide.</h3>
-            <p>Skip legs and your grade shows it. The weak points don't hide — that's the point.</p>
-          </div>
-        </div>
-      </section>
 
       <section class="sec" id="scaleSection">
         <div class="sec-head">
-          <div class="eyebrow">The scale</div>
           <h2>Most people won't reach A.<br>That's the point.</h2>
           <p>An A on PHYSIQ means something. An S means everything. Earning one isn't luck — it's years of real work, visible in every photo.</p>
         </div>
         <div class="dist">
-          <div class="distrow"><span class="dg">S</span><div class="dbar"><span style="width:3%"></span></div><span class="dp">top ~0.5% · elite</span></div>
+          <div class="distrow"><span class="dg">S</span><div class="dbar"><span style="width:7%"></span></div><span class="dp">top ~0.5% · elite</span></div>
           <div class="distrow"><span class="dg">A</span><div class="dbar"><span style="width:10%"></span></div><span class="dp">top ~3% · advanced</span></div>
           <div class="distrow"><span class="dg">B</span><div class="dbar"><span style="width:28%"></span></div><span class="dp">top ~18% · dedicated</span></div>
           <div class="distrow"><span class="dg">C</span><div class="dbar"><span style="width:88%"></span></div><span class="dp">most lifters · average</span></div>
-          <div class="distrow"><span class="dg">D</span><div class="dbar"><span style="width:44%"></span></div><span class="dp">early stage</span></div>
-          <div class="distrow"><span class="dg">E</span><div class="dbar"><span style="width:18%"></span></div><span class="dp">just starting</span></div>
+          <div class="distrow"><span class="dg">D</span><div class="dbar"><span style="width:16%"></span></div><span class="dp">early stage</span></div>
+          <div class="distrow"><span class="dg">E</span><div class="dbar"><span style="width:8%"></span></div><span class="dp">just starting</span></div>
         </div>
       </section>
 
@@ -988,46 +998,66 @@
       <section class="sec" id="pricingSection">
         <div class="sec-head">
           <div class="eyebrow">Pricing</div>
-          <h2>Simple. No tricks.</h2>
+          <h2>Start free. Go further when you're ready.</h2>
           <p>One free scan to find out where you stand. Pro to track where you're going.</p>
         </div>
+
+        <!-- Free tier line — not a card -->
+        <div class="pricing-free-line">First scan free — no card required.</div>
+
         <div class="pricing-grid">
 
-          <!-- LEFT — One Scan -->
+          <!-- LEFT — Full Body Scan · £5.99 one-time · no badge, entry/ghost style -->
           <div class="pc pc-basic">
             <div class="pc-badge-spacer"></div>
-            <div class="pc-name">One Scan</div>
+            <div class="pc-name">Full Body Scan</div>
             <div class="pc-price">£5.99</div>
             <div class="pc-period">one-time</div>
             <div class="pc-anchor">&nbsp;</div>
             <div class="pc-divider"></div>
             <ul class="pc-feats">
-              <li>One angle graded</li>
+              <li>All 4 angles graded</li>
               <li>Full muscle breakdown</li>
-              <li class="pc-no">No scan history</li>
-              <li class="pc-no">No progress tracking</li>
-              <li class="pc-no">No monthly comparisons</li>
+              <li>Overall PHYSIQ grade</li>
+              <li class="pc-no">No monthly tracking</li>
+              <li class="pc-no">No progress history</li>
             </ul>
-            <button class="pc-cta" onclick="document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get one scan</button>
+            <button class="pc-cta" onclick="handlePurchase('scan')">Unlock full body scan</button>
           </div>
 
-          <!-- RIGHT — Pro -->
+          <!-- MIDDLE — PHYSIQ Pro · £9.99/month · Most Popular badge, dominant -->
           <div class="pc pc-pro">
             <div class="pc-badge">★ Most Popular</div>
             <div class="pc-name">PHYSIQ Pro</div>
             <div class="pc-price">£9.99</div>
             <div class="pc-period">per month</div>
-            <div class="pc-anchor">Less than a protein bar per week.</div>
-            <div class="pc-anchor" style="font-size:12px;opacity:.7;margin-top:-18px">£0.33 / day</div>
+            <div class="pc-anchor">Cancel anytime · £0.33/day</div>
             <div class="pc-divider"></div>
             <ul class="pc-feats">
               <li>Unlimited scans</li>
               <li>All 4 angles graded</li>
-              <li>Monthly progress tracking</li>
-              <li>Score history &amp; trends</li>
               <li>Full muscle-by-muscle breakdown</li>
+              <li>Monthly progress tracking <span style="font-size:11px;opacity:.55;font-style:italic">(coming soon)</span></li>
+              <li>Score history &amp; trends <span style="font-size:11px;opacity:.55;font-style:italic">(coming soon)</span></li>
             </ul>
-            <button class="pc-cta" onclick="handlePurchase()">Start tracking progress</button>
+            <button class="pc-cta" onclick="handlePurchase('pro')">Start tracking progress</button>
+          </div>
+
+          <!-- RIGHT — Pro Lifetime · £29.99 one-time · Best Value badge, gold border -->
+          <div class="pc pc-lifetime">
+            <div class="pc-badge">◆ Best Value</div>
+            <div class="pc-name">Pro Lifetime</div>
+            <div class="pc-price">£29.99</div>
+            <div class="pc-period">one-time · forever</div>
+            <div class="pc-anchor">Less than 4 months of Pro, then free forever.</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-feats">
+              <li>Everything in Pro</li>
+              <li>Unlimited scans, forever</li>
+              <li>All future features included</li>
+              <li>One payment, no renewal</li>
+            </ul>
+            <button class="pc-cta" onclick="handlePurchase('lifetime')">Get lifetime access</button>
           </div>
 
         </div>
@@ -1051,6 +1081,26 @@
           <div class="faq-item">
             <div class="faq-q">How accurate is the grading?</div>
             <div class="faq-a">It uses Claude AI vision to assess visible muscle development against competitive standards. It's honest, not flattering.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What happens to my photos?</div>
+            <div class="faq-a">Your photo is sent directly to our AI for grading and is not stored on our servers. We do not use your images for training data or share them with third parties. Once the analysis is complete, the image is gone.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Does it work for women?</div>
+            <div class="faq-a">Yes. The grading system assesses visible muscle development, conditioning, and proportion — the same criteria apply regardless of gender. The tiers are calibrated against the full training population, not a male-only standard.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What does a C grade actually mean?</div>
+            <div class="faq-a">C means you train. You have a visible base and you're consistent. It does not mean you're impressive to an experienced eye — that's B and above. Most people who go to the gym regularly land in C. It's an honest baseline, not an insult.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Is this for natural lifters only?</div>
+            <div class="faq-a">PHYSIQ grades visible development from photos — it cannot detect substances. The grading scale is calibrated against the full competitive population including enhanced athletes at the top end, so natural lifters at the same development level will score the same.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">How is this different from just asking a PT or posting on Reddit?</div>
+            <div class="faq-a">A PT will encourage you. Reddit will argue. PHYSIQ gives you a consistent, calibrated score with no ego protection and no agenda — the same standard applied every time, to everyone.</div>
           </div>
         </div>
       </section>
@@ -1122,7 +1172,7 @@
         <li>Muscle-by-muscle improvement reports</li>
         <li>Grade trend over time</li>
       </ul>
-      <button class="btn gold-btn" onclick="handlePurchase()">Get PHYSIQ Pro →</button>
+      <button class="btn gold-btn" onclick="handlePurchase('pro')">Get PHYSIQ Pro →</button>
       <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
     </div></div></div>
   </section>
@@ -1142,9 +1192,11 @@
 // ============================================================
 const WORKER_URL   = "https://physiqworker.nichodrew1.workers.dev";
 const EMAIL_ENDPOINT = WORKER_URL; // emails go to the same worker via action:"subscribe"
-const PAYMENT_LINK   = "https://buy.stripe.com/6oU5kF5Ac2nh63b3X3b3q00";   // Your Stripe payment link — e.g. https://buy.stripe.com/xxx
+const PAYMENT_LINK_SCAN     = "https://buy.stripe.com/dRmcN78Moge72QZ9hnb3q01"; // £5.99 one-time
+const PAYMENT_LINK_PRO      = "https://buy.stripe.com/fZu5kF8MobXRfDL9hnb3q02"; // £9.99/month
+const PAYMENT_LINK_LIFETIME = "https://buy.stripe.com/aFa3cx9Qsfa34Z7517b3q03"; // £29.99 lifetime
                              // Stripe success URL should be: yourdomain.com?paid=true
-const UNLOCK_PRICE   = "$7.99"; // shown in upsell — change when you update Stripe
+const UNLOCK_PRICE   = "£5.99"; // shown in upsell — change when you update Stripe
 // ============================================================
 
 const VIEWS=[
@@ -1308,8 +1360,6 @@ function refreshHome(){
     // unlock clicking on locked tile goes to paywall
   });
   const o=computeOverall();
-  const sample=document.getElementById('sampleCard');
-  if(sample) sample.style.display=o?'none':'';
   const g=document.getElementById('ov-grade'),sc=document.getElementById('ov-score'),
         cta=document.getElementById('ov-cta'),see=document.getElementById('ov-see');
   if(!o){g.textContent='—';g.className='g locked';sc.textContent='';cta.textContent='Scan a view to begin building your grade.';see.style.display='none';return;}
@@ -1360,6 +1410,7 @@ function renderViewResult(view,data,photoURL){
       '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email" inputmode="email">'+
       '<button class="btn" onclick="submitGate()">Show me my grade →</button>'+
       '<div class="gate-fine">No spam · unsubscribe any time</div>'+
+      '<div class="gate-fine">Your photo is analysed instantly and never stored on our servers.</div>'+
     '</div>';
 
   document.getElementById('resultBody').innerHTML=
@@ -1509,9 +1560,11 @@ function injectUpsell(paywallMode){
   const old=document.getElementById('upsellPanel'); if(old) old.remove();
 
   const title  = paywallMode
-    ? 'You\'ve seen one angle. Your real grade needs all four.'
+    ? 'Your free scan is used. Your real grade needs all four angles.'
     : 'You\'ve seen one angle. Your real grade needs all four.';
-  const sub    = 'Most people score significantly different across angles. Legs are usually the weak point nobody wants to see.';
+  const sub    = paywallMode
+    ? 'Back and legs are where most people drop — and where most people avoid the camera. That\'s the point. £5.99. One time. No subscription.'
+    : 'Most people score significantly different across angles. Legs are usually the weak point nobody wants to see.';
 
   const div=document.createElement('div');
   div.id='upsellPanel';
@@ -1528,7 +1581,7 @@ function injectUpsell(paywallMode){
     '</ul>'+
     '<div class="upsell-price">'+UNLOCK_PRICE+'</div>'+
     '<div class="upsell-price-sub">ONE-TIME · YOURS FOREVER</div>'+
-    '<button class="btn gold-btn" onclick="handlePurchase()">See my real grade →</button>'+
+    '<button class="btn gold-btn" onclick="handlePurchase(\'scan\')">See my real grade →</button>'+
     '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">Not now</button>';
 
   // Insert before resPrimary
@@ -1539,10 +1592,16 @@ function injectUpsell(paywallMode){
 // ============================================================
 //  PURCHASE HANDLER (item 23 — confirmation screen)
 // ============================================================
-function handlePurchase(){
-  if(PAYMENT_LINK){
+function handlePurchase(tier){
+  const links={
+    scan:     PAYMENT_LINK_SCAN,
+    pro:      PAYMENT_LINK_PRO,
+    lifetime: PAYMENT_LINK_LIFETIME
+  };
+  const url=links[tier]||PAYMENT_LINK_SCAN;
+  if(url){
     // Go to Stripe — success URL should be yourdomain.com?paid=true
-    window.location.href=PAYMENT_LINK;
+    window.location.href=url;
     return;
   }
 
@@ -1678,12 +1737,12 @@ function showOverall(){
     const upsellDiv=document.createElement('div');
     upsellDiv.id='overallUpsell'; upsellDiv.className='upsell';
     upsellDiv.innerHTML=
-      '<div class="us-eye">Your grade is capped</div>'+
+      '<div class="us-eye">Your grade isn\'t complete yet</div>'+
       '<h3>See your true overall grade</h3>'+
       '<p class="us-p">Without a back and legs scan, PHYSIQ caps your grade. Unlock to remove the ceiling.</p>'+
       '<div class="upsell-price">'+UNLOCK_PRICE+'</div>'+
       '<div class="upsell-price-sub">ONE-TIME · ALL 4 VIEWS</div>'+
-      '<button class="btn gold-btn" onclick="handlePurchase()">Unlock full body scan →</button>'+
+      '<button class="btn gold-btn" onclick="handlePurchase(\'scan\')">Unlock full body scan →</button>'+
       '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">Back to scans</button>';
     backBtn.parentNode.insertBefore(upsellDiv,backBtn);
     backBtn.style.display='none';
