@@ -222,6 +222,7 @@
   .vtile.pay-locked{opacity:.5;cursor:default}
   .vtile.pay-locked:hover{transform:none;border-color:var(--line2);box-shadow:none}
   .vtile.pay-locked .lock-badge{display:flex}
+  .vtile.checking{opacity:.5;pointer-events:none;cursor:wait}
   .lock-badge{display:none;position:absolute;inset:0;align-items:center;justify-content:center;
     background:rgba(8,9,12,.55);backdrop-filter:blur(3px);border-radius:18px}
   .lock-badge svg{width:28px;height:28px;stroke:var(--gold-deep);stroke-width:1.6;fill:none}
@@ -795,13 +796,15 @@
     .how-strip-step+.how-strip-step::before{left:20%;top:0;height:1px;width:60%;background:var(--line2)}
     .how-strip-step{padding:18px 20px}
     .cred{grid-template-columns:1fr 1fr}
-    .pricing-grid{grid-template-columns:1fr;max-width:420px}
     .pc{padding:28px 24px}
     .pricing-free-line{font-size:11px}
     /* item 26 — dist responsive */
     .distrow{grid-template-columns:48px 1fr 88px;gap:10px;padding:12px 16px}
     .sec{padding:16px 0 56px}.sec-head h2{font-size:26px}
     .grade{font-size:120px}
+  }
+  @media (max-width:639px){
+    .pricing-grid{grid-template-columns:1fr;max-width:420px}
   }
   /* item 25 — 480px: ensure full-width and thumb-friendly */
   @media (max-width:480px){
@@ -1180,7 +1183,7 @@
   <footer>
     <div>© 2026 PHYSIQ · AI physique grading, not medical advice · Adults only</div>
     <div style="margin-top:6px">
-      <a onclick="show('screen-home');document.getElementById('howSection').scrollIntoView({behavior:'smooth'})" style="color:inherit;text-decoration:none;cursor:pointer;margin:0 10px">How it works</a>·
+      <a onclick="show('screen-home');document.getElementById('howStrip').scrollIntoView({behavior:'smooth'})" style="color:inherit;text-decoration:none;cursor:pointer;margin:0 10px">How it works</a>·
       <a onclick="show('screen-home');setTimeout(()=>document.getElementById('pricingSection').scrollIntoView({behavior:'smooth'}),50)" style="color:inherit;text-decoration:none;cursor:pointer;margin:0 10px">Pricing</a>·
       <a onclick="show('screen-home');setTimeout(()=>document.getElementById('faqSection').scrollIntoView({behavior:'smooth'}),50)" style="color:inherit;text-decoration:none;cursor:pointer;margin:0 10px">FAQ</a>
     </div>
@@ -1195,7 +1198,7 @@ const EMAIL_ENDPOINT = WORKER_URL; // emails go to the same worker via action:"s
 const PAYMENT_LINK_SCAN     = "https://buy.stripe.com/dRmcN78Moge72QZ9hnb3q01"; // £5.99 one-time
 const PAYMENT_LINK_PRO      = "https://buy.stripe.com/fZu5kF8MobXRfDL9hnb3q02"; // £9.99/month
 const PAYMENT_LINK_LIFETIME = "https://buy.stripe.com/aFa3cx9Qsfa34Z7517b3q03"; // £29.99 lifetime
-                             // Stripe success URL should be: yourdomain.com?paid=true
+                             // Stripe success URL should be: yourdomain.com?session_id={CHECKOUT_SESSION_ID}
 const UNLOCK_PRICE   = "£5.99"; // shown in upsell — change when you update Stripe
 // ============================================================
 
@@ -1216,14 +1219,14 @@ let pendingView=null;
 
 // ---- account / payment state ----
 let hasAccount = false;   // true once email submitted
-let hasPaid    = false;   // true once paid (or ?paid=true on URL)
+let userTier   = null;    // null | "scan" | "pro" | "lifetime"
 let userEmail  = null;
 
 // ---- localStorage helpers ----
 function saveState(){
   try{
     localStorage.setItem('pq_account', hasAccount?'1':'');
-    localStorage.setItem('pq_paid',    hasPaid?'1':'');
+    localStorage.setItem('pq_tier',    userTier||'');
     localStorage.setItem('pq_email',   userEmail||'');
     localStorage.setItem('pq_profile', JSON.stringify(profile));
     localStorage.setItem('pq_views',   JSON.stringify(Object.keys(viewsDone)));
@@ -1232,12 +1235,16 @@ function saveState(){
 function loadState(){
   try{
     hasAccount = !!localStorage.getItem('pq_account');
-    hasPaid    = !!localStorage.getItem('pq_paid');
+    userTier   = localStorage.getItem('pq_tier')||null;
     userEmail  = localStorage.getItem('pq_email')||null;
     const p=localStorage.getItem('pq_profile'); if(p) profile=JSON.parse(p);
     const v=localStorage.getItem('pq_views');   if(v) JSON.parse(v).forEach(id=>viewsDone[id]=true);
   }catch(e){}
 }
+
+// ---- tier helpers ----
+function isPaid() { return userTier !== null; }
+function isPro()  { return userTier === "pro" || userTier === "lifetime"; }
 
 // ---- build view tiles ----
 const grid=document.getElementById('viewGrid');
@@ -1256,11 +1263,30 @@ window.addEventListener('DOMContentLoaded',()=>{
   loadState();
   refreshHome();
 
-  // Handle Stripe success redirect (?paid=true)
-  if(new URLSearchParams(location.search).get('paid')==='true'){
-    hasPaid=true; saveState();
+  // Handle Stripe success redirect (?session_id=...) — verified server-side
+  const _sessionId=new URLSearchParams(location.search).get('session_id');
+  if(_sessionId){
     history.replaceState({},'',location.pathname);
-    showConfirmScreen();
+    document.getElementById('scanLetter').textContent='$';
+    document.getElementById('aStatus').textContent='verifying payment…';
+    document.getElementById('aSub').textContent='just a moment';
+    show('screen-analyse');
+    fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'verify_payment',session_id:_sessionId})})
+      .then(r=>r.json())
+      .then(d=>{
+        if(d.verified){
+          userTier=d.tier||'scan'; saveState();
+          showConfirmScreen();
+        } else {
+          renderError('Payment could not be verified. If you were charged, please contact support.');
+          show('screen-result');
+        }
+      })
+      .catch(()=>{
+        renderError('Could not reach the server to verify payment. Please try again.');
+        show('screen-result');
+      });
   }
 
   if(!WORKER_URL){
@@ -1271,24 +1297,82 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 // ---- pick a view ----
-function pick(viewId){
+async function pick(viewId){
   if(!WORKER_URL){alert("Set WORKER_URL first.");return;}
 
   const scansUsed=Object.keys(viewsDone).length;
+  const allViewsDone=VIEWS.every(v=>!!viewsDone[v.id]);
 
-  // Already scanned this view — allow re-scan only if paid
-  if(viewsDone[viewId] && !hasPaid){ showPaywall(); return; }
+  // Pro/Lifetime — verify subscription is still active before opening picker
+  if(isPro()){
+    const tile=document.getElementById('vt-'+viewId);
+    tile.classList.add('checking');
+    const allowed=await verifyProAccess();
+    tile.classList.remove('checking');
+    if(!allowed) return; // verifyProAccess handles toast + paywall internally
+    pendingView=viewId;
+    document.getElementById('filein').click();
+    return;
+  }
 
-  // Free scan used and not paid — show paywall
-  if(scansUsed >= 1 && !hasPaid){ showPaywall(); return; }
+  // Scan tier — permanent one-time access, no server check needed
+  if(userTier==='scan' && viewsDone[viewId] && allViewsDone){ showScanUpsell(); return; }
+  if(userTier==='scan'){ pendingView=viewId; document.getElementById('filein').click(); return; }
+
+  // Unpaid — existing free/paywall logic unchanged
+  if(viewsDone[viewId] && !isPaid()){ showPaywall(); return; }
+  if(scansUsed >= 1 && !isPaid()){ showPaywall(); return; }
 
   pendingView=viewId;
   document.getElementById('filein').click();
 }
 
+/**
+ * Calls check_subscription for the current user.
+ * Returns true if access should proceed, false if revoked.
+ * Handles all side-effects: state update, toast, paywall.
+ * Network failures are silent — returns true (fail open).
+ */
+async function verifyProAccess(){
+  if(!userEmail){
+    // No email on record — fail open rather than silently block the user
+    return true;
+  }
+  try{
+    const res=await fetch(WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'check_subscription',email:userEmail})
+    });
+    if(!res.ok){
+      console.warn('PHYSIQ: check_subscription returned',res.status,'— proceeding');
+      return true;
+    }
+    const data=await res.json();
+    if(data.active){
+      // Keep local tier in sync with server (e.g. pro→lifetime upgrade)
+      if(data.tier && data.tier!==userTier){ userTier=data.tier; saveState(); }
+      return true;
+    }
+    // Server says inactive — revoke locally
+    userTier=null;
+    saveState();
+    refreshHome();
+    showToast('Your Pro subscription is no longer active.');
+    showPaywall();
+    return false;
+  }catch(err){
+    // Network failure — fail open so connectivity issues don't lock out paying users
+    console.warn('PHYSIQ: check_subscription network error — proceeding:',err);
+    return true;
+  }
+}
+
 // ---- file selected ----
 document.getElementById('filein').addEventListener('change',async e=>{
   const file=e.target.files[0]; if(!file||!pendingView) return;
+  if(!file.type.startsWith('image/')){renderError('Please upload a photo (JPG, PNG, or HEIC).');show('screen-result');return;}
+  if(file.size>20*1024*1024){renderError('Photo is too large. Please use a file under 20MB.');show('screen-result');return;}
   e.target.value='';
   const view=pendingView; pendingView=null;
   const photoURL=URL.createObjectURL(file);
@@ -1309,10 +1393,10 @@ document.getElementById('filein').addEventListener('change',async e=>{
   }catch(err){renderError(String(err));show('screen-result');}
 });
 
-function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});}
+function normaliseToJpeg(file){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);URL.revokeObjectURL(url);const dataUrl=c.toDataURL('image/jpeg',0.92);res(dataUrl.split(',')[1]);};img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('image load failed'));};img.src=url;});}
 async function analyzeView(view,file){
-  const image=await fileToBase64(file);
-  const media_type=file.type||"image/jpeg";
+  const image=await normaliseToJpeg(file);
+  const media_type="image/jpeg";
   const res=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({region:view,image,media_type})});
   const data=await res.json().catch(()=>null);
   if(!res.ok){const reason=data&&(data.detail||data.error)?(": "+(data.detail||data.error)):"";throw new Error("scan failed ("+res.status+")"+reason);}
@@ -1354,7 +1438,7 @@ function refreshHome(){
   VIEWS.forEach(v=>{
     const tile=document.getElementById('vt-'+v.id);
     const isDone=!!viewsDone[v.id];
-    const isLocked=!hasPaid && scansUsed>=1 && !isDone;
+    const isLocked=!isPaid() && scansUsed>=1 && !isDone;
     tile.classList.toggle('done',isDone);
     tile.classList.toggle('pay-locked',isLocked);
     // unlock clicking on locked tile goes to paywall
@@ -1448,12 +1532,13 @@ function renderViewResult(view,data,photoURL){
   const btn=document.getElementById('resPrimary');
   if(!hasAccount){
     btn.style.display='none';
+    setTimeout(()=>{const gate=document.getElementById('gateEmail');if(gate)gate.scrollIntoView({behavior:'smooth',block:'center'});},400);
   } else {
     btn.style.display='block';
-    configurePrimaryBtn(o);
+    configurePrimaryBtn(computeOverall());
     // Share moment first, then upsell
     injectShareMoment(viewGrade, viewAvg||0);
-    if(!hasPaid) injectUpsell();
+    if(!isPaid()) injectUpsell();
   }
 }
 
@@ -1462,7 +1547,7 @@ function configurePrimaryBtn(o){
   const btn=document.getElementById('resPrimary');
   if(!btn) return;
   btn.style.display='block';
-  if(o && o.missing.length===0 && hasPaid){
+  if(o && o.missing.length===0 && isPaid()){
     btn.textContent='See your full grade →';
     btn.onclick=showOverall;
   } else {
@@ -1477,7 +1562,7 @@ function configurePrimaryBtn(o){
 function submitGate(){
   const inp=document.getElementById('gateEmail');
   const email=(inp&&inp.value||'').trim();
-  if(!email||!email.includes('@')||!email.includes('.')){
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
     if(inp){inp.classList.add('err');setTimeout(()=>inp.classList.remove('err'),400);}
     return;
   }
@@ -1508,10 +1593,39 @@ function submitGate(){
   injectShareMoment(o?o.grade:(document.querySelector('.vc-grade-letter')||{}).textContent||'?', o?o.capScore:0);
 
   // Upsell below the share moment
-  if(!hasPaid) injectUpsell();
+  if(!isPaid()) injectUpsell();
 
   refreshHome();
   showToast('Grade revealed. Share it while it\u2019s fresh.');
+}
+
+// ============================================================
+//  SCAN UPSELL — shown when scan-tier user tries to rescan
+//  after completing all 4 views
+// ============================================================
+function showScanUpsell(){
+  document.getElementById('resultBody').innerHTML=
+    '<div class="refuse" style="padding:20px 0 12px">'+
+      '<h2 style="margin-bottom:8px">Full body scan complete</h2>'+
+      '<p>You\'ve completed your full body scan. Upgrade to Pro for unlimited rescans and monthly tracking.</p>'+
+    '</div>';
+  const btn=document.getElementById('resPrimary');
+  btn.style.display='none';
+  const old=document.getElementById('upsellPanel'); if(old) old.remove();
+  const div=document.createElement('div');
+  div.id='upsellPanel';
+  div.className='upsell';
+  div.innerHTML=
+    '<div class="us-eye">Scan complete</div>'+
+    '<h3>Rescan any angle, any time.</h3>'+
+    '<p class="us-p">Upgrade to Pro for unlimited rescans and monthly tracking — see how you\'re progressing over time.</p>'+
+    '<div class="upsell-price">£9.99</div>'+
+    '<div class="upsell-price-sub">PER MONTH · CANCEL ANYTIME</div>'+
+    '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Upgrade to Pro →</button>'+
+    '<span style="font-size:13px;color:rgba(255,255,255,0.35);cursor:pointer;display:block;text-align:center;margin-top:12px;text-decoration:underline" onclick="show(\'screen-home\')">Not now</span>';
+  const ref=document.getElementById('resPrimary');
+  if(ref) ref.parentNode.insertBefore(div,ref);
+  show('screen-result');
 }
 
 // ============================================================
@@ -1582,7 +1696,7 @@ function injectUpsell(paywallMode){
     '<div class="upsell-price">'+UNLOCK_PRICE+'</div>'+
     '<div class="upsell-price-sub">ONE-TIME · YOURS FOREVER</div>'+
     '<button class="btn gold-btn" onclick="handlePurchase(\'scan\')">See my real grade →</button>'+
-    '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">Not now</button>';
+    '<span style="font-size:13px;color:rgba(255,255,255,0.35);cursor:pointer;display:block;text-align:center;margin-top:12px;text-decoration:underline" onclick="show(\'screen-home\')">Not now</span>';
 
   // Insert before resPrimary
   const ref=document.getElementById('resPrimary');
@@ -1600,13 +1714,13 @@ function handlePurchase(tier){
   };
   const url=links[tier]||PAYMENT_LINK_SCAN;
   if(url){
-    // Go to Stripe — success URL should be yourdomain.com?paid=true
+    // Go to Stripe — success URL should be: yourdomain.com?session_id={CHECKOUT_SESSION_ID}
     window.location.href=url;
     return;
   }
 
   // ---- DEV / TESTING: no Stripe link set — auto-unlock ----
-  hasPaid=true;
+  userTier='scan';
   saveState();
   showConfirmScreen();
 }
@@ -1648,9 +1762,9 @@ function injectShareBtn(grade, score){
 }
 
 function shareGrade(grade, score, fromMoment){
-  const text='I just scored '+grade+' ('+score+'/100) on PHYSIQ — the AI physique grader that doesn\'t lie. Find out yours: '+location.href;
+  const text='I just scored '+grade+' ('+score+'/100) on PHYSIQ — the AI physique grader that doesn\'t lie. Find out yours: '+(location.origin+location.pathname);
   if(navigator.share){
-    navigator.share({title:'My PHYSIQ Grade',text,url:location.href})
+    navigator.share({title:'My PHYSIQ Grade',text,url:location.origin+location.pathname})
       .then(()=>{ if(fromMoment){ const m=document.getElementById('shareMoment'); if(m) m.remove(); }})
       .catch(()=>{});
   } else {
@@ -1659,7 +1773,7 @@ function shareGrade(grade, score, fromMoment){
         showToast('Copied to clipboard!');
         if(fromMoment){ setTimeout(()=>{ const m=document.getElementById('shareMoment'); if(m) m.remove(); },1200); }
       })
-      .catch(()=>showToast('Share: '+location.href));
+      .catch(()=>showToast('Share: '+(location.origin+location.pathname)));
   }
 }
 
@@ -1733,7 +1847,7 @@ function showOverall(){
     '</button>';
   backBtn.parentNode.insertBefore(shareRow,backBtn);
 
-  if(!hasPaid){
+  if(!isPaid()){
     const upsellDiv=document.createElement('div');
     upsellDiv.id='overallUpsell'; upsellDiv.className='upsell';
     upsellDiv.innerHTML=
