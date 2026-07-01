@@ -491,13 +491,60 @@
       inset 0 1px 0 rgba(255,255,255,.05);
   }
   .vc-photo{
-    position:absolute;top:0;left:0;right:0;height:62%;
-    background-size:cover;background-position:center 18%;
-    z-index:1;opacity:.4;
-    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.32) 60%,transparent 100%);
-    mask-image:linear-gradient(180deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.32) 60%,transparent 100%);
+    position:absolute;top:0;left:0;right:0;height:74%;
+    background-size:cover;background-position:center 16%;
+    z-index:1;opacity:.66;
+    filter:saturate(1.06) contrast(1.05);
+    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.96) 0%,rgba(0,0,0,.72) 58%,rgba(0,0,0,.18) 86%,transparent 100%);
+    mask-image:linear-gradient(180deg,rgba(0,0,0,.96) 0%,rgba(0,0,0,.72) 58%,rgba(0,0,0,.18) 86%,transparent 100%);
   }
-  .vc-inner{position:relative;z-index:3;padding:26px 24px 22px}
+  .vc-inner{position:relative;z-index:3;padding:26px 24px 22px;background:linear-gradient(180deg,rgba(8,9,12,.42) 0%,rgba(8,9,12,.58) 34%,rgba(8,9,12,.88) 72%,rgba(8,9,12,.96) 100%)}
+
+  .vc-result-reveal{
+    animation:resultCardSlam .72s cubic-bezier(.16,.9,.18,1) both;
+  }
+  .vc-result-reveal::after{
+    content:"";position:absolute;left:-18%;right:-18%;top:-30%;height:150px;
+    z-index:8;pointer-events:none;
+    background:
+      linear-gradient(180deg,transparent 0%,rgba(240,217,154,.04) 18%,rgba(240,217,154,.34) 48%,rgba(255,255,255,.24) 52%,rgba(240,217,154,.1) 72%,transparent 100%);
+    filter:blur(.2px);
+    transform:translateY(-130%) rotate(-6deg);
+    animation:resultScanHit .82s cubic-bezier(.22,.82,.18,1) .08s both;
+  }
+  .vc-result-reveal .vc-grade-letter{animation:resultGradePunch .58s cubic-bezier(.12,.95,.18,1) .18s both}
+  .vc-result-reveal .vc-strip{animation:resultSnapIn .38s ease-out .36s both}
+  .vc-result-reveal .vc-muscle,
+  .vc-result-reveal .vc-verdict,
+  .vc-result-reveal .vc-focus,
+  .vc-result-reveal .vc-footer{animation:resultSnapIn .34s ease-out both}
+  .vc-result-reveal .vc-muscle:nth-of-type(1){animation-delay:.44s}
+  .vc-result-reveal .vc-muscle:nth-of-type(2){animation-delay:.49s}
+  .vc-result-reveal .vc-muscle:nth-of-type(3){animation-delay:.54s}
+  .vc-result-reveal .vc-muscle:nth-of-type(4){animation-delay:.59s}
+  .vc-result-reveal .vc-verdict{animation-delay:.64s}
+  .vc-result-reveal .vc-focus{animation-delay:.68s}
+  .vc-result-reveal .vc-footer{animation-delay:.72s}
+  @keyframes resultCardSlam{
+    0%{opacity:0;transform:translateY(18px) scale(.965);filter:brightness(.75)}
+    52%{opacity:1;transform:translateY(-2px) scale(1.012);filter:brightness(1.22)}
+    100%{opacity:1;transform:none;filter:brightness(1)}
+  }
+  @keyframes resultScanHit{
+    0%{opacity:0;transform:translateY(-130%) rotate(-6deg)}
+    12%{opacity:1}
+    68%{opacity:1;transform:translateY(360%) rotate(-6deg)}
+    100%{opacity:0;transform:translateY(520%) rotate(-6deg)}
+  }
+  @keyframes resultGradePunch{
+    0%{opacity:0;transform:scale(.62) rotate(-2deg);filter:blur(5px) brightness(1.6)}
+    58%{opacity:1;transform:scale(1.08);filter:blur(0) brightness(1.3)}
+    100%{opacity:1;transform:none;filter:drop-shadow(0 0 36px rgba(212,196,150,.4)) drop-shadow(0 8px 24px rgba(0,0,0,.78))}
+  }
+  @keyframes resultSnapIn{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:none}
+  }
 
   /* header */
   .vc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -2260,6 +2307,7 @@ document.getElementById('filein').addEventListener('change',async e=>{
     renderViewResult(view,data,photoURL);
     refreshHome();
     show('screen-result');
+    replayResultCardAnimation();
   }catch(err){
     if(err && err.locked){handleLocked(err.reason);return;}
     if(err && err.code==='invalid_token'){renderAccessRecovery();show('screen-result');return;}
@@ -2348,6 +2396,7 @@ function goHome(id){
   setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});},60);
 }
 function scoreToGrade(s){if(s>=90)return'S';if(s>=75)return'A';if(s>=61)return'B';if(s>=40)return'C';if(s>=25)return'D';return'E';}
+function scoreToVisualPct(s){if(s>=90)return'Top 1%';if(s>=80)return'Top 5%';if(s>=70)return'Top 10%';if(s>=60)return'Top 20%';if(s>=50)return'Top 35%';if(s>=40)return'Top 50%';if(s>=30)return'Top 70%';return'Top 85%';}
 function gradeLabel(g){return{S:'Elite',A:'Advanced',B:'Experienced',C:'Developing',D:'Beginner',E:'Starting Out'}[g[0]]||'';}
 
 function computeOverall(){
@@ -2381,6 +2430,15 @@ function refreshHome(){
   } else { cta.textContent='Full profile — every region covered.'; }
 }
 
+function replayResultCardAnimation(){
+  const card=document.querySelector('#resultBody .vc');
+  if(!card) return;
+  card.classList.remove('vc-result-reveal');
+  void card.offsetWidth;
+  card.classList.add('vc-result-reveal');
+  if(navigator.vibrate) navigator.vibrate([24,18,18]);
+}
+
 // ============================================================
 //  RESULT RENDERING
 // ============================================================
@@ -2401,7 +2459,7 @@ function renderViewResult(view,data,photoURL){
 
   const cardId=makeCardId();
   const bf=hasEntitlementHint()?esc(data.bodyfat_range||'Not estimated'):'Paid audit';
-  const readType=data.free?'Free view':'Audit view';
+  const visualPct=viewAvg!=null?scoreToVisualPct(viewAvg):'—';
   const viewName=VIEWS.find(v=>v.id===view).t.toUpperCase();
   const photoLayer=photoURL?'<div class="vc-photo" style="background-image:url('+photoURL+')"></div>':'';
   const focusHTML=buildFocusHTML(data);
@@ -2421,7 +2479,7 @@ function renderViewResult(view,data,photoURL){
     '</div>';
 
   document.getElementById('resultBody').innerHTML=
-    '<div class="vc'+(hasAccount()?'':' blurred')+'">'+
+    '<div class="vc result-vc vc-result-reveal'+(hasAccount()?'':' blurred')+'">'+
       '<div class="vc-stripe"></div>'+
       photoLayer+
       '<div class="vc-inner">'+
@@ -2438,7 +2496,7 @@ function renderViewResult(view,data,photoURL){
           '<div class="vc-strip-div"></div>'+
           '<div><div class="vc-strip-val">'+bf+'</div><div class="vc-strip-lbl">BF est.</div></div>'+
           '<div class="vc-strip-div"></div>'+
-          '<div><div class="vc-strip-val">'+readType+'</div><div class="vc-strip-lbl">Access</div></div>'+
+          '<div><div class="vc-strip-val">'+visualPct+'</div><div class="vc-strip-lbl">Visual pct</div></div>'+
         '</div>'+
         (seen.length?
           '<div class="vc-section-title">Breakdown — '+viewName+' view</div>'+muscleRows
