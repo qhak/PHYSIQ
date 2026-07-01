@@ -1,3 +1,2076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CALLOUT — AI physique feedback from photos. No flattery.</title>
+<meta name="description" content="CALLOUT gives direct AI feedback on visible physique development from photos. First scan free. Full Body Audit is £5.99 one-time.">
+
+<!-- Open Graph / social sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="CALLOUT — AI physique feedback">
+<meta property="og:description" content="Direct AI feedback on visible physique development. First scan free. Full Body Audit £5.99.">
+<meta property="og:url" content="https://callout.app">
+<meta property="og:site_name" content="CALLOUT">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CALLOUT — AI Physique Feedback">
+<meta name="twitter:description" content="Get a direct photo-based physique read. Free first scan.">
+
+<!-- Mobile / PWA -->
+<meta name="theme-color" content="#08090c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CALLOUT">
+
+<!-- Favicon — inline SVG, CALLOUT "C" mark -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjBkOTlhIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNkNGM0OTYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNiOTkyM2YiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHJ4PSI4IiBmaWxsPSIjMDgwOTBjIi8+PHRleHQgeD0iMTYiIHk9IjI0IiBmb250LWZhbWlseT0iSGVsdmV0aWNhLEFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9InVybCgjZykiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkM8L3RleHQ+PC9zdmc+">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMDgwOTBjIi8+PHRleHQgeD0iOTAiIHk9IjEzMiIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjEzMCIgZmlsbD0iI2Q0YzQ5NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD48L3N2Zz4=">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    /* Palette — quieter, more intentional */
+    --bg:#08090c;
+    --bg2:#0c0e13;
+    --surface:#14161d;
+    --surface-raised:#191c25;
+    --line:#1f2229;
+    --line2:#2a2e38;
+    --ink:#f5f6fa;
+    --soft:#c8ccd6;
+    --dim:#7c8090;
+    --faint:#565a6a;
+    --quiet:#3a3e4a;
+
+    /* Gold — reserved, used in approx 5 places site-wide */
+    --gold:#d4c496;
+    --gold-bright:#f0d99a;
+    --gold-deep:#b9923f;
+
+    /* States */
+    --red:#f0857f;
+    --green:#5fd08a;
+  }
+
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,system-ui,sans-serif;
+    font-feature-settings:"ss01","cv11";
+    min-height:100vh;position:relative;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* subtle grain — pulled back so it doesn't compete */
+  #grain{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    will-change:transform;transform:translateZ(0)}
+
+  /* spotlight — softer, less obvious gold wash */
+  #spotlight{
+    position:fixed;inset:0;pointer-events:none;z-index:1;
+    background:
+      radial-gradient(ellipse 600px 50vh at 50% -10%,rgba(212,196,150,.05) 0%,transparent 100%),
+      radial-gradient(ellipse 380px 70vh at 50% 0%,rgba(212,196,150,.07) 0%,transparent 70%);
+  }
+  @media (max-width:480px){
+    #spotlight{
+      background:
+        radial-gradient(ellipse 80vw 50vh at 50% -10%,rgba(212,196,150,.05) 0%,transparent 100%),
+        radial-gradient(ellipse 55vw 70vh at 50% 0%,rgba(212,196,150,.07) 0%,transparent 70%);
+    }
+  }
+
+  /* entrance animation utility */
+  .r{opacity:0;transform:translateY(20px);animation:rise 1s cubic-bezier(.16,.84,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  /* ─────────────────────────────────────────────────────
+     NAV
+     ───────────────────────────────────────────────────── */
+  .nav{
+    position:sticky;top:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 48px;
+    border-bottom:1px solid var(--line);
+    background:rgba(8,9,12,.78);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  }
+  .nav .brand{
+    font-family:'Inter',sans-serif;font-weight:900;letter-spacing:.32em;
+    font-size:15px;color:var(--ink);
+  }
+  .nav .links{display:flex;gap:32px;align-items:center}
+  .nav .links .navlink{
+    background:none;border:none;padding:0;
+    color:var(--dim);font-family:inherit;text-decoration:none;
+    font-size:14px;font-weight:500;letter-spacing:.01em;
+    transition:color .15s;cursor:pointer
+  }
+  .nav .links .navlink:hover{color:var(--ink)}
+  .nav .links .navlink:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:4px}
+  .nav .links .navcta{
+    background:var(--gold);color:#0c0d12;
+    padding:10px 18px;border-radius:8px;
+    font-weight:700;font-size:13px;letter-spacing:.01em;
+  }
+  .nav .links .navcta:hover{background:var(--gold-bright);color:#0c0d12}
+
+  /* ─────────────────────────────────────────────────────
+     LAYOUT
+     ───────────────────────────────────────────────────── */
+  .wrap{max-width:1180px;margin:0 auto;padding:0 48px}
+
+  .screen{display:none;animation:fadeIn .5s ease both}.screen.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ─────────────────────────────────────────────────────
+     HERO — bigger, bolder, more breathing room
+     ───────────────────────────────────────────────────── */
+  .hero{
+    display:grid;grid-template-columns:1.08fr .92fr;gap:80px;
+    align-items:center;padding:120px 0 100px;
+    position:relative
+  }
+  .hero-l{position:relative;z-index:1}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--dim);margin-bottom:32px;font-weight:500;
+  }
+  .eyebrow .dot{
+    display:inline-block;width:5px;height:5px;border-radius:50%;
+    background:var(--gold);margin-right:10px;vertical-align:middle;
+    animation:dotPulse 2.2s ease-in-out infinite
+  }
+  @keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  .hero-l h1{
+    font-family:'Inter',sans-serif;
+    font-size:clamp(46px,6.4vw,82px);
+    font-weight:900;
+    letter-spacing:-.045em;line-height:.96;
+    margin-bottom:30px;
+    color:var(--ink);
+  }
+  .hero-l h1 em{font-style:normal;color:var(--gold)}
+
+  .hero-l p.sub{
+    color:var(--soft);font-size:18px;line-height:1.55;
+    max-width:48ch;margin-bottom:40px;font-weight:400;
+  }
+
+  .hero-actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+
+  .bigcta{
+    background:var(--gold);color:#0c0d12;
+    border:none;border-radius:10px;
+    padding:18px 32px;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:16px;letter-spacing:-.005em;
+    cursor:pointer;transition:transform .18s,box-shadow .18s,background .18s;
+    min-height:54px;position:relative;overflow:hidden;
+  }
+  .bigcta::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.22) 50%,transparent 100%);
+    transform:translateX(-100%);transition:transform .5s ease;
+  }
+  .bigcta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 18px 40px -18px rgba(212,196,150,.55)}
+  .bigcta:hover::after{transform:translateX(100%)}
+
+  .hero-secondary{
+    background:none;border:0;padding:0;
+    font-family:inherit;font-size:14px;font-weight:500;
+    color:var(--dim);text-decoration:none;cursor:pointer;
+    transition:color .15s;border-bottom:1px solid transparent;
+    padding-bottom:2px;
+  }
+  .hero-secondary:hover{color:var(--ink);border-bottom-color:var(--quiet)}
+
+  .hero-note{
+    display:block;margin-top:16px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    color:var(--faint);letter-spacing:.04em;
+  }
+
+  .trust-bar{
+    display:flex;align-items:center;gap:0;margin-top:24px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--faint);flex-wrap:wrap;max-width:620px;
+  }
+  .trust-item{display:inline-flex;align-items:center;white-space:nowrap}
+  .trust-sep{margin:0 10px;color:var(--quiet)}
+  @media(max-width:860px){.trust-bar{justify-content:center;margin-top:20px}}
+
+  .hero-r{display:flex;justify-content:center;position:relative;z-index:1}
+
+  /* ─────────────────────────────────────────────────────
+     CRED STRIP — moved closer to hero, less ornate
+     ───────────────────────────────────────────────────── */
+  .cred{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    margin:0 0 100px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .cred-item{
+    padding:32px 24px;text-align:center;
+    border-right:1px solid var(--line);
+  }
+  .cred-item:last-child{border-right:none}
+  .cred-item .cn{
+    font-family:'Inter',sans-serif;font-weight:900;font-size:40px;line-height:1;
+    color:var(--ink);letter-spacing:-.03em;
+  }
+  .cred-item .cn .us{font-size:.55em;color:var(--dim);vertical-align:super;margin-left:1px}
+  .cred-item .cl{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--faint);margin-top:14px;
+  }
+
+  /* ─────────────────────────────────────────────────────
+     HOW-IT-WORKS — pulled back, simpler
+     ───────────────────────────────────────────────────── */
+  .how-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    max-width:900px;margin:0 auto 100px;
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:16px;overflow:hidden;
+  }
+  .how-strip-step{
+    padding:32px 32px;display:flex;align-items:flex-start;gap:20px;
+    position:relative
+  }
+  .how-strip-step+.how-strip-step::before{
+    content:'';position:absolute;left:0;top:24%;height:52%;width:1px;
+    background:var(--line2)
+  }
+  .how-strip-num{
+    font-family:'JetBrains Mono',monospace;font-weight:600;
+    font-size:11px;letter-spacing:.18em;color:var(--gold-deep);
+    flex-shrink:0;margin-top:5px;
+  }
+  .how-strip-title{
+    font-family:'Inter',sans-serif;font-size:16px;font-weight:700;
+    color:var(--ink);margin-bottom:6px;letter-spacing:-.012em;
+  }
+  .how-strip-desc{font-size:13.5px;color:var(--dim);line-height:1.5;font-weight:400}
+
+  /* setup note */
+  .setup{
+    max-width:780px;margin:0 auto 40px;
+    background:#1c1206;border:1px solid #4a3416;border-radius:10px;
+    padding:14px 18px;font-size:13px;color:#e3b765;line-height:1.5;
+  }
+  .setup b{color:var(--gold-bright)}
+
+  /* ─────────────────────────────────────────────────────
+     SECTIONS — generous spacing
+     ───────────────────────────────────────────────────── */
+  .sec{padding:24px 0 100px}
+  .sec-head{text-align:center;margin-bottom:56px;max-width:680px;margin-left:auto;margin-right:auto}
+  .sec-head .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:18px;font-weight:500;
+  }
+  .sec-head h2{
+    font-family:'Inter',sans-serif;
+    font-size:clamp(32px,4.2vw,50px);
+    font-weight:900;letter-spacing:-.035em;line-height:1.02;
+    color:var(--ink);
+  }
+  .sec-head h2 em{font-style:normal;color:var(--gold)}
+  .sec-head p{
+    color:var(--dim);font-size:16px;margin-top:18px;
+    max-width:54ch;margin-left:auto;margin-right:auto;
+    line-height:1.6;
+  }
+
+  /* ─────────────────────────────────────────────────────
+     VIEW TILES — calmer, gold removed from the letter
+     ───────────────────────────────────────────────────── */
+  .views{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+    max-width:980px;margin:0 auto 36px;
+  }
+  .vtile{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:28px 22px;cursor:pointer;
+    transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .22s,box-shadow .22s;
+    text-align:left;position:relative;overflow:hidden;
+    font-family:inherit;
+  }
+  .vtile:hover{border-color:var(--gold);transform:translateY(-3px);
+    box-shadow:0 18px 40px -22px rgba(212,196,150,.4)}
+  .vtile.done{
+    border-color:rgba(95,208,138,.3);
+    background:linear-gradient(160deg,#10180f,var(--surface));
+  }
+  .vtile .chk{
+    position:absolute;top:14px;right:14px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;
+    color:var(--green);display:none;
+  }
+  .vtile.done .chk{display:block}
+  .vtile .ic{
+    font-family:'Inter',sans-serif;font-weight:900;
+    font-size:38px;color:var(--soft);line-height:1;margin-bottom:14px;
+    letter-spacing:-.03em;
+  }
+  .vtile.done .ic{color:var(--green)}
+  .vtile .t{
+    font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px;
+    letter-spacing:-.012em;
+  }
+  .vtile .d{font-size:12.5px;color:var(--dim);line-height:1.45}
+
+  .vtile.pay-locked{opacity:.45;cursor:default}
+  .vtile.pay-locked:hover{transform:none;border-color:var(--line);box-shadow:none}
+  .vtile.pay-locked .lock-badge{display:flex}
+  .vtile.checking{opacity:.5;pointer-events:none;cursor:wait}
+  .lock-badge{
+    display:none;position:absolute;inset:0;
+    align-items:center;justify-content:center;
+    background:rgba(8,9,12,.55);backdrop-filter:blur(3px);border-radius:14px;
+  }
+  .lock-badge svg{width:26px;height:26px;stroke:var(--dim);stroke-width:1.8;fill:none}
+
+  /* ─────────────────────────────────────────────────────
+     OVERALL CARD — quieter container, grade itself is the moment
+     ───────────────────────────────────────────────────── */
+  .overall{
+    max-width:520px;margin:0 auto;
+    background:linear-gradient(155deg,#16191f,#0c0e13);
+    border:1px solid var(--line2);border-radius:18px;
+    padding:36px 32px;text-align:center;
+  }
+  .overall .lab{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.24em;
+    color:var(--faint);text-transform:uppercase;margin-bottom:14px;
+  }
+  .overall .g{
+    font-family:'Bebas Neue',sans-serif;font-size:96px;line-height:.88;
+    color:var(--gold);
+  }
+  .overall .g.locked{color:var(--quiet)}
+  .overall .sc{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim);
+    margin-top:6px;letter-spacing:.04em;
+  }
+  .overall .cta{font-size:14px;color:var(--dim);margin-top:14px;line-height:1.55}
+  .overall .cta b{color:var(--gold);font-weight:600}
+  .overall .seebtn{
+    margin-top:22px;background:var(--gold);color:#0c0d12;border:none;
+    border-radius:9px;padding:13px 26px;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:14px;
+    cursor:pointer;transition:background .15s;
+  }
+  .overall .seebtn:hover{background:var(--gold-bright)}
+
+  /* ─────────────────────────────────────────────────────
+     RESULT / ANALYSE WRAPPERS
+     ───────────────────────────────────────────────────── */
+  .result-wrap,.analyse-wrap{
+    min-height:78vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;padding:80px 0;
+  }
+  .card-area{width:100%;max-width:460px}
+
+  @keyframes sweep{0%,100%{background-position:0 0}50%{background-position:100% 100%}}
+  @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+  /* ─────────────────────────────────────────────────────
+     BUTTONS
+     ───────────────────────────────────────────────────── */
+  .btn{
+    display:block;width:100%;text-align:center;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:15px;
+    background:var(--gold);color:#0c0d12;border:none;
+    border-radius:11px;padding:15px;cursor:pointer;
+    transition:background .15s,transform .15s;margin:6px 0 8px;
+    letter-spacing:-.005em;
+  }
+  .btn:hover{background:var(--gold-bright)}
+  .btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--soft)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+  .btn.gold-btn{background:linear-gradient(135deg,var(--gold-bright),var(--gold-deep));color:#0c0d12}
+  .btn.gold-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+
+  /* ─────────────────────────────────────────────────────
+     SCANNER (analyse screen)
+     ───────────────────────────────────────────────────── */
+  .scanner{width:140px;height:140px;margin:0 auto 32px;position:relative}
+  .scanner .ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--line2)}
+  .scanner .ring.spin{border-top-color:var(--gold);animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .scanner .core{
+    position:absolute;inset:30px;border-radius:50%;
+    background:radial-gradient(circle,#1a1c24,#0c0d12);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .scanner .core span{
+    font-family:'Bebas Neue';font-size:36px;color:var(--gold);
+    animation:pulse 1.2s ease infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+  .analyse-status{
+    font-family:'JetBrains Mono',monospace;font-size:14px;
+    color:var(--soft);letter-spacing:.04em;min-height:20px;text-align:center;
+  }
+  .analyse-sub{
+    color:var(--faint);font-size:12px;margin-top:10px;
+    font-family:'JetBrains Mono',monospace;text-align:center;
+  }
+
+  /* ─────────────────────────────────────────────────────
+     REFUSE / ERROR
+     ───────────────────────────────────────────────────── */
+  .refuse{text-align:center;padding:34px 12px}
+  .refuse .big{
+    width:64px;height:64px;margin:0 auto 24px;border-radius:50%;
+    background:#241410;border:1px solid #4a2420;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .refuse .big svg{width:30px;height:30px;stroke:var(--red);stroke-width:1.8;fill:none}
+  .refuse h2{font-size:22px;font-weight:800;margin-bottom:12px;letter-spacing:-.02em}
+  .refuse p{color:var(--dim);font-size:14px;line-height:1.6;max-width:34ch;margin:0 auto}
+
+  /* ─────────────────────────────────────────────────────
+     FOOTER
+     ───────────────────────────────────────────────────── */
+  footer{
+    border-top:1px solid var(--line);padding:40px 48px;text-align:center;
+    color:var(--faint);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;
+  }
+  .foot-brand{
+    font-family:'Inter',sans-serif;font-weight:900;letter-spacing:.32em;
+    color:var(--soft);font-size:13px;margin-bottom:12px;
+  }
+  .footlink{
+    background:none;border:none;padding:0;font:inherit;color:inherit;
+    text-decoration:none;cursor:pointer;margin:0 12px;
+    transition:color .15s;
+  }
+  .footlink:hover{color:var(--gold)}
+
+  /* ─────────────────────────────────────────────────────
+     CALLOUT CARD — the centrepiece
+     ───────────────────────────────────────────────────── */
+  .vc{
+    width:100%;border-radius:22px;position:relative;overflow:hidden;margin-bottom:24px;
+    background:
+      linear-gradient(155deg,#171a22 0%,#0a0b10 50%,#0e1016 100%);
+    border:1px solid rgba(212,196,150,.16);
+    box-shadow:
+      0 0 0 1px rgba(212,196,150,.04),
+      0 36px 72px -24px rgba(0,0,0,.95),
+      inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  /* subtle sweep — restrained, only on the result card */
+  .vc::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+    background:linear-gradient(115deg,transparent 30%,rgba(212,196,150,.04) 47%,rgba(212,196,150,.1) 50%,rgba(212,196,150,.04) 53%,transparent 70%);
+    background-size:260% 260%;animation:sweep 11s ease-in-out infinite;
+  }
+  /* gold foil stripe — the only consistent gold accent on the card edge */
+  .vc-stripe{
+    position:absolute;top:0;left:0;right:0;height:2px;z-index:6;
+    background:linear-gradient(90deg,transparent 0%,var(--gold-deep) 18%,var(--gold-bright) 50%,var(--gold-deep) 82%,transparent 100%);
+  }
+  .vc.overall-vc{
+    box-shadow:
+      0 0 0 1px rgba(212,196,150,.1),
+      0 0 60px -14px rgba(212,196,150,.14),
+      0 36px 72px -24px rgba(0,0,0,.95),
+      inset 0 1px 0 rgba(255,255,255,.05);
+  }
+  .vc-photo{
+    position:absolute;top:0;left:0;right:0;height:62%;
+    background-size:cover;background-position:center 18%;
+    z-index:1;opacity:.4;
+    -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.32) 60%,transparent 100%);
+    mask-image:linear-gradient(180deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.32) 60%,transparent 100%);
+  }
+  .vc-inner{position:relative;z-index:3;padding:26px 24px 22px}
+
+  /* header */
+  .vc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .vc-brand-tag{
+    font-family:'Inter',sans-serif;font-weight:900;
+    font-size:11px;letter-spacing:.34em;color:var(--gold);
+  }
+  .vc-badge{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;
+    color:var(--faint);border:1px solid var(--line2);border-radius:20px;
+    padding:4px 10px;text-transform:uppercase;
+  }
+
+  /* grade hero — the moment */
+  .vc-grade-section{text-align:center;padding:14px 0 18px}
+  .vc-grade-letter{
+    font-family:'Bebas Neue';font-size:clamp(150px,44vw,196px);line-height:.8;
+    background:linear-gradient(180deg,#fff8d6 0%,#f5e09a 20%,#d4c496 52%,#b9923f 78%,#7a5c1e 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 36px rgba(212,196,150,.4)) drop-shadow(0 8px 24px rgba(0,0,0,.78));
+  }
+  .vc-grade-label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;
+    color:var(--soft);text-transform:uppercase;margin-top:10px;
+  }
+
+  /* three-stat strip */
+  .vc-strip{
+    display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;
+    border-top:1px solid rgba(212,196,150,.1);border-bottom:1px solid rgba(212,196,150,.1);
+    padding:16px 0;margin:0 0 20px;text-align:center;
+  }
+  .vc-strip-div{background:rgba(212,196,150,.1)}
+  .vc-strip-val{
+    font-family:'Bebas Neue';font-size:28px;line-height:1;color:var(--gold-bright);
+    letter-spacing:.02em;
+  }
+  .vc-strip-lbl{
+    font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--faint);margin-top:5px;
+  }
+
+  /* muscle rows */
+  .vc-section-title{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:14px;
+  }
+  .vc-muscle{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .vc-muscle-name{font-size:12px;font-weight:500;color:var(--soft);width:88px;flex-shrink:0}
+  .vc-muscle-track{
+    flex:1;height:5px;background:rgba(255,255,255,.04);
+    border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.05);
+  }
+  .vc-muscle-fill{
+    height:100%;border-radius:4px;
+    background:linear-gradient(90deg,var(--gold-deep),var(--gold-bright));
+    transform-origin:left;animation:grow 1s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .vc-muscle-val{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);
+    font-weight:600;width:22px;text-align:right;flex-shrink:0;
+  }
+  .vc-muscle-na .vc-muscle-name{color:var(--faint)}
+  .vc-muscle-na .vc-muscle-fill{
+    background:repeating-linear-gradient(45deg,#1d2029,#1d2029 4px,#23262f 4px,#23262f 8px);
+    width:100%!important;
+  }
+  .vc-muscle-na .vc-muscle-val{color:var(--faint);font-size:10px}
+
+  /* verdict */
+  .vc-verdict{
+    font-size:13px;color:var(--soft);line-height:1.6;font-style:italic;
+    border-top:1px solid rgba(255,255,255,.05);padding-top:14px;
+    margin-top:4px;margin-bottom:16px;
+  }
+  .vc-focus{
+    display:grid;grid-template-columns:1fr;gap:8px;
+    border-top:1px solid rgba(255,255,255,.05);
+    padding-top:14px;margin:4px 0 16px;
+  }
+  .vc-focus-row{display:grid;grid-template-columns:96px 1fr;gap:10px;font-size:12px;line-height:1.45}
+  .vc-focus-lbl{font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);font-size:10px}
+  .vc-focus-val{color:var(--soft)}
+
+  /* cap note */
+  .vc-cap{
+    background:#201a0c;border:1px solid #4a3d1c;border-radius:9px;
+    padding:11px 14px;margin-bottom:16px;font-size:12px;color:var(--gold);line-height:1.5;
+  }
+
+  /* footer */
+  .vc-footer{
+    display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid rgba(212,196,150,.08);padding-top:14px;
+  }
+  .vc-serial{
+    font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--faint);
+    letter-spacing:.08em;
+  }
+  .vc-certified{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;
+    color:var(--gold-deep);text-transform:uppercase;font-weight:600;
+  }
+
+  /* blur state — card pulses while gate is active */
+  .vc.blurred .vc-inner{filter:blur(14px);user-select:none;pointer-events:none}
+  .vc.blurred .vc-photo{filter:blur(5px)}
+  .vc.blurred{animation:cardBlurPulse 3s ease-in-out infinite}
+  @keyframes cardBlurPulse{
+    0%,100%{box-shadow:0 40px 80px -30px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.06)}
+    50%{box-shadow:0 40px 80px -30px rgba(0,0,0,.85),0 0 60px -10px rgba(212,196,150,.14),inset 0 1px 0 rgba(255,255,255,.06)}
+  }
+
+  /* ─────────────────────────────────────────────────────
+     EMAIL GATE
+     ───────────────────────────────────────────────────── */
+  .gate-overlay{
+    position:absolute;inset:0;z-index:20;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:32px 28px;text-align:center;
+    background:rgba(8,9,12,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-radius:22px;
+    animation:fadeIn .35s ease both;
+  }
+  .gate-grade-tease{
+    font-family:'Bebas Neue';font-size:120px;line-height:.85;
+    color:var(--gold);filter:blur(14px);opacity:.6;margin-bottom:0;
+    pointer-events:none;user-select:none;
+    animation:gradePulse 2.4s ease-in-out infinite;
+  }
+  @keyframes gradePulse{
+    0%,100%{opacity:.45;filter:blur(15px);text-shadow:none}
+    50%{opacity:.9;filter:blur(7px);text-shadow:0 0 60px rgba(212,196,150,.7),0 0 22px rgba(212,196,150,.4)}
+  }
+  .gate-ready-pill{
+    display:inline-flex;align-items:center;gap:7px;
+    background:rgba(212,196,150,.08);border:1px solid rgba(212,196,150,.2);
+    border-radius:20px;padding:6px 14px;margin-bottom:16px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--gold);font-weight:600;
+  }
+  .gate-ready-dot{
+    width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;
+    animation:dotPulseGate 1.4s ease-in-out infinite;
+  }
+  @keyframes dotPulseGate{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+  .gate-overlay h3{font-size:22px;font-weight:800;margin-bottom:10px;letter-spacing:-.02em}
+  .gate-overlay p{font-size:13.5px;color:var(--dim);line-height:1.55;max-width:30ch;margin-bottom:20px}
+  .gate-input{
+    width:100%;background:rgba(30,32,44,.85);border:1px solid var(--line2);border-radius:10px;
+    padding:14px 16px;font-family:'Inter',sans-serif;font-size:16px;color:var(--ink);
+    outline:none;transition:border-color .18s,background .18s;margin-bottom:10px;min-height:52px;
+  }
+  .gate-input:focus{border-color:var(--gold);background:rgba(38,40,54,.9)}
+  .gate-input::placeholder{color:var(--faint)}
+  .gate-input.err{border-color:var(--red);animation:shake .3s ease}
+  @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .gate-fine{
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);
+    margin-top:10px;letter-spacing:.04em;line-height:1.5;
+  }
+  .gate-fine a{color:var(--dim);text-decoration:underline;cursor:pointer}
+  .gate-fine a:hover{color:var(--gold)}
+
+  /* ─────────────────────────────────────────────────────
+     SHARE MOMENT
+     ───────────────────────────────────────────────────── */
+  .share-moment{
+    background:linear-gradient(155deg,#0f1a10,#09110a);
+    border:1px solid rgba(95,208,138,.22);border-radius:18px;
+    padding:24px 22px 20px;margin-bottom:14px;text-align:center;
+    animation:fadeIn .4s ease both;
+  }
+  .share-moment .sm-eye{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--green);margin-bottom:10px;font-weight:600;
+  }
+  .share-moment h3{font-size:18px;font-weight:800;letter-spacing:-.015em;margin-bottom:6px}
+  .share-moment p{font-size:13px;color:var(--dim);line-height:1.5;max-width:28ch;margin:0 auto 18px}
+  .share-moment .share-btn-big{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;background:#1a2e1c;border:1px solid rgba(95,208,138,.32);
+    color:var(--green);border-radius:11px;padding:14px;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;
+    transition:background .18s,border-color .18s,transform .18s;min-height:50px;
+  }
+  .share-moment .share-btn-big:hover{background:#213524;border-color:var(--green);transform:translateY(-1px)}
+  .share-moment .share-btn-big svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+  .share-moment .sm-skip{
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);
+    cursor:pointer;margin-top:12px;display:block;transition:color .12s;
+  }
+  .share-moment .sm-skip:hover{color:var(--dim)}
+
+  /* ─────────────────────────────────────────────────────
+     POST-PURCHASE CONFIRMATION
+     ───────────────────────────────────────────────────── */
+  .confirm-wrap{
+    min-height:82vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;padding:80px 0;
+  }
+  .confirm-card{
+    width:100%;max-width:460px;
+    background:linear-gradient(155deg,#14180f,#0a0d0b);
+    border:1px solid rgba(95,208,138,.25);border-radius:22px;
+    padding:42px 32px;text-align:center;
+  }
+  .confirm-icon{
+    width:58px;height:58px;border-radius:50%;
+    background:rgba(95,208,138,.1);border:1px solid rgba(95,208,138,.3);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
+  }
+  .confirm-icon svg{width:26px;height:26px;stroke:var(--green);stroke-width:2;fill:none}
+  .confirm-card h2{font-size:30px;font-weight:900;letter-spacing:-.025em;margin-bottom:10px}
+  .confirm-card .confirm-sub{
+    font-size:15px;color:var(--dim);line-height:1.55;
+    max-width:30ch;margin:0 auto 30px;
+  }
+  .confirm-angles{display:flex;flex-direction:column;gap:10px;margin-bottom:26px;text-align:left}
+  .confirm-angle-btn{
+    display:flex;align-items:center;gap:14px;
+    background:var(--surface);border:1px solid var(--line2);border-radius:12px;
+    padding:15px 18px;cursor:pointer;transition:border-color .18s,background .18s;width:100%;
+    font-family:inherit;
+  }
+  .confirm-angle-btn:hover{border-color:var(--gold-deep);background:var(--surface-raised)}
+  .confirm-angle-btn.done-angle{border-color:rgba(95,208,138,.25);background:#0e150f}
+  .confirm-angle-letter{
+    font-family:'Inter',sans-serif;font-weight:900;font-size:24px;
+    color:var(--soft);line-height:1;width:28px;flex-shrink:0;text-align:center;
+    letter-spacing:-.04em;
+  }
+  .confirm-angle-btn.done-angle .confirm-angle-letter{color:var(--green)}
+  .confirm-angle-info{flex:1;text-align:left}
+  .confirm-angle-name{font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .confirm-angle-desc{font-size:12px;color:var(--dim);margin-top:2px}
+  .confirm-angle-status{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;flex-shrink:0}
+  .confirm-angle-status.pending{color:var(--gold)}
+  .confirm-angle-status.done{color:var(--green)}
+
+  /* ─────────────────────────────────────────────────────
+     PROGRESS PLACEHOLDER
+     ───────────────────────────────────────────────────── */
+  .progress-wrap{
+    min-height:82vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;padding:80px 24px;text-align:center;
+  }
+  .progress-card{width:100%;max-width:460px}
+  .progress-lock-icon{
+    width:64px;height:64px;border-radius:50%;
+    background:linear-gradient(155deg,#1e1608,#110e05);
+    border:1px solid var(--gold-deep);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
+    box-shadow:0 0 32px -10px rgba(212,196,150,.22);
+  }
+  .progress-lock-icon svg{width:28px;height:28px;stroke:var(--gold);stroke-width:1.8;fill:none}
+  .progress-card .pr-eye{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold-deep);margin-bottom:12px;font-weight:600;
+  }
+  .progress-card h2{font-size:28px;font-weight:900;letter-spacing:-.025em;margin-bottom:12px;line-height:1.05}
+  .progress-card .pr-sub{font-size:14px;color:var(--dim);line-height:1.6;max-width:34ch;margin:0 auto 30px}
+
+  .pr-chart-preview{
+    background:var(--surface);border:1px solid var(--line2);border-radius:14px;
+    padding:20px;margin-bottom:24px;position:relative;overflow:hidden;
+  }
+  .pr-chart-preview::after{
+    content:'';position:absolute;inset:0;
+    background:rgba(8,9,12,.65);backdrop-filter:blur(5px);border-radius:14px;
+  }
+  .pr-chart-label{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:14px;text-align:left;
+  }
+  .pr-chart-bars{display:flex;align-items:flex-end;gap:8px;height:64px}
+  .pr-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--gold-deep),#5a3e1a);opacity:.5}
+  .pr-coming-badge{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold-deep));
+    color:#0c0d12;font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+    border-radius:20px;padding:8px 18px;white-space:nowrap;
+  }
+  .pr-feats{
+    list-style:none;display:flex;flex-direction:column;gap:10px;
+    margin-bottom:26px;text-align:left;
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+  }
+  .pr-feats li{font-size:13.5px;color:var(--dim);display:flex;align-items:center;gap:10px}
+  .pr-feats li::before{content:'○';color:var(--faint);font-size:10px;flex-shrink:0}
+
+  /* ─────────────────────────────────────────────────────
+     UPSELL PANEL
+     ───────────────────────────────────────────────────── */
+  .upsell{
+    background:linear-gradient(160deg,#1e1608,#0f0c14);
+    border:1px solid #5a4520;border-radius:18px;padding:28px 24px;
+    text-align:center;margin-bottom:12px;
+    animation:fadeIn .45s .1s ease both;
+  }
+  .upsell .us-eye{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold-deep);margin-bottom:12px;font-weight:600;
+  }
+  .upsell h3{font-size:21px;font-weight:900;letter-spacing:-.022em;margin-bottom:8px;line-height:1.15}
+  .upsell .us-p{font-size:13.5px;color:var(--dim);line-height:1.55;max-width:32ch;margin:0 auto 20px}
+  .upsell-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:22px;text-align:left}
+  .upsell-feats li{font-size:13px;color:var(--soft);display:flex;align-items:center;gap:10px}
+  .upsell-feats li::before{content:"✓";color:var(--gold);font-weight:700;flex-shrink:0}
+  .upsell-price{font-family:'Bebas Neue';font-size:54px;color:var(--gold);line-height:1}
+  .upsell-price-sub{
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);
+    letter-spacing:.1em;margin-bottom:18px;
+  }
+
+  /* share row */
+  .share-row{display:flex;gap:10px;margin:0 0 8px}
+  .share-row .btn{margin:0;flex:1;display:flex;align-items:center;justify-content:center;gap:8px}
+  .share-row .btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+
+  /* toast */
+  .toast{
+    position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(10px);
+    background:#1e2030;border:1px solid var(--line2);border-radius:11px;
+    padding:13px 22px;font-family:'JetBrains Mono',monospace;font-size:13px;
+    color:var(--gold);opacity:0;transition:opacity .25s,transform .25s;
+    pointer-events:none;z-index:10000;white-space:nowrap;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ─────────────────────────────────────────────────────
+     PRICING
+     ───────────────────────────────────────────────────── */
+  .pricing-free-line{
+    text-align:center;margin-bottom:28px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    color:var(--faint);letter-spacing:.08em;
+  }
+  .pricing-grid{
+    display:grid;grid-template-columns:1fr 1.08fr 1fr;gap:18px;
+    max-width:980px;margin:0 auto;align-items:stretch;
+  }
+  .pc{
+    border-radius:20px;padding:38px 32px;display:flex;flex-direction:column;
+    position:relative;overflow:hidden;
+  }
+  .pc-basic{background:var(--surface);border:1px solid var(--line2)}
+  .pc-pro{
+    background:linear-gradient(155deg,#1a1608 0%,#110e05 55%,#15120a 100%);
+    border:1px solid var(--gold-deep);
+    box-shadow:
+      0 0 0 1px rgba(212,196,150,.06),
+      0 28px 60px -20px rgba(212,196,150,.2),
+      0 0 80px -30px rgba(212,196,150,.08);
+  }
+  .pc-pro::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(115deg,transparent 30%,rgba(212,196,150,.05) 47%,rgba(212,196,150,.12) 50%,rgba(212,196,150,.05) 53%,transparent 70%);
+    background-size:250% 250%;animation:sweep 9s ease-in-out infinite;
+  }
+  .pc-pro::after{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent 0%,var(--gold-deep) 15%,var(--gold-bright) 50%,var(--gold-deep) 85%,transparent 100%);
+  }
+  .pc-lifetime{
+    background:linear-gradient(155deg,#16130a 0%,#0e0c07 55%,#121008 100%);
+    border:1px solid var(--gold);
+    box-shadow:0 0 0 1px rgba(212,196,150,.1),0 20px 48px -18px rgba(212,196,150,.14);
+  }
+  .pc-lifetime::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent 0%,var(--gold) 30%,var(--gold-bright) 50%,var(--gold) 70%,transparent 100%);
+  }
+  .pc-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:#0c0d12;background:var(--gold);
+    border-radius:20px;padding:5px 13px;margin-bottom:24px;align-self:flex-start;
+    font-weight:700;position:relative;z-index:1;
+  }
+  .pc-lifetime .pc-badge{
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+    color:#0a0800;
+  }
+  .pc-badge-spacer{height:36px;margin-bottom:24px}
+  .pc-name{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:12px;
+    position:relative;z-index:1;font-weight:600;
+  }
+  .pc-price{
+    font-family:'Bebas Neue';font-size:64px;line-height:.9;
+    color:var(--ink);margin-bottom:4px;position:relative;z-index:1;
+  }
+  .pc-pro .pc-price{
+    font-size:78px;
+    background:linear-gradient(180deg,#fceabb,#d4c496 40%,#b9923f 80%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 2px 8px rgba(212,196,150,.3));
+  }
+  .pc-lifetime .pc-price{
+    background:linear-gradient(180deg,#fceabb,#d4c496 40%,#b9923f 80%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .pc-period{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint);
+    letter-spacing:.08em;margin-bottom:6px;position:relative;z-index:1;
+  }
+  .pc-anchor{
+    font-size:12px;color:var(--gold-deep);font-weight:600;
+    margin-bottom:26px;position:relative;z-index:1;font-style:italic;min-height:18px;
+  }
+  .pc-basic .pc-anchor{visibility:hidden}
+  .pc-divider{height:1px;background:var(--line);margin-bottom:22px;position:relative;z-index:1}
+  .pc-pro .pc-divider{background:rgba(212,196,150,.18)}
+  .pc-lifetime .pc-divider{background:rgba(212,196,150,.14)}
+
+  .pc-feats{
+    list-style:none;display:flex;flex-direction:column;gap:12px;flex:1;
+    margin-bottom:30px;position:relative;z-index:1;
+  }
+  .pc-feats li{font-size:14px;color:var(--soft);display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+  .pc-feats li::before{content:'✓';font-weight:700;flex-shrink:0;margin-top:1px}
+  .pc-basic .pc-feats li::before{color:var(--dim)}
+  .pc-pro .pc-feats li::before{color:var(--gold)}
+  .pc-lifetime .pc-feats li::before{color:var(--gold-bright)}
+  .pc-feats li.pc-no{color:var(--faint)}
+  .pc-feats li.pc-no::before{content:'—';color:var(--faint)}
+
+  .pc-cta{
+    display:block;width:100%;text-align:center;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:-.005em;
+    border-radius:11px;padding:15px;cursor:pointer;
+    transition:transform .18s,background .18s,border-color .18s,color .18s,box-shadow .18s;
+    border:none;position:relative;z-index:1;
+  }
+  .pc-basic .pc-cta{background:transparent;border:1px solid var(--line2);color:var(--soft)}
+  .pc-basic .pc-cta:hover{border-color:var(--gold-deep);color:var(--gold)}
+  .pc-pro .pc-cta{
+    background:var(--gold);color:#0c0d12;
+    box-shadow:0 8px 24px -8px rgba(212,196,150,.45);
+    min-height:52px;font-size:16px;
+  }
+  .pc-pro .pc-cta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(212,196,150,.55)}
+  .pc-lifetime .pc-cta{
+    background:linear-gradient(135deg,#2a2010,#1e1808);
+    border:1px solid var(--gold);color:var(--gold);min-height:48px;
+  }
+  .pc-lifetime .pc-cta:hover{background:linear-gradient(135deg,#352a14,#26200c);color:var(--gold-bright);border-color:var(--gold-bright);transform:translateY(-1px)}
+
+  /* scan trust strip */
+  .scan-trust{
+    display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+    gap:6px 0;margin-top:20px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--faint);
+  }
+  .scan-trust-item{display:inline-flex;align-items:center;white-space:nowrap}
+  .scan-trust .lock{width:11px;height:11px;stroke:var(--gold-deep);stroke-width:2;fill:none;margin-right:6px;flex-shrink:0}
+  @media(max-width:640px){.scan-trust{flex-direction:column}.scan-trust .trust-sep{display:none}.scan-trust-item{white-space:normal;text-align:center}}
+
+  /* ─────────────────────────────────────────────────────
+     SAMPLE VERDICTS
+     ───────────────────────────────────────────────────── */
+  .vs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:980px;margin:0 auto}
+  .vs-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    padding:26px 24px 22px;position:relative;margin:0;overflow:hidden;
+  }
+  .vs-card::before{
+    content:'';position:absolute;top:0;left:24px;right:24px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold-deep),transparent);
+  }
+  .vs-tag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+    color:var(--gold-deep);margin-bottom:14px;font-weight:600;
+  }
+  .vs-card blockquote{
+    font-size:15px;line-height:1.65;color:var(--soft);font-style:italic;margin:0 0 16px;
+  }
+  .vs-card figcaption{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--faint);
+  }
+  @media(max-width:860px){.vs-grid{grid-template-columns:1fr;gap:12px;max-width:480px}}
+
+  /* ─────────────────────────────────────────────────────
+     DISTRIBUTION
+     ───────────────────────────────────────────────────── */
+  .dist{
+    max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:0;
+    background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    overflow:hidden;position:relative;
+  }
+  .dist::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,#f0d99a 0%,#d4c496 18%,#b9923f 36%,#7e8393 54%,#5d6273 72%,#3a3d4a 100%);
+  }
+  .distrow{
+    display:grid;grid-template-columns:56px 1fr 130px;align-items:center;gap:18px;
+    padding:16px 22px;border-bottom:1px solid var(--line);transition:background .15s;
+  }
+  .distrow:last-child{border-bottom:none}
+  .distrow:hover{background:rgba(255,255,255,.02)}
+  .distrow .dg{
+    font-family:'Bebas Neue';font-size:36px;text-align:center;line-height:1;padding-left:8px;
+  }
+  .distrow:nth-child(1) .dg{color:#f0d99a}
+  .distrow:nth-child(2) .dg{color:#d4c496}
+  .distrow:nth-child(3) .dg{color:#b9923f}
+  .distrow:nth-child(4) .dg{color:var(--dim)}
+  .distrow:nth-child(5) .dg{color:var(--faint)}
+  .distrow:nth-child(6) .dg{color:#3a3d4a;font-size:30px}
+  .distrow .dbar{
+    height:8px;background:#0e0f15;border:1px solid var(--line);
+    border-radius:5px;overflow:hidden;
+  }
+  .distrow .dbar span{display:block;height:100%;border-radius:5px}
+  .distrow:nth-child(1) .dbar span{background:linear-gradient(90deg,#b9923f,#f0d99a)}
+  .distrow:nth-child(2) .dbar span{background:linear-gradient(90deg,#8a6a26,#d4c496)}
+  .distrow:nth-child(3) .dbar span{background:linear-gradient(90deg,#6a4e1a,#b9923f)}
+  .distrow:nth-child(4) .dbar span{background:linear-gradient(90deg,#3a3d4a,#7e8393)}
+  .distrow:nth-child(5) .dbar span{background:linear-gradient(90deg,#2a2d3a,#5d6273)}
+  .distrow:nth-child(6) .dbar span{background:linear-gradient(90deg,#1a1c24,#3a3d4a)}
+  .distrow .dp{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);
+    letter-spacing:.06em;text-align:right;
+  }
+
+  .method-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
+    margin-top:38px;
+  }
+  .method-item{
+    border-top:1px solid var(--line2);
+    padding-top:18px;
+  }
+  .method-k{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:8px;
+  }
+  .method-item h3{
+    font-size:18px;line-height:1.2;letter-spacing:-.015em;
+    margin-bottom:8px;color:var(--ink);
+  }
+  .method-item p{
+    color:var(--soft);font-size:14px;line-height:1.65;
+  }
+  .method-note{
+    margin-top:28px;border:1px solid var(--line2);
+    padding:16px 18px;border-radius:8px;
+    color:var(--soft);font-size:14px;line-height:1.65;
+    background:rgba(255,255,255,.018);
+  }
+  @media(max-width:760px){.method-grid{grid-template-columns:1fr}}
+
+  /* ─────────────────────────────────────────────────────
+     FAQ
+     ───────────────────────────────────────────────────── */
+  .faq{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+  .faq-item{border-bottom:1px solid var(--line);padding:26px 0}
+  .faq-item:first-child{border-top:1px solid var(--line)}
+  .faq-q{
+    font-size:17px;font-weight:700;color:var(--ink);margin-bottom:10px;
+    letter-spacing:-.018em;
+  }
+  .faq-a{font-size:14.5px;color:var(--dim);line-height:1.65;max-width:58ch}
+
+  /* ─────────────────────────────────────────────────────
+     PRICING SCROLL-REVEAL
+     ───────────────────────────────────────────────────── */
+  .pc{
+    opacity:0;transform:translateY(28px);
+    transition:opacity .6s cubic-bezier(.2,.8,.2,1),transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .pc.in-view{opacity:1;transform:translateY(0)}
+  .pc-pro.in-view{transition-delay:.1s}
+  .pc-lifetime.in-view{transition-delay:.2s}
+  @media(prefers-reduced-motion:reduce){.pc{opacity:1;transform:none;transition:none}}
+
+  /* sample card entrance */
+  #sampleCard{
+    animation:cardEntrance .8s cubic-bezier(.18,.85,.22,1) .15s both;
+    display:block!important;
+  }
+  #sampleCard .vc-grade-letter{
+    background:none;
+    -webkit-text-fill-color:var(--dim);
+    filter:none;
+  }
+  #sampleCard .vc-focus{margin-bottom:14px}
+  #sampleCard .vc-focus-row{grid-template-columns:82px 1fr}
+  @keyframes cardEntrance{
+    from{opacity:0;transform:translateY(22px) scale(.97)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+  }
+
+  /* ─────────────────────────────────────────────────────
+     MODAL — privacy & terms
+     ───────────────────────────────────────────────────── */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:11000;
+    background:rgba(4,5,8,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    display:none;align-items:center;justify-content:center;padding:32px 20px;
+    animation:fadeIn .25s ease both;
+  }
+  .modal-overlay.open{display:flex}
+  .modal{
+    background:#0e1016;border:1px solid var(--line2);border-radius:18px;
+    max-width:680px;width:100%;max-height:88vh;
+    display:flex;flex-direction:column;overflow:hidden;
+    animation:modalRise .35s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes modalRise{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}
+  .modal-head{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 28px;border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .modal-eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
+    color:var(--gold);text-transform:uppercase;font-weight:600;
+  }
+  .modal-title{
+    font-family:'Inter',sans-serif;font-weight:900;font-size:22px;
+    letter-spacing:-.022em;color:var(--ink);margin-top:4px;
+  }
+  .modal-close{
+    background:none;border:1px solid var(--line2);border-radius:8px;
+    width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--dim);transition:border-color .15s,color .15s;
+    flex-shrink:0;
+  }
+  .modal-close:hover{border-color:var(--gold);color:var(--gold)}
+  .modal-close svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none}
+  .modal-body{
+    padding:24px 28px 32px;overflow-y:auto;flex:1;
+    color:var(--soft);font-size:14.5px;line-height:1.7;
+  }
+  .modal-body h3{
+    font-family:'Inter',sans-serif;font-weight:800;font-size:16px;
+    color:var(--ink);letter-spacing:-.012em;margin:24px 0 10px;
+  }
+  .modal-body h3:first-child{margin-top:0}
+  .modal-body p{margin-bottom:12px;color:var(--soft)}
+  .modal-body ul{margin:0 0 14px 22px;padding:0}
+  .modal-body li{margin-bottom:8px;color:var(--soft)}
+  .modal-body strong{color:var(--ink);font-weight:700}
+  .modal-body a{color:var(--gold);text-decoration:underline}
+  .modal-body a:hover{color:var(--gold-bright)}
+  .modal-body .last-updated{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    color:var(--faint);letter-spacing:.05em;margin-bottom:24px;
+  }
+  .recover-inline{
+    margin-top:10px;text-align:center;
+    font-size:13px;color:var(--dim);
+  }
+  .recover-link{
+    background:none;border:0;padding:0;
+    font:inherit;color:var(--gold);text-decoration:underline;
+    cursor:pointer;
+  }
+  .recover-link:hover{color:var(--gold-bright)}
+  .recovery-form{display:grid;gap:12px;margin-top:16px}
+  .recovery-input{
+    width:100%;border:1px solid var(--line2);border-radius:8px;
+    background:#090b10;color:var(--ink);padding:14px 14px;
+    font:inherit;font-size:15px;outline:none;
+  }
+  .recovery-input:focus{border-color:var(--gold)}
+  .recovery-status{min-height:22px;font-size:13px;color:var(--dim)}
+  .recovery-status.ok{color:var(--green)}
+  .recovery-status.err{color:var(--red)}
+
+  /* ─────────────────────────────────────────────────────
+     RESPONSIVE
+     ───────────────────────────────────────────────────── */
+  @media (max-width:1000px){
+    .hero{gap:48px}
+    .wrap{padding:0 36px}
+  }
+  @media (max-width:860px){
+    .nav{padding:14px 22px}.nav .links{gap:18px}
+    .nav .links .navlink:not(.navcta){display:none}
+    .wrap{padding:0 22px}
+    .hero{
+      grid-template-columns:1fr;gap:44px;
+      padding:72px 0 60px;text-align:center;
+    }
+    .eyebrow{margin-bottom:24px}
+    .hero-l h1{font-size:clamp(38px,9vw,58px);margin-bottom:22px}
+    .hero-l p.sub{margin-left:auto;margin-right:auto;margin-bottom:32px;font-size:16.5px}
+    .hero-actions{justify-content:center;flex-direction:column;align-items:stretch;gap:14px}
+    .hero-secondary{text-align:center}
+    .bigcta{width:100%;min-height:58px;font-size:17px;border-radius:13px}
+    .cred{grid-template-columns:1fr 1fr;margin-bottom:64px}
+    .cred-item{border-bottom:1px solid var(--line)}
+    .cred-item:nth-child(odd){border-right:1px solid var(--line)}
+    .cred-item:nth-child(even){border-right:none}
+    .cred-item:nth-child(3),.cred-item:nth-child(4){border-bottom:none}
+    .views{grid-template-columns:1fr 1fr;gap:12px;max-width:none}
+    .vtile{padding:22px 18px}.vtile .ic{font-size:32px}
+    .how-strip{grid-template-columns:1fr;border-radius:14px;margin-bottom:64px}
+    .how-strip-step+.how-strip-step::before{left:20%;top:0;height:1px;width:60%;background:var(--line2)}
+    .how-strip-step{padding:20px 22px}
+    .pc{padding:30px 26px}
+    .pricing-free-line{font-size:11px}
+    .distrow{grid-template-columns:48px 1fr 100px;gap:12px;padding:14px 16px}
+    .sec{padding:16px 0 72px}
+    .sec-head{margin-bottom:42px}
+    .sec-head h2{font-size:30px}
+  }
+  @media (max-width:639px){
+    .pricing-grid{grid-template-columns:1fr;max-width:420px}
+    .nav{padding:14px 18px}
+  }
+  @media (max-width:480px){
+    .views{grid-template-columns:1fr 1fr}
+    .bigcta{width:100%;min-height:60px;font-size:17px;padding:17px 22px}
+    .hero{padding:52px 0 44px;gap:36px}
+    .hero-l h1{font-size:clamp(36px,11vw,52px);line-height:.98}
+    .hero-l p.sub{font-size:15.5px;margin-bottom:28px}
+    .sec-head h2{font-size:26px}
+    .cred-item{padding:24px 14px}
+    .cred-item .cn{font-size:34px}
+    .cred-item .cl{font-size:9px;margin-top:10px}
+    .modal{border-radius:14px}
+    .modal-head{padding:18px 22px}
+    .modal-body{padding:20px 22px 28px;font-size:14px}
+    .modal-title{font-size:19px}
+    footer{padding:32px 22px}
+  }
+  @media (max-width:375px){
+    .wrap{padding:0 18px}
+    .how-strip{border-radius:12px;margin-bottom:48px}
+    .how-strip-step{padding:18px 18px;gap:14px}
+    .how-strip-title{font-size:15px}
+    .how-strip-desc{font-size:12.5px}
+    .pc{padding:26px 20px}
+    .pc-price{font-size:54px}
+    .pc-feats li{font-size:13px}
+    .pc-cta{font-size:14px}
+    .nav .brand{font-size:13px;letter-spacing:.24em}
+  }
+
+  /* keyboard focus everywhere */
+  button:focus-visible,a:focus-visible,input:focus-visible{
+    outline:2px solid var(--gold);outline-offset:3px;border-radius:6px;
+  }
+
+  /* ─────────────────────────────────────────────────────
+     REVEAL ANIMATION SYSTEM
+     All timings controlled via CSS custom properties
+     ───────────────────────────────────────────────────── */
+  :root{
+    --ra-brand-delay:   0.30s;   /* 1: black silence */
+    --ra-brand-dur:     0.40s;   /* 2: brand tag fade in */
+    --ra-scan-delay:    0.85s;   /* 3: scan line starts */
+    --ra-scan-dur:      0.60s;
+    --ra-grade-delay:   1.60s;   /* 4: grade slam */
+    --ra-grade-dur:     0.28s;
+    --ra-label-delay:   1.90s;   /* 5: grade label */
+    --ra-label-dur:     0.22s;
+    --ra-strip-delay:   2.16s;   /* 6: score strip */
+    --ra-strip-dur:     0.30s;
+    --ra-muscles-delay: 2.52s;   /* 7: muscle bars (JS staggers from here) */
+    --ra-footer-delay:  3.60s;   /* 8: footer (adjusted by JS after bars done) */
+    --ra-footer-dur:    0.22s;
+    --ra-share-delay:   3.90s;   /* 9: share pulse */
+  }
+
+  /* --- Overlay: keeps everything invisible until animation fires --- */
+  .ra-hidden { opacity: 0 !important; }
+  .ra-hidden * { animation-play-state: paused !important; }
+
+  /* --- Phase 1 & 2: brand tag fade in --- */
+  @keyframes ra-brand-in {
+    from { opacity:0; letter-spacing:.5em; }
+    to   { opacity:1; letter-spacing:.34em; }
+  }
+  .ra-brand-animate .vc-brand-tag {
+    animation: ra-brand-in var(--ra-brand-dur) cubic-bezier(.16,.84,.2,1)
+               var(--ra-brand-delay) both;
+  }
+
+  /* --- Phase 3: scan line --- */
+  .vc-scan-line {
+    position: absolute;
+    left: -4px; right: -4px;
+    height: 3px;
+    z-index: 20;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(212,196,150,.18) 10%,
+      rgba(240,217,154,.72) 35%,
+      rgba(255,248,214,.95) 50%,
+      rgba(240,217,154,.72) 65%,
+      rgba(212,196,150,.18) 90%,
+      transparent 100%
+    );
+    box-shadow:
+      0 0 12px 4px rgba(240,217,154,.35),
+      0 0 28px 10px rgba(212,196,150,.18);
+    opacity: 0;
+    top: 0;
+  }
+  /* glow wash beneath the scan line */
+  .vc-scan-line::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 80px;
+    top: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(212,196,150,.08) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+  @keyframes ra-scanline {
+    0%   { top: 0;    opacity: 0; }
+    6%   { opacity: 1; }
+    94%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+  .ra-scanning .vc-scan-line {
+    animation: ra-scanline var(--ra-scan-dur) cubic-bezier(.42,0,.58,1)
+               var(--ra-scan-delay) both;
+  }
+
+  /* --- Phase 4: grade letter slam --- */
+  @keyframes ra-grade-slam {
+    0%   { opacity:0; transform: scale(2.4); filter: blur(8px) drop-shadow(0 0 60px rgba(240,217,154,.9)); }
+    55%  { opacity:1; transform: scale(.94); filter: blur(0) drop-shadow(0 0 36px rgba(212,196,150,.4)) drop-shadow(0 8px 24px rgba(0,0,0,.78)); }
+    70%  { transform: scale(1.04) translateX(-3px); }
+    80%  { transform: scale(.98) translateX(2px); }
+    90%  { transform: scale(1.01) translateX(-1px); }
+    100% { transform: scale(1)   translateX(0); }
+  }
+  .ra-grade-animate .vc-grade-letter {
+    animation: ra-grade-slam var(--ra-grade-dur) cubic-bezier(.2,0,.1,1)
+               var(--ra-grade-delay) both;
+  }
+
+  /* --- Phase 5: grade label fade up --- */
+  @keyframes ra-fade-up {
+    from { opacity:0; transform: translateY(10px); }
+    to   { opacity:1; transform: none; }
+  }
+  .ra-label-animate .vc-grade-label {
+    animation: ra-fade-up var(--ra-label-dur) ease
+               var(--ra-label-delay) both;
+  }
+
+  /* --- Phase 6: score strip slide up --- */
+  @keyframes ra-strip-in {
+    from { opacity:0; transform: translateY(16px); }
+    to   { opacity:1; transform: none; }
+  }
+  .ra-strip-animate .vc-strip {
+    animation: ra-strip-in var(--ra-strip-dur) cubic-bezier(.2,.8,.2,1)
+               var(--ra-strip-delay) both;
+  }
+
+  /* --- Phase 7: muscle bars — controlled by JS inline delay + this keyframe --- */
+  @keyframes ra-bar-in {
+    from { opacity:0; transform: translateX(-8px); }
+    to   { opacity:1; transform: none; }
+  }
+  /* bars start invisible; JS adds ra-bar-ready class + inline delay */
+  .ra-bars-init .vc-muscle {
+    opacity: 0;
+  }
+  .ra-bars-init .vc-muscle.ra-bar-ready {
+    animation: ra-bar-in 0.28s cubic-bezier(.2,.8,.2,1) both;
+  }
+  /* prevent the existing grow animation on vc-muscle-fill from running before bar is visible */
+  .ra-bars-init .vc-muscle:not(.ra-bar-ready) .vc-muscle-fill {
+    animation-play-state: paused !important;
+    transform: scaleX(0);
+    width: 0 !important;
+  }
+
+  /* --- Phase 8: footer fade in --- */
+  .ra-footer-animate .vc-footer,
+  .ra-footer-animate .vc-section-title,
+  .ra-footer-animate .vc-cap {
+    animation: ra-fade-up 0.22s ease both;
+    /* delay set inline by JS */
+  }
+
+  /* --- Phase 9: share button pulse after animation --- */
+  @keyframes ra-share-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(212,196,150,.0); transform: scale(1); }
+    30%  { box-shadow: 0 0 0 8px rgba(212,196,150,.28); transform: scale(1.04); }
+    60%  { box-shadow: 0 0 0 16px rgba(212,196,150,.0); transform: scale(.98); }
+    100% { box-shadow: 0 0 0 0 rgba(212,196,150,.0); transform: scale(1); }
+  }
+  .ra-share-pulse {
+    animation: ra-share-pulse 0.7s cubic-bezier(.2,.8,.2,1) both !important;
+  }
+
+  /* --- Badge fade in with brand --- */
+  .ra-brand-animate .vc-badge {
+    animation: ra-fade-up 0.3s ease calc(var(--ra-brand-delay) + 0.15s) both;
+  }
+
+  /* --- Cap warning fade with strip --- */
+  .ra-strip-animate .vc-cap {
+    animation: ra-strip-in var(--ra-strip-dur) cubic-bezier(.2,.8,.2,1)
+               calc(var(--ra-strip-delay) + 0.08s) both;
+  }
+  .ra-strip-animate .vc-section-title {
+    animation: ra-strip-in 0.22s ease
+               calc(var(--ra-strip-delay) + 0.14s) both;
+  }
+
+  /* Screen-level dimmer while animation plays — isolates the card cinematically */
+  .ra-cinematic-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(8,9,12,.75);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .ra-cinematic-bg.ra-dim { opacity: 1; }
+  .ra-cinematic-bg.ra-undim { opacity: 0; transition: opacity 1.2s ease 0.4s; }
+</style>
+</head>
+<body>
+  <div id="grain" aria-hidden="true"></div>
+  <div id="spotlight" aria-hidden="true"></div>
+  <input type="file" id="filein" accept="image/*" style="display:none">
+  <div class="toast" id="toast"></div>
+
+  <nav class="nav">
+    <div class="brand">CALLOUT</div>
+    <div class="links">
+      <button class="navlink" onclick="goHome('howStrip')">How it works</button>
+      <button class="navlink" onclick="goHome('pricingSection')">Pricing</button>
+      <button class="navlink navcta" onclick="goHome('scanSection')">Get called out</button>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <section class="screen active" id="screen-home">
+    <div class="wrap">
+
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-l">
+          <div class="eyebrow r" style="animation-delay:.05s">
+            <span class="dot"></span>AI VISUAL PHYSIQUE AUDIT
+          </div>
+          <h1 class="r" style="animation-delay:.15s">Find the <em>weak point</em><br>your mirror lets you ignore.</h1>
+          <p class="sub r" style="animation-delay:.28s">Upload one photo for an S–E visual grade, muscle-by-muscle scores, a conditioning note, and the area dragging your physique down. First scan free. No flattery.</p>
+          <div class="hero-actions r" style="animation-delay:.4s">
+            <button class="bigcta" onclick="document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Grade my physique</button>
+            <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">See a sample result</button>
+          </div>
+          <div class="trust-bar r" style="animation-delay:.52s" aria-label="Trust signals">
+            <span class="trust-item">First scan free</span>
+            <span class="trust-sep">·</span>
+            <span class="trust-item">No card required</span>
+            <span class="trust-sep">·</span>
+            <span class="trust-item">Photo processed for grading, not stored</span>
+            <span class="trust-sep">·</span>
+            <span class="trust-item">Visual assessment only, not medical advice</span>
+          </div>
+        </div>
+
+        <div class="hero-r r" style="animation-delay:.5s">
+          <div class="card-area">
+            <!-- Sample card — sets the visual standard for what users will get -->
+            <div class="vc" id="sampleCard">
+              <div class="vc-stripe"></div>
+              <div class="vc-inner">
+                <div class="vc-header">
+                  <span class="vc-brand-tag">CALLOUT</span>
+                  <span class="vc-badge">SAMPLE RESULT</span>
+                </div>
+                <div class="vc-grade-section">
+                  <div class="vc-grade-letter">C</div>
+                  <div class="vc-grade-label">Developing Lifter</div>
+                </div>
+                <div class="vc-strip">
+                  <div><div class="vc-strip-val">55/100</div><div class="vc-strip-lbl">Score</div></div>
+                  <div class="vc-strip-div"></div>
+                  <div><div class="vc-strip-val">C</div><div class="vc-strip-lbl">Grade</div></div>
+                  <div class="vc-strip-div"></div>
+                  <div><div class="vc-strip-val">Front</div><div class="vc-strip-lbl">View</div></div>
+                </div>
+                <div class="vc-section-title">Breakdown — Front view</div>
+                <div class="vc-muscle">
+                  <span class="vc-muscle-name">Shoulders</span>
+                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:60%;animation-delay:.1s"></div></div>
+                  <span class="vc-muscle-val">60</span>
+                </div>
+                <div class="vc-muscle">
+                  <span class="vc-muscle-name">Chest</span>
+                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:46%;animation-delay:.17s"></div></div>
+                  <span class="vc-muscle-val">46</span>
+                </div>
+                <div class="vc-muscle">
+                  <span class="vc-muscle-name">Conditioning</span>
+                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:50%;animation-delay:.24s"></div></div>
+                  <span class="vc-muscle-val">50</span>
+                </div>
+                <div class="vc-focus">
+                  <div class="vc-focus-row"><span class="vc-focus-lbl">Strongest</span><span class="vc-focus-val">Shoulders</span></div>
+                  <div class="vc-focus-row"><span class="vc-focus-lbl">Weakest</span><span class="vc-focus-val">Chest thickness + conditioning</span></div>
+                  <div class="vc-focus-row"><span class="vc-focus-lbl">Next</span><span class="vc-focus-val">Add chest volume or cut until the torso stops hiding.</span></div>
+                </div>
+                <div class="vc-footer">
+                  <span class="vc-serial">CO-SAMPLE-2026</span>
+                  <span class="vc-certified">AI ESTIMATE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="setup" id="setupNote" style="display:none"></div>
+
+      <!-- CRED STRIP -->
+      <div class="cred r" style="animation-delay:.55s">
+        <div class="cred-item"><div class="cn">10</div><div class="cl">Visible areas assessed</div></div>
+        <div class="cred-item"><div class="cn">4</div><div class="cl">Angles, no hiding</div></div>
+        <div class="cred-item"><div class="cn">S–E</div><div class="cl">Direct visual rating</div></div>
+        <div class="cred-item"><div class="cn">18+</div><div class="cl">Adults only</div></div>
+      </div>
+
+      <!-- HOW IT WORKS -->
+      <div class="how-strip r" id="howStrip" style="animation-delay:.6s">
+        <div class="how-strip-step">
+          <div class="how-strip-num">01</div>
+          <div>
+            <div class="how-strip-title">Drop a photo</div>
+            <div class="how-strip-desc">Front, back, legs, or arms. Any angle. One photo to start.</div>
+          </div>
+        </div>
+        <div class="how-strip-step">
+          <div class="how-strip-num">02</div>
+          <div>
+            <div class="how-strip-title">The AI calls it</div>
+            <div class="how-strip-desc">S to E. Same standard prompt each time, with photo quality clearly affecting the result.</div>
+          </div>
+        </div>
+        <div class="how-strip-step">
+          <div class="how-strip-num">03</div>
+          <div>
+            <div class="how-strip-title">Email to unlock</div>
+            <div class="how-strip-desc">Your one-angle grade and visible muscle notes. Free.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCAN SECTION -->
+      <section class="sec" id="scanSection">
+        <div class="sec-head">
+          <div class="eyebrow">Get graded</div>
+          <h2>Pick an angle. Get called out.</h2>
+          <p>First scan is free. A Full Body Audit unlocks all four angles; Pro is for rescans and progress tracking.</p>
+          <div class="scan-trust">
+            <span class="scan-trust-item"><svg viewBox="0 0 24 24" class="lock" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Photo processed for the scan, not stored by CALLOUT, not used by CALLOUT for training</span>
+            <span class="trust-sep">·</span>
+            <span class="scan-trust-item">Good light, plain background, shorts on</span>
+          </div>
+        </div>
+        <div class="views" id="viewGrid"></div>
+        <div class="overall">
+          <div class="lab">Overall Grade</div>
+          <div class="g locked" id="ov-grade">—</div>
+          <div class="sc" id="ov-score"></div>
+          <div class="cta" id="ov-cta">Scan an angle to start building your grade.</div>
+          <button class="seebtn" id="ov-see" style="display:none" onclick="showOverall()">See full breakdown →</button>
+        </div>
+      </section>
+
+      <!-- SCALE SECTION -->
+      <section class="sec" id="scaleSection">
+        <div class="sec-head">
+          <h2>A hard grade should<br>feel <em>useful</em>.</h2>
+          <p>CALLOUT is intentionally direct, but it is still an AI interpretation of a photo. Results can vary with lighting, pose, pump, camera angle, and body fat.</p>
+        </div>
+        <div class="dist">
+          <div class="distrow"><span class="dg">S</span><div class="dbar"><span style="width:7%"></span></div><span class="dp">exceptional visual development</span></div>
+          <div class="distrow"><span class="dg">A</span><div class="dbar"><span style="width:14%"></span></div><span class="dp">advanced visual development</span></div>
+          <div class="distrow"><span class="dg">B</span><div class="dbar"><span style="width:34%"></span></div><span class="dp">strong visible base</span></div>
+          <div class="distrow"><span class="dg">C</span><div class="dbar"><span style="width:72%"></span></div><span class="dp">developing and trainable</span></div>
+          <div class="distrow"><span class="dg">D</span><div class="dbar"><span style="width:16%"></span></div><span class="dp">early stage</span></div>
+          <div class="distrow"><span class="dg">E</span><div class="dbar"><span style="width:8%"></span></div><span class="dp">just starting</span></div>
+        </div>
+      </section>
+
+      <!-- SAMPLE VERDICTS -->
+      <section class="sec" id="verdictSection" style="padding-top:0">
+        <div class="sec-head">
+          <div class="eyebrow">Sample callouts</div>
+          <h2>This is the tone. Read it.</h2>
+          <p>If you want encouragement, ask a friend. If you want the truth, read what CALLOUT actually writes.</p>
+        </div>
+        <div class="vs-grid">
+          <figure class="vs-card">
+            <div class="vs-tag">FRONT · GRADED C</div>
+            <blockquote>"Shoulders carry this photo. Chest is less visible from this angle, so the torso read is cautious. The gap is the work."</blockquote>
+            <figcaption>Sample output</figcaption>
+          </figure>
+          <figure class="vs-card">
+            <div class="vs-tag">BACK · GRADED B</div>
+            <blockquote>"Width is real, thickness isn't. Lats flare, mid-back disappears. Rows are being skipped or rushed."</blockquote>
+            <figcaption>Sample output</figcaption>
+          </figure>
+          <figure class="vs-card">
+            <div class="vs-tag">LEGS · GRADED D</div>
+            <blockquote>"Quads say you train legs occasionally. Calves say you don't. Nothing here matches the arms in your front scan."</blockquote>
+            <figcaption>Sample output</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- METHODOLOGY -->
+      <section class="sec" id="methodSection" style="padding-top:0">
+        <div class="sec-head">
+          <div class="eyebrow">Method</div>
+          <h2>What CALLOUT can<br>and can't judge.</h2>
+          <p>It grades what the photo gives it. No secret dataset flex, no fake lab coat, no pretending a single upload knows your whole training history.</p>
+        </div>
+        <div class="method-grid">
+          <div class="method-item">
+            <div class="method-k">01 · Development</div>
+            <h3>Visible muscle development</h3>
+            <p>CALLOUT looks for visible size, shape, separation, and how much trained tissue is actually readable in the image. If a muscle is hidden, it should not get a confident score.</p>
+          </div>
+          <div class="method-item">
+            <div class="method-k">02 · Shape</div>
+            <h3>Proportion and symmetry</h3>
+            <p>It compares what is visible across the frame: upper to lower, front to back, left to right, and whether one area is carrying the whole photo while another is lagging.</p>
+          </div>
+          <div class="method-item">
+            <div class="method-k">03 · Conditioning</div>
+            <h3>Conditioning, not diagnosis</h3>
+            <p>Leanness, definition, and softness affect the read. Body fat is shown only as a rough visual estimate, not a body composition measurement and not medical truth.</p>
+          </div>
+          <div class="method-item">
+            <div class="method-k">04 · Readability</div>
+            <h3>Photo quality limits</h3>
+            <p>Lighting, pose, pump, camera angle, cropping, blur, clothing, and body fat can all change the result. Bad inputs get a bad read, or no read at all.</p>
+          </div>
+        </div>
+        <div class="method-note">
+          Percentile-style language in CALLOUT is a visual percentile estimate: a blunt way to describe how the photo reads, not a hard statistical rank from an audited population study. Treat the output as directional feedback, then go lift.
+        </div>
+      </section>
+
+      <!-- PRICING -->
+      <section class="sec" id="pricingSection">
+        <div class="sec-head">
+          <div class="eyebrow">Pricing</div>
+          <h2>Start free. Unlock the full audit for £5.99.</h2>
+          <p>The main offer is the one-time Full Body Audit. Pro is for people who want rescans and progress tracking over time.</p>
+        </div>
+
+        <div class="pricing-free-line">First scan free — no card required.</div>
+        <div class="recover-inline"><button class="recover-link" onclick="openRecoveryModal()">Already paid?</button></div>
+
+        <div class="pricing-grid">
+
+          <!-- LEFT — Full Body Scan · £5.99 one-time -->
+          <div class="pc pc-basic">
+            <div class="pc-badge">Main offer</div>
+            <div class="pc-name">Full Body Scan</div>
+            <div class="pc-price">£5.99</div>
+            <div class="pc-period">one-time</div>
+            <div class="pc-anchor">Unlocks the full four-angle audit.</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-feats">
+              <li>All 4 angles graded</li>
+              <li>Full muscle breakdown</li>
+              <li>Uncapped overall grade</li>
+              <li class="pc-no">No monthly tracking</li>
+              <li class="pc-no">No progress history</li>
+            </ul>
+            <button class="pc-cta" onclick="handlePurchase('scan')">Unlock Full Body Audit</button>
+          </div>
+
+          <!-- MIDDLE — CALLOUT Pro · £9.99/month -->
+          <div class="pc pc-pro">
+            <div class="pc-badge">Progress tracking</div>
+            <div class="pc-name">CALLOUT Pro</div>
+            <div class="pc-price">£9.99</div>
+            <div class="pc-period">per month</div>
+            <div class="pc-anchor">Cancel anytime · £0.33/day</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-feats">
+              <li>Unlimited rescans</li>
+              <li>All 4 angles graded</li>
+              <li>Full muscle-by-muscle breakdown</li>
+              <li>Re-grade after every cut, bulk, or PR</li>
+              <li>Progress tracking as it ships</li>
+            </ul>
+            <button class="pc-cta" onclick="handlePurchase('pro')">Go Pro — unlimited scans</button>
+          </div>
+
+          <!-- RIGHT — Pro Lifetime · £29.99 one-time -->
+          <div class="pc pc-lifetime">
+            <div class="pc-badge">Early access</div>
+            <div class="pc-name">Lifetime</div>
+            <div class="pc-price">£29.99</div>
+            <div class="pc-period">one-time</div>
+            <div class="pc-anchor">Early-access lifetime pricing while the product is young.</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-feats">
+              <li>Everything in Pro</li>
+              <li>Unlimited scans, forever</li>
+              <li>Future CALLOUT features included while available</li>
+              <li>One payment, no renewal</li>
+            </ul>
+            <button class="pc-cta" onclick="handlePurchase('lifetime')">Get lifetime access</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="sec" id="faqSection" style="padding-top:0">
+        <div class="sec-head">
+          <div class="eyebrow">Questions</div>
+          <h2>Straight answers.</h2>
+        </div>
+        <div class="faq">
+          <div class="faq-item">
+            <div class="faq-q">Is the free scan really free?</div>
+            <div class="faq-a">Yes. One angle, fully graded, no card required. Just an email to reveal the result.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Why do you need my email?</div>
+            <div class="faq-a">So your result stays yours. That's it. No spam, unsubscribe in one tap.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What photo works best?</div>
+            <div class="faq-a">Good light, plain background, shorts, full region in frame. A phone camera is fine. Bad photos get refused — they don't get graded generously.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I cancel anytime?</div>
+            <div class="faq-a">Yes. No contracts, no questions.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">How accurate is the grading?</div>
+            <div class="faq-a">CALLOUT uses an AI vision model to estimate visible muscle development from the photo you upload. It is not a medical tool, a DEXA scan, or a body-composition measurement.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What happens to my photo?</div>
+            <div class="faq-a">It is sent to the AI provider for the scan and is not stored by CALLOUT. We do not use your photos to train CALLOUT. The provider may process the image under its own terms to return the result.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Does it work for women?</div>
+            <div class="faq-a">It can assess adult physiques of any gender from photos, but results depend heavily on pose, lighting, clothing, and what is visible. Treat it as directional feedback, not a definitive ranking.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What does a C grade actually mean?</div>
+            <div class="faq-a">C means the photo shows a visible training base, but also obvious work left. It does not mean you're impressive from every angle — that's B and above. It's an honest baseline, not an insult.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Does CALLOUT only grade natural lifters?</div>
+            <div class="faq-a">No. CALLOUT only sees the photo. It cannot detect substance use, training history, injuries, or health status.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">How is this different from asking a PT or posting on Reddit?</div>
+            <div class="faq-a">A coach can understand context and help you plan. CALLOUT is faster and more direct: it gives a consistent AI read of the photo, with the limits of photo-based AI clearly stated.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ANALYSING -->
+  <section class="screen" id="screen-analyse">
+    <div class="wrap"><div class="analyse-wrap">
+      <div class="scanner"><div class="ring"></div><div class="ring spin"></div><div class="core"><span id="scanLetter">F</span></div></div>
+      <div class="analyse-status" id="aStatus">reading image…</div>
+      <div class="analyse-sub" id="aSub">grading</div>
+    </div></div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="screen-result">
+    <div class="wrap"><div class="result-wrap"><div class="card-area">
+      <div id="resultBody"></div>
+      <button class="btn" id="resPrimary" onclick="show('screen-home')">← Back to scans</button>
+    </div></div></div>
+  </section>
+
+  <!-- OVERALL -->
+  <section class="screen" id="screen-overall">
+    <div class="wrap"><div class="result-wrap"><div class="card-area">
+      <div id="overallBody"></div>
+      <button class="btn ghost" id="overallBack" onclick="show('screen-home')">← Back</button>
+    </div></div></div>
+  </section>
+
+  <!-- POST-PURCHASE CONFIRMATION -->
+  <section class="screen" id="screen-confirm">
+    <div class="wrap"><div class="confirm-wrap"><div class="confirm-card" id="confirmBody">
+      <div class="confirm-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>You're in.</h2>
+      <p class="confirm-sub">Scan your remaining angles. Get the full callout.</p>
+      <div class="confirm-angles" id="confirmAngles"></div>
+      <button class="btn ghost" style="margin-top:4px" onclick="show('screen-home')">← Back to home</button>
+    </div></div></div>
+  </section>
+
+  <!-- PROGRESS PLACEHOLDER -->
+  <section class="screen" id="screen-progress">
+    <div class="wrap"><div class="progress-wrap"><div class="progress-card">
+      <div class="progress-lock-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="pr-eye">Coming soon</div>
+      <h2>Track your progress<br>month by month.</h2>
+      <p class="pr-sub">Monthly score tracking, full scan history, and improvement reports. Available with CALLOUT Pro.</p>
+      <div class="pr-chart-preview">
+        <div class="pr-chart-label">Score over time</div>
+        <div class="pr-chart-bars">
+          <div class="pr-bar" style="height:38%"></div>
+          <div class="pr-bar" style="height:52%"></div>
+          <div class="pr-bar" style="height:47%"></div>
+          <div class="pr-bar" style="height:61%"></div>
+          <div class="pr-bar" style="height:58%"></div>
+          <div class="pr-bar" style="height:74%"></div>
+        </div>
+        <div class="pr-coming-badge">Coming with Pro</div>
+      </div>
+      <ul class="pr-feats">
+        <li>Monthly progress scores</li>
+        <li>Scan history across all angles</li>
+        <li>Muscle-by-muscle improvement reports</li>
+        <li>Grade trend over time</li>
+      </ul>
+      <button class="btn gold-btn" onclick="handlePurchase('pro')">Get CALLOUT Pro →</button>
+      <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
+    </div></div></div>
+  </section>
+
+  <!-- ACCOUNT RECOVERY MODAL -->
+  <div class="modal-overlay" id="recoveryModal" role="dialog" aria-modal="true" aria-labelledby="recoveryTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div class="modal-eyebrow">Account</div>
+          <div class="modal-title" id="recoveryTitle">Restore paid access</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('recoveryModal')" aria-label="Close">
+          <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Enter the email used at checkout. If there is an active CALLOUT purchase for that email, this browser will receive a short-lived access token.</p>
+        <div class="recovery-form">
+          <input class="recovery-input" type="email" id="recoveryEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-label="Checkout email" onkeydown="if(event.key==='Enter')submitRecoveryEmail()">
+          <button class="btn gold-btn" id="recoverySubmit" onclick="submitRecoveryEmail()">Restore access</button>
+          <div class="recovery-status" id="recoveryStatus"></div>
+        </div>
+        <p style="margin-top:16px">No magic links or passwords are used here. Need help? Email <a href="mailto:support@callout.app">support@callout.app</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────────────
+       PRIVACY MODAL — GDPR-compliant
+       ───────────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div class="modal-eyebrow">Privacy</div>
+          <div class="modal-title" id="privacyTitle">How CALLOUT handles your data</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('privacyModal')" aria-label="Close">
+          <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="last-updated">Last updated: 11 June 2026</p>
+
+        <p>CALLOUT ("we", "us", "our") is operated from the United Kingdom and complies with the UK GDPR and the Data Protection Act 2018. This policy explains what we collect, why, and what you can do about it.</p>
+
+        <h3>1. Who is the data controller</h3>
+        <p>CALLOUT is the controller of your personal data. For any data-related question or request, contact us at <a href="mailto:privacy@callout.app">privacy@callout.app</a>.</p>
+
+        <h3>2. What we collect</h3>
+        <ul>
+          <li><strong>Your email address</strong> — submitted at the result-reveal gate and used to identify your account.</li>
+          <li><strong>Photos you upload</strong> — processed in real time to generate a grade, then discarded (see below).</li>
+          <li><strong>Payment information</strong> — handled entirely by Stripe. We never see or store your card details.</li>
+          <li><strong>Technical data</strong> — IP address and basic request metadata, used to operate the service and prevent abuse. Logs are retained for up to 30 days.</li>
+          <li><strong>Local storage</strong> — your browser may store your email, short-lived access token, and display-only result history so the app can reopen smoothly. Payment access is checked by our server, not your browser.</li>
+        </ul>
+
+        <h3>3. How your photos are handled</h3>
+        <p>Photos are transmitted to our AI provider for grading. <strong>We do not store your photos on CALLOUT servers. We do not use your photos to train CALLOUT. We do not share them with any third party other than processors needed to run the service.</strong> The AI provider processes the image under its own terms and privacy policy to return a result.</p>
+
+        <h3>4. Why we process your data (legal basis)</h3>
+        <ul>
+          <li><strong>To deliver the service</strong> — performance of a contract you entered into with us (or steps before entering one).</li>
+          <li><strong>To send transactional emails</strong> — performance of contract / legitimate interest.</li>
+          <li><strong>To prevent abuse and secure the service</strong> — legitimate interest.</li>
+          <li><strong>To send product updates or marketing</strong> — only with your consent. You can withdraw consent at any time by unsubscribing.</li>
+        </ul>
+
+        <h3>5. Who we share data with</h3>
+        <ul>
+          <li><strong>Stripe</strong> — payment processing.</li>
+          <li><strong>Anthropic</strong> — AI grading (photos and prompts only, not your email).</li>
+          <li><strong>Cloudflare</strong> — hosting and infrastructure.</li>
+          <li><strong>Email service provider</strong> — to deliver transactional and marketing emails (where applicable).</li>
+        </ul>
+        <p>We do not sell your data. Ever.</p>
+
+        <h3>6. International transfers</h3>
+        <p>Some of our processors (including Anthropic, Stripe, and Cloudflare) may process data outside the UK and EEA, including in the United States. Where this happens, transfers are protected by Standard Contractual Clauses or equivalent safeguards approved by the UK ICO.</p>
+
+        <h3>7. How long we keep data</h3>
+        <ul>
+          <li><strong>Photos:</strong> not retained.</li>
+          <li><strong>Email and account data:</strong> retained until you request deletion or for as long as your account is active.</li>
+          <li><strong>Payment records:</strong> retained for 6 years to comply with UK tax law.</li>
+          <li><strong>Technical logs:</strong> up to 30 days.</li>
+        </ul>
+
+        <h3>8. Your rights under UK GDPR</h3>
+        <p>You have the right to:</p>
+        <ul>
+          <li>Access the personal data we hold about you.</li>
+          <li>Have inaccurate data corrected.</li>
+          <li>Have your data erased ("right to be forgotten").</li>
+          <li>Restrict or object to processing.</li>
+          <li>Receive your data in a portable format.</li>
+          <li>Withdraw consent at any time (for processing based on consent).</li>
+          <li>Lodge a complaint with the UK Information Commissioner's Office (ICO) at <a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a>.</li>
+        </ul>
+        <p>To exercise any of these rights, email <a href="mailto:privacy@callout.app">privacy@callout.app</a>. We aim to respond within 30 days.</p>
+
+        <h3>9. Cookies and local storage</h3>
+        <p>CALLOUT does not use tracking or advertising cookies. We use browser localStorage for email, a short-lived bearer token, and display-only result history. Local storage is never the source of truth for paid access.</p>
+
+        <h3>10. Children</h3>
+        <p>CALLOUT is for adults only. The grading engine is instructed to refuse any photo where the subject is not clearly 18 or over. We do not knowingly collect data from anyone under 18.</p>
+
+        <h3>11. Security</h3>
+        <p>All traffic to and from CALLOUT is encrypted in transit (HTTPS/TLS). Payment processing is PCI-DSS compliant via Stripe. We follow industry-standard security practices but cannot guarantee absolute security; no online service can.</p>
+
+        <h3>12. Changes to this policy</h3>
+        <p>If we make material changes we will update the "last updated" date and, where appropriate, notify you by email.</p>
+
+        <h3>13. Contact</h3>
+        <p>For any privacy question or to exercise your rights: <a href="mailto:privacy@callout.app">privacy@callout.app</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────────────
+       TERMS MODAL
+       ───────────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div class="modal-eyebrow">Terms</div>
+          <div class="modal-title" id="termsTitle">Terms of Service</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('termsModal')" aria-label="Close">
+          <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="last-updated">Last updated: 11 June 2026</p>
+
+        <p>By using CALLOUT you agree to these terms. If you don't agree, don't use the service.</p>
+
+        <h3>1. What CALLOUT is</h3>
+        <p>CALLOUT is an entertainment and self-assessment tool that uses AI vision to grade visible physique development from user-submitted photos. <strong>CALLOUT is not medical advice, a diagnostic tool, a body composition scan, or a substitute for guidance from a qualified professional.</strong></p>
+
+        <h3>2. Eligibility</h3>
+        <p>You must be 18 or older to use CALLOUT. The grading engine will refuse to assess any photo where the subject is not clearly an adult. By using the service you confirm you are 18+.</p>
+
+        <h3>3. Photos you upload</h3>
+        <ul>
+          <li>Only upload photos of <strong>yourself</strong>. Do not upload photos of other people without their explicit consent.</li>
+          <li>The subject must be clearly 18 or older.</li>
+          <li>No explicit or sexualised content. Shorts only.</li>
+          <li>You grant CALLOUT a limited, non-exclusive licence to process the photo for the sole purpose of returning a grade. Photos are not stored or reused.</li>
+          <li>You remain the owner of your photos.</li>
+        </ul>
+
+        <h3>4. Free scan and paid tiers</h3>
+        <ul>
+          <li><strong>Free scan:</strong> one angle, no card required. Email needed to reveal the result.</li>
+          <li><strong>Full Body Scan (£5.99):</strong> one-time payment, unlocks all 4 angles permanently for this profile.</li>
+          <li><strong>CALLOUT Pro (£9.99/month):</strong> recurring subscription. Unlimited scans. Renews automatically each month until cancelled.</li>
+          <li><strong>Lifetime (£29.99):</strong> early-access one-time payment for lifetime CALLOUT access while available.</li>
+        </ul>
+
+        <h3>5. Billing and cancellation</h3>
+        <p>Payments are processed by Stripe. Pro renews monthly and you can cancel at any time from your Stripe customer portal — cancellation takes effect at the end of your current billing period. One-time purchases (Full Body Scan, Lifetime) are charged once.</p>
+
+        <h3>6. Refunds</h3>
+        <p>Because CALLOUT is a digital service delivered immediately on payment, you expressly consent to immediate performance and waive your right to a 14-day cooling-off period for the parts of the service you have used. We will consider refund requests on a case-by-case basis where the service has not been used or where there has been a genuine technical failure. Email <a href="mailto:support@callout.app">support@callout.app</a>.</p>
+
+        <h3>7. The grade is an opinion, not a fact</h3>
+        <p>The grade CALLOUT returns is generated by an AI vision model and reflects an interpretation of visible muscle development in the submitted photo. <strong>It is not a clinical assessment, medical advice, or a body-composition measurement.</strong> Results may vary based on photo quality, lighting, pose, clothing, camera angle, and other factors. Do not make medical, training, or nutritional decisions based solely on a CALLOUT grade.</p>
+
+        <h3>8. Acceptable use</h3>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Use CALLOUT for any unlawful purpose.</li>
+          <li>Upload photos of minors or other people without consent.</li>
+          <li>Reverse-engineer, scrape, or attempt to interfere with the service.</li>
+          <li>Resell access to the service.</li>
+          <li>Abuse, harass, or impersonate other users or our team.</li>
+        </ul>
+
+        <h3>9. Intellectual property</h3>
+        <p>CALLOUT, the name, the logo, the grading engine, the UI, and all related materials are owned by us. You may not copy or reuse them without permission. Your photos remain yours.</p>
+
+        <h3>10. Disclaimers</h3>
+        <p>CALLOUT is provided "as is" and "as available". We make no warranties about accuracy, availability, fitness for any particular purpose, or that the service will be uninterrupted or error-free. The grading is an AI-generated opinion and may be wrong.</p>
+
+        <h3>11. Limitation of liability</h3>
+        <p>To the maximum extent permitted by law, CALLOUT's total liability to you for any claim arising out of or relating to the service is limited to the amount you have paid us in the 12 months before the claim. We are not liable for indirect, consequential, or incidental damages. Nothing in these terms limits liability that cannot lawfully be limited (e.g. for death or personal injury caused by negligence, or for fraud).</p>
+
+        <h3>12. Termination</h3>
+        <p>We may suspend or terminate your access if you breach these terms. You can stop using CALLOUT at any time and request deletion of your account by emailing <a href="mailto:privacy@callout.app">privacy@callout.app</a>.</p>
+
+        <h3>13. Changes to the service or these terms</h3>
+        <p>We may update the service or these terms from time to time. Material changes to the terms will be communicated by email or in-app notice. Continued use after changes means you accept them.</p>
+
+        <h3>14. Governing law</h3>
+        <p>These terms are governed by the law of England and Wales. Any dispute is subject to the exclusive jurisdiction of the courts of England and Wales, unless mandatory consumer law in your country gives you the right to use a local court.</p>
+
+        <h3>15. Contact</h3>
+        <p>General support: <a href="mailto:support@callout.app">support@callout.app</a><br>Privacy / data requests: <a href="mailto:privacy@callout.app">privacy@callout.app</a></p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-brand">CALLOUT</div>
+    <div>© 2026 CALLOUT · AI physique grading, not medical advice · Adults only</div>
+    <div class="foot-links" style="margin-top:8px">
+      <button class="footlink" onclick="goHome('howStrip')">How it works</button>·
+      <button class="footlink" onclick="goHome('pricingSection')">Pricing</button>·
+      <button class="footlink" onclick="goHome('faqSection')">FAQ</button>
+    </div>
+    <div class="foot-links" style="margin-top:6px">
+      <button class="footlink" onclick="openModal('privacyModal')">Privacy</button>·
+      <button class="footlink" onclick="openModal('termsModal')">Terms</button>·
+      <a class="footlink" href="mailto:support@callout.app">Contact</a>
+    </div>
+  </footer>
+
 <script>
 // ============================================================
 //  CONFIG — swap these and the app is fully live
@@ -1015,3 +3088,5 @@ function playRevealAnimation(){
   document.querySelectorAll('.pc').forEach(el=>io.observe(el));
 })();
 </script>
+</body>
+</html>
