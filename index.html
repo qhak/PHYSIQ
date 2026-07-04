@@ -1617,7 +1617,7 @@
         <div class="sec-head">
           <div class="eyebrow">Get graded</div>
           <h2>Pick an angle. Get called out.</h2>
-          <p>First scan is free. A Full Body Audit unlocks all four angles; Pro is for rescans and progress tracking.</p>
+          <p>First scan is free. A Full Body Audit unlocks all four angles; Pro is for rescans now, with progress tools added as they ship.</p>
           <div class="scan-trust">
             <span class="scan-trust-item"><svg viewBox="0 0 24 24" class="lock" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Photo processed for the scan, not stored by CALLOUT, not used by CALLOUT for training</span>
             <span class="trust-sep">·</span>
@@ -1638,15 +1638,15 @@
       <section class="sec" id="scaleSection">
         <div class="sec-head">
           <h2>A hard grade should<br>feel <em>useful</em>.</h2>
-          <p>CALLOUT is intentionally direct, but it is still an AI interpretation of a photo. Results can vary with lighting, pose, pump, camera angle, and body fat.</p>
+          <p>CALLOUT is intentionally direct, but it is still an AI interpretation of a photo. Example distribution only, not user statistics. Results can vary with lighting, pose, pump, camera angle, and body fat.</p>
         </div>
         <div class="dist">
-          <div class="distrow"><span class="dg">S</span><div class="dbar"><span style="width:7%"></span></div><span class="dp">exceptional visual development</span></div>
-          <div class="distrow"><span class="dg">A</span><div class="dbar"><span style="width:14%"></span></div><span class="dp">advanced visual development</span></div>
-          <div class="distrow"><span class="dg">B</span><div class="dbar"><span style="width:34%"></span></div><span class="dp">strong visible base</span></div>
-          <div class="distrow"><span class="dg">C</span><div class="dbar"><span style="width:72%"></span></div><span class="dp">developing and trainable</span></div>
-          <div class="distrow"><span class="dg">D</span><div class="dbar"><span style="width:16%"></span></div><span class="dp">early stage</span></div>
-          <div class="distrow"><span class="dg">E</span><div class="dbar"><span style="width:8%"></span></div><span class="dp">just starting</span></div>
+          <div class="distrow"><span class="dg">S</span><div class="dbar"><span style="width:3%"></span></div><span class="dp">3% sample · exceptional visual development</span></div>
+          <div class="distrow"><span class="dg">A</span><div class="dbar"><span style="width:8%"></span></div><span class="dp">8% sample · advanced visual development</span></div>
+          <div class="distrow"><span class="dg">B</span><div class="dbar"><span style="width:20%"></span></div><span class="dp">20% sample · strong visible base</span></div>
+          <div class="distrow"><span class="dg">C</span><div class="dbar"><span style="width:38%"></span></div><span class="dp">38% sample · developing and trainable</span></div>
+          <div class="distrow"><span class="dg">D</span><div class="dbar"><span style="width:21%"></span></div><span class="dp">21% sample · early stage</span></div>
+          <div class="distrow"><span class="dg">E</span><div class="dbar"><span style="width:10%"></span></div><span class="dp">10% sample · just starting</span></div>
         </div>
       </section>
 
@@ -1715,7 +1715,7 @@
         <div class="sec-head">
           <div class="eyebrow">Pricing</div>
           <h2>Start free. Unlock the full audit for £5.99.</h2>
-          <p>The main offer is the one-time Full Body Audit. Pro is for people who want rescans and progress tracking over time.</p>
+          <p>The main offer is the one-time Full Body Audit. Pro is for people who want rescans now, with progress tools added as they ship.</p>
         </div>
 
         <div class="pricing-free-line">First scan free — no card required.</div>
@@ -1743,7 +1743,7 @@
 
           <!-- MIDDLE — CALLOUT Pro · £9.99/month -->
           <div class="pc pc-pro">
-            <div class="pc-badge">Progress tracking</div>
+            <div class="pc-badge">Rescans + early access</div>
             <div class="pc-name">CALLOUT Pro</div>
             <div class="pc-price">£9.99</div>
             <div class="pc-period">per month</div>
@@ -1754,7 +1754,7 @@
               <li>All 4 angles graded</li>
               <li>Full muscle-by-muscle breakdown</li>
               <li>Re-grade after every cut, bulk, or PR</li>
-              <li>Progress tracking as it ships</li>
+              <li>Progress tools included as they ship</li>
             </ul>
             <button class="pc-cta" onclick="handlePurchase('pro')">Go Pro — unlimited scans</button>
           </div>
@@ -1876,8 +1876,8 @@
         <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
       <div class="pr-eye">Coming soon</div>
-      <h2>Track your progress<br>month by month.</h2>
-      <p class="pr-sub">Monthly score tracking, full scan history, and improvement reports. Available with CALLOUT Pro.</p>
+      <h2>Progress tools<br>are coming.</h2>
+      <p class="pr-sub">Pro gives you rescans now. Monthly score tracking, scan history, and improvement reports are planned Pro tools, not live features yet.</p>
       <div class="pr-chart-preview">
         <div class="pr-chart-label">Score over time</div>
         <div class="pr-chart-bars">
@@ -1891,10 +1891,10 @@
         <div class="pr-coming-badge">Coming with Pro</div>
       </div>
       <ul class="pr-feats">
-        <li>Monthly progress scores</li>
-        <li>Scan history across all angles</li>
-        <li>Muscle-by-muscle improvement reports</li>
-        <li>Grade trend over time</li>
+        <li>Unlimited rescans today</li>
+        <li>Monthly progress scores planned</li>
+        <li>Scan history planned</li>
+        <li>Muscle-by-muscle trend reports planned</li>
       </ul>
       <button class="btn gold-btn" onclick="handlePurchase('pro')">Get CALLOUT Pro →</button>
       <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
@@ -2214,9 +2214,11 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(userEmail) refreshEntitlementToken().then(refreshHome).catch(()=>{});
 
   // Handle Stripe success redirect (?session_id=...) — verified server-side
-  const _sessionId=new URLSearchParams(location.search).get('session_id');
+  const _params=new URLSearchParams(location.search);
+  const _sessionId=_params.get('session_id');
   if(_sessionId){
     history.replaceState({},'',location.pathname);
+    sessionStorage.removeItem('callout_checkout_started');
     document.getElementById('scanLetter').textContent='$';
     document.getElementById('aStatus').textContent='verifying payment…';
     document.getElementById('aSub').textContent='just a moment';
@@ -2237,6 +2239,11 @@ window.addEventListener('DOMContentLoaded',()=>{
         renderError('Could not reach the server to verify payment. Please try again.');
         show('screen-result');
       });
+  } else if(sessionStorage.getItem('callout_checkout_started')==='1'){
+    sessionStorage.removeItem('callout_checkout_started');
+    history.replaceState({},'',location.pathname);
+    renderPaymentRecovery();
+    show('screen-result');
   }
 
   if(!WORKER_URL){
@@ -2287,14 +2294,14 @@ async function refreshEntitlementToken(){
 // ---- file selected ----
 document.getElementById('filein').addEventListener('change',async e=>{
   const file=e.target.files[0]; if(!file||!pendingView) return;
-  if(!file.type.startsWith('image/')){renderError('Please upload a photo (JPG, PNG, or HEIC).');show('screen-result');return;}
+  if(!file.type.startsWith('image/')){renderError('Please upload a photo (JPG, PNG, WebP, or a phone photo your browser can read).');show('screen-result');return;}
   if(file.size>20*1024*1024){renderError('Photo is too large. Use a file under 20MB.');show('screen-result');return;}
   e.target.value='';
   const view=pendingView; pendingView=null;
   const photoURL=URL.createObjectURL(file);
   document.getElementById('scanLetter').textContent=VIEWS.find(v=>v.id===view).letter;
   document.getElementById('aSub').textContent='grading '+VIEWS.find(v=>v.id===view).t.toLowerCase();
-  document.getElementById('aStatus').textContent='reading image…';
+  document.getElementById('aStatus').textContent='preparing photo…';
   show('screen-analyse');
   try{
     const data=await analyzeView(view,file);
@@ -2313,14 +2320,49 @@ document.getElementById('filein').addEventListener('change',async e=>{
     if(err && err.code==='invalid_token'){renderAccessRecovery();show('screen-result');return;}
     if(err && err.code==='rate_limited'){renderRateLimited(err.retryAfter);show('screen-result');return;}
     if(err && err.code==='bad_image'){renderBadImage();show('screen-result');return;}
+    if(err && err.message==='image_processing_failed'){renderBadImage();show('screen-result');return;}
     renderError(String(err));show('screen-result');
   }
 });
 
-function normaliseToJpeg(file){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const ctx=c.getContext('2d');ctx.drawImage(img,0,0);URL.revokeObjectURL(url);const dataUrl=c.toDataURL('image/jpeg',0.92);res(dataUrl.split(',')[1]);};img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('image load failed'));};img.src=url;});}
+function normaliseToJpeg(file){
+  return new Promise((res,rej)=>{
+    const url=URL.createObjectURL(file);
+    const img=new Image();
+    img.onload=()=>{
+      try{
+        const maxEdge=1600;
+        const w=img.naturalWidth||img.width;
+        const h=img.naturalHeight||img.height;
+        if(!w||!h) throw new Error('bad_dimensions');
+        const scale=Math.min(1,maxEdge/Math.max(w,h));
+        const outW=Math.max(1,Math.round(w*scale));
+        const outH=Math.max(1,Math.round(h*scale));
+        const c=document.createElement('canvas');
+        c.width=outW;c.height=outH;
+        const ctx=c.getContext('2d',{alpha:false});
+        ctx.fillStyle='#111';
+        ctx.fillRect(0,0,outW,outH);
+        ctx.drawImage(img,0,0,outW,outH);
+        URL.revokeObjectURL(url);
+        const dataUrl=c.toDataURL('image/jpeg',0.86);
+        const base64=(dataUrl.split(',')[1]||'');
+        if(!base64 || base64.length>5.6*1024*1024) throw new Error('processed_too_large');
+        res(base64);
+      }catch(e){
+        URL.revokeObjectURL(url);
+        rej(new Error('image_processing_failed'));
+      }
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('image_processing_failed'));};
+    img.src=url;
+  });
+}
 async function analyzeView(view,file,retriedToken){
   const image=await normaliseToJpeg(file);
   const media_type="image/jpeg";
+  const status=document.getElementById('aStatus');
+  if(status) status.textContent='reading image…';
   if(userEmail && !hasFreshEntitlementToken()) await refreshEntitlementToken();
   const headers={"Content-Type":"application/json"};
   if(hasFreshEntitlementToken()) headers.Authorization="Bearer "+entitlementToken;
@@ -2581,7 +2623,7 @@ function showScanUpsell(){
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse" style="padding:20px 0 12px">'+
       '<h2 style="margin-bottom:8px">Full body scan complete</h2>'+
-      '<p>You\'ve graded every angle. Go Pro for unlimited rescans and monthly tracking.</p>'+
+      '<p>You\'ve graded every angle. Go Pro for unlimited rescans now, with progress tools included as they ship.</p>'+
     '</div>';
   const btn=document.getElementById('resPrimary');
   btn.style.display='none';
@@ -2592,7 +2634,7 @@ function showScanUpsell(){
   div.innerHTML=
     '<div class="us-eye">Scan complete</div>'+
     '<h3>Rescan any angle, any time.</h3>'+
-    '<p class="us-p">Go Pro for unlimited rescans and monthly tracking — see how you\'re progressing over time.</p>'+
+    '<p class="us-p">Go Pro for unlimited rescans now. Progress tools are included as they ship.</p>'+
     '<div class="upsell-price">£9.99</div>'+
     '<div class="upsell-price-sub">PER MONTH · CANCEL ANYTIME</div>'+
     '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Go Pro →</button>'+
@@ -2686,6 +2728,7 @@ function handlePurchase(tier){
   };
   const url=links[tier]||PAYMENT_LINK_SCAN;
   if(url){
+    sessionStorage.setItem('callout_checkout_started','1');
     window.location.href=url;
     return;
   }
@@ -2865,6 +2908,17 @@ function renderBadImage(){
     '<h2>Upload did not pass checks</h2><p>Please re-upload a clear JPG, PNG, or WebP image under the size limit. Avoid screenshots, edited files, or unsupported formats.</p></div>';
   const btn=document.getElementById('resPrimary');
   btn.style.display='block';btn.textContent='← Try again';btn.onclick=()=>show('screen-home');
+}
+
+function renderPaymentRecovery(){
+  document.getElementById('resultBody').innerHTML=
+    '<div class="refuse"><div class="big"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-5"/></svg></div>'+
+    '<h2>Payment received?</h2>'+
+    '<p>Stripe sent you back without a checkout session ID, so CALLOUT cannot unlock access from the URL. Enter the checkout email and we will restore access from the server if there is an active purchase.</p>'+
+    '<button class="btn gold-btn" onclick="openRecoveryModal()">Restore access →</button>'+
+    '<p style="font-size:12px;color:var(--faint);line-height:1.5;margin-top:14px">Still stuck? support@callout.app</p></div>';
+  const btn=document.getElementById('resPrimary');
+  btn.style.display='block';btn.textContent='← Back';btn.onclick=()=>show('screen-home');
 }
 
 function renderRefusal(reason){
