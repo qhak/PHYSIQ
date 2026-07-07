@@ -905,7 +905,7 @@
     position:relative;overflow:hidden;
   }
   .pc-basic{background:var(--surface);border:1px solid var(--line2)}
-  .pc-pro{
+  .pc-featured{
     background:linear-gradient(155deg,#1a1608 0%,#110e05 55%,#15120a 100%);
     border:1px solid var(--gold-deep);
     box-shadow:
@@ -913,12 +913,12 @@
       0 28px 60px -20px rgba(212,196,150,.2),
       0 0 80px -30px rgba(212,196,150,.08);
   }
-  .pc-pro::before{
+  .pc-featured::before{
     content:'';position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(115deg,transparent 30%,rgba(212,196,150,.05) 47%,rgba(212,196,150,.12) 50%,rgba(212,196,150,.05) 53%,transparent 70%);
     background-size:250% 250%;animation:sweep 9s ease-in-out infinite;
   }
-  .pc-pro::after{
+  .pc-featured::after{
     content:'';position:absolute;top:0;left:0;right:0;height:2px;
     background:linear-gradient(90deg,transparent 0%,var(--gold-deep) 15%,var(--gold-bright) 50%,var(--gold-deep) 85%,transparent 100%);
   }
@@ -952,7 +952,7 @@
     font-family:'Bebas Neue';font-size:64px;line-height:.9;
     color:var(--ink);margin-bottom:4px;position:relative;z-index:1;
   }
-  .pc-pro .pc-price{
+  .pc-featured .pc-price{
     font-size:78px;
     background:linear-gradient(180deg,#fceabb,#d4c496 40%,#b9923f 80%);
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
@@ -970,9 +970,8 @@
     font-size:12px;color:var(--gold-deep);font-weight:600;
     margin-bottom:26px;position:relative;z-index:1;font-style:italic;min-height:18px;
   }
-  .pc-basic .pc-anchor{visibility:hidden}
   .pc-divider{height:1px;background:var(--line);margin-bottom:22px;position:relative;z-index:1}
-  .pc-pro .pc-divider{background:rgba(212,196,150,.18)}
+  .pc-featured .pc-divider{background:rgba(212,196,150,.18)}
   .pc-lifetime .pc-divider{background:rgba(212,196,150,.14)}
 
   .pc-feats{
@@ -982,7 +981,7 @@
   .pc-feats li{font-size:14px;color:var(--soft);display:flex;align-items:flex-start;gap:10px;line-height:1.4}
   .pc-feats li::before{content:'✓';font-weight:700;flex-shrink:0;margin-top:1px}
   .pc-basic .pc-feats li::before{color:var(--dim)}
-  .pc-pro .pc-feats li::before{color:var(--gold)}
+  .pc-featured .pc-feats li::before{color:var(--gold)}
   .pc-lifetime .pc-feats li::before{color:var(--gold-bright)}
   .pc-feats li.pc-no{color:var(--faint)}
   .pc-feats li.pc-no::before{content:'—';color:var(--faint)}
@@ -996,12 +995,12 @@
   }
   .pc-basic .pc-cta{background:transparent;border:1px solid var(--line2);color:var(--soft)}
   .pc-basic .pc-cta:hover{border-color:var(--gold-deep);color:var(--gold)}
-  .pc-pro .pc-cta{
+  .pc-featured .pc-cta{
     background:var(--gold);color:#0c0d12;
     box-shadow:0 8px 24px -8px rgba(212,196,150,.45);
     min-height:52px;font-size:16px;
   }
-  .pc-pro .pc-cta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(212,196,150,.55)}
+  .pc-featured .pc-cta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(212,196,150,.55)}
   .pc-lifetime .pc-cta{
     background:linear-gradient(135deg,#2a2010,#1e1808);
     border:1px solid var(--gold);color:var(--gold);min-height:48px;
@@ -1135,7 +1134,7 @@
     transition:opacity .6s cubic-bezier(.2,.8,.2,1),transform .6s cubic-bezier(.2,.8,.2,1);
   }
   .pc.in-view{opacity:1;transform:translateY(0)}
-  .pc-pro.in-view{transition-delay:.1s}
+  .pc-featured.in-view{transition-delay:.1s}
   .pc-lifetime.in-view{transition-delay:.2s}
   @media(prefers-reduced-motion:reduce){.pc{opacity:1;transform:none;transition:none}}
 
@@ -1274,6 +1273,7 @@
   }
   @media (max-width:639px){
     .pricing-grid{grid-template-columns:1fr;max-width:420px}
+    .pc-featured{order:-1} /* main offer first when cards stack */
     .nav{padding:14px 18px}
   }
   @media (max-width:480px){
@@ -1309,6 +1309,53 @@
   button:focus-visible,a:focus-visible,input:focus-visible{
     outline:2px solid var(--gold);outline-offset:3px;border-radius:6px;
   }
+
+  /* ─────────────────────────────────────────────────────
+     LAUNCH ADDITIONS — sample caption, gate consent,
+     upload guide, photo-handling link, mobile sticky CTA
+     ───────────────────────────────────────────────────── */
+  .sample-note{
+    margin-top:12px;text-align:center;
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    color:var(--faint);letter-spacing:.06em;
+  }
+  .gate-consent{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;font-size:12px;color:var(--dim);
+    margin-bottom:12px;cursor:pointer;user-select:none;text-align:left;
+  }
+  .gate-consent input{accent-color:var(--gold);width:15px;height:15px;flex-shrink:0;margin:0}
+  .guide-list{list-style:none;margin:0 0 16px;display:flex;flex-direction:column;gap:13px}
+  .guide-list li{display:flex;gap:12px;font-size:14px;line-height:1.55;color:var(--soft)}
+  .guide-list .gn{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;
+    color:var(--gold-deep);flex-shrink:0;margin-top:4px;font-weight:600;
+  }
+  .guide-list b{color:var(--ink)}
+  .guide-note{
+    background:#1c1206;border:1px solid #4a3416;border-radius:9px;
+    padding:11px 14px;font-size:12.5px;color:#e3b765;line-height:1.5;margin-bottom:18px;
+  }
+  .guide-skip{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    font-size:12px;color:var(--faint);margin-top:12px;cursor:pointer;user-select:none;
+  }
+  .guide-skip input{accent-color:var(--gold);margin:0}
+  .photo-tips-link{
+    display:block;margin:-14px auto 34px;background:none;border:none;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--dim);text-decoration:underline;text-underline-offset:3px;padding:6px;
+  }
+  .photo-tips-link:hover{color:var(--gold)}
+  .mob-cta{
+    position:fixed;left:0;right:0;bottom:0;z-index:90;display:none;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    background:rgba(8,9,12,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-top:1px solid var(--line);
+  }
+  .mob-cta.on{display:block;animation:fadeIn .3s ease both}
+  .mob-cta .bigcta{width:100%;min-height:52px;font-size:16px;padding:14px 20px;margin:0}
+  @media(min-width:861px){.mob-cta{display:none!important}}
 
   /* ─────────────────────────────────────────────────────
      REVEAL ANIMATION SYSTEM
@@ -1519,20 +1566,21 @@
           <div class="eyebrow r" style="animation-delay:.05s">
             <span class="dot"></span>AI VISUAL PHYSIQUE AUDIT
           </div>
-          <h1 class="r" style="animation-delay:.15s">Find the <em>weak point</em><br>your mirror lets you ignore.</h1>
-          <p class="sub r" style="animation-delay:.28s">Upload one photo for an S–E visual grade, muscle-by-muscle scores, a conditioning note, and the area dragging your physique down. First scan free. No flattery.</p>
+          <h1 class="r" style="animation-delay:.15s">Upload a photo.<br>Get <em>called out</em>.</h1>
+          <p class="sub r" style="animation-delay:.28s">An S–E grade, muscle-by-muscle scores, a conditioning read, and the weak point your mirror lets you ignore — from one photo. First scan free. No flattery.</p>
           <div class="hero-actions r" style="animation-delay:.4s">
-            <button class="bigcta" onclick="document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Grade my physique</button>
+            <button class="bigcta" onclick="track('hero_cta_click');document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Start my free scan</button>
             <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">See a sample result</button>
           </div>
+          <span class="hero-note r" style="animation-delay:.46s">The only signup is an email at the reveal step — it keeps your result and any purchase restorable.</span>
           <div class="trust-bar r" style="animation-delay:.52s" aria-label="Trust signals">
             <span class="trust-item">First scan free</span>
             <span class="trust-sep">·</span>
             <span class="trust-item">No card required</span>
             <span class="trust-sep">·</span>
-            <span class="trust-item">Photo processed for grading, not stored</span>
+            <span class="trust-item">Photos not stored by CALLOUT</span>
             <span class="trust-sep">·</span>
-            <span class="trust-item">Visual assessment only, not medical advice</span>
+            <span class="trust-item">Visual estimate, not medical advice</span>
           </div>
         </div>
 
@@ -1584,6 +1632,7 @@
                 </div>
               </div>
             </div>
+            <div class="sample-note">Real output format · example values, not a real user</div>
           </div>
         </div>
       </div>
@@ -1628,14 +1677,16 @@
         <div class="sec-head">
           <div class="eyebrow">Get graded</div>
           <h2>Pick an angle. Get called out.</h2>
-          <p>First scan is free. A Full Body Audit unlocks all four angles; Pro is for rescans now, with progress tools added as they ship.</p>
+          <p>First scan is free — one angle, fully graded. The £5.99 Full Body Audit unlocks the other three.</p>
           <div class="scan-trust">
-            <span class="scan-trust-item"><svg viewBox="0 0 24 24" class="lock" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Photo processed for the scan, not stored by CALLOUT, not used by CALLOUT for training</span>
+            <span class="scan-trust-item"><svg viewBox="0 0 24 24" class="lock" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Not stored by CALLOUT · never used to train it</span>
             <span class="trust-sep">·</span>
-            <span class="scan-trust-item">Good light, plain background, shorts on</span>
+            <span class="scan-trust-item">Under-18, explicit, or unreadable photos are refused</span>
           </div>
+          <button class="recover-link" style="margin-top:14px;font-size:12px" onclick="goHome('photoSection')">See exactly what happens to your photo ↓</button>
         </div>
         <div class="views" id="viewGrid"></div>
+        <button class="photo-tips-link" onclick="openGuide(true)">Photo tips — what gets a clean read</button>
         <div class="overall">
           <div class="lab">Overall Grade</div>
           <div class="g locked" id="ov-grade">—</div>
@@ -1717,7 +1768,41 @@
           </div>
         </div>
         <div class="method-note">
-          Percentile-style language in CALLOUT is a visual percentile estimate: a blunt way to describe how the photo reads, not a hard statistical rank from an audited population study. Treat the output as directional feedback, then go lift.
+          CALLOUT does not show percentile rankings — there is no audited population behind it to rank you against. Scores describe how this photo reads to the model, nothing more. Treat the output as directional feedback, then go lift.
+        </div>
+      </section>
+
+      <!-- PHOTO HANDLING -->
+      <section class="sec" id="photoSection" style="padding-top:0">
+        <div class="sec-head">
+          <div class="eyebrow">Your photo</div>
+          <h2>What happens to the<br>photo you upload.</h2>
+          <p>You're sending us a body photo, so here is its exact path — the actual pipeline, not vague reassurance.</p>
+        </div>
+        <div class="method-grid">
+          <div class="method-item">
+            <div class="method-k">01 · On your device</div>
+            <h3>Resized in your browser first</h3>
+            <p>Before anything is uploaded, the photo is downscaled and converted to JPEG on your own device. The original file never leaves your phone or computer.</p>
+          </div>
+          <div class="method-item">
+            <div class="method-k">02 · In transit</div>
+            <h3>Encrypted, sent for one job</h3>
+            <p>The resized image travels over HTTPS to our server for a single purpose: this scan. It is not written to a database, a gallery, or a feed.</p>
+          </div>
+          <div class="method-item">
+            <div class="method-k">03 · The scan</div>
+            <h3>Graded by an AI vision model</h3>
+            <p>Anthropic's model reads the image and returns the grade, processing it under its own terms. CALLOUT does not store the photo and never uses it for training.</p>
+          </div>
+          <div class="method-item">
+            <div class="method-k">04 · After</div>
+            <h3>Your result stays on your device</h3>
+            <p>The result card and photo preview live only in your browser. Payments run entirely on Stripe — card details never touch CALLOUT.</p>
+          </div>
+        </div>
+        <div class="method-note">
+          Under-18, explicit, multi-person, and unreadable photos are refused, not graded. Full details in the <button class="recover-link" onclick="openModal('privacyModal')">privacy policy</button>.
         </div>
       </section>
 
@@ -1725,8 +1810,8 @@
       <section class="sec" id="pricingSection">
         <div class="sec-head">
           <div class="eyebrow">Pricing</div>
-          <h2>Start free. Unlock the full audit for £5.99.</h2>
-          <p>The main offer is the one-time Full Body Audit. Pro is for people who want rescans now, with progress tools added as they ship.</p>
+          <h2>First scan free. <em>£5.99</em> unlocks the full audit.</h2>
+          <p>One payment for the full four-angle audit — no subscription needed to get your grade. Pro exists for rescans; its progress tools are planned, not live yet.</p>
         </div>
 
         <div class="pricing-free-line">First scan free — no card required.</div>
@@ -1734,54 +1819,53 @@
 
         <div class="pricing-grid">
 
-          <!-- LEFT — Full Body Scan · £5.99 one-time -->
+          <!-- LEFT — CALLOUT Pro · £9.99/month · de-emphasised until progress tools ship -->
           <div class="pc pc-basic">
-            <div class="pc-badge">Main offer</div>
-            <div class="pc-name">Full Body Scan</div>
-            <div class="pc-price">£5.99</div>
-            <div class="pc-period">one-time</div>
-            <div class="pc-anchor">Unlocks the full four-angle audit.</div>
-            <div class="pc-divider"></div>
-            <ul class="pc-feats">
-              <li>All 4 angles graded</li>
-              <li>Full muscle breakdown</li>
-              <li>Uncapped overall grade</li>
-              <li class="pc-no">No monthly tracking</li>
-              <li class="pc-no">No progress history</li>
-            </ul>
-            <button class="pc-cta" onclick="handlePurchase('scan')">Unlock Full Body Audit</button>
-          </div>
-
-          <!-- MIDDLE — CALLOUT Pro · £9.99/month -->
-          <div class="pc pc-pro">
-            <div class="pc-badge">Rescans + early access</div>
+            <div class="pc-badge-spacer"></div>
             <div class="pc-name">CALLOUT Pro</div>
             <div class="pc-price">£9.99</div>
             <div class="pc-period">per month</div>
-            <div class="pc-anchor">Cancel anytime · £0.33/day</div>
+            <div class="pc-anchor">For rescans · cancel anytime</div>
             <div class="pc-divider"></div>
             <ul class="pc-feats">
               <li>Unlimited rescans</li>
               <li>All 4 angles graded</li>
-              <li>Full muscle-by-muscle breakdown</li>
               <li>Re-grade after every cut, bulk, or PR</li>
-              <li>Progress tools included as they ship</li>
+              <li class="pc-no">Progress tracking — planned, not live</li>
+              <li class="pc-no">Scan history — planned, not live</li>
             </ul>
-            <button class="pc-cta" onclick="handlePurchase('pro')">Go Pro — unlimited scans</button>
+            <button class="pc-cta" onclick="handlePurchase('pro')">Go Pro</button>
           </div>
 
-          <!-- RIGHT — Pro Lifetime · £29.99 one-time -->
+          <!-- MIDDLE — Full Body Audit · £5.99 one-time · the main offer -->
+          <div class="pc pc-featured">
+            <div class="pc-badge">Main offer</div>
+            <div class="pc-name">Full Body Audit</div>
+            <div class="pc-price">£5.99</div>
+            <div class="pc-period">one-time · no subscription</div>
+            <div class="pc-anchor">All four angles, graded once, yours to keep.</div>
+            <div class="pc-divider"></div>
+            <ul class="pc-feats">
+              <li>All 4 angles graded: front, back, legs, arms</li>
+              <li>Full muscle-by-muscle breakdown</li>
+              <li>Uncapped overall grade</li>
+              <li>Conditioning notes + broad visual BF estimate</li>
+              <li>One payment. No renewal, ever.</li>
+            </ul>
+            <button class="pc-cta" onclick="handlePurchase('scan')">Unlock the Full Body Audit</button>
+          </div>
+
+          <!-- RIGHT — Lifetime · £29.99 one-time -->
           <div class="pc pc-lifetime">
             <div class="pc-badge">Early access</div>
             <div class="pc-name">Lifetime</div>
             <div class="pc-price">£29.99</div>
             <div class="pc-period">one-time</div>
-            <div class="pc-anchor">Early-access lifetime pricing while the product is young.</div>
+            <div class="pc-anchor">Early-access pricing while the product is young.</div>
             <div class="pc-divider"></div>
             <ul class="pc-feats">
-              <li>Everything in Pro</li>
+              <li>Everything Pro includes, as it ships</li>
               <li>Unlimited scans, forever</li>
-              <li>Future CALLOUT features included while available</li>
               <li>One payment, no renewal</li>
             </ul>
             <button class="pc-cta" onclick="handlePurchase('lifetime')">Get lifetime access</button>
@@ -1803,7 +1887,7 @@
           </div>
           <div class="faq-item">
             <div class="faq-q">Why do you need my email?</div>
-            <div class="faq-a">So your result stays yours. That's it. No spam, unsubscribe in one tap.</div>
+            <div class="faq-a">It links your result and any purchase, so paid access can be restored on any device. Marketing email is optional, off by default, and only sent if you tick the box at the reveal step.</div>
           </div>
           <div class="faq-item">
             <div class="faq-q">What photo works best?</div>
@@ -1911,6 +1995,37 @@
       <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
     </div></div></div>
   </section>
+
+  <!-- UPLOAD GUIDE MODAL — shown once before the first photo pick -->
+  <div class="modal-overlay" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div class="modal-eyebrow">Before you upload</div>
+          <div class="modal-title" id="guideTitle">Give the AI something it can grade</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('guideModal')" aria-label="Close">
+          <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="guide-list">
+          <li><span class="gn">01</span><span><b>Good light, facing you.</b> Window light or a bright room. Backlight and gym-mirror shadows hide detail.</span></li>
+          <li><span class="gn">02</span><span><b>Plain background, phone at chest height.</b> Arm's length or a timer, with the whole region for your chosen angle in frame.</span></li>
+          <li><span class="gn">03</span><span><b>Shorts on. Nothing explicit.</b> Explicit uploads are refused automatically.</span></li>
+          <li><span class="gn">04</span><span><b>Adults only, one person in frame.</b> If the subject isn't clearly 18+, the scan refuses.</span></li>
+        </ul>
+        <div class="guide-note">Blurry, dark, or cropped photos get refused or scored at low confidence — never graded generously.</div>
+        <button class="btn gold-btn" id="guideContinueBtn" onclick="guideContinue()">Choose photo →</button>
+        <label class="guide-skip"><input type="checkbox" id="guideDontShow" checked>Don't show this again</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE STICKY CTA -->
+  <div class="mob-cta" id="mobCta" aria-hidden="true">
+    <button class="bigcta" onclick="track('mobile_cta_click');document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Start my free scan</button>
+  </div>
 
   <!-- ACCOUNT RECOVERY MODAL -->
   <div class="modal-overlay" id="recoveryModal" role="dialog" aria-modal="true" aria-labelledby="recoveryTitle">
@@ -2066,13 +2181,13 @@
         <h3>4. Free scan and paid tiers</h3>
         <ul>
           <li><strong>Free scan:</strong> one angle, no card required. Email needed to reveal the result.</li>
-          <li><strong>Full Body Scan (£5.99):</strong> one-time payment, unlocks all 4 angles permanently for this profile.</li>
+          <li><strong>Full Body Audit (£5.99):</strong> one-time payment, unlocks all 4 angles permanently for this profile.</li>
           <li><strong>CALLOUT Pro (£9.99/month):</strong> recurring subscription. Unlimited scans. Renews automatically each month until cancelled.</li>
           <li><strong>Lifetime (£29.99):</strong> early-access one-time payment for lifetime CALLOUT access while available.</li>
         </ul>
 
         <h3>5. Billing and cancellation</h3>
-        <p>Payments are processed by Stripe. Pro renews monthly and you can cancel at any time from your Stripe customer portal — cancellation takes effect at the end of your current billing period. One-time purchases (Full Body Scan, Lifetime) are charged once.</p>
+        <p>Payments are processed by Stripe. Pro renews monthly and you can cancel at any time from your Stripe customer portal — cancellation takes effect at the end of your current billing period. One-time purchases (Full Body Audit, Lifetime) are charged once.</p>
 
         <h3>6. Refunds</h3>
         <p>Because CALLOUT is a digital service delivered immediately on payment, you expressly consent to immediate performance and waive your right to a 14-day cooling-off period for the parts of the service you have used. We will consider refund requests on a case-by-case basis where the service has not been used or where there has been a genuine technical failure. Email <a href="mailto:support@callout.app">support@callout.app</a>.</p>
@@ -2120,7 +2235,8 @@
     <div class="foot-links" style="margin-top:8px">
       <button class="footlink" onclick="goHome('howStrip')">How it works</button>·
       <button class="footlink" onclick="goHome('pricingSection')">Pricing</button>·
-      <button class="footlink" onclick="goHome('faqSection')">FAQ</button>
+      <button class="footlink" onclick="goHome('faqSection')">FAQ</button>·
+      <button class="footlink" onclick="goHome('photoSection')">Your photo</button>
     </div>
     <div class="foot-links" style="margin-top:6px">
       <button class="footlink" onclick="openModal('privacyModal')">Privacy</button>·
@@ -2140,6 +2256,11 @@ const PAYMENT_LINK_PRO      = "https://buy.stripe.com/fZu5kF8MobXRfDL9hnb3q02"; 
 const PAYMENT_LINK_LIFETIME = "https://buy.stripe.com/aFa3cx9Qsfa34Z7517b3q03"; // £29.99 lifetime
 const UNLOCK_PRICE   = "£5.99";
 // ============================================================
+
+// ---- funnel analytics (GA4 via gtag; no-ops if blocked) ----
+function track(name,params){
+  try{ if(typeof gtag==='function') gtag('event',name,params||{}); }catch(e){}
+}
 
 const VIEWS=[
   {id:"front",  letter:"F",t:"Front",     d:"chest · shoulders · arms · abs"},
@@ -2240,8 +2361,10 @@ window.addEventListener('DOMContentLoaded',()=>{
       .then(d=>{
         if(d.verified){
           storeEntitlement(d);
+          track('purchase_verified',{tier:d.tier||''});
           showConfirmScreen();
         } else {
+          track('purchase_verify_failed',{reason:d.reason||''});
           renderError('Payment could not be verified. If you were charged, contact support@callout.app.');
           show('screen-result');
         }
@@ -2278,7 +2401,26 @@ async function pick(viewId){
 
   if(userEmail && !hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
   pendingView=viewId;
+  track('scan_pick',{view:viewId});
+  let guideSeen=false;
+  try{guideSeen=localStorage.getItem('pq_guide_ok')==='1';}catch(e){}
+  if(!guideSeen){openGuide(false);return;}
   document.getElementById('filein').click();
+}
+
+// ---- upload guide (shown once before first pick, reopenable) ----
+function openGuide(manual){
+  if(manual) pendingView=null;
+  const btn=document.getElementById('guideContinueBtn');
+  if(btn) btn.textContent=pendingView?'Choose photo →':'Got it';
+  track('upload_guide_shown',{manual:!!manual});
+  openModal('guideModal');
+}
+function guideContinue(){
+  try{const cb=document.getElementById('guideDontShow');if(cb&&cb.checked)localStorage.setItem('pq_guide_ok','1');}catch(e){}
+  closeModal('guideModal');
+  track('upload_guide_continue');
+  if(pendingView) document.getElementById('filein').click();
 }
 
 async function refreshEntitlementToken(){
@@ -2309,6 +2451,7 @@ document.getElementById('filein').addEventListener('change',async e=>{
   if(file.size>20*1024*1024){renderError('Photo is too large. Use a file under 20MB.');show('screen-result');return;}
   e.target.value='';
   const view=pendingView; pendingView=null;
+  track('photo_selected',{view:view});
   const photoURL=URL.createObjectURL(file);
   document.getElementById('scanLetter').textContent=VIEWS.find(v=>v.id===view).letter;
   document.getElementById('aSub').textContent='grading '+VIEWS.find(v=>v.id===view).t.toLowerCase();
@@ -2443,13 +2586,13 @@ function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
+  if(typeof updateMobCta==='function') updateMobCta();
 }
 function goHome(id){
   show('screen-home');
   setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});},60);
 }
 function scoreToGrade(s){if(s>=90)return'S';if(s>=75)return'A';if(s>=61)return'B';if(s>=40)return'C';if(s>=25)return'D';return'E';}
-function scoreToVisualPct(s){if(s>=90)return'Top 1%';if(s>=80)return'Top 5%';if(s>=70)return'Top 10%';if(s>=60)return'Top 20%';if(s>=50)return'Top 35%';if(s>=40)return'Top 50%';if(s>=30)return'Top 70%';return'Top 85%';}
 function gradeLabel(g){return{S:'Elite',A:'Advanced',B:'Experienced',C:'Developing',D:'Beginner',E:'Starting Out'}[g[0]]||'';}
 
 function computeOverall(){
@@ -2512,7 +2655,13 @@ function renderViewResult(view,data,photoURL){
 
   const cardId=makeCardId();
   const bf=hasEntitlementHint()?esc(data.bodyfat_range||'Not estimated'):'Paid audit';
-  const visualPct=viewAvg!=null?scoreToVisualPct(viewAvg):'—';
+  // AI confidence — real model output, majority across visible areas, ties read low
+  let conf='—';
+  if(seen.length){
+    const cc={high:0,medium:0,low:0};
+    seen.forEach(k=>{const c=m[k].confidence;if(cc[c]!=null)cc[c]++;});
+    conf=cc.low>=cc.medium&&cc.low>=cc.high?'LOW':(cc.high>cc.medium&&cc.high>cc.low?'HIGH':'MED');
+  }
   const viewName=VIEWS.find(v=>v.id===view).t.toUpperCase();
   const photoLayer=photoURL?'<div class="vc-photo" style="background-image:url('+photoURL+')"></div>':'';
   const focusHTML=buildFocusHTML(data);
@@ -2523,13 +2672,16 @@ function renderViewResult(view,data,photoURL){
   const gateHTML=hasAccount()?'':
     '<div class="gate-overlay" id="gateDiv">'+
       '<div class="gate-grade-tease">'+tease+'</div>'+
-      '<div class="gate-ready-pill"><div class="gate-ready-dot"></div>You\'ve been called out</div>'+
-      '<h3>Your grade is in.</h3>'+
-      '<p>Drop your email. See what the AI said.</p>'+
+      '<div class="gate-ready-pill"><div class="gate-ready-dot"></div>Result generated</div>'+
+      '<h3>Your grade is ready.</h3>'+
+      '<p>Enter your email to view it. It links this result and any purchase so access can be restored — that\'s the whole account.</p>'+
       '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-label="Email address" onkeydown="if(event.key===\'Enter\')submitGate()">'+
-      '<button class="btn" onclick="submitGate()">Reveal my grade →</button>'+
-      '<div class="gate-fine">No spam · unsubscribe anytime · photo never stored · <a onclick="openModal(\'privacyModal\')">privacy</a></div>'+
+      '<label class="gate-consent"><input type="checkbox" id="gateConsent">Email me CALLOUT updates too (optional)</label>'+
+      '<button class="btn" onclick="submitGate()">Show my grade →</button>'+
+      '<div class="gate-fine">Photo not stored by CALLOUT · marketing only if ticked · <a onclick="openModal(\'privacyModal\')">privacy</a></div>'+
     '</div>';
+  track('scan_result',{view:view,grade:viewGrade,paid:hasEntitlementHint()});
+  if(!hasAccount()) track('gate_shown',{view:view});
 
   document.getElementById('resultBody').innerHTML=
     '<div class="vc result-vc vc-result-reveal'+(hasAccount()?'':' blurred')+'">'+
@@ -2549,7 +2701,7 @@ function renderViewResult(view,data,photoURL){
           '<div class="vc-strip-div"></div>'+
           '<div><div class="vc-strip-val">'+bf+'</div><div class="vc-strip-lbl">BF est.</div></div>'+
           '<div class="vc-strip-div"></div>'+
-          '<div><div class="vc-strip-val">'+visualPct+'</div><div class="vc-strip-lbl">Visual pct</div></div>'+
+          '<div><div class="vc-strip-val">'+conf+'</div><div class="vc-strip-lbl">AI confidence</div></div>'+
         '</div>'+
         (seen.length?
           '<div class="vc-section-title">Breakdown — '+viewName+' view</div>'+muscleRows
@@ -2600,13 +2752,18 @@ function submitGate(){
     return;
   }
 
+  const consentBox=document.getElementById('gateConsent');
+  const consent=!!(consentBox&&consentBox.checked);
+
   userEmail=email;
   saveState();
+  track('gate_submit',{marketing_consent:consent});
   refreshEntitlementToken().then(refreshHome).catch(()=>{});
 
-  if(EMAIL_ENDPOINT){
+  // Marketing list only with explicit opt-in — matches the privacy policy.
+  if(EMAIL_ENDPOINT && consent){
     fetch(EMAIL_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'subscribe',email})}).catch(()=>{});
+      body:JSON.stringify({action:'subscribe',email,consent:true})}).catch(()=>{});
   }
 
   const card=document.querySelector('#resultBody .vc');
@@ -2631,6 +2788,7 @@ function submitGate(){
 //  after completing all 4 views
 // ============================================================
 function showScanUpsell(){
+  track('upsell_shown',{mode:'rescan_pro'});
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse" style="padding:20px 0 12px">'+
       '<h2 style="margin-bottom:8px">Full body scan complete</h2>'+
@@ -2659,10 +2817,11 @@ function showScanUpsell(){
 //  PAYWALL — shown when trying to scan a 2nd+ view unpaid
 // ============================================================
 function showPaywall(){
+  track('paywall_shown');
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse" style="padding:20px 0 12px">'+
       '<h2 style="margin-bottom:8px">One angle is free.</h2>'+
-      '<p>Your free scan is used. Unlock the full body scan to grade every angle.</p>'+
+      '<p>Your free scan is used. Unlock the Full Body Audit to grade every angle.</p>'+
     '</div>';
   const btn=document.getElementById('resPrimary');
   btn.style.display='none';
@@ -2697,6 +2856,7 @@ function injectShareMoment(grade, score){
 // ============================================================
 function injectUpsell(paywallMode){
   const old=document.getElementById('upsellPanel'); if(old) old.remove();
+  track('upsell_shown',{mode:paywallMode?'paywall':'post_result'});
 
   const title  = paywallMode
     ? 'Free scan used. Your real grade needs all four angles.'
@@ -2738,6 +2898,7 @@ function handlePurchase(tier){
     lifetime: PAYMENT_LINK_LIFETIME
   };
   const url=links[tier]||PAYMENT_LINK_SCAN;
+  track('checkout_start',{tier:tier,transport_type:'beacon'});
   if(url){
     sessionStorage.setItem('callout_checkout_started','1');
     window.location.href=url;
@@ -2771,6 +2932,7 @@ function showConfirmScreen(){
 //  SHARE
 // ============================================================
 function shareGrade(grade, score, fromMoment){
+  track('share_click',{grade:grade,score:score,surface:fromMoment?'share_moment':'overall'});
   const text='I just got called out. '+grade+'-tier, '+score+'/100 on CALLOUT — the AI that grades your physique. No flattery. Get your verdict: '+(location.origin+location.pathname);
   if(navigator.share){
     navigator.share({title:'My CALLOUT Grade',text,url:location.origin+location.pathname})
@@ -2792,6 +2954,7 @@ function shareGrade(grade, score, fromMoment){
 function showOverall(){
   const o=computeOverall();
   if(!o){show('screen-home');return;}
+  track('overall_viewed',{grade:o.grade,views:o.nViews});
 
   let muscleRows='';
   MUSCLES.forEach((k,i)=>{
@@ -2863,7 +3026,7 @@ function showOverall(){
       '<p class="us-p">A full audit needs the remaining angles. Unlock the one-time Full Body Audit to complete it.</p>'+
       '<div class="upsell-price">'+UNLOCK_PRICE+'</div>'+
       '<div class="upsell-price-sub">ONE-TIME · ALL 4 VIEWS</div>'+
-      '<button class="btn gold-btn" onclick="handlePurchase(\'scan\')">Unlock full body scan →</button>'+
+      '<button class="btn gold-btn" onclick="handlePurchase(\'scan\')">Unlock the Full Body Audit →</button>'+
       '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">Back to scans</button>';
     backBtn.parentNode.insertBefore(upsellDiv,backBtn);
     backBtn.style.display='none';
@@ -2991,11 +3154,13 @@ async function submitRecoveryEmail(){
     if(res.ok && data && data.active && data.token){
       storeEntitlement(data);
       refreshHome();
+      track('recovery_success',{tier:data.tier||''});
       if(status){status.textContent='Access restored.';status.className='recovery-status ok';}
       showToast('Paid access restored.');
       setTimeout(()=>{closeModal('recoveryModal');showConfirmScreen();},450);
       return;
     }
+    track('recovery_failed');
     clearEntitlement();
     userEmail=email;
     saveState();
@@ -3200,15 +3365,45 @@ function playRevealAnimation(){
     document.querySelectorAll('.pc').forEach(el=>el.classList.add('in-view'));
     return;
   }
+  let pricingTracked=false;
   const io=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
+        if(!pricingTracked){pricingTracked=true;track('pricing_viewed');}
         e.target.classList.add('in-view');
         io.unobserve(e.target);
       }
     });
   },{threshold:0.15});
   document.querySelectorAll('.pc').forEach(el=>io.observe(el));
+})();
+
+// ============================================================
+//  MOBILE STICKY CTA — shows between hero and the next
+//  conversion point; never over scan or pricing sections
+// ============================================================
+(function(){
+  const bar=document.getElementById('mobCta');
+  if(!bar) return;
+  let heroVis=true,scanVis=false,priceVis=false;
+  window.updateMobCta=function(){
+    const home=document.getElementById('screen-home').classList.contains('active');
+    const on=home&&!heroVis&&!scanVis&&!priceVis;
+    bar.classList.toggle('on',on);
+    bar.setAttribute('aria-hidden',on?'false':'true');
+  };
+  if(!('IntersectionObserver' in window)) return;
+  const io=new IntersectionObserver(es=>{
+    es.forEach(e=>{
+      if(e.target.classList.contains('hero')) heroVis=e.isIntersecting;
+      else if(e.target.id==='scanSection') scanVis=e.isIntersecting;
+      else if(e.target.id==='pricingSection') priceVis=e.isIntersecting;
+    });
+    window.updateMobCta();
+  },{threshold:.08});
+  const h=document.querySelector('.hero'); if(h) io.observe(h);
+  const s=document.getElementById('scanSection'); if(s) io.observe(s);
+  const p=document.getElementById('pricingSection'); if(p) io.observe(p);
 })();
 </script>
 </body>
