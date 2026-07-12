@@ -80,29 +80,8 @@
     text-rendering:optimizeLegibility;
   }
 
-  /* subtle grain — pulled back so it doesn't compete */
-  #grain{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.025;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    will-change:transform;transform:translateZ(0)}
-
-  /* spotlight — softer, less obvious gold wash */
-  #spotlight{
-    position:fixed;inset:0;pointer-events:none;z-index:1;
-    background:
-      radial-gradient(ellipse 600px 50vh at 50% -10%,rgba(212,196,150,.05) 0%,transparent 100%),
-      radial-gradient(ellipse 380px 70vh at 50% 0%,rgba(212,196,150,.07) 0%,transparent 70%);
-  }
-  @media (max-width:480px){
-    #spotlight{
-      background:
-        radial-gradient(ellipse 80vw 50vh at 50% -10%,rgba(212,196,150,.05) 0%,transparent 100%),
-        radial-gradient(ellipse 55vw 70vh at 50% 0%,rgba(212,196,150,.07) 0%,transparent 70%);
-    }
-  }
-
-  /* entrance animation utility */
-  .r{opacity:0;transform:translateY(20px);animation:rise 1s cubic-bezier(.16,.84,.2,1) forwards}
-  @keyframes rise{to{opacity:1;transform:none}}
+  /* no page-wide grain, spotlight washes, or staggered entrance choreography —
+     the content carries the page */
 
   /* ─────────────────────────────────────────────────────
      NAV
@@ -146,29 +125,17 @@
      HERO — bigger, bolder, more breathing room
      ───────────────────────────────────────────────────── */
   .hero{
-    display:grid;grid-template-columns:1.08fr .92fr;gap:80px;
-    align-items:center;padding:120px 0 100px;
+    max-width:760px;padding:76px 0 56px;
     position:relative
   }
   .hero-l{position:relative;z-index:1}
-  .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;letter-spacing:.28em;text-transform:uppercase;
-    color:var(--dim);margin-bottom:32px;font-weight:500;
-  }
-  .eyebrow .dot{
-    display:inline-block;width:5px;height:5px;border-radius:50%;
-    background:var(--gold);margin-right:10px;vertical-align:middle;
-    animation:dotPulse 2.2s ease-in-out infinite
-  }
-  @keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.35}}
 
   .hero-l h1{
     font-family:'Inter',sans-serif;
-    font-size:clamp(46px,6.4vw,82px);
+    font-size:clamp(38px,5vw,62px);
     font-weight:900;
-    letter-spacing:-.045em;line-height:.96;
-    margin-bottom:30px;
+    letter-spacing:-.04em;line-height:1.02;
+    margin-bottom:24px;
     color:var(--ink);
   }
   .hero-l h1 em{font-style:normal;color:var(--gold)}
@@ -185,16 +152,10 @@
     border:none;border-radius:10px;
     padding:18px 32px;
     font-family:'Inter',sans-serif;font-weight:700;font-size:16px;letter-spacing:-.005em;
-    cursor:pointer;transition:transform .18s,box-shadow .18s,background .18s;
-    min-height:54px;position:relative;overflow:hidden;
+    cursor:pointer;transition:background .18s;
+    min-height:54px;
   }
-  .bigcta::after{
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.22) 50%,transparent 100%);
-    transform:translateX(-100%);transition:transform .5s ease;
-  }
-  .bigcta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 18px 40px -18px rgba(212,196,150,.55)}
-  .bigcta:hover::after{transform:translateX(100%)}
+  .bigcta:hover{background:var(--gold-bright)}
 
   .hero-secondary{
     background:none;border:0;padding:0;
@@ -207,71 +168,29 @@
 
   .hero-note{
     display:block;margin-top:16px;
-    font-family:'JetBrains Mono',monospace;font-size:11px;
-    color:var(--faint);letter-spacing:.04em;
+    font-size:13px;color:var(--faint);line-height:1.5;
   }
 
   .trust-bar{
-    display:flex;align-items:center;gap:0;margin-top:24px;
-    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;
-    color:var(--faint);flex-wrap:wrap;max-width:620px;
+    display:flex;align-items:center;gap:0;margin-top:20px;
+    font-size:13px;color:var(--faint);flex-wrap:wrap;max-width:620px;
   }
   .trust-item{display:inline-flex;align-items:center;white-space:nowrap}
   .trust-sep{margin:0 10px;color:var(--quiet)}
-  @media(max-width:860px){.trust-bar{justify-content:center;margin-top:20px}}
 
-  .hero-r{display:flex;justify-content:center;position:relative;z-index:1}
 
   /* ─────────────────────────────────────────────────────
-     CRED STRIP — moved closer to hero, less ornate
+     WALKTHROUGH — the product, step by step
      ───────────────────────────────────────────────────── */
-  .cred{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
-    margin:0 0 100px;
-    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  .walk{list-style:none;max-width:720px;border-top:1px solid var(--line2)}
+  .walk-step{display:flex;gap:22px;padding:22px 0;border-bottom:1px solid var(--line)}
+  .walk-num{
+    font-weight:800;font-size:15px;color:var(--gold-deep);
+    width:30px;height:30px;border:1px solid var(--line2);border-radius:8px;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
   }
-  .cred-item{
-    padding:32px 24px;text-align:center;
-    border-right:1px solid var(--line);
-  }
-  .cred-item:last-child{border-right:none}
-  .cred-item .cn{
-    font-family:'Inter',sans-serif;font-weight:900;font-size:40px;line-height:1;
-    color:var(--ink);letter-spacing:-.03em;
-  }
-  .cred-item .cn .us{font-size:.55em;color:var(--dim);vertical-align:super;margin-left:1px}
-  .cred-item .cl{
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--faint);margin-top:14px;
-  }
-
-  /* ─────────────────────────────────────────────────────
-     HOW-IT-WORKS — pulled back, simpler
-     ───────────────────────────────────────────────────── */
-  .how-strip{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
-    max-width:900px;margin:0 auto 100px;
-    background:var(--surface);border:1px solid var(--line);
-    border-radius:16px;overflow:hidden;
-  }
-  .how-strip-step{
-    padding:32px 32px;display:flex;align-items:flex-start;gap:20px;
-    position:relative
-  }
-  .how-strip-step+.how-strip-step::before{
-    content:'';position:absolute;left:0;top:24%;height:52%;width:1px;
-    background:var(--line2)
-  }
-  .how-strip-num{
-    font-family:'JetBrains Mono',monospace;font-weight:600;
-    font-size:11px;letter-spacing:.18em;color:var(--gold-deep);
-    flex-shrink:0;margin-top:5px;
-  }
-  .how-strip-title{
-    font-family:'Inter',sans-serif;font-size:16px;font-weight:700;
-    color:var(--ink);margin-bottom:6px;letter-spacing:-.012em;
-  }
-  .how-strip-desc{font-size:13.5px;color:var(--dim);line-height:1.5;font-weight:400}
+  .walk-step h3{font-size:16.5px;font-weight:700;letter-spacing:-.012em;margin-bottom:6px;color:var(--ink)}
+  .walk-step p{font-size:14px;color:var(--dim);line-height:1.65;max-width:60ch}
 
   /* setup note */
   .setup{
@@ -284,23 +203,18 @@
   /* ─────────────────────────────────────────────────────
      SECTIONS — generous spacing
      ───────────────────────────────────────────────────── */
-  .sec{padding:24px 0 100px}
-  .sec-head{text-align:center;margin-bottom:56px;max-width:680px;margin-left:auto;margin-right:auto}
-  .sec-head .eyebrow{
-    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.24em;
-    text-transform:uppercase;color:var(--dim);margin-bottom:18px;font-weight:500;
-  }
+  .sec{padding:24px 0 84px}
+  .sec-head{text-align:left;margin-bottom:40px;max-width:660px}
   .sec-head h2{
     font-family:'Inter',sans-serif;
-    font-size:clamp(32px,4.2vw,50px);
-    font-weight:900;letter-spacing:-.035em;line-height:1.02;
+    font-size:clamp(26px,3.4vw,38px);
+    font-weight:900;letter-spacing:-.03em;line-height:1.08;
     color:var(--ink);
   }
   .sec-head h2 em{font-style:normal;color:var(--gold)}
   .sec-head p{
-    color:var(--dim);font-size:16px;margin-top:18px;
-    max-width:54ch;margin-left:auto;margin-right:auto;
-    line-height:1.6;
+    color:var(--dim);font-size:15.5px;margin-top:14px;
+    max-width:58ch;line-height:1.65;
   }
 
   /* ─────────────────────────────────────────────────────
@@ -317,8 +231,7 @@
     text-align:left;position:relative;overflow:hidden;
     font-family:inherit;
   }
-  .vtile:hover{border-color:var(--gold);transform:translateY(-3px);
-    box-shadow:0 18px 40px -22px rgba(212,196,150,.4)}
+  .vtile:hover{border-color:var(--gold-deep);transform:translateY(-2px)}
   .vtile.done{
     border-color:rgba(95,208,138,.3);
     background:linear-gradient(160deg,#10180f,var(--surface));
@@ -357,8 +270,8 @@
      ───────────────────────────────────────────────────── */
   .overall{
     max-width:520px;margin:0 auto;
-    background:linear-gradient(155deg,#16191f,#0c0e13);
-    border:1px solid var(--line2);border-radius:18px;
+    background:#12141a;
+    border:1px solid var(--line2);border-radius:14px;
     padding:36px 32px;text-align:center;
   }
   .overall .lab{
@@ -393,7 +306,6 @@
   }
   .card-area{width:100%;max-width:460px}
 
-  @keyframes sweep{0%,100%{background-position:0 0}50%{background-position:100% 100%}}
   @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
   /* ─────────────────────────────────────────────────────
@@ -410,8 +322,8 @@
   .btn:hover{background:var(--gold-bright)}
   .btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--soft)}
   .btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
-  .btn.gold-btn{background:linear-gradient(135deg,var(--gold-bright),var(--gold-deep));color:#0c0d12}
-  .btn.gold-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .btn.gold-btn{background:var(--gold);color:#0c0d12}
+  .btn.gold-btn:hover{background:var(--gold-bright)}
 
   /* ─────────────────────────────────────────────────────
      SCANNER (analyse screen)
@@ -457,7 +369,7 @@
      ───────────────────────────────────────────────────── */
   footer{
     border-top:1px solid var(--line);padding:40px 48px;text-align:center;
-    color:var(--faint);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;
+    color:var(--faint);font-size:12.5px;line-height:1.8;
   }
   .foot-brand{
     font-family:'Inter',sans-serif;font-weight:900;letter-spacing:.32em;
@@ -474,33 +386,19 @@
      CALLOUT CARD — the centrepiece
      ───────────────────────────────────────────────────── */
   .vc{
-    width:100%;border-radius:22px;position:relative;overflow:hidden;margin-bottom:24px;
-    background:
-      linear-gradient(155deg,#171a22 0%,#0a0b10 50%,#0e1016 100%);
-    border:1px solid rgba(212,196,150,.16);
-    box-shadow:
-      0 0 0 1px rgba(212,196,150,.04),
-      0 36px 72px -24px rgba(0,0,0,.95),
-      inset 0 1px 0 rgba(255,255,255,.04);
-  }
-  /* subtle sweep — restrained, only on the result card */
-  .vc::before{
-    content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
-    background:linear-gradient(115deg,transparent 30%,rgba(212,196,150,.04) 47%,rgba(212,196,150,.1) 50%,rgba(212,196,150,.04) 53%,transparent 70%);
-    background-size:260% 260%;animation:sweep 11s ease-in-out infinite;
+    width:100%;border-radius:16px;position:relative;overflow:hidden;margin-bottom:24px;
+    background:linear-gradient(170deg,#14161d,#0b0c11);
+    border:1px solid rgba(212,196,150,.14);
+    box-shadow:0 24px 48px -24px rgba(0,0,0,.8);
+    aspect-ratio:1/1;
+    display:flex;flex-direction:column;
   }
   /* gold foil stripe — the only consistent gold accent on the card edge */
   .vc-stripe{
     position:absolute;top:0;left:0;right:0;height:2px;z-index:6;
     background:linear-gradient(90deg,transparent 0%,var(--gold-deep) 18%,var(--gold-bright) 50%,var(--gold-deep) 82%,transparent 100%);
   }
-  .vc.overall-vc{
-    box-shadow:
-      0 0 0 1px rgba(212,196,150,.1),
-      0 0 60px -14px rgba(212,196,150,.14),
-      0 36px 72px -24px rgba(0,0,0,.95),
-      inset 0 1px 0 rgba(255,255,255,.05);
-  }
+  .vc.overall-vc{border-color:rgba(212,196,150,.24)}
   .vc-photo{
     position:absolute;top:0;left:0;right:0;height:74%;
     background-size:cover;background-position:center 16%;
@@ -509,7 +407,11 @@
     -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.96) 0%,rgba(0,0,0,.72) 58%,rgba(0,0,0,.18) 86%,transparent 100%);
     mask-image:linear-gradient(180deg,rgba(0,0,0,.96) 0%,rgba(0,0,0,.72) 58%,rgba(0,0,0,.18) 86%,transparent 100%);
   }
-  .vc-inner{position:relative;z-index:3;padding:26px 24px 22px;background:linear-gradient(180deg,rgba(8,9,12,.42) 0%,rgba(8,9,12,.58) 34%,rgba(8,9,12,.88) 72%,rgba(8,9,12,.96) 100%)}
+  .vc-inner{
+    position:relative;z-index:3;flex:1;display:flex;flex-direction:column;
+    padding:20px 22px 16px;
+    background:linear-gradient(180deg,rgba(8,9,12,.42) 0%,rgba(8,9,12,.58) 34%,rgba(8,9,12,.88) 72%,rgba(8,9,12,.96) 100%);
+  }
 
   .vc-result-reveal{
     animation:resultCardSlam .72s cubic-bezier(.16,.9,.18,1) both;
@@ -548,9 +450,9 @@
     100%{opacity:0;transform:translateY(520%) rotate(-6deg)}
   }
   @keyframes resultGradePunch{
-    0%{opacity:0;transform:scale(.62) rotate(-2deg);filter:blur(5px) brightness(1.6)}
-    58%{opacity:1;transform:scale(1.08);filter:blur(0) brightness(1.3)}
-    100%{opacity:1;transform:none;filter:drop-shadow(0 0 36px rgba(212,196,150,.4)) drop-shadow(0 8px 24px rgba(0,0,0,.78))}
+    0%{opacity:0;transform:scale(.62) rotate(-2deg);filter:blur(5px)}
+    58%{opacity:1;transform:scale(1.06);filter:blur(0)}
+    100%{opacity:1;transform:none;filter:none}
   }
   @keyframes resultSnapIn{
     from{opacity:0;transform:translateY(10px)}
@@ -558,7 +460,7 @@
   }
 
   /* header */
-  .vc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .vc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
   .vc-brand-tag{
     font-family:'Inter',sans-serif;font-weight:900;
     font-size:11px;letter-spacing:.34em;color:var(--gold);
@@ -570,12 +472,14 @@
   }
 
   /* grade hero — the moment */
-  .vc-grade-section{text-align:center;padding:14px 0 18px}
+  .vc-grade-section{
+    text-align:center;padding:6px 0 10px;
+    flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;
+  }
   .vc-grade-letter{
-    font-family:'Bebas Neue';font-size:clamp(150px,44vw,196px);line-height:.8;
-    background:linear-gradient(180deg,#fff8d6 0%,#f5e09a 20%,#d4c496 52%,#b9923f 78%,#7a5c1e 100%);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-    filter:drop-shadow(0 0 36px rgba(212,196,150,.4)) drop-shadow(0 8px 24px rgba(0,0,0,.78));
+    font-family:'Bebas Neue';font-size:clamp(88px,24vw,118px);line-height:.84;
+    color:var(--gold);
+    text-shadow:0 4px 28px rgba(0,0,0,.6);
   }
   .vc-grade-label{
     font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;
@@ -586,7 +490,7 @@
   .vc-strip{
     display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;
     border-top:1px solid rgba(212,196,150,.1);border-bottom:1px solid rgba(212,196,150,.1);
-    padding:16px 0;margin:0 0 20px;text-align:center;
+    padding:11px 0;margin:0 0 12px;text-align:center;
   }
   .vc-strip-div{background:rgba(212,196,150,.1)}
   .vc-strip-val{
@@ -601,9 +505,9 @@
   /* muscle rows */
   .vc-section-title{
     font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--faint);margin-bottom:14px;
+    text-transform:uppercase;color:var(--faint);margin-bottom:10px;
   }
-  .vc-muscle{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .vc-muscle{display:flex;align-items:center;gap:10px;margin-bottom:8px}
   .vc-muscle-name{font-size:12px;font-weight:500;color:var(--soft);width:88px;flex-shrink:0}
   .vc-muscle-track{
     flex:1;height:5px;background:rgba(255,255,255,.04);
@@ -627,14 +531,14 @@
 
   /* verdict */
   .vc-verdict{
-    font-size:13px;color:var(--soft);line-height:1.6;font-style:italic;
-    border-top:1px solid rgba(255,255,255,.05);padding-top:14px;
-    margin-top:4px;margin-bottom:16px;
+    font-size:13px;color:var(--soft);line-height:1.55;font-style:italic;
+    border-top:1px solid rgba(255,255,255,.05);padding-top:10px;
+    margin-top:2px;margin-bottom:10px;
   }
   .vc-focus{
-    display:grid;grid-template-columns:1fr;gap:8px;
+    display:grid;grid-template-columns:1fr;gap:6px;
     border-top:1px solid rgba(255,255,255,.05);
-    padding-top:14px;margin:4px 0 16px;
+    padding-top:10px;margin:2px 0 10px;
   }
   .vc-focus-row{display:grid;grid-template-columns:96px 1fr;gap:10px;font-size:12px;line-height:1.45}
   .vc-focus-lbl{font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);font-size:10px}
@@ -649,7 +553,8 @@
   /* footer */
   .vc-footer{
     display:flex;justify-content:space-between;align-items:center;
-    border-top:1px solid rgba(212,196,150,.08);padding-top:14px;
+    border-top:1px solid rgba(212,196,150,.08);padding-top:10px;
+    margin-top:auto;
   }
   .vc-serial{
     font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--faint);
@@ -663,11 +568,6 @@
   /* blur state — card pulses while gate is active */
   .vc.blurred .vc-inner{filter:blur(14px);user-select:none;pointer-events:none}
   .vc.blurred .vc-photo{filter:blur(5px)}
-  .vc.blurred{animation:cardBlurPulse 3s ease-in-out infinite}
-  @keyframes cardBlurPulse{
-    0%,100%{box-shadow:0 40px 80px -30px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.06)}
-    50%{box-shadow:0 40px 80px -30px rgba(0,0,0,.85),0 0 60px -10px rgba(212,196,150,.14),inset 0 1px 0 rgba(255,255,255,.06)}
-  }
 
   /* ─────────────────────────────────────────────────────
      EMAIL GATE
@@ -677,7 +577,7 @@
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     padding:32px 28px;text-align:center;
     background:rgba(8,9,12,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-radius:22px;
+    border-radius:16px;
     animation:fadeIn .35s ease both;
   }
   .gate-grade-tease{
@@ -687,21 +587,18 @@
     animation:gradePulse 2.4s ease-in-out infinite;
   }
   @keyframes gradePulse{
-    0%,100%{opacity:.45;filter:blur(15px);text-shadow:none}
-    50%{opacity:.9;filter:blur(7px);text-shadow:0 0 60px rgba(212,196,150,.7),0 0 22px rgba(212,196,150,.4)}
+    0%,100%{opacity:.4;filter:blur(14px)}
+    50%{opacity:.75;filter:blur(9px)}
   }
   .gate-ready-pill{
     display:inline-flex;align-items:center;gap:7px;
     background:rgba(212,196,150,.08);border:1px solid rgba(212,196,150,.2);
     border-radius:20px;padding:6px 14px;margin-bottom:16px;
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
-    text-transform:uppercase;color:var(--gold);font-weight:600;
+    font-size:11px;color:var(--gold);font-weight:600;
   }
   .gate-ready-dot{
     width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;
-    animation:dotPulseGate 1.4s ease-in-out infinite;
   }
-  @keyframes dotPulseGate{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
   .gate-overlay h3{font-size:22px;font-weight:800;margin-bottom:10px;letter-spacing:-.02em}
   .gate-overlay p{font-size:13.5px;color:var(--dim);line-height:1.55;max-width:30ch;margin-bottom:20px}
@@ -715,8 +612,8 @@
   .gate-input.err{border-color:var(--red);animation:shake .3s ease}
   @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
   .gate-fine{
-    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);
-    margin-top:10px;letter-spacing:.04em;line-height:1.5;
+    font-size:11.5px;color:var(--faint);
+    margin-top:10px;line-height:1.5;
   }
   .gate-fine a{color:var(--dim);text-decoration:underline;cursor:pointer}
   .gate-fine a:hover{color:var(--gold)}
@@ -725,14 +622,13 @@
      SHARE MOMENT
      ───────────────────────────────────────────────────── */
   .share-moment{
-    background:linear-gradient(155deg,#0f1a10,#09110a);
-    border:1px solid rgba(95,208,138,.22);border-radius:18px;
+    background:#0e150f;
+    border:1px solid rgba(95,208,138,.22);border-radius:14px;
     padding:24px 22px 20px;margin-bottom:14px;text-align:center;
     animation:fadeIn .4s ease both;
   }
   .share-moment .sm-eye{
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--green);margin-bottom:10px;font-weight:600;
+    font-size:12px;color:var(--green);margin-bottom:10px;font-weight:600;
   }
   .share-moment h3{font-size:18px;font-weight:800;letter-spacing:-.015em;margin-bottom:6px}
   .share-moment p{font-size:13px;color:var(--dim);line-height:1.5;max-width:28ch;margin:0 auto 18px}
@@ -760,8 +656,8 @@
   }
   .confirm-card{
     width:100%;max-width:460px;
-    background:linear-gradient(155deg,#14180f,#0a0d0b);
-    border:1px solid rgba(95,208,138,.25);border-radius:22px;
+    background:#0e120d;
+    border:1px solid rgba(95,208,138,.25);border-radius:16px;
     padding:42px 32px;text-align:center;
   }
   .confirm-icon{
@@ -807,15 +703,13 @@
   .progress-card{width:100%;max-width:460px}
   .progress-lock-icon{
     width:64px;height:64px;border-radius:50%;
-    background:linear-gradient(155deg,#1e1608,#110e05);
+    background:var(--surface);
     border:1px solid var(--gold-deep);
     display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
-    box-shadow:0 0 32px -10px rgba(212,196,150,.22);
   }
   .progress-lock-icon svg{width:28px;height:28px;stroke:var(--gold);stroke-width:1.8;fill:none}
   .progress-card .pr-eye{
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--gold-deep);margin-bottom:12px;font-weight:600;
+    font-size:12px;color:var(--gold-deep);margin-bottom:12px;font-weight:600;
   }
   .progress-card h2{font-size:28px;font-weight:900;letter-spacing:-.025em;margin-bottom:12px;line-height:1.05}
   .progress-card .pr-sub{font-size:14px;color:var(--dim);line-height:1.6;max-width:34ch;margin:0 auto 30px}
@@ -836,9 +730,8 @@
   .pr-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--gold-deep),#5a3e1a);opacity:.5}
   .pr-coming-badge{
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;
-    background:linear-gradient(135deg,var(--gold-bright),var(--gold-deep));
-    color:#0c0d12;font-family:'JetBrains Mono',monospace;font-size:10px;
-    letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+    background:var(--gold);color:#0c0d12;
+    font-size:11px;font-weight:700;
     border-radius:20px;padding:8px 18px;white-space:nowrap;
   }
   .pr-feats{
@@ -853,24 +746,22 @@
      UPSELL PANEL
      ───────────────────────────────────────────────────── */
   .upsell{
-    background:linear-gradient(160deg,#1e1608,#0f0c14);
-    border:1px solid #5a4520;border-radius:18px;padding:28px 24px;
+    background:var(--surface);
+    border:1px solid #4a3d1c;border-radius:14px;padding:28px 24px;
     text-align:center;margin-bottom:12px;
     animation:fadeIn .45s .1s ease both;
   }
   .upsell .us-eye{
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--gold-deep);margin-bottom:12px;font-weight:600;
+    font-size:12px;color:var(--gold-deep);margin-bottom:12px;font-weight:600;
   }
   .upsell h3{font-size:21px;font-weight:900;letter-spacing:-.022em;margin-bottom:8px;line-height:1.15}
   .upsell .us-p{font-size:13.5px;color:var(--dim);line-height:1.55;max-width:32ch;margin:0 auto 20px}
   .upsell-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:22px;text-align:left}
   .upsell-feats li{font-size:13px;color:var(--soft);display:flex;align-items:center;gap:10px}
   .upsell-feats li::before{content:"✓";color:var(--gold);font-weight:700;flex-shrink:0}
-  .upsell-price{font-family:'Bebas Neue';font-size:54px;color:var(--gold);line-height:1}
+  .upsell-price{font-weight:900;font-size:34px;color:var(--gold);line-height:1;letter-spacing:-.02em}
   .upsell-price-sub{
-    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--faint);
-    letter-spacing:.1em;margin-bottom:18px;
+    font-size:11.5px;color:var(--faint);margin:6px 0 18px;
   }
 
   /* share row */
@@ -891,163 +782,82 @@
   /* ─────────────────────────────────────────────────────
      PRICING
      ───────────────────────────────────────────────────── */
-  .pricing-free-line{
-    text-align:center;margin-bottom:28px;
-    font-family:'JetBrains Mono',monospace;font-size:12px;
-    color:var(--faint);letter-spacing:.08em;
+  .plist{max-width:760px;border-top:1px solid var(--line2)}
+  .prow{
+    display:grid;grid-template-columns:1fr 120px 180px;gap:24px;align-items:center;
+    padding:24px 0 24px 20px;border-bottom:1px solid var(--line);
+    border-left:2px solid transparent;
   }
-  .pricing-grid{
-    display:grid;grid-template-columns:1fr 1.08fr 1fr;gap:18px;
-    max-width:980px;margin:0 auto;align-items:stretch;
+  .prow-name{font-size:17px;font-weight:800;letter-spacing:-.012em;color:var(--ink)}
+  .prow-desc{font-size:13.5px;color:var(--dim);line-height:1.55;margin-top:5px;max-width:46ch}
+  .prow-price{text-align:right;font-weight:800;font-size:20px;color:var(--ink);white-space:nowrap}
+  .prow-price small{display:block;font-size:11.5px;font-weight:500;color:var(--faint);margin-top:2px}
+  .prow-cta{
+    font-family:'Inter',sans-serif;font-weight:700;font-size:14px;
+    border-radius:9px;padding:12px 16px;cursor:pointer;width:100%;
+    background:transparent;border:1px solid var(--line2);color:var(--soft);
+    transition:border-color .15s,color .15s,background .15s;min-height:46px;
   }
-  .pc{
-    border-radius:20px;padding:38px 32px;display:flex;flex-direction:column;
-    position:relative;overflow:hidden;
+  .prow-cta:hover{border-color:var(--gold-deep);color:var(--gold)}
+  .prow-main{border-left-color:var(--gold);background:rgba(212,196,150,.03)}
+  .prow-main .prow-price{color:var(--gold)}
+  .prow-main .prow-cta{background:var(--gold);border-color:var(--gold);color:#0c0d12}
+  .prow-main .prow-cta:hover{background:var(--gold-bright);border-color:var(--gold-bright);color:#0c0d12}
+  .pricing-notes{max-width:760px;margin-top:18px;font-size:12.5px;color:var(--faint);line-height:1.7}
+  @media(max-width:720px){
+    .prow{grid-template-columns:1fr auto;padding-left:14px}
+    .prow-cta{grid-column:1 / -1;margin-top:4px}
   }
-  .pc-basic{background:var(--surface);border:1px solid var(--line2)}
-  .pc-featured{
-    background:linear-gradient(155deg,#1a1608 0%,#110e05 55%,#15120a 100%);
-    border:1px solid var(--gold-deep);
-    box-shadow:
-      0 0 0 1px rgba(212,196,150,.06),
-      0 28px 60px -20px rgba(212,196,150,.2),
-      0 0 80px -30px rgba(212,196,150,.08);
-  }
-  .pc-featured::before{
-    content:'';position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(115deg,transparent 30%,rgba(212,196,150,.05) 47%,rgba(212,196,150,.12) 50%,rgba(212,196,150,.05) 53%,transparent 70%);
-    background-size:250% 250%;animation:sweep 9s ease-in-out infinite;
-  }
-  .pc-featured::after{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,transparent 0%,var(--gold-deep) 15%,var(--gold-bright) 50%,var(--gold-deep) 85%,transparent 100%);
-  }
-  .pc-lifetime{
-    background:linear-gradient(155deg,#16130a 0%,#0e0c07 55%,#121008 100%);
-    border:1px solid var(--gold);
-    box-shadow:0 0 0 1px rgba(212,196,150,.1),0 20px 48px -18px rgba(212,196,150,.14);
-  }
-  .pc-lifetime::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent 0%,var(--gold) 30%,var(--gold-bright) 50%,var(--gold) 70%,transparent 100%);
-  }
-  .pc-badge{
-    display:inline-flex;align-items:center;gap:6px;
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
-    text-transform:uppercase;color:#0c0d12;background:var(--gold);
-    border-radius:20px;padding:5px 13px;margin-bottom:24px;align-self:flex-start;
-    font-weight:700;position:relative;z-index:1;
-  }
-  .pc-lifetime .pc-badge{
-    background:linear-gradient(135deg,var(--gold-bright),var(--gold));
-    color:#0a0800;
-  }
-  .pc-badge-spacer{height:36px;margin-bottom:24px}
-  .pc-name{
-    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--dim);margin-bottom:12px;
-    position:relative;z-index:1;font-weight:600;
-  }
-  .pc-price{
-    font-family:'Bebas Neue';font-size:64px;line-height:.9;
-    color:var(--ink);margin-bottom:4px;position:relative;z-index:1;
-  }
-  .pc-featured .pc-price{
-    font-size:78px;
-    background:linear-gradient(180deg,#fceabb,#d4c496 40%,#b9923f 80%);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-    filter:drop-shadow(0 2px 8px rgba(212,196,150,.3));
-  }
-  .pc-lifetime .pc-price{
-    background:linear-gradient(180deg,#fceabb,#d4c496 40%,#b9923f 80%);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  }
-  .pc-period{
-    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint);
-    letter-spacing:.08em;margin-bottom:6px;position:relative;z-index:1;
-  }
-  .pc-anchor{
-    font-size:12px;color:var(--gold-deep);font-weight:600;
-    margin-bottom:26px;position:relative;z-index:1;font-style:italic;min-height:18px;
-  }
-  .pc-divider{height:1px;background:var(--line);margin-bottom:22px;position:relative;z-index:1}
-  .pc-featured .pc-divider{background:rgba(212,196,150,.18)}
-  .pc-lifetime .pc-divider{background:rgba(212,196,150,.14)}
 
-  .pc-feats{
-    list-style:none;display:flex;flex-direction:column;gap:12px;flex:1;
-    margin-bottom:30px;position:relative;z-index:1;
+  /* trust panel — plain answers before the upload */
+  .trust-panel{
+    display:grid;grid-template-columns:1fr 1fr;gap:0 44px;
+    max-width:880px;margin:0 0 44px;border-top:1px solid var(--line2);
   }
-  .pc-feats li{font-size:14px;color:var(--soft);display:flex;align-items:flex-start;gap:10px;line-height:1.4}
-  .pc-feats li::before{content:'✓';font-weight:700;flex-shrink:0;margin-top:1px}
-  .pc-basic .pc-feats li::before{color:var(--dim)}
-  .pc-featured .pc-feats li::before{color:var(--gold)}
-  .pc-lifetime .pc-feats li::before{color:var(--gold-bright)}
-  .pc-feats li.pc-no{color:var(--faint)}
-  .pc-feats li.pc-no::before{content:'—';color:var(--faint)}
+  .trust-panel .tq{padding:15px 0;border-bottom:1px solid var(--line)}
+  .trust-panel h4{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:5px}
+  .trust-panel p{font-size:13px;color:var(--dim);line-height:1.6}
+  @media(max-width:720px){.trust-panel{grid-template-columns:1fr}}
 
-  .pc-cta{
-    display:block;width:100%;text-align:center;
-    font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:-.005em;
-    border-radius:11px;padding:15px;cursor:pointer;
-    transition:transform .18s,background .18s,border-color .18s,color .18s,box-shadow .18s;
-    border:none;position:relative;z-index:1;
-  }
-  .pc-basic .pc-cta{background:transparent;border:1px solid var(--line2);color:var(--soft)}
-  .pc-basic .pc-cta:hover{border-color:var(--gold-deep);color:var(--gold)}
-  .pc-featured .pc-cta{
-    background:var(--gold);color:#0c0d12;
-    box-shadow:0 8px 24px -8px rgba(212,196,150,.45);
-    min-height:52px;font-size:16px;
-  }
-  .pc-featured .pc-cta:hover{background:var(--gold-bright);transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(212,196,150,.55)}
-  .pc-lifetime .pc-cta{
-    background:linear-gradient(135deg,#2a2010,#1e1808);
-    border:1px solid var(--gold);color:var(--gold);min-height:48px;
-  }
-  .pc-lifetime .pc-cta:hover{background:linear-gradient(135deg,#352a14,#26200c);color:var(--gold-bright);border-color:var(--gold-bright);transform:translateY(-1px)}
+  /* walkthrough demos — real components, inert and labelled */
+  .walk-body{flex:1;min-width:0}
+  .walk-demo{margin-top:14px;max-width:440px;pointer-events:none}
+  .walk-demo-tag{font-size:11.5px;color:var(--faint);margin-bottom:8px}
+  .walk-views{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .walk-views .vtile{padding:12px 10px;border-radius:10px}
+  .walk-views .vtile .ic{font-size:20px;margin-bottom:4px;color:var(--soft)}
+  .walk-views .vtile .t{font-size:12px;margin-bottom:0}
+  @media(max-width:480px){.walk-views{gap:6px}.walk-views .vtile{padding:10px 6px}}
 
-  /* scan trust strip */
-  .scan-trust{
-    display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
-    gap:6px 0;margin-top:20px;
-    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;
-    color:var(--faint);
-  }
-  .scan-trust-item{display:inline-flex;align-items:center;white-space:nowrap}
-  .scan-trust .lock{width:11px;height:11px;stroke:var(--gold-deep);stroke-width:2;fill:none;margin-right:6px;flex-shrink:0}
-  @media(max-width:640px){.scan-trust{flex-direction:column}.scan-trust .trust-sep{display:none}.scan-trust-item{white-space:normal;text-align:center}}
+  /* final CTA */
+  .final-cta{max-width:660px;border-top:1px solid var(--line2);padding-top:44px}
+  .final-cta h2{font-size:clamp(26px,3.4vw,38px);font-weight:900;letter-spacing:-.03em;line-height:1.08;color:var(--ink)}
+  .final-cta h2 em{font-style:normal;color:var(--gold)}
+  .final-cta p{color:var(--dim);font-size:15.5px;margin:12px 0 26px;line-height:1.65}
+  @media(max-width:860px){.final-cta .bigcta{width:100%}}
+
+  /* see-what-you-get demo section */
+  .demo-grid{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:48px;align-items:start}
+  .demo-block{border-top:1px solid var(--line);padding:16px 0 18px}
+  .demo-info .demo-block:last-child{border-bottom:1px solid var(--line)}
+  .demo-block h3{font-size:15px;font-weight:800;letter-spacing:-.01em;color:var(--ink);margin-bottom:6px}
+  .demo-block p{font-size:13.5px;color:var(--dim);line-height:1.65}
+  @media(max-width:860px){.demo-grid{grid-template-columns:1fr;gap:28px}.demo-grid .card-area{margin:0 auto}}
 
   /* ─────────────────────────────────────────────────────
      SAMPLE VERDICTS
      ───────────────────────────────────────────────────── */
-  .vs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:980px;margin:0 auto}
-  .vs-card{
-    background:var(--surface);border:1px solid var(--line);border-radius:16px;
-    padding:26px 24px 22px;position:relative;margin:0;overflow:hidden;
-  }
-  .vs-card::before{
-    content:'';position:absolute;top:0;left:24px;right:24px;height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold-deep),transparent);
-  }
-  .vs-tag{
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
-    color:var(--gold-deep);margin-bottom:14px;font-weight:600;
-  }
-  .vs-card blockquote{
-    font-size:15px;line-height:1.65;color:var(--soft);font-style:italic;margin:0 0 16px;
-  }
-  .vs-card figcaption{
-    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--faint);
-  }
-  @media(max-width:860px){.vs-grid{grid-template-columns:1fr;gap:12px;max-width:480px}}
+  .tone{max-width:680px}
+  .tone-item{border-left:2px solid var(--line2);padding:2px 0 2px 22px;margin:0 0 26px}
+  .tone-tag{font-size:12px;font-weight:600;color:var(--gold-deep);margin-bottom:6px}
+  .tone-item blockquote{font-size:16px;line-height:1.65;color:var(--soft);font-style:italic;margin:0}
+  .tone-note{font-size:12.5px;color:var(--faint);margin-top:4px}
 
   /* ─────────────────────────────────────────────────────
      DISTRIBUTION
      ───────────────────────────────────────────────────── */
   .dist{
-    max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:0;
+    max-width:680px;display:flex;flex-direction:column;gap:0;
     background:var(--surface);border:1px solid var(--line);border-radius:16px;
     overflow:hidden;position:relative;
   }
@@ -1082,8 +892,7 @@
   .distrow:nth-child(5) .dbar span{background:linear-gradient(90deg,#2a2d3a,#5d6273)}
   .distrow:nth-child(6) .dbar span{background:linear-gradient(90deg,#1a1c24,#3a3d4a)}
   .distrow .dp{
-    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);
-    letter-spacing:.06em;text-align:right;
+    font-size:12px;color:var(--dim);text-align:right;line-height:1.4;
   }
 
   .method-grid{
@@ -1095,9 +904,8 @@
     padding-top:18px;
   }
   .method-k{
-    font-family:'JetBrains Mono',monospace;
-    font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--gold);margin-bottom:8px;
+    font-size:12px;font-weight:600;
+    color:var(--gold-deep);margin-bottom:8px;
   }
   .method-item h3{
     font-size:18px;line-height:1.2;letter-spacing:-.015em;
@@ -1117,7 +925,7 @@
   /* ─────────────────────────────────────────────────────
      FAQ
      ───────────────────────────────────────────────────── */
-  .faq{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+  .faq{max-width:680px;display:flex;flex-direction:column;gap:0}
   .faq-item{border-bottom:1px solid var(--line);padding:26px 0}
   .faq-item:first-child{border-top:1px solid var(--line)}
   .faq-q{
@@ -1126,34 +934,10 @@
   }
   .faq-a{font-size:14.5px;color:var(--dim);line-height:1.65;max-width:58ch}
 
-  /* ─────────────────────────────────────────────────────
-     PRICING SCROLL-REVEAL
-     ───────────────────────────────────────────────────── */
-  .pc{
-    opacity:0;transform:translateY(28px);
-    transition:opacity .6s cubic-bezier(.2,.8,.2,1),transform .6s cubic-bezier(.2,.8,.2,1);
-  }
-  .pc.in-view{opacity:1;transform:translateY(0)}
-  .pc-featured.in-view{transition-delay:.1s}
-  .pc-lifetime.in-view{transition-delay:.2s}
-  @media(prefers-reduced-motion:reduce){.pc{opacity:1;transform:none;transition:none}}
-
-  /* sample card entrance */
-  #sampleCard{
-    animation:cardEntrance .8s cubic-bezier(.18,.85,.22,1) .15s both;
-    display:block!important;
-  }
-  #sampleCard .vc-grade-letter{
-    background:none;
-    -webkit-text-fill-color:var(--dim);
-    filter:none;
-  }
+  /* demo card — static, no entrance choreography */
+  #sampleCard .vc-grade-letter{color:var(--dim);text-shadow:none}
   #sampleCard .vc-focus{margin-bottom:14px}
   #sampleCard .vc-focus-row{grid-template-columns:82px 1fr}
-  @keyframes cardEntrance{
-    from{opacity:0;transform:translateY(22px) scale(.97)}
-    to{opacity:1;transform:translateY(0) scale(1)}
-  }
 
   /* ─────────────────────────────────────────────────────
      MODAL — privacy & terms
@@ -1178,8 +962,7 @@
     flex-shrink:0;
   }
   .modal-eyebrow{
-    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;
-    color:var(--gold);text-transform:uppercase;font-weight:600;
+    font-size:12px;color:var(--gold-deep);font-weight:600;
   }
   .modal-title{
     font-family:'Inter',sans-serif;font-weight:900;font-size:22px;
@@ -1244,48 +1027,29 @@
     .nav{padding:14px 22px}.nav .links{gap:18px}
     .nav .links .navlink:not(.navcta){display:none}
     .wrap{padding:0 22px}
-    .hero{
-      grid-template-columns:1fr;gap:44px;
-      padding:72px 0 60px;text-align:center;
-    }
-    .eyebrow{margin-bottom:24px}
-    .hero-l h1{font-size:clamp(38px,9vw,58px);margin-bottom:22px}
-    .hero-l p.sub{margin-left:auto;margin-right:auto;margin-bottom:32px;font-size:16.5px}
-    .hero-actions{justify-content:center;flex-direction:column;align-items:stretch;gap:14px}
+    .hero{padding:48px 0 40px}
+    .hero-l h1{font-size:clamp(34px,8vw,48px);margin-bottom:20px}
+    .hero-l p.sub{margin-bottom:30px;font-size:16px}
+    .hero-actions{flex-direction:column;align-items:stretch;gap:14px}
     .hero-secondary{text-align:center}
-    .bigcta{width:100%;min-height:58px;font-size:17px;border-radius:13px}
-    .cred{grid-template-columns:1fr 1fr;margin-bottom:64px}
-    .cred-item{border-bottom:1px solid var(--line)}
-    .cred-item:nth-child(odd){border-right:1px solid var(--line)}
-    .cred-item:nth-child(even){border-right:none}
-    .cred-item:nth-child(3),.cred-item:nth-child(4){border-bottom:none}
+    .bigcta{width:100%;min-height:56px;font-size:16.5px;border-radius:12px}
     .views{grid-template-columns:1fr 1fr;gap:12px;max-width:none}
     .vtile{padding:22px 18px}.vtile .ic{font-size:32px}
-    .how-strip{grid-template-columns:1fr;border-radius:14px;margin-bottom:64px}
-    .how-strip-step+.how-strip-step::before{left:20%;top:0;height:1px;width:60%;background:var(--line2)}
-    .how-strip-step{padding:20px 22px}
-    .pc{padding:30px 26px}
-    .pricing-free-line{font-size:11px}
     .distrow{grid-template-columns:48px 1fr 100px;gap:12px;padding:14px 16px}
-    .sec{padding:16px 0 72px}
-    .sec-head{margin-bottom:42px}
-    .sec-head h2{font-size:30px}
+    .sec{padding:16px 0 64px}
+    .sec-head{margin-bottom:32px}
+    .sec-head h2{font-size:26px}
   }
   @media (max-width:639px){
-    .pricing-grid{grid-template-columns:1fr;max-width:420px}
-    .pc-featured{order:-1} /* main offer first when cards stack */
     .nav{padding:14px 18px}
   }
   @media (max-width:480px){
     .views{grid-template-columns:1fr 1fr}
-    .bigcta{width:100%;min-height:60px;font-size:17px;padding:17px 22px}
-    .hero{padding:52px 0 44px;gap:36px}
-    .hero-l h1{font-size:clamp(36px,11vw,52px);line-height:.98}
-    .hero-l p.sub{font-size:15.5px;margin-bottom:28px}
-    .sec-head h2{font-size:26px}
-    .cred-item{padding:24px 14px}
-    .cred-item .cn{font-size:34px}
-    .cred-item .cl{font-size:9px;margin-top:10px}
+    .bigcta{width:100%;min-height:58px;font-size:16.5px;padding:16px 22px}
+    .hero{padding:36px 0 32px}
+    .hero-l h1{font-size:clamp(32px,10vw,44px)}
+    .hero-l p.sub{font-size:15.5px;margin-bottom:26px}
+    .sec-head h2{font-size:24px}
     .modal{border-radius:14px}
     .modal-head{padding:18px 22px}
     .modal-body{padding:20px 22px 28px;font-size:14px}
@@ -1294,14 +1058,6 @@
   }
   @media (max-width:375px){
     .wrap{padding:0 18px}
-    .how-strip{border-radius:12px;margin-bottom:48px}
-    .how-strip-step{padding:18px 18px;gap:14px}
-    .how-strip-title{font-size:15px}
-    .how-strip-desc{font-size:12.5px}
-    .pc{padding:26px 20px}
-    .pc-price{font-size:54px}
-    .pc-feats li{font-size:13px}
-    .pc-cta{font-size:14px}
     .nav .brand{font-size:13px;letter-spacing:.24em}
   }
 
@@ -1316,8 +1072,7 @@
      ───────────────────────────────────────────────────── */
   .sample-note{
     margin-top:12px;text-align:center;
-    font-family:'JetBrains Mono',monospace;font-size:10px;
-    color:var(--faint);letter-spacing:.06em;
+    font-size:11.5px;color:var(--faint);
   }
   .gate-consent{
     display:flex;align-items:center;justify-content:center;gap:8px;
@@ -1342,9 +1097,9 @@
   }
   .guide-skip input{accent-color:var(--gold);margin:0}
   .photo-tips-link{
-    display:block;margin:-14px auto 34px;background:none;border:none;cursor:pointer;
-    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;
-    color:var(--dim);text-decoration:underline;text-underline-offset:3px;padding:6px;
+    display:block;margin:-14px 0 34px;background:none;border:none;cursor:pointer;
+    font-size:12.5px;color:var(--dim);
+    text-decoration:underline;text-underline-offset:3px;padding:6px 0;
   }
   .photo-tips-link:hover{color:var(--gold)}
   .mob-cta{
@@ -1409,9 +1164,7 @@
       rgba(212,196,150,.18) 90%,
       transparent 100%
     );
-    box-shadow:
-      0 0 12px 4px rgba(240,217,154,.35),
-      0 0 28px 10px rgba(212,196,150,.18);
+    box-shadow:0 0 10px 2px rgba(240,217,154,.25);
     opacity: 0;
     top: 0;
   }
@@ -1442,8 +1195,8 @@
 
   /* --- Phase 4: grade letter slam --- */
   @keyframes ra-grade-slam {
-    0%   { opacity:0; transform: scale(2.4); filter: blur(8px) drop-shadow(0 0 60px rgba(240,217,154,.9)); }
-    55%  { opacity:1; transform: scale(.94); filter: blur(0) drop-shadow(0 0 36px rgba(212,196,150,.4)) drop-shadow(0 8px 24px rgba(0,0,0,.78)); }
+    0%   { opacity:0; transform: scale(2.2); filter: blur(8px); }
+    55%  { opacity:1; transform: scale(.94); filter: blur(0); }
     70%  { transform: scale(1.04) translateX(-3px); }
     80%  { transform: scale(.98) translateX(2px); }
     90%  { transform: scale(1.01) translateX(-1px); }
@@ -1542,8 +1295,6 @@
 </style>
 </head>
 <body>
-  <div id="grain" aria-hidden="true"></div>
-  <div id="spotlight" aria-hidden="true"></div>
   <input type="file" id="filein" accept="image/*" style="display:none">
   <div class="toast" id="toast"></div>
 
@@ -1563,20 +1314,15 @@
       <!-- HERO -->
       <div class="hero">
         <div class="hero-l">
-          <div class="eyebrow r" style="animation-delay:.05s">
-            <span class="dot"></span>AI VISUAL PHYSIQUE AUDIT
+          <h1>Upload a photo.<br>Get <em>called out</em>.</h1>
+          <p class="sub">Send one photo. Get a grade from S to E, scores for every visible muscle, a conditioning read, and the weak point you've been pretending not to see. First scan's free. No flattery.</p>
+          <div class="hero-actions">
+            <button class="bigcta" onclick="track('hero_cta_click');document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get graded — free</button>
+            <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">See a demo result</button>
           </div>
-          <h1 class="r" style="animation-delay:.15s">Upload a photo.<br>Get <em>called out</em>.</h1>
-          <p class="sub r" style="animation-delay:.28s">An S–E grade, muscle-by-muscle scores, a conditioning read, and the weak point your mirror lets you ignore — from one photo. First scan free. No flattery.</p>
-          <div class="hero-actions r" style="animation-delay:.4s">
-            <button class="bigcta" onclick="track('hero_cta_click');document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Start my free scan</button>
-            <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">See a sample result</button>
-          </div>
-          <span class="hero-note r" style="animation-delay:.46s">The only signup is an email at the reveal step — it keeps your result and any purchase restorable.</span>
-          <div class="trust-bar r" style="animation-delay:.52s" aria-label="Trust signals">
+          <span class="hero-note">No account. No card. Just an email when your result is ready.</span>
+          <div class="trust-bar" aria-label="Trust signals">
             <span class="trust-item">First scan free</span>
-            <span class="trust-sep">·</span>
-            <span class="trust-item">No card required</span>
             <span class="trust-sep">·</span>
             <span class="trust-item">Photos not stored by CALLOUT</span>
             <span class="trust-sep">·</span>
@@ -1584,15 +1330,93 @@
           </div>
         </div>
 
-        <div class="hero-r r" style="animation-delay:.5s">
+      </div>
+
+      <div class="setup" id="setupNote" style="display:none"></div>
+
+      <!-- HOW IT WORKS — the actual product, step by step -->
+      <section class="sec" id="howStrip" style="padding-top:32px">
+        <div class="sec-head">
+          <h2>How a scan works.</h2>
+          <p>No account first, no card first. This is the whole product, in order.</p>
+        </div>
+        <ol class="walk">
+          <li class="walk-step">
+            <span class="walk-num">1</span>
+            <div class="walk-body">
+              <h3>Choose your angle</h3>
+              <p>Front, back, legs, or arms — the same four tiles you'll use below. Your first angle is the free one.</p>
+              <div class="walk-demo" aria-hidden="true">
+                <div class="walk-demo-tag">Demo — the actual angle picker</div>
+                <div class="walk-views">
+                  <div class="vtile"><div class="ic">F</div><div class="t">Front</div></div>
+                  <div class="vtile"><div class="ic">B</div><div class="t">Back</div></div>
+                  <div class="vtile"><div class="ic">L</div><div class="t">Legs</div></div>
+                  <div class="vtile"><div class="ic">A</div><div class="t">Arms</div></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="walk-step">
+            <span class="walk-num">2</span>
+            <div class="walk-body">
+              <h3>Upload one photo</h3>
+              <p>A short checklist shows what gets a clean read, then the picker opens. The photo is resized on your device before it's sent for this one scan. Bad photos get refused, not graded generously.</p>
+            </div>
+          </li>
+          <li class="walk-step">
+            <span class="walk-num">3</span>
+            <div class="walk-body">
+              <h3>The AI scores what it can see</h3>
+              <p>Visible muscle groups get a 0–100 score with a confidence level. Hidden areas don't get guessed.</p>
+              <div class="walk-demo" aria-hidden="true">
+                <div class="walk-demo-tag">Demo values — the actual score rows</div>
+                <div class="walk-bars">
+                  <div class="vc-muscle"><span class="vc-muscle-name">Shoulders</span><div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:60%"></div></div><span class="vc-muscle-val">60</span></div>
+                  <div class="vc-muscle"><span class="vc-muscle-name">Chest</span><div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:46%"></div></div><span class="vc-muscle-val">46</span></div>
+                  <div class="vc-muscle"><span class="vc-muscle-name">Conditioning</span><div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:50%"></div></div><span class="vc-muscle-val">50</span></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="walk-step">
+            <span class="walk-num">4</span>
+            <div class="walk-body">
+              <h3>Your email reveals the free result</h3>
+              <p>The card is generated first, then revealed. Your email is the whole account — it links this result and any purchase so access can be restored on any device.</p>
+            </div>
+          </li>
+          <li class="walk-step">
+            <span class="walk-num">5</span>
+            <div class="walk-body">
+              <h3>The Full Body Audit unlocks all four angles</h3>
+              <p>£5.99 once. Adds the written verdict, strongest and weakest areas, next focus, a broad visual body-fat estimate, and an uncapped overall grade. No subscription.</p>
+            </div>
+          </li>
+          <li class="walk-step">
+            <span class="walk-num">6</span>
+            <div class="walk-body">
+              <h3>Pro is for rescans</h3>
+              <p>Re-grade after a cut, a bulk, a PR, or a training block — £9.99/month, cancel anytime. Progress tools are planned, not live yet.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- SEE WHAT YOU GET — demo result, honestly labelled -->
+      <section class="sec" id="demoSection" style="padding-top:0">
+        <div class="sec-head">
+          <h2>See what you get.</h2>
+          <p>Demo result — not user statistics. This is the exact card format every scan returns, filled with example values.</p>
+        </div>
+        <div class="demo-grid">
           <div class="card-area">
-            <!-- Sample card — sets the visual standard for what users will get -->
             <div class="vc" id="sampleCard">
               <div class="vc-stripe"></div>
               <div class="vc-inner">
                 <div class="vc-header">
                   <span class="vc-brand-tag">CALLOUT</span>
-                  <span class="vc-badge">SAMPLE RESULT</span>
+                  <span class="vc-badge">DEMO RESULT</span>
                 </div>
                 <div class="vc-grade-section">
                   <div class="vc-grade-letter">C</div>
@@ -1627,63 +1451,65 @@
                   <div class="vc-focus-row"><span class="vc-focus-lbl">Next</span><span class="vc-focus-val">Add chest volume or cut until the torso stops hiding.</span></div>
                 </div>
                 <div class="vc-footer">
-                  <span class="vc-serial">CO-SAMPLE-2026</span>
+                  <span class="vc-serial">CO-DEMO-2026</span>
                   <span class="vc-certified">AI ESTIMATE</span>
                 </div>
               </div>
             </div>
-            <div class="sample-note">Real output format · example values, not a real user</div>
+            <div class="sample-note">Demo result · example values, not a real user</div>
+          </div>
+          <div class="demo-info">
+            <div class="demo-block">
+              <h3>Free scan</h3>
+              <p>The free scan shows one angle. You get its S–E grade, visible-muscle scores, and the AI's confidence in the read. No card required.</p>
+            </div>
+            <div class="demo-block">
+              <h3>Full Body Audit — £5.99 once</h3>
+              <p>The full audit checks all four angles. It unlocks the written verdict, strongest and weakest areas, the next-focus call, a broad visual body-fat estimate, and an uncapped overall grade.</p>
+            </div>
+            <div class="demo-block">
+              <h3>Pro — £9.99/month</h3>
+              <p>Pro is for rescans over time. Re-grade after a cut, a bulk, or a PR. Progress tools are planned, not live yet.</p>
+            </div>
+            <div class="demo-block">
+              <h3>What no scan can know</h3>
+              <p>Training history, substance use, injuries, health status, or anything hidden by clothing, lighting, or angle. It grades the photo, not you — and it is not medical advice.</p>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="setup" id="setupNote" style="display:none"></div>
-
-      <!-- CRED STRIP -->
-      <div class="cred r" style="animation-delay:.55s">
-        <div class="cred-item"><div class="cn">10</div><div class="cl">Visible areas assessed</div></div>
-        <div class="cred-item"><div class="cn">4</div><div class="cl">Angles, no hiding</div></div>
-        <div class="cred-item"><div class="cn">S–E</div><div class="cl">Direct visual rating</div></div>
-        <div class="cred-item"><div class="cn">18+</div><div class="cl">Adults only</div></div>
-      </div>
-
-      <!-- HOW IT WORKS -->
-      <div class="how-strip r" id="howStrip" style="animation-delay:.6s">
-        <div class="how-strip-step">
-          <div class="how-strip-num">01</div>
-          <div>
-            <div class="how-strip-title">Drop a photo</div>
-            <div class="how-strip-desc">Front, back, legs, or arms. Any angle. One photo to start.</div>
-          </div>
-        </div>
-        <div class="how-strip-step">
-          <div class="how-strip-num">02</div>
-          <div>
-            <div class="how-strip-title">The AI calls it</div>
-            <div class="how-strip-desc">S to E. Same standard prompt each time, with photo quality clearly affecting the result.</div>
-          </div>
-        </div>
-        <div class="how-strip-step">
-          <div class="how-strip-num">03</div>
-          <div>
-            <div class="how-strip-title">Email to unlock</div>
-            <div class="how-strip-desc">Your one-angle grade and visible muscle notes. Free.</div>
-          </div>
-        </div>
-      </div>
+      </section>
 
       <!-- SCAN SECTION -->
       <section class="sec" id="scanSection">
         <div class="sec-head">
-          <div class="eyebrow">Get graded</div>
           <h2>Pick an angle. Get called out.</h2>
           <p>First scan is free — one angle, fully graded. The £5.99 Full Body Audit unlocks the other three.</p>
-          <div class="scan-trust">
-            <span class="scan-trust-item"><svg viewBox="0 0 24 24" class="lock" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Not stored by CALLOUT · never used to train it</span>
-            <span class="trust-sep">·</span>
-            <span class="scan-trust-item">Under-18, explicit, or unreadable photos are refused</span>
+        </div>
+        <div class="trust-panel">
+          <div class="tq">
+            <h4>Is my photo stored?</h4>
+            <p>Not by CALLOUT. It's resized on your device, sent encrypted, graded, and not kept. <button class="recover-link" onclick="goHome('photoSection')">Full pipeline</button></p>
           </div>
-          <button class="recover-link" style="margin-top:14px;font-size:12px" onclick="goHome('photoSection')">See exactly what happens to your photo ↓</button>
+          <div class="tq">
+            <h4>Who processes it?</h4>
+            <p>The image goes to Anthropic's AI model for grading, under its own terms. Stripe handles payments. Nobody else touches it.</p>
+          </div>
+          <div class="tq">
+            <h4>Is this medical advice?</h4>
+            <p>No. It's a visual read of one photo — not a diagnosis, a body-composition scan, or a health tool.</p>
+          </div>
+          <div class="tq">
+            <h4>What if the AI is wrong?</h4>
+            <p>It can be. Lighting, pose, and photo quality change the result. Treat it as directional feedback, not a verdict on you.</p>
+          </div>
+          <div class="tq">
+            <h4>Why do you need my email?</h4>
+            <p>It links your result and any purchase so access can be restored. Marketing only if you opt in.</p>
+          </div>
+          <div class="tq">
+            <h4>Can minors use it?</h4>
+            <p>No. CALLOUT is 18+ only — scans refuse when the subject isn't clearly an adult.</p>
+          </div>
         </div>
         <div class="views" id="viewGrid"></div>
         <button class="photo-tips-link" onclick="openGuide(true)">Photo tips — what gets a clean read</button>
@@ -1699,8 +1525,8 @@
       <!-- SCALE SECTION -->
       <section class="sec" id="scaleSection">
         <div class="sec-head">
-          <h2>A hard grade should<br>feel <em>useful</em>.</h2>
-          <p>CALLOUT is intentionally direct, but it is still an AI interpretation of a photo. Example distribution only, not user statistics. Results can vary with lighting, pose, pump, camera angle, and body fat.</p>
+          <h2>What the grades actually mean.</h2>
+          <p>Harsh on purpose — but still an AI's read of one photo. The scale below is an example distribution, not user stats. Lighting, pump, pose, and body fat all move the result.</p>
         </div>
         <div class="dist">
           <div class="distrow"><span class="dg">S</span><div class="dbar"><span style="width:3%"></span></div><span class="dp">3% sample · exceptional visual development</span></div>
@@ -1715,34 +1541,30 @@
       <!-- SAMPLE VERDICTS -->
       <section class="sec" id="verdictSection" style="padding-top:0">
         <div class="sec-head">
-          <div class="eyebrow">Sample callouts</div>
-          <h2>This is the tone. Read it.</h2>
-          <p>If you want encouragement, ask a friend. If you want the truth, read what CALLOUT actually writes.</p>
+          <h2>This is the tone. Read it before you upload.</h2>
+          <p>If you want encouragement, ask a friend. This is how the verdicts actually read.</p>
         </div>
-        <div class="vs-grid">
-          <figure class="vs-card">
-            <div class="vs-tag">FRONT · GRADED C</div>
+        <div class="tone">
+          <figure class="tone-item">
+            <div class="tone-tag">Front view · graded C</div>
             <blockquote>"Shoulders carry this photo. Chest is less visible from this angle, so the torso read is cautious. The gap is the work."</blockquote>
-            <figcaption>Sample output</figcaption>
           </figure>
-          <figure class="vs-card">
-            <div class="vs-tag">BACK · GRADED B</div>
+          <figure class="tone-item">
+            <div class="tone-tag">Back view · graded B</div>
             <blockquote>"Width is real, thickness isn't. Lats flare, mid-back disappears. Rows are being skipped or rushed."</blockquote>
-            <figcaption>Sample output</figcaption>
           </figure>
-          <figure class="vs-card">
-            <div class="vs-tag">LEGS · GRADED D</div>
+          <figure class="tone-item">
+            <div class="tone-tag">Legs · graded D</div>
             <blockquote>"Quads say you train legs occasionally. Calves say you don't. Nothing here matches the arms in your front scan."</blockquote>
-            <figcaption>Sample output</figcaption>
           </figure>
+          <p class="tone-note">Sample verdicts written for illustration — the format and tone are real, the people are not.</p>
         </div>
       </section>
 
       <!-- METHODOLOGY -->
       <section class="sec" id="methodSection" style="padding-top:0">
         <div class="sec-head">
-          <div class="eyebrow">Method</div>
-          <h2>What CALLOUT can<br>and can't judge.</h2>
+          <h2>What CALLOUT can and can't judge.</h2>
           <p>It grades what the photo gives it. No secret dataset flex, no fake lab coat, no pretending a single upload knows your whole training history.</p>
         </div>
         <div class="method-grid">
@@ -1775,8 +1597,7 @@
       <!-- PHOTO HANDLING -->
       <section class="sec" id="photoSection" style="padding-top:0">
         <div class="sec-head">
-          <div class="eyebrow">Your photo</div>
-          <h2>What happens to the<br>photo you upload.</h2>
+          <h2>What happens to the photo you upload.</h2>
           <p>You're sending us a body photo, so here is its exact path — the actual pipeline, not vague reassurance.</p>
         </div>
         <div class="method-grid">
@@ -1809,75 +1630,63 @@
       <!-- PRICING -->
       <section class="sec" id="pricingSection">
         <div class="sec-head">
-          <div class="eyebrow">Pricing</div>
-          <h2>First scan free. <em>£5.99</em> unlocks the full audit.</h2>
-          <p>One payment for the full four-angle audit — no subscription needed to get your grade. Pro exists for rescans; its progress tools are planned, not live yet.</p>
+          <h2>What it costs.</h2>
+          <p>First scan's free. £5.99 once unlocks the full audit. The subscription exists only for people who rescan.</p>
         </div>
 
-        <div class="pricing-free-line">First scan free — no card required.</div>
-        <div class="recover-inline"><button class="recover-link" onclick="openRecoveryModal()">Already paid?</button></div>
-
-        <div class="pricing-grid">
-
-          <!-- LEFT — CALLOUT Pro · £9.99/month · de-emphasised until progress tools ship -->
-          <div class="pc pc-basic">
-            <div class="pc-badge-spacer"></div>
-            <div class="pc-name">CALLOUT Pro</div>
-            <div class="pc-price">£9.99</div>
-            <div class="pc-period">per month</div>
-            <div class="pc-anchor">For rescans · cancel anytime</div>
-            <div class="pc-divider"></div>
-            <ul class="pc-feats">
-              <li>Unlimited rescans</li>
-              <li>All 4 angles graded</li>
-              <li>Re-grade after every cut, bulk, or PR</li>
-              <li class="pc-no">Progress tracking — planned, not live</li>
-              <li class="pc-no">Scan history — planned, not live</li>
-            </ul>
-            <button class="pc-cta" onclick="handlePurchase('pro')">Go Pro</button>
+        <div class="plist">
+          <div class="prow">
+            <div class="prow-info">
+              <div class="prow-name">First scan</div>
+              <div class="prow-desc">One angle, fully graded, with visible-muscle scores. Email to reveal — no card.</div>
+            </div>
+            <div class="prow-price">Free</div>
+            <button class="prow-cta" onclick="goHome('scanSection')">Start free scan</button>
           </div>
 
-          <!-- MIDDLE — Full Body Audit · £5.99 one-time · the main offer -->
-          <div class="pc pc-featured">
-            <div class="pc-badge">Main offer</div>
-            <div class="pc-name">Full Body Audit</div>
-            <div class="pc-price">£5.99</div>
-            <div class="pc-period">one-time · no subscription</div>
-            <div class="pc-anchor">All four angles, graded once, yours to keep.</div>
-            <div class="pc-divider"></div>
-            <ul class="pc-feats">
-              <li>All 4 angles graded: front, back, legs, arms</li>
-              <li>Full muscle-by-muscle breakdown</li>
-              <li>Uncapped overall grade</li>
-              <li>Conditioning notes + broad visual BF estimate</li>
-              <li>One payment. No renewal, ever.</li>
-            </ul>
-            <button class="pc-cta" onclick="handlePurchase('scan')">Unlock the Full Body Audit</button>
+          <div class="prow prow-main">
+            <div class="prow-info">
+              <div class="prow-name">Full Body Audit</div>
+              <div class="prow-desc">All four angles, full muscle-by-muscle breakdown, written verdict, uncapped overall grade. Yours to keep.</div>
+            </div>
+            <div class="prow-price">£5.99<small>one-time</small></div>
+            <button class="prow-cta" onclick="handlePurchase('scan')">Unlock the audit</button>
           </div>
 
-          <!-- RIGHT — Lifetime · £29.99 one-time -->
-          <div class="pc pc-lifetime">
-            <div class="pc-badge">Early access</div>
-            <div class="pc-name">Lifetime</div>
-            <div class="pc-price">£29.99</div>
-            <div class="pc-period">one-time</div>
-            <div class="pc-anchor">Early-access pricing while the product is young.</div>
-            <div class="pc-divider"></div>
-            <ul class="pc-feats">
-              <li>Everything Pro includes, as it ships</li>
-              <li>Unlimited scans, forever</li>
-              <li>One payment, no renewal</li>
-            </ul>
-            <button class="pc-cta" onclick="handlePurchase('lifetime')">Get lifetime access</button>
+          <div class="prow">
+            <div class="prow-info">
+              <div class="prow-name">CALLOUT Pro</div>
+              <div class="prow-desc">Unlimited rescans after every cut, bulk, or PR. Progress tracking and scan history are planned, not live yet.</div>
+            </div>
+            <div class="prow-price">£9.99<small>per month</small></div>
+            <button class="prow-cta" onclick="handlePurchase('pro')">Go Pro</button>
           </div>
 
+          <div class="prow">
+            <div class="prow-info">
+              <div class="prow-name">Lifetime</div>
+              <div class="prow-desc">Everything Pro includes as it ships, forever. Early-access price while the product is young.</div>
+            </div>
+            <div class="prow-price">£29.99<small>one-time</small></div>
+            <button class="prow-cta" onclick="handlePurchase('lifetime')">Get lifetime</button>
+          </div>
+        </div>
+
+        <p class="pricing-notes">Payments run on Stripe. Pro renews monthly and can be cancelled anytime from the Stripe portal. <button class="recover-link" onclick="openRecoveryModal()">Already paid?</button></p>
+      </section>
+
+      <!-- FINAL CTA -->
+      <section class="sec" id="finalCta" style="padding-top:0">
+        <div class="final-cta">
+          <h2>Enough reading. <em>Get graded.</em></h2>
+          <p>One angle, fully graded, free. The mirror's been lying long enough.</p>
+          <button class="bigcta" onclick="track('final_cta_click');document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get graded — free</button>
         </div>
       </section>
 
       <!-- FAQ -->
       <section class="sec" id="faqSection" style="padding-top:0">
         <div class="sec-head">
-          <div class="eyebrow">Questions</div>
           <h2>Straight answers.</h2>
         </div>
         <div class="faq">
@@ -2024,7 +1833,7 @@
 
   <!-- MOBILE STICKY CTA -->
   <div class="mob-cta" id="mobCta" aria-hidden="true">
-    <button class="bigcta" onclick="track('mobile_cta_click');document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Start my free scan</button>
+    <button class="bigcta" onclick="track('mobile_cta_click');document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get graded — free</button>
   </div>
 
   <!-- ACCOUNT RECOVERY MODAL -->
@@ -2791,8 +2600,8 @@ function showScanUpsell(){
   track('upsell_shown',{mode:'rescan_pro'});
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse" style="padding:20px 0 12px">'+
-      '<h2 style="margin-bottom:8px">Full body scan complete</h2>'+
-      '<p>You\'ve graded every angle. Go Pro for unlimited rescans now, with progress tools included as they ship.</p>'+
+      '<h2 style="margin-bottom:8px">Every angle graded.</h2>'+
+      '<p>That physique will change. Pro rescans it whenever it does.</p>'+
     '</div>';
   const btn=document.getElementById('resPrimary');
   btn.style.display='none';
@@ -2803,7 +2612,7 @@ function showScanUpsell(){
   div.innerHTML=
     '<div class="us-eye">Scan complete</div>'+
     '<h3>Rescan any angle, any time.</h3>'+
-    '<p class="us-p">Go Pro for unlimited rescans now. Progress tools are included as they ship.</p>'+
+    '<p class="us-p">After the cut, the bulk, the PR — rescan and see if the grade moves. Progress tools are coming; rescans work today.</p>'+
     '<div class="upsell-price">£9.99</div>'+
     '<div class="upsell-price-sub">PER MONTH · CANCEL ANYTIME</div>'+
     '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Go Pro →</button>'+
@@ -2821,7 +2630,7 @@ function showPaywall(){
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse" style="padding:20px 0 12px">'+
       '<h2 style="margin-bottom:8px">One angle is free.</h2>'+
-      '<p>Your free scan is used. Unlock the Full Body Audit to grade every angle.</p>'+
+      '<p>That was the free one. The other three angles are £5.99, once.</p>'+
     '</div>';
   const btn=document.getElementById('resPrimary');
   btn.style.display='none';
@@ -3358,24 +3167,17 @@ function playRevealAnimation(){
 }
 
 // ============================================================
-//  PRICING CARD SCROLL-REVEAL
+//  PRICING VIEW TRACKING
 // ============================================================
 (function(){
-  if(!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.pc').forEach(el=>el.classList.add('in-view'));
-    return;
-  }
-  let pricingTracked=false;
+  const sec=document.getElementById('pricingSection');
+  if(!sec || !('IntersectionObserver' in window)) return;
   const io=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
-      if(e.isIntersecting){
-        if(!pricingTracked){pricingTracked=true;track('pricing_viewed');}
-        e.target.classList.add('in-view');
-        io.unobserve(e.target);
-      }
+      if(e.isIntersecting){track('pricing_viewed');io.disconnect();}
     });
-  },{threshold:0.15});
-  document.querySelectorAll('.pc').forEach(el=>io.observe(el));
+  },{threshold:0.2});
+  io.observe(sec);
 })();
 
 // ============================================================
