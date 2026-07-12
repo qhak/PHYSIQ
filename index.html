@@ -1066,6 +1066,16 @@
     outline:2px solid var(--gold);outline-offset:3px;border-radius:6px;
   }
 
+  /* respect reduced-motion: animations resolve instantly to their end state */
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.01ms!important;
+      animation-delay:0ms!important;
+      transition-duration:.01ms!important;
+    }
+    html{scroll-behavior:auto}
+  }
+
   /* ─────────────────────────────────────────────────────
      LAUNCH ADDITIONS — sample caption, gate consent,
      upload guide, photo-handling link, mobile sticky CTA
@@ -1656,7 +1666,7 @@
           <div class="prow">
             <div class="prow-info">
               <div class="prow-name">CALLOUT Pro</div>
-              <div class="prow-desc">Unlimited rescans after every cut, bulk, or PR. Progress tracking and scan history are planned, not live yet.</div>
+              <div class="prow-desc">Rescan any angle after every cut, bulk, or PR — fair-use cap of 30 scans a day. Progress tracking and scan history are planned, not live yet.</div>
             </div>
             <div class="prow-price">£9.99<small>per month</small></div>
             <button class="prow-cta" onclick="handlePurchase('pro')">Go Pro</button>
@@ -1795,7 +1805,7 @@
         <div class="pr-coming-badge">Coming with Pro</div>
       </div>
       <ul class="pr-feats">
-        <li>Unlimited rescans today</li>
+        <li>Rescans live today (fair-use cap: 30 scans/day)</li>
         <li>Monthly progress scores planned</li>
         <li>Scan history planned</li>
         <li>Muscle-by-muscle trend reports planned</li>
@@ -1991,7 +2001,7 @@
         <ul>
           <li><strong>Free scan:</strong> one angle, no card required. Email needed to reveal the result.</li>
           <li><strong>Full Body Audit (£5.99):</strong> one-time payment, unlocks all 4 angles permanently for this profile.</li>
-          <li><strong>CALLOUT Pro (£9.99/month):</strong> recurring subscription. Unlimited scans. Renews automatically each month until cancelled.</li>
+          <li><strong>CALLOUT Pro (£9.99/month):</strong> recurring subscription. Rescans of every angle, with a fair-use cap of 30 scans per day. Renews automatically each month until cancelled.</li>
           <li><strong>Lifetime (£29.99):</strong> early-access one-time payment for lifetime CALLOUT access while available.</li>
         </ul>
 
@@ -2209,6 +2219,14 @@ async function pick(viewId){
   if(!WORKER_URL){alert("Set WORKER_URL first.");return;}
 
   if(userEmail && !hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
+
+  // Free scan already used and no paid access: show the paywall now instead
+  // of letting the user pick + upload a photo the server will reject anyway.
+  if(!hasEntitlementHint() && Object.keys(viewsDone).length>=1 && !viewsDone[viewId]){
+    showPaywall();
+    return;
+  }
+
   pendingView=viewId;
   track('scan_pick',{view:viewId});
   let guideSeen=false;
@@ -2600,8 +2618,8 @@ function showScanUpsell(){
   track('upsell_shown',{mode:'rescan_pro'});
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse" style="padding:20px 0 12px">'+
-      '<h2 style="margin-bottom:8px">Every angle graded.</h2>'+
-      '<p>That physique will change. Pro rescans it whenever it does.</p>'+
+      '<h2 style="margin-bottom:8px">This angle\'s already graded.</h2>'+
+      '<p>Your audit covers each angle once — any you haven\'t scanned are still included. Rescanning an angle to see if the grade moved is what Pro is for.</p>'+
     '</div>';
   const btn=document.getElementById('resPrimary');
   btn.style.display='none';
@@ -2876,6 +2894,7 @@ async function attemptAccessRecovery(){
 }
 
 function renderRateLimited(retryAfter){
+  track('scan_rate_limited');
   const mins=retryAfter?Math.max(1,Math.ceil(retryAfter/60)):null;
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse"><div class="big"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg></div>'+
@@ -2886,6 +2905,7 @@ function renderRateLimited(retryAfter){
 }
 
 function renderBadImage(){
+  track('scan_bad_image');
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse"><div class="big"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg></div>'+
     '<h2>Upload did not pass checks</h2><p>Please re-upload a clear JPG, PNG, or WebP image under the size limit. Avoid screenshots, edited files, or unsupported formats.</p></div>';
@@ -2905,6 +2925,7 @@ function renderPaymentRecovery(){
 }
 
 function renderRefusal(reason){
+  track('scan_refused',{reason:reason||''});
   const msg=reason==='age'
     ?{h:"We can't grade this one",p:"CALLOUT is adults only, and we can only assess photos where the subject is clearly 18 or over."}
     :reason==='unclear_subject'
@@ -2917,6 +2938,7 @@ function renderRefusal(reason){
   btn.style.display='block';btn.textContent='← Try again';btn.onclick=()=>show('screen-home');
 }
 function renderError(detail){
+  track('scan_error');
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse"><div class="big"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg></div>'+
     '<h2>Scan failed</h2><p>'+esc(detail)+'</p></div>';
