@@ -1086,6 +1086,10 @@
     font:inherit;font-size:15px;outline:none;
   }
   .recovery-input:focus{border-color:var(--blue)}
+  #recoveryCode{
+    font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;
+    letter-spacing:.3em;text-align:center;color:var(--ink);
+  }
   .recovery-status{min-height:22px;font-size:13px;color:var(--dim)}
   .recovery-status.ok{color:var(--green)}
   .recovery-status.err{color:var(--red)}
@@ -1918,7 +1922,7 @@
         <p>Enter the email used at checkout. We'll email a 6-digit code that restores paid access on this device.</p>
         <div class="recovery-form">
           <input class="recovery-input" type="email" id="recoveryEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-label="Checkout email" onkeydown="if(event.key==='Enter')submitRecoveryEmail()">
-          <input class="recovery-input" type="text" id="recoveryCode" placeholder="6-digit code" autocomplete="one-time-code" inputmode="numeric" maxlength="6" enterkeyhint="go" aria-label="Access code" style="display:none" onkeydown="if(event.key==='Enter')submitRecoveryEmail()">
+          <input class="recovery-input" type="text" id="recoveryCode" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="one-time-code" inputmode="numeric" maxlength="6" enterkeyhint="go" aria-label="Access code" style="display:none" onkeydown="if(event.key==='Enter')submitRecoveryEmail()" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,6);if(this.value.length===6)submitRecoveryCode()">
           <button class="btn gold-btn" id="recoverySubmit" onclick="submitRecoveryEmail()">Restore access</button>
           <div class="recovery-status" id="recoveryStatus"></div>
         </div>
@@ -3083,6 +3087,24 @@ function showToast(msg){
 }
 
 let recoveryStage='email';
+function handleAuthLink(){
+  try{
+    const qs=new URLSearchParams(location.search);
+    const rc=(qs.get('rc')||'').trim(), re=(qs.get('re')||'').trim();
+    if(!/^\d{6}$/.test(rc)||!re) return;
+    history.replaceState(null,'',location.pathname);
+    openRecoveryModal();
+    const e=document.getElementById('recoveryEmail');
+    const c=document.getElementById('recoveryCode');
+    const btn=document.getElementById('recoverySubmit');
+    if(e) e.value=re;
+    recoveryStage='code';
+    if(c){c.style.display='block';c.value=rc;}
+    if(btn) btn.textContent='Verify code';
+    submitRecoveryCode();
+  }catch(err){}
+}
+window.addEventListener('DOMContentLoaded',handleAuthLink);
 function openRecoveryModal(){
   const input=document.getElementById('recoveryEmail');
   const codeInput=document.getElementById('recoveryCode');
