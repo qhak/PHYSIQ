@@ -940,8 +940,37 @@
   .imp-change-txt em{color:var(--dim);font-style:normal}
   .imp-recheck{font-size:13px;color:var(--dim);line-height:1.6;margin:4px 0 14px;text-align:left}
   .imp-disclaimer{font-size:11.5px;color:var(--faint);line-height:1.6;margin-top:14px;text-align:left}
+  .imp-rephead{
+    display:flex;justify-content:space-between;align-items:flex-end;gap:12px;
+    background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--blue);
+    border-radius:12px;padding:16px 18px;margin-bottom:12px;text-align:left;
+  }
+  .imp-rep-eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+    letter-spacing:.22em;color:var(--blue-bright);margin-bottom:6px;
+  }
+  .imp-rep-serial{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:.08em}
+  .imp-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .imp-chipstat{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--soft);
+    background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;
+  }
+  .imp-chipstat.red{color:var(--red);background:var(--red-wash);border-color:transparent}
+  .imp-maps{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:10px auto 2px;max-width:340px}
+  .imp-maps svg{width:100%;height:auto;display:block}
+  .hm-out{fill:none;stroke:var(--line2);stroke-width:1.2;opacity:.7}
+  .hm-grid{fill:none;stroke:var(--bg2);stroke-width:1;opacity:.9}
+  .hm-none{fill:none;stroke:var(--line2);stroke-width:1.2;stroke-dasharray:3 3}
+  .hm-weak{fill:var(--red);fill-opacity:.30;stroke:var(--red);stroke-width:1.3}
+  .hm-mid{fill:var(--blue-muted);fill-opacity:.55;stroke:var(--line-strong);stroke-width:1.2}
+  .hm-strong{fill:var(--blue);fill-opacity:.65;stroke:var(--blue-bright);stroke-width:1.3}
+  .hm-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.25em;fill:var(--faint);text-anchor:middle}
+  .imp-legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .imp-legend span{font-size:11px;color:var(--dim);display:flex;align-items:center;gap:6px}
+  .imp-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
   @media (max-width:480px){
     .imp-sets{grid-template-columns:1fr 1fr}
+    .imp-rephead{flex-direction:column;align-items:flex-start;gap:6px}
   }
 
   /* ─────────────────────────────────────────────────────
@@ -3593,7 +3622,7 @@ function buildCompareHTML(a,b){
 //  IMPROVE — training + diet audit (Pro)
 // ============================================================
 let improveRecord=null;
-const IMP_SET_FIELDS=[['chest','Chest'],['back','Back'],['shoulders','Shoulders'],['arms','Arms'],['abs','Abs'],['quads','Quads'],['hamstrings','Hamstrings'],['glutes','Glutes'],['calves','Calves']];
+const IMP_SET_FIELDS=[['chest','Chest'],['back','Back'],['shoulders','Shoulders'],['biceps','Biceps'],['triceps','Triceps'],['abs','Abs'],['quads','Quads'],['hamstrings','Hamstrings'],['glutes','Glutes'],['calves','Calves']];
 
 function impShell(inner){
   return '<div class="result-wrap"><div class="card-area">'+
@@ -3621,7 +3650,7 @@ async function showImprove(){
     const data=await res.json().catch(()=>null);
     if(!res.ok||!data) throw new Error('improve_fetch');
     improveRecord=data.record||null;
-    if(improveRecord&&improveRecord.report) renderImproveReport(improveRecord.report);
+    if(improveRecord&&improveRecord.report) renderImproveReport(improveRecord.report,improveRecord.scan);
     else renderImproveForm();
   }catch(e){
     body.innerHTML=impShell('<p class="hist-empty">Could not load right now. Try again in a moment.</p>');
@@ -3736,10 +3765,10 @@ async function submitImprove(){
     }
     improveRecord={
       inputs:{goal:payload.goal,stats:{height_cm:payload.height_cm,weight_kg:payload.weight_kg,training_years:payload.training_years},sets:sets,diet:diet},
-      report:data.report,created:data.created
+      report:data.report,scan:data.scan,created:data.created
     };
     track('improve_report');
-    renderImproveReport(data.report);
+    renderImproveReport(data.report,data.scan);
   }catch(e){
     st.className='imp-status err';
     st.textContent='Could not build the report right now. Try again in a moment.';
@@ -3747,23 +3776,126 @@ async function submitImprove(){
   }
 }
 
-function renderImproveReport(rep){
+function hmClass(s){
+  if(s==null) return 'hm-none';
+  if(s<55) return 'hm-weak';
+  if(s<75) return 'hm-mid';
+  return 'hm-strong';
+}
+
+// Stylised front/back muscle maps. Regions are filled by score band from the
+// account's latest scan; unscanned regions render as dashed outlines.
+function impBodyMap(m){
+  const c=k=>hmClass(m[k]!=null?Number(m[k]):null);
+  const front=
+    '<svg viewBox="0 0 140 280" aria-label="Front body map">'+
+      '<circle cx="70" cy="20" r="12" class="hm-out"/>'+
+      '<path d="M63,32 L63,40 M77,32 L77,40" class="hm-out"/>'+
+      '<path d="M48,42 C46,80 52,110 56,138 L84,138 C88,110 94,80 92,42 Z" class="hm-out"/>'+
+      '<ellipse cx="41" cy="50" rx="12" ry="10" class="'+c('shoulders')+'"/>'+
+      '<ellipse cx="99" cy="50" rx="12" ry="10" class="'+c('shoulders')+'"/>'+
+      '<path d="M69,56 C56,54 48,60 48,72 C48,83 58,89 69,87 Z" class="'+c('chest')+'"/>'+
+      '<path d="M71,56 C84,54 92,60 92,72 C92,83 82,89 71,87 Z" class="'+c('chest')+'"/>'+
+      '<rect x="24" y="62" width="13" height="34" rx="6.5" class="'+c('arms')+'"/>'+
+      '<rect x="103" y="62" width="13" height="34" rx="6.5" class="'+c('arms')+'"/>'+
+      '<rect x="22" y="100" width="11" height="30" rx="5.5" class="hm-out"/>'+
+      '<rect x="107" y="100" width="11" height="30" rx="5.5" class="hm-out"/>'+
+      '<rect x="58" y="94" width="24" height="44" rx="8" class="'+c('abs')+'"/>'+
+      '<path d="M70,96 L70,136 M60,109 L80,109 M60,123 L80,123" class="hm-grid"/>'+
+      '<rect x="50" y="146" width="17" height="54" rx="8" class="'+c('quads')+'"/>'+
+      '<rect x="73" y="146" width="17" height="54" rx="8" class="'+c('quads')+'"/>'+
+      '<rect x="53" y="206" width="13" height="42" rx="6" class="hm-out"/>'+
+      '<rect x="74" y="206" width="13" height="42" rx="6" class="hm-out"/>'+
+      '<text x="70" y="272" class="hm-lbl">FRONT</text>'+
+    '</svg>';
+  const back=
+    '<svg viewBox="0 0 140 280" aria-label="Back body map">'+
+      '<circle cx="70" cy="20" r="12" class="hm-out"/>'+
+      '<path d="M63,32 L63,38 M77,32 L77,38" class="hm-out"/>'+
+      '<path d="M48,42 C46,80 52,110 56,138 L84,138 C88,110 94,80 92,42 Z" class="hm-out"/>'+
+      '<path d="M70,36 L48,50 C56,58 64,64 70,74 C76,64 84,58 92,50 Z" class="'+c('traps')+'"/>'+
+      '<ellipse cx="41" cy="50" rx="12" ry="10" class="'+c('shoulders')+'"/>'+
+      '<ellipse cx="99" cy="50" rx="12" ry="10" class="'+c('shoulders')+'"/>'+
+      '<path d="M54,76 C46,82 44,96 50,110 C56,118 64,116 68,110 L68,80 Z" class="'+c('back')+'"/>'+
+      '<path d="M86,76 C94,82 96,96 90,110 C84,118 76,116 72,110 L72,80 Z" class="'+c('back')+'"/>'+
+      '<rect x="24" y="62" width="13" height="34" rx="6.5" class="'+c('arms')+'"/>'+
+      '<rect x="103" y="62" width="13" height="34" rx="6.5" class="'+c('arms')+'"/>'+
+      '<rect x="22" y="100" width="11" height="30" rx="5.5" class="hm-out"/>'+
+      '<rect x="107" y="100" width="11" height="30" rx="5.5" class="hm-out"/>'+
+      '<ellipse cx="58" cy="150" rx="12" ry="11" class="'+c('glutes')+'"/>'+
+      '<ellipse cx="82" cy="150" rx="12" ry="11" class="'+c('glutes')+'"/>'+
+      '<rect x="50" y="164" width="17" height="48" rx="8" class="'+c('hamstrings')+'"/>'+
+      '<rect x="73" y="164" width="17" height="48" rx="8" class="'+c('hamstrings')+'"/>'+
+      '<rect x="52" y="218" width="15" height="36" rx="7" class="'+c('calves')+'"/>'+
+      '<rect x="73" y="218" width="15" height="36" rx="7" class="'+c('calves')+'"/>'+
+      '<text x="70" y="272" class="hm-lbl">BACK</text>'+
+    '</svg>';
+  return '<div class="imp-maps">'+front+back+'</div>'+
+    '<div class="imp-legend">'+
+      '<span><i style="background:var(--red);opacity:.5"></i>Called out</span>'+
+      '<span><i style="background:var(--blue-muted)"></i>Building</span>'+
+      '<span><i style="background:var(--blue);opacity:.75"></i>Strong</span>'+
+      '<span><i style="border:1px dashed var(--line2)"></i>Not scanned</span>'+
+    '</div>';
+}
+
+function impGoalLabel(g){return {gain:'Add size',lean:'Get leaner',recomp:'Recomp'}[g]||'—';}
+
+function renderImproveReport(rep,scan){
+  const inp=(improveRecord&&improveRecord.inputs)||{};
+  const stats=inp.stats||{};
+  const setTotal=Object.values(inp.sets||{}).reduce((s,v)=>s+(Number(v)||0),0);
+  const created=(improveRecord&&improveRecord.created)||Math.floor(Date.now()/1000);
+  const serial='R-'+created.toString(36).toUpperCase();
+  const dateStr=new Date(created*1000).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
+  const recheckDate=new Date((created+rep.recheck_weeks*7*86400)*1000)
+    .toLocaleDateString(undefined,{day:'numeric',month:'short'});
+
+  const meta=[impGoalLabel(inp.goal)]
+    .concat(stats.weight_kg!=null?[stats.weight_kg+'kg']:[])
+    .concat(stats.height_cm!=null?[stats.height_cm+'cm']:[])
+    .concat(stats.training_years!=null?[stats.training_years+' yrs training']:[])
+    .concat(setTotal?[setTotal+' sets/wk']:[])
+    .map(t=>'<span class="imp-chipstat">'+esc(t)+'</span>').join('');
+
+  let mapBlock='';
+  if(scan&&scan.muscles){
+    const m=scan.muscles;
+    const scored=MUSCLES.filter(k=>k!=='conditioning'&&m[k]!=null);
+    const weakest=scored.length?scored.reduce((a,b)=>Number(m[a])<=Number(m[b])?a:b):null;
+    const chips=(weakest?'<span class="imp-chipstat red">Weakest: '+esc(cap(weakest))+' '+Number(m[weakest])+'</span>':'')+
+      (m.conditioning!=null?'<span class="imp-chipstat">Conditioning '+Number(m.conditioning)+'</span>':'')+
+      (scan.bodyfat_range&&scan.bodyfat_range!=='unknown'?'<span class="imp-chipstat">BF est. '+esc(scan.bodyfat_range)+'</span>':'');
+    mapBlock='<div class="imp-block"><div class="imp-block-title">01 · Body map</div>'+
+      impBodyMap(m)+
+      (chips?'<div class="imp-meta" style="margin:14px 0 0;justify-content:center">'+chips+'</div>':'')+
+    '</div>';
+  }
+
   const trainRows=(rep.training&&rep.training.changes||[]).map(c=>
     '<div class="imp-change"><span class="imp-change-tag">'+esc(c.area)+'</span><span class="imp-change-txt">'+esc(c.action)+'</span></div>'
   ).join('');
   const dietRows=rep.diet?(rep.diet.changes||[]).map(c=>
     '<div class="imp-change"><span class="imp-change-tag">Fix</span><span class="imp-change-txt">'+esc(c.what)+' <em>— '+esc(c.why)+'</em></span></div>'
   ).join(''):'';
+
   document.getElementById('improveBody').innerHTML=impShell(
+    '<div class="imp-rephead"><div>'+
+      '<div class="imp-rep-eyebrow">CALLOUT · IMPROVE REPORT</div>'+
+      '<div class="imp-rep-serial">'+esc(serial)+' · '+esc(dateStr)+'</div>'+
+    '</div></div>'+
+    (meta?'<div class="imp-meta">'+meta+'</div>':'')+
     '<div class="imp-focus">'+esc(rep.focus)+'</div>'+
-    '<div class="imp-block"><div class="imp-block-title">Training analysis</div>'+
+    mapBlock+
+    '<div class="imp-block"><div class="imp-block-title">'+(mapBlock?'02':'01')+' · Training analysis</div>'+
       '<div class="imp-read">'+esc(rep.training.read)+'</div>'+trainRows+'</div>'+
     (rep.diet
-      ?'<div class="imp-block"><div class="imp-block-title">Diet audit</div>'+
+      ?'<div class="imp-block"><div class="imp-block-title">'+(mapBlock?'03':'02')+' · Diet audit</div>'+
         '<div class="imp-read">'+esc(rep.diet.read)+'</div>'+dietRows+'</div>'
       :'')+
-    '<p class="imp-recheck">Run this for '+esc(String(rep.recheck_weeks))+' weeks, then rescan — '+
-      '<button class="recover-link" onclick="showProgress()">Progress</button> will show whether it moved.</p>'+
+    '<div class="imp-block"><div class="imp-block-title">'+(mapBlock?(rep.diet?'04':'03'):(rep.diet?'03':'02'))+' · Recheck</div>'+
+      '<div class="imp-read" style="margin-bottom:0">Run this for '+esc(String(rep.recheck_weeks))+' weeks, then rescan around '+esc(recheckDate)+' — '+
+      '<button class="recover-link" onclick="showProgress()">Progress</button> will show whether it moved.</div></div>'+
     '<button class="btn" onclick="goHome(\'scanSection\')">Rescan an angle →</button>'+
     '<button class="btn ghost" style="margin-top:8px" onclick="renderImproveForm()">Edit inputs / regenerate</button>'+
     '<p class="imp-disclaimer">General training and nutrition guidance generated from your inputs and scan results. Not medical, dietetic, or coaching advice.</p>'
