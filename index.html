@@ -768,7 +768,7 @@
   .confirm-angle-status.done{color:var(--green)}
 
   /* ─────────────────────────────────────────────────────
-     PROGRESS PLACEHOLDER
+     PROGRESS — locked upsell card + live comparison view
      ───────────────────────────────────────────────────── */
   .progress-wrap{
     min-height:82vh;display:flex;flex-direction:column;
@@ -815,6 +815,79 @@
   }
   .pr-feats li{font-size:13.5px;color:var(--dim);display:flex;align-items:center;gap:10px}
   .pr-feats li::before{content:'○';color:var(--faint);font-size:10px;flex-shrink:0}
+
+  /* live comparison view (Pro) */
+  .prog-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .prog-pill{
+    border:1px solid var(--line2);border-radius:999px;background:var(--surface);
+    color:var(--soft);padding:9px 16px;font:inherit;font-size:13px;font-weight:600;
+    cursor:pointer;transition:border-color .15s,color .15s,background .15s;
+  }
+  .prog-pill:hover{border-color:var(--line-strong)}
+  .prog-pill.active{background:var(--blue-wash);border-color:var(--blue);color:var(--blue-bright)}
+  .prog-pill:disabled{opacity:.4;cursor:default}
+  .prog-pill:disabled:hover{border-color:var(--line2)}
+  .prog-pill .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);margin-left:7px}
+  .prog-selects{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .prog-select-lbl{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:6px;text-align:left;
+  }
+  .prog-select{
+    width:100%;border:1px solid var(--line2);border-radius:8px;
+    background:var(--bg2);color:var(--ink);padding:11px 10px;
+    font:inherit;font-size:13px;outline:none;
+  }
+  .prog-select:focus{border-color:var(--blue)}
+  .cmp-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:22px 20px;text-align:left;
+  }
+  .cmp-head{
+    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;
+    padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:14px;
+  }
+  .cmp-side{text-align:center}
+  .cmp-date{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:6px;
+  }
+  .cmp-grade{font-family:'Bebas Neue',sans-serif;font-size:46px;line-height:1;color:var(--faint)}
+  .cmp-side.now .cmp-grade{color:var(--blue)}
+  .cmp-score{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);margin-top:5px}
+  .cmp-delta{
+    justify-self:center;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;
+    border-radius:999px;padding:6px 13px;
+  }
+  .cmp-delta.up{color:var(--green);background:var(--green-wash)}
+  .cmp-delta.down{color:var(--red);background:var(--red-wash)}
+  .cmp-delta.flat{color:var(--dim);background:var(--bg2)}
+  .cmp-row{
+    display:grid;grid-template-columns:92px 1fr auto;gap:12px;align-items:center;
+    padding:9px 0;border-bottom:1px solid var(--line);
+  }
+  .cmp-rows .cmp-row:last-child{border-bottom:0}
+  .cmp-name{font-size:12.5px;font-weight:600;color:var(--soft)}
+  .cmp-bars{display:flex;flex-direction:column;gap:4px}
+  .cmp-track{height:4px;border-radius:2px;background:var(--bg2);overflow:hidden}
+  .cmp-fill{height:100%;border-radius:2px}
+  .cmp-fill.then{background:var(--quiet)}
+  .cmp-fill.now{background:var(--blue)}
+  .cmp-nums{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--dim);text-align:right;white-space:nowrap}
+  .cmp-chip{
+    display:inline-block;min-width:40px;text-align:center;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    border-radius:6px;padding:3px 7px;margin-left:8px;
+  }
+  .cmp-chip.up{color:var(--green);background:var(--green-wash)}
+  .cmp-chip.down{color:var(--red);background:var(--red-wash)}
+  .cmp-chip.flat{color:var(--dim);background:var(--bg2)}
+  .cmp-note{font-size:12px;color:var(--faint);line-height:1.6;margin-top:14px}
+  @media (max-width:480px){
+    .cmp-row{grid-template-columns:74px 1fr auto;gap:8px}
+    .cmp-name{font-size:12px}
+    .cmp-grade{font-size:40px}
+  }
 
   /* ─────────────────────────────────────────────────────
      UPSELL PANEL
@@ -1499,7 +1572,7 @@
             </div>
             <div class="demo-block">
               <h3>Pro — £9.99/month</h3>
-              <p>Rescans over time — after a cut, a bulk, or a PR. Progress tools planned.</p>
+              <p>Rescans over time — after a cut, a bulk, or a PR. Compare any two scans, muscle by muscle.</p>
             </div>
             <div class="demo-block">
               <h3>What no scan can know</h3>
@@ -1523,6 +1596,7 @@
           <div class="cta" id="ov-cta">Scan an angle to start building your grade.</div>
           <button class="seebtn" id="ov-see" style="display:none" onclick="showOverall()">See full breakdown →</button>
           <button class="recover-link" id="histLink" style="display:none;margin-top:16px" onclick="showHistory()">Scan history →</button>
+          <button class="recover-link" id="progLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showProgress()">Progress →</button>
         </div>
       </section>
       <!-- PRICING -->
@@ -1554,7 +1628,7 @@
           <div class="prow">
             <div class="prow-info">
               <div class="prow-name">CALLOUT Pro</div>
-              <div class="prow-desc">Rescan any angle after every cut, bulk, or PR — fair-use cap of 30 scans a day. Progress tracking and scan history are planned, not live yet.</div>
+              <div class="prow-desc">Rescan any angle after every cut, bulk, or PR — fair-use cap of 30 scans a day. Scan history and side-by-side progress comparison, muscle by muscle.</div>
             </div>
             <div class="prow-price">£9.99<small>per month</small></div>
             <button class="prow-cta" onclick="handlePurchase('pro')">Go Pro</button>
@@ -1831,36 +1905,9 @@
     </div></div></div>
   </section>
 
-  <!-- PROGRESS PLACEHOLDER -->
+  <!-- PROGRESS — scan comparison (Pro); body rendered by showProgress() -->
   <section class="screen" id="screen-progress">
-    <div class="wrap"><div class="progress-wrap"><div class="progress-card">
-      <div class="progress-lock-icon">
-        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      </div>
-      <div class="pr-eye">Coming soon</div>
-      <h2>Progress tools<br>are coming.</h2>
-      <p class="pr-sub">Pro gives you rescans now. Monthly score tracking, scan history, and improvement reports are planned Pro tools, not live features yet.</p>
-      <div class="pr-chart-preview">
-        <div class="pr-chart-label">Score over time</div>
-        <div class="pr-chart-bars">
-          <div class="pr-bar" style="height:38%"></div>
-          <div class="pr-bar" style="height:52%"></div>
-          <div class="pr-bar" style="height:47%"></div>
-          <div class="pr-bar" style="height:61%"></div>
-          <div class="pr-bar" style="height:58%"></div>
-          <div class="pr-bar" style="height:74%"></div>
-        </div>
-        <div class="pr-coming-badge">Coming with Pro</div>
-      </div>
-      <ul class="pr-feats">
-        <li>Rescans live today (fair-use cap: 30 scans/day)</li>
-        <li>Monthly progress scores planned</li>
-        <li>Scan history planned</li>
-        <li>Muscle-by-muscle trend reports planned</li>
-      </ul>
-      <button class="btn gold-btn" onclick="handlePurchase('pro')">Get CALLOUT Pro →</button>
-      <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
-    </div></div></div>
+    <div class="wrap"><div id="progressBody"></div></div>
   </section>
 
   <!-- SCAN HISTORY -->
@@ -1871,7 +1918,8 @@
         <p>Every graded scan saved to this account — restored on any device with your email.</p>
       </div>
       <div id="histBody"></div>
-      <button class="btn ghost" style="margin-top:10px" onclick="show('screen-home')">← Back</button>
+      <button class="btn ghost" style="margin-top:10px" onclick="showProgress()">Compare two scans →</button>
+      <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
     </div></div></div>
   </section>
 
@@ -2574,6 +2622,8 @@ function computeOverall(){
 function refreshHome(){
   const hl=document.getElementById('histLink');
   if(hl) hl.style.display=hasEntitlementHint()?'inline-block':'none';
+  const pl=document.getElementById('progLink');
+  if(pl) pl.style.display=hasEntitlementHint()?'inline-block':'none';
   const scansUsed=Object.keys(viewsDone).length;
   VIEWS.forEach(v=>{
     const tile=document.getElementById('vt-'+v.id);
@@ -2761,7 +2811,7 @@ function showScanUpsell(){
   div.innerHTML=
     '<div class="us-eye">Scan complete</div>'+
     '<h3>Rescan any angle, any time.</h3>'+
-    '<p class="us-p">After the cut, the bulk, the PR — rescan and see if the grade moves. Progress tools are coming; rescans work today.</p>'+
+    '<p class="us-p">After the cut, the bulk, the PR — rescan, put the two scans side by side, and see exactly which muscles moved.</p>'+
     '<div class="upsell-price">£9.99</div>'+
     '<div class="upsell-price-sub">PER MONTH · CANCEL ANYTIME</div>'+
     '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Go Pro →</button>'+
@@ -3301,6 +3351,177 @@ async function showHistory(){
   }catch(e){
     body.innerHTML='<p class="hist-empty">Could not load history right now. Try again in a moment.</p>';
   }
+}
+
+// ============================================================
+//  PROGRESS — compare two scans of the same angle (Pro)
+// ============================================================
+let progHist=null, progRegion=null, progA=0, progB=0;
+
+function progShell(inner){
+  return '<div class="result-wrap"><div class="card-area">'+
+    '<div class="sec-head" style="margin-bottom:24px">'+
+      '<h2>Progress.</h2>'+
+      '<p>Two scans of the same angle, side by side — which muscles actually moved.</p>'+
+    '</div>'+inner+
+    '<button class="btn ghost" style="margin-top:18px" onclick="show(\'screen-home\')">← Back</button>'+
+  '</div></div>';
+}
+
+async function showProgress(){
+  track('progress_viewed');
+  const body=document.getElementById('progressBody');
+  body.innerHTML=progShell('<p class="hist-empty">Loading…</p>');
+  show('screen-progress');
+  if(!hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
+  if(!isProHint()){renderProgressLocked();return;}
+  try{
+    const res=await fetch(WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+entitlementToken},
+      body:JSON.stringify({action:'get_history'})
+    });
+    const data=await res.json().catch(()=>null);
+    if(!res.ok || !data || !Array.isArray(data.history)) throw new Error('history_failed');
+    progHist={};
+    data.history.forEach(h=>{
+      if(!h||!h.region) return;
+      (progHist[h.region]=progHist[h.region]||[]).push(h);
+    });
+    Object.values(progHist).forEach(l=>l.sort((a,b)=>(a.ts||0)-(b.ts||0)));
+    const usable=VIEWS.filter(v=>(progHist[v.id]||[]).length>=2);
+    if(!usable.length){
+      const scanned=Object.keys(progHist).length>0;
+      body.innerHTML=progShell(
+        '<p class="hist-empty">'+(scanned
+          ?'No angle has two scans yet. Rescan one you\'ve already graded — as soon as an angle has two scans, the comparison lives here.'
+          :'No scans saved yet. Scan an angle, then rescan it after your next block — the comparison lives here.')+'</p>'+
+        '<button class="btn" style="margin-top:16px" onclick="goHome(\'scanSection\')">Scan an angle →</button>'
+      );
+      return;
+    }
+    if(!progRegion || (progHist[progRegion]||[]).length<2){
+      progRegion=usable[0].id;
+    }
+    progA=0; progB=progHist[progRegion].length-1;
+    renderProgress();
+  }catch(e){
+    body.innerHTML=progShell('<p class="hist-empty">Could not load your scans right now. Try again in a moment.</p>');
+  }
+}
+
+function renderProgressLocked(){
+  track('progress_locked_shown');
+  document.getElementById('progressBody').innerHTML=
+    '<div class="progress-wrap"><div class="progress-card">'+
+      '<div class="progress-lock-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>'+
+      '<div class="pr-eye">Pro feature</div>'+
+      '<h2>Prove it moved.</h2>'+
+      '<p class="pr-sub">Rescan after the cut, the bulk, the PR — then put any two scans of an angle side by side and see which muscles actually changed.</p>'+
+      '<div class="pr-chart-preview">'+
+        '<div class="pr-chart-label">Score over time</div>'+
+        '<div class="pr-chart-bars">'+
+          '<div class="pr-bar" style="height:38%"></div>'+
+          '<div class="pr-bar" style="height:52%"></div>'+
+          '<div class="pr-bar" style="height:47%"></div>'+
+          '<div class="pr-bar" style="height:61%"></div>'+
+          '<div class="pr-bar" style="height:58%"></div>'+
+          '<div class="pr-bar" style="height:74%"></div>'+
+        '</div>'+
+        '<div class="pr-coming-badge">Included with Pro</div>'+
+      '</div>'+
+      '<ul class="pr-feats">'+
+        '<li>Rescan all four angles — fair-use cap of 30 scans a day</li>'+
+        '<li>Side-by-side comparison of any two scans</li>'+
+        '<li>Per-muscle score deltas</li>'+
+        '<li>Scan history tied to your email, on any device</li>'+
+      '</ul>'+
+      '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CALLOUT Pro →</button>'+
+      '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">← Back</button>'+
+      '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
+    '</div></div>';
+}
+
+function renderProgress(){
+  const list=progHist[progRegion]||[];
+  progA=Math.max(0,Math.min(progA,list.length-1));
+  progB=Math.max(0,Math.min(progB,list.length-1));
+
+  const pills=VIEWS.map(v=>{
+    const n=(progHist[v.id]||[]).length;
+    return '<button class="prog-pill'+(v.id===progRegion?' active':'')+'"'+(n<2?' disabled':'')+
+      ' onclick="progPick(\''+v.id+'\')">'+esc(v.t)+'<span class="n">'+n+'</span></button>';
+  }).join('');
+
+  const opts=sel=>list.map((h,j)=>
+    '<option value="'+j+'"'+(j===sel?' selected':'')+'>Scan '+(j+1)+' — '+esc(progDate(h.ts,true))+
+    (h.score!=null?' · '+clampNum(h.score)+'/100':'')+'</option>'
+  ).join('');
+  const selects='<div class="prog-selects">'+
+    '<div><div class="prog-select-lbl">Baseline</div><select class="prog-select" onchange="progSetA(this.value)">'+opts(progA)+'</select></div>'+
+    '<div><div class="prog-select-lbl">Compare with</div><select class="prog-select" onchange="progSetB(this.value)">'+opts(progB)+'</select></div>'+
+  '</div>';
+
+  document.getElementById('progressBody').innerHTML=progShell(
+    '<div class="prog-pills">'+pills+'</div>'+selects+buildCompareHTML(list[progA],list[progB])
+  );
+}
+
+function progPick(r){
+  if(!progHist || (progHist[r]||[]).length<2) return;
+  progRegion=r; progA=0; progB=progHist[r].length-1;
+  track('progress_region',{region:r});
+  renderProgress();
+}
+function progSetA(v){ progA=parseInt(v,10)||0; renderProgress(); }
+function progSetB(v){ progB=parseInt(v,10)||0; renderProgress(); }
+
+function progDate(ts,withYear){
+  const o=withYear?{day:'numeric',month:'short',year:'numeric'}:{day:'numeric',month:'short'};
+  return new Date((ts||0)*1000).toLocaleDateString(undefined,o);
+}
+function clampNum(v){
+  const n=Number(v);
+  return Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n))):null;
+}
+function deltaChip(d,cls){
+  return '<span class="'+cls+' '+(d==null?'flat':(d>0?'up':(d<0?'down':'flat')))+'">'+
+    (d==null?'—':(d>0?'+'+d:String(d)))+'</span>';
+}
+
+function buildCompareHTML(a,b){
+  const sa=clampNum(a.score), sb=clampNum(b.score);
+  const overall=(sa!=null&&sb!=null)?sb-sa:null;
+
+  const head='<div class="cmp-head">'+
+    '<div class="cmp-side"><div class="cmp-date">'+esc(progDate(a.ts))+'</div>'+
+      '<div class="cmp-grade">'+(sa!=null?scoreToGrade(sa):'—')+'</div>'+
+      '<div class="cmp-score">'+(sa!=null?sa+'/100':'—')+'</div></div>'+
+    deltaChip(overall,'cmp-delta')+
+    '<div class="cmp-side now"><div class="cmp-date">'+esc(progDate(b.ts))+'</div>'+
+      '<div class="cmp-grade">'+(sb!=null?scoreToGrade(sb):'—')+'</div>'+
+      '<div class="cmp-score">'+(sb!=null?sb+'/100':'—')+'</div></div>'+
+  '</div>';
+
+  const ma=a.muscles||{}, mb=b.muscles||{};
+  const rows=MUSCLES.filter(k=>ma[k]!=null||mb[k]!=null).map(k=>{
+    const va=clampNum(ma[k]), vb=clampNum(mb[k]);
+    const d=(va!=null&&vb!=null)?vb-va:null;
+    return '<div class="cmp-row">'+
+      '<span class="cmp-name">'+cap(k)+'</span>'+
+      '<div class="cmp-bars">'+
+        '<div class="cmp-track"><div class="cmp-fill then" style="width:'+(va||0)+'%"></div></div>'+
+        '<div class="cmp-track"><div class="cmp-fill now" style="width:'+(vb||0)+'%"></div></div>'+
+      '</div>'+
+      '<span class="cmp-nums">'+(va!=null?va:'—')+'→'+(vb!=null?vb:'—')+deltaChip(d,'cmp-chip')+'</span>'+
+    '</div>';
+  }).join('');
+
+  return '<div class="cmp-card">'+head+
+    '<div class="cmp-rows">'+(rows||'<p class="hist-empty">No muscle scores stored for these scans.</p>')+'</div>'+
+    '<div class="cmp-note">Grey bar — '+esc(progDate(a.ts))+'. Blue — '+esc(progDate(b.ts))+'. '+
+    'Scores are AI visual estimates: match lighting, distance and pose for the fairest comparison.</div>'+
+  '</div>';
 }
 
 function esc(value){
