@@ -890,6 +890,61 @@
   }
 
   /* ─────────────────────────────────────────────────────
+     IMPROVE — Pro-only training + diet audit
+     ───────────────────────────────────────────────────── */
+  .imp-lbl{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--faint);margin:20px 0 8px;text-align:left;
+  }
+  .imp-goals{display:flex;gap:8px;flex-wrap:wrap}
+  .imp-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .imp-sets{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .imp-field{text-align:left}
+  .imp-field span{display:block;font-size:11.5px;color:var(--dim);margin-bottom:5px}
+  .imp-input{
+    width:100%;border:1px solid var(--line2);border-radius:8px;
+    background:var(--bg2);color:var(--ink);padding:10px;
+    font:inherit;font-size:14px;outline:none;
+  }
+  .imp-input:focus{border-color:var(--blue)}
+  .imp-input::placeholder{color:var(--quiet)}
+  textarea.imp-input{min-height:110px;resize:vertical;line-height:1.55}
+  .imp-note{font-size:12px;color:var(--faint);line-height:1.6;margin-top:8px;text-align:left}
+  .imp-status{min-height:20px;font-size:13px;color:var(--dim);margin-top:12px;text-align:left}
+  .imp-status.err{color:var(--red)}
+  .imp-focus{
+    background:var(--blue-wash);border:1px solid var(--blue-deep);border-radius:12px;
+    padding:16px 18px;font-size:15px;font-weight:600;color:var(--ink);
+    line-height:1.5;text-align:left;margin-bottom:16px;
+  }
+  .imp-block{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:20px;text-align:left;margin-bottom:14px;
+  }
+  .imp-block-title{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--blue-bright);margin-bottom:10px;
+  }
+  .imp-read{font-size:14px;color:var(--soft);line-height:1.65;margin-bottom:6px}
+  .imp-change{
+    display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;
+    padding:10px 0;border-top:1px solid var(--line);
+  }
+  .imp-change-tag{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--blue);
+    background:var(--blue-wash);border-radius:6px;padding:4px 8px;
+    white-space:nowrap;margin-top:1px;
+  }
+  .imp-change-txt{font-size:13.5px;color:var(--soft);line-height:1.6}
+  .imp-change-txt em{color:var(--dim);font-style:normal}
+  .imp-recheck{font-size:13px;color:var(--dim);line-height:1.6;margin:4px 0 14px;text-align:left}
+  .imp-disclaimer{font-size:11.5px;color:var(--faint);line-height:1.6;margin-top:14px;text-align:left}
+  @media (max-width:480px){
+    .imp-sets{grid-template-columns:1fr 1fr}
+  }
+
+  /* ─────────────────────────────────────────────────────
      UPSELL PANEL
      ───────────────────────────────────────────────────── */
   .upsell{
@@ -1572,7 +1627,7 @@
             </div>
             <div class="demo-block">
               <h3>Pro — £9.99/month</h3>
-              <p>Rescans over time — after a cut, a bulk, or a PR. Compare any two scans, muscle by muscle.</p>
+              <p>Rescans, progress comparisons, and Improve — your training and diet audited against your actual scan.</p>
             </div>
             <div class="demo-block">
               <h3>What no scan can know</h3>
@@ -1597,6 +1652,7 @@
           <button class="seebtn" id="ov-see" style="display:none" onclick="showOverall()">See full breakdown →</button>
           <button class="recover-link" id="histLink" style="display:none;margin-top:16px" onclick="showHistory()">Scan history →</button>
           <button class="recover-link" id="progLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showProgress()">Progress →</button>
+          <button class="recover-link" id="impLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showImprove()">Improve →</button>
         </div>
       </section>
       <!-- PRICING -->
@@ -1628,7 +1684,7 @@
           <div class="prow">
             <div class="prow-info">
               <div class="prow-name">CALLOUT Pro</div>
-              <div class="prow-desc">Rescan any angle after every cut, bulk, or PR — fair use: 20 scans a day, all four angles five times over. Scan history and side-by-side progress comparison, muscle by muscle.</div>
+              <div class="prow-desc">Rescan any angle after every cut, bulk, or PR — fair use: 20 scans a day, all four angles five times over. Scan history, progress comparisons, and Improve: training analysis + diet audit built from your actual scan.</div>
             </div>
             <div class="prow-price">£9.99<small>per month</small></div>
             <button class="prow-cta" onclick="handlePurchase('pro')">Go Pro</button>
@@ -1910,6 +1966,11 @@
     <div class="wrap"><div id="progressBody"></div></div>
   </section>
 
+  <!-- IMPROVE — training + diet audit (Pro); body rendered by showImprove() -->
+  <section class="screen" id="screen-improve">
+    <div class="wrap"><div id="improveBody"></div></div>
+  </section>
+
   <!-- SCAN HISTORY -->
   <section class="screen" id="screen-history">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
@@ -2008,6 +2069,7 @@
           <li><strong>Payment information</strong> — handled entirely by Stripe. We never see or store your card details.</li>
           <li><strong>Technical data</strong> — IP address and basic request metadata, used to operate the service and prevent abuse. Logs are retained for up to 30 days.</li>
           <li><strong>Local storage</strong> — your browser may store your email, short-lived access token, and display-only result history so the app can reopen smoothly. Payment access is checked by our server, not your browser.</li>
+          <li><strong>Improve inputs (Pro)</strong> — if you use Improve, the stats, weekly sets, and diet text you enter, plus the latest generated report, are stored with your account so the report follows you across devices. Delete them any time by asking privacy@callout-ai.com.</li>
         </ul>
 
         <h3>3. How your photos are handled</h3>
@@ -2110,7 +2172,7 @@
         <ul>
           <li><strong>Free scan:</strong> one angle, no card required. Email needed to reveal the result.</li>
           <li><strong>Full Body Audit (£5.99):</strong> one-time payment, unlocks all 4 angles permanently for this profile.</li>
-          <li><strong>CALLOUT Pro (£9.99/month):</strong> recurring subscription. Rescans of every angle, with a fair-use cap of 20 scans per day. Renews automatically each month until cancelled.</li>
+          <li><strong>CALLOUT Pro (£9.99/month):</strong> recurring subscription. Rescans of every angle, with a fair-use cap of 20 scans per day. Includes Improve reports (up to 6 per day) — general training and nutrition guidance generated from your inputs and scan results; not medical, dietetic, or coaching advice. Renews automatically each month until cancelled.</li>
           <li><strong>Lifetime (£29.99):</strong> early-access one-time payment for lifetime CALLOUT access while available.</li>
         </ul>
 
@@ -2624,6 +2686,8 @@ function refreshHome(){
   if(hl) hl.style.display=hasEntitlementHint()?'inline-block':'none';
   const pl=document.getElementById('progLink');
   if(pl) pl.style.display=hasEntitlementHint()?'inline-block':'none';
+  const il=document.getElementById('impLink');
+  if(il) il.style.display=hasEntitlementHint()?'inline-block':'none';
   const scansUsed=Object.keys(viewsDone).length;
   VIEWS.forEach(v=>{
     const tile=document.getElementById('vt-'+v.id);
@@ -2811,7 +2875,7 @@ function showScanUpsell(){
   div.innerHTML=
     '<div class="us-eye">Scan complete</div>'+
     '<h3>Rescan any angle, any time.</h3>'+
-    '<p class="us-p">After the cut, the bulk, the PR — rescan, put the two scans side by side, and see exactly which muscles moved.</p>'+
+    '<p class="us-p">After the cut, the bulk, the PR — rescan, compare side by side, and let Improve audit your training and diet against the result.</p>'+
     '<div class="upsell-price">£9.99</div>'+
     '<div class="upsell-price-sub">PER MONTH · CANCEL ANYTIME</div>'+
     '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Go Pro →</button>'+
@@ -3434,6 +3498,7 @@ function renderProgressLocked(){
         '<li>Rescan all four angles — up to 20 scans a day</li>'+
         '<li>Side-by-side comparison of any two scans</li>'+
         '<li>Per-muscle score deltas</li>'+
+        '<li>Improve: training + diet audits against your scan</li>'+
         '<li>Scan history tied to your email, on any device</li>'+
       '</ul>'+
       '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CALLOUT Pro →</button>'+
@@ -3522,6 +3587,187 @@ function buildCompareHTML(a,b){
     '<div class="cmp-note">Grey bar — '+esc(progDate(a.ts))+'. Blue — '+esc(progDate(b.ts))+'. '+
     'Scores are AI visual estimates: match lighting, distance and pose for the fairest comparison.</div>'+
   '</div>';
+}
+
+// ============================================================
+//  IMPROVE — training + diet audit (Pro)
+// ============================================================
+let improveRecord=null;
+const IMP_SET_FIELDS=[['chest','Chest'],['back','Back'],['shoulders','Shoulders'],['arms','Arms'],['abs','Abs'],['quads','Quads'],['hamstrings','Hamstrings'],['glutes','Glutes'],['calves','Calves']];
+
+function impShell(inner){
+  return '<div class="result-wrap"><div class="card-area">'+
+    '<div class="sec-head" style="margin-bottom:24px">'+
+      '<h2>Improve.</h2>'+
+      '<p>Your split and your diet, audited against what the scan actually shows.</p>'+
+    '</div>'+inner+
+    '<button class="btn ghost" style="margin-top:18px" onclick="show(\'screen-home\')">← Back</button>'+
+  '</div></div>';
+}
+
+async function showImprove(){
+  track('improve_viewed');
+  const body=document.getElementById('improveBody');
+  body.innerHTML=impShell('<p class="hist-empty">Loading…</p>');
+  show('screen-improve');
+  if(!hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
+  if(!isProHint()){renderImproveLocked();return;}
+  try{
+    const res=await fetch(WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+entitlementToken},
+      body:JSON.stringify({action:'get_improve'})
+    });
+    const data=await res.json().catch(()=>null);
+    if(!res.ok||!data) throw new Error('improve_fetch');
+    improveRecord=data.record||null;
+    if(improveRecord&&improveRecord.report) renderImproveReport(improveRecord.report);
+    else renderImproveForm();
+  }catch(e){
+    body.innerHTML=impShell('<p class="hist-empty">Could not load right now. Try again in a moment.</p>');
+  }
+}
+
+function renderImproveLocked(){
+  track('improve_locked_shown');
+  document.getElementById('improveBody').innerHTML=
+    '<div class="progress-wrap"><div class="progress-card">'+
+      '<div class="progress-lock-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>'+
+      '<div class="pr-eye">Pro feature</div>'+
+      '<h2>Your split, called out.</h2>'+
+      '<p class="pr-sub">Enter your weekly sets and a normal day of eating. Improve audits both against what your scan actually shows — and tells you what to change.</p>'+
+      '<ul class="pr-feats">'+
+        '<li>Training analysis — your volume vs your visible weak points</li>'+
+        '<li>Diet audit — direction and fixes, grounded in what you eat</li>'+
+        '<li>Built from your latest scan, not a questionnaire</li>'+
+        '<li>Rescan after — Progress shows whether it worked</li>'+
+      '</ul>'+
+      '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CALLOUT Pro →</button>'+
+      '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">← Back</button>'+
+      '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
+    '</div></div>';
+}
+
+function renderImproveForm(){
+  const inp=(improveRecord&&improveRecord.inputs)||{};
+  const stats=inp.stats||{}, sets=inp.sets||{};
+  const goal=inp.goal||'gain';
+  const gPills=[['gain','Add size'],['lean','Get leaner'],['recomp','Recomp']].map(g=>
+    '<button type="button" class="prog-pill'+(g[0]===goal?' active':'')+'" data-goal="'+g[0]+'" onclick="impPickGoal(this)">'+g[1]+'</button>'
+  ).join('');
+  const statF=(id,lbl,ph,val)=>'<div class="imp-field"><span>'+lbl+'</span><input class="imp-input" id="'+id+'" type="number" inputmode="numeric" placeholder="'+ph+'"'+(val!=null?' value="'+Number(val)+'"':'')+'></div>';
+  const setF=IMP_SET_FIELDS.map(f=>
+    '<div class="imp-field"><span>'+f[1]+'</span><input class="imp-input" id="imp-set-'+f[0]+'" type="number" inputmode="numeric" min="0" max="60" placeholder="0"'+(sets[f[0]]!=null?' value="'+Number(sets[f[0]])+'"':'')+'></div>'
+  ).join('');
+  document.getElementById('improveBody').innerHTML=impShell(
+    '<div class="imp-lbl" style="margin-top:0">Goal</div><div class="imp-goals" id="impGoals">'+gPills+'</div>'+
+    '<div class="imp-lbl">You</div><div class="imp-stats">'+
+      statF('imp-h','Height (cm)','178',stats.height_cm)+
+      statF('imp-w','Weight (kg)','80',stats.weight_kg)+
+      statF('imp-y','Years training','3',stats.training_years)+
+    '</div>'+
+    '<div class="imp-lbl">Weekly sets per muscle</div><div class="imp-sets">'+setF+'</div>'+
+    '<p class="imp-note">Count a set when the muscle works hard in it — presses count for delts, rows count for biceps. Rough numbers are fine; skip what you don\'t track.</p>'+
+    '<div class="imp-lbl">A normal day of eating</div>'+
+    '<textarea class="imp-input" id="imp-diet" maxlength="2500" placeholder="Be honest. e.g. 8am oats and whey · 1pm chicken wrap and a coke · 7pm pasta with mince · biscuits most evenings"></textarea>'+
+    '<p class="imp-note">Skip it and the report audits training only.</p>'+
+    '<div class="imp-status" id="impStatus"></div>'+
+    '<button class="btn gold-btn" id="impGo" style="margin-top:6px" onclick="submitImprove()">Build my report →</button>'
+  );
+  const dt=document.getElementById('imp-diet');
+  if(dt&&typeof inp.diet==='string') dt.value=inp.diet;
+}
+
+function impPickGoal(el){
+  document.querySelectorAll('#impGoals .prog-pill').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+async function submitImprove(){
+  const btn=document.getElementById('impGo');
+  const st=document.getElementById('impStatus');
+  const num=id=>{const el=document.getElementById(id);const n=parseFloat(el&&el.value);return Number.isFinite(n)?n:null;};
+  const sets={};
+  IMP_SET_FIELDS.forEach(f=>{const n=num('imp-set-'+f[0]);if(n!=null)sets[f[0]]=n;});
+  const goalEl=document.querySelector('#impGoals .prog-pill.active');
+  const diet=((document.getElementById('imp-diet')||{}).value||'').trim();
+  if(!Object.keys(sets).length && !diet){
+    st.className='imp-status err';
+    st.textContent='Enter your weekly sets, a day of eating, or both — there\'s nothing to audit yet.';
+    return;
+  }
+  const payload={
+    action:'improve',
+    goal:goalEl?goalEl.getAttribute('data-goal'):'gain',
+    height_cm:num('imp-h'),weight_kg:num('imp-w'),training_years:num('imp-y'),
+    sets:sets,diet:diet
+  };
+  btn.disabled=true;
+  st.className='imp-status';
+  st.textContent='Building your report — usually 15–20 seconds…';
+  track('improve_submit');
+  try{
+    if(!hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
+    const res=await fetch(WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+entitlementToken},
+      body:JSON.stringify(payload)
+    });
+    const data=await res.json().catch(()=>null);
+    if(res.status===400&&data&&data.reason==='no_scans'){
+      st.className='imp-status err';
+      st.textContent='No scans on this account yet — the report is built against your scan. Scan an angle first.';
+      btn.disabled=false;return;
+    }
+    if(res.status===429){
+      st.className='imp-status err';
+      st.textContent='Report limit reached for today (6/day). Tomorrow.';
+      btn.disabled=false;return;
+    }
+    if(!res.ok||!data) throw new Error('improve_failed');
+    if(data.refused){
+      st.className='imp-status err';
+      st.textContent=data.reason==='unsafe_request'
+        ?'This one needs a human, not an app. Part of what you entered is something a doctor or registered professional should guide — nothing was generated.'
+        :(data.reason==='insufficient_input'
+          ?'Not enough to work with. Add your sets or a day of eating and try again.'
+          :'The report engine choked. Try again in a minute.');
+      btn.disabled=false;return;
+    }
+    improveRecord={
+      inputs:{goal:payload.goal,stats:{height_cm:payload.height_cm,weight_kg:payload.weight_kg,training_years:payload.training_years},sets:sets,diet:diet},
+      report:data.report,created:data.created
+    };
+    track('improve_report');
+    renderImproveReport(data.report);
+  }catch(e){
+    st.className='imp-status err';
+    st.textContent='Could not build the report right now. Try again in a moment.';
+    btn.disabled=false;
+  }
+}
+
+function renderImproveReport(rep){
+  const trainRows=(rep.training&&rep.training.changes||[]).map(c=>
+    '<div class="imp-change"><span class="imp-change-tag">'+esc(c.area)+'</span><span class="imp-change-txt">'+esc(c.action)+'</span></div>'
+  ).join('');
+  const dietRows=rep.diet?(rep.diet.changes||[]).map(c=>
+    '<div class="imp-change"><span class="imp-change-tag">Fix</span><span class="imp-change-txt">'+esc(c.what)+' <em>— '+esc(c.why)+'</em></span></div>'
+  ).join(''):'';
+  document.getElementById('improveBody').innerHTML=impShell(
+    '<div class="imp-focus">'+esc(rep.focus)+'</div>'+
+    '<div class="imp-block"><div class="imp-block-title">Training analysis</div>'+
+      '<div class="imp-read">'+esc(rep.training.read)+'</div>'+trainRows+'</div>'+
+    (rep.diet
+      ?'<div class="imp-block"><div class="imp-block-title">Diet audit</div>'+
+        '<div class="imp-read">'+esc(rep.diet.read)+'</div>'+dietRows+'</div>'
+      :'')+
+    '<p class="imp-recheck">Run this for '+esc(String(rep.recheck_weeks))+' weeks, then rescan — '+
+      '<button class="recover-link" onclick="showProgress()">Progress</button> will show whether it moved.</p>'+
+    '<button class="btn" onclick="goHome(\'scanSection\')">Rescan an angle →</button>'+
+    '<button class="btn ghost" style="margin-top:8px" onclick="renderImproveForm()">Edit inputs / regenerate</button>'+
+    '<p class="imp-disclaimer">General training and nutrition guidance generated from your inputs and scan results. Not medical, dietetic, or coaching advice.</p>'
+  );
 }
 
 function esc(value){
