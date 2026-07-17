@@ -36,7 +36,7 @@
 <meta name="apple-mobile-web-app-title" content="CALLOUT">
 
 <!-- Favicon — inline SVG, CALLOUT "C" mark -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNUI5REZGIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMyRjgwRkYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMxNTU4QzAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHJ4PSI4IiBmaWxsPSIjMDUwNzBCIi8+PHRleHQgeD0iMTYiIHk9IjI0IiBmb250LWZhbWlseT0iSGVsdmV0aWNhLEFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9InVybCgjZykiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkM8L3RleHQ+PC9zdmc+">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305070B'/%3E%3Cpath d='M8 7 H24 Q26.5 7 26.5 9.5 V18.5 Q26.5 21 24 21 H14.5 L10 25.5 V21 H8 Q5.5 21 5.5 18.5 V9.5 Q5.5 7 8 7 Z' fill='%232F80FF'/%3E%3Crect x='14.8' y='9.6' width='2.4' height='5.6' rx='1.2' fill='%2305070B'/%3E%3Ccircle cx='16' cy='18' r='1.4' fill='%2305070B'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMDUwNzBCIi8+PHRleHQgeD0iOTAiIHk9IjEzMiIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjEzMCIgZmlsbD0iIzJGODBGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD48L3N2Zz4=">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -105,9 +105,11 @@
     background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   }
   .nav .brand{
+    display:flex;align-items:center;gap:10px;
     font-family:'Inter',sans-serif;font-weight:900;letter-spacing:.32em;
     font-size:15px;color:var(--ink);
   }
+  .brand-mark{width:20px;height:20px;flex-shrink:0;display:block}
   .nav .links{display:flex;gap:32px;align-items:center}
   .nav .links .navlink{
     background:none;border:none;padding:0;
@@ -1558,7 +1560,7 @@
   <div class="toast" id="toast"></div>
 
   <nav class="nav">
-    <div class="brand">CALLOUT</div>
+    <div class="brand"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 4 H26 Q29 4 29 7 V20 Q29 23 26 23 H14 L8 29 V23 H6 Q3 23 3 20 V7 Q3 4 6 4 Z" fill="var(--blue)"/><rect x="14.6" y="8" width="2.8" height="7.5" rx="1.4" fill="var(--bg)"/><circle cx="16" cy="19" r="1.7" fill="var(--bg)"/></svg>CALLOUT</div>
     <div class="links">
       <button class="navlink" onclick="goHome('howStrip')">How it works</button>
       <button class="navlink" onclick="goHome('pricingSection')">Pricing</button>
@@ -3679,7 +3681,7 @@ function renderImproveLocked(){
 
 function renderImproveForm(){
   const inp=(improveRecord&&improveRecord.inputs)||{};
-  const stats=inp.stats||{}, sets=inp.sets||{};
+  const stats=inp.stats||{}, sets=inp.sets||{}, intake=inp.intake||{};
   const goal=inp.goal||'gain';
   const gPills=[['gain','Add size'],['lean','Get leaner'],['recomp','Recomp']].map(g=>
     '<button type="button" class="prog-pill'+(g[0]===goal?' active':'')+'" data-goal="'+g[0]+'" onclick="impPickGoal(this)">'+g[1]+'</button>'
@@ -3695,6 +3697,11 @@ function renderImproveForm(){
       statF('imp-w','Weight (kg)','80',stats.weight_kg)+
       statF('imp-y','Years training','3',stats.training_years)+
     '</div>'+
+    '<div class="imp-lbl">Daily intake — if you track it</div><div class="imp-stats" style="grid-template-columns:1fr 1fr">'+
+      statF('imp-kcal','Calories (kcal)','3000',intake.calories_kcal)+
+      statF('imp-prot','Protein (g)','140',intake.protein_g)+
+    '</div>'+
+    '<p class="imp-note">Tracked numbers beat guesses — the protein check is computed from these, not vibes.</p>'+
     '<div class="imp-lbl">Weekly sets per muscle</div><div class="imp-sets">'+setF+'</div>'+
     '<p class="imp-note">Count a set when the muscle works hard in it — presses count for delts, rows count for biceps. Rough numbers are fine; skip what you don\'t track.</p>'+
     '<div class="imp-lbl">A normal day of eating</div>'+
@@ -3729,6 +3736,7 @@ async function submitImprove(){
     action:'improve',
     goal:goalEl?goalEl.getAttribute('data-goal'):'gain',
     height_cm:num('imp-h'),weight_kg:num('imp-w'),training_years:num('imp-y'),
+    calories_kcal:num('imp-kcal'),protein_g:num('imp-prot'),
     sets:sets,diet:diet
   };
   btn.disabled=true;
@@ -3764,7 +3772,7 @@ async function submitImprove(){
       btn.disabled=false;return;
     }
     improveRecord={
-      inputs:{goal:payload.goal,stats:{height_cm:payload.height_cm,weight_kg:payload.weight_kg,training_years:payload.training_years},sets:sets,diet:diet},
+      inputs:{goal:payload.goal,stats:{height_cm:payload.height_cm,weight_kg:payload.weight_kg,training_years:payload.training_years},intake:{calories_kcal:payload.calories_kcal,protein_g:payload.protein_g},sets:sets,diet:diet},
       report:data.report,scan:data.scan,created:data.created
     };
     track('improve_report');
