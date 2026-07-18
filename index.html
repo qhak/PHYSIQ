@@ -3,17 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-5NGRZWVZH1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-5NGRZWVZH1');
-</script>
 <!-- Cloudflare Web Analytics -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"155203367c0a44f0881448c3b9d7168d"}'></script>
 <!-- End Cloudflare Web Analytics -->
+<!-- Privacy-friendly analytics by Plausible (cookieless — no consent banner needed) -->
+<script async src="https://plausible.io/js/pa-YubRMKjoy6gKaXDo4vfCf.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
 <title>CALLOUT — AI physique feedback from photos. No flattery.</title>
 <meta name="description" content="CALLOUT gives direct AI feedback on visible physique development from photos. First scan free. Full Body Audit is £5.99 one-time.">
 
@@ -2148,7 +2146,7 @@
         <p>To exercise any of these rights, email <a href="mailto:privacy@callout-ai.com">privacy@callout-ai.com</a>. We aim to respond within 30 days.</p>
 
         <h3>9. Cookies and local storage</h3>
-        <p>CALLOUT does not use tracking or advertising cookies. We use browser localStorage for email, a short-lived bearer token, and display-only result history. Local storage is never the source of truth for paid access.</p>
+        <p>CALLOUT does not use tracking or advertising cookies, and does not track you across other sites. Browser localStorage holds your email, a short-lived access token, and display-only result history — this is strictly necessary to run the app and is never the source of truth for paid access. For traffic insight we use privacy-friendly, cookieless analytics (Cloudflare Web Analytics and Plausible Analytics) that measure aggregate visits — page views, referrers, approximate location, and device type — without cookies or data that identifies you personally. Because no tracking cookies are set, no cookie-consent banner is required.</p>
 
         <h3>10. Children</h3>
         <p>CALLOUT is for adults only. The grading engine is instructed to refuse any photo where the subject is not clearly 18 or over. We do not knowingly collect data from anyone under 18.</p>
@@ -2282,9 +2280,10 @@ const UNLOCK_PRICE   = "£5.99";
 const TURNSTILE_SITE_KEY = "";
 // ============================================================
 
-// ---- funnel analytics (GA4 via gtag; no-ops if blocked) ----
+// ---- funnel analytics: fires to Plausible custom events when present,
+//      safely no-ops otherwise (cookieless; no consent banner required) ----
 function track(name,params){
-  try{ if(typeof gtag==='function') gtag('event',name,params||{}); }catch(e){}
+  try{ if(typeof window.plausible==='function') window.plausible(name,{props:params||{}}); }catch(e){}
 }
 
 const VIEWS=[
