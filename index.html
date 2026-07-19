@@ -451,24 +451,52 @@
   }
   .vc.overall-vc{border-color:var(--line-strong)}
   .vc-photo{
-    /* Circular physique crop: a framed feature at the top of the card,
-       ringed in the brand blue. Shoulders/chest/arms stay in frame via the
-       high crop point. Cards without a photo simply skip this element. */
+    /* Circular physique crop — used by the overall/full-body card. */
     position:absolute;top:50px;left:50%;transform:translateX(-50%);
-    width:56%;max-width:270px;aspect-ratio:1/1;
-    border-radius:50%;
+    width:56%;max-width:270px;aspect-ratio:1/1;border-radius:50%;
     background-size:cover;background-position:center 16%;
-    z-index:1;opacity:.92;
-    filter:saturate(1.06) contrast(1.05);
+    z-index:1;opacity:.92;filter:saturate(1.06) contrast(1.05);
     border:2px solid var(--blue);
     box-shadow:0 0 0 5px var(--blue-wash),0 18px 40px -18px rgba(0,0,0,.85);
   }
   .vc-inner{
     position:relative;z-index:3;flex:1;display:flex;flex-direction:column;
     padding:20px 22px 16px;
-    /* photo zone stays clear; harder scrim over the text zone below */
     background:linear-gradient(180deg,transparent 0%,rgba(5,9,16,.28) 34%,rgba(5,9,16,.9) 70%,rgba(5,9,16,.97) 100%);
   }
+  /* PHOTO-FORWARD result card: physique full-bleed, breakdown lives below.
+     Scoped to .result-vc so the overall/full-body card keeps its circle crop. */
+  .result-vc .vc-photo{
+    top:0;left:0;transform:none;inset:0;width:100%;max-width:none;aspect-ratio:auto;
+    border-radius:0;opacity:1;border:none;box-shadow:none;
+    background-position:center 14%;filter:saturate(1.08) contrast(1.04) brightness(1.1);
+  }
+  .result-vc .vc-inner{
+    padding:18px 22px 16px;
+    background:linear-gradient(180deg,rgba(5,9,16,.28) 0%,rgba(5,9,16,.04) 15%,rgba(5,9,16,.02) 45%,rgba(5,9,16,.54) 60%,rgba(5,9,16,.9) 77%,rgba(5,9,16,.99) 100%);
+  }
+  .result-vc .vc-grade-section{margin-top:auto}
+  .result-vc .vc-header .vc-brand-tag,.result-vc .vc-header .vc-badge{text-shadow:0 1px 10px rgba(0,0,0,.8)}
+  .result-vc .vc-grade-letter{text-shadow:0 6px 26px rgba(0,0,0,.5)}
+  .result-vc .vc-grade-label{text-shadow:0 2px 12px rgba(0,0,0,.85)}
+  /* detailed muscle breakdown now lives in its own panel below the card */
+  .vc-breakdown-below{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:16px 18px;margin:0 0 22px;text-align:left;
+  }
+  .vc-breakdown-below .vc-section-title{margin:0 0 12px}
+  .vc-breakdown-below.blurred{filter:blur(8px);pointer-events:none;user-select:none}
+  /* coloured progress bars in the below panel — carry the grade's medal accent */
+  .vc-breakdown-below .vc-muscle{margin-bottom:11px}
+  .vc-breakdown-below .vc-muscle-track{height:7px;background:rgba(255,255,255,.06)}
+  .vc-breakdown-below .vc-muscle-fill{animation:none;transform:none;box-shadow:0 0 10px -2px var(--acc-deep)}
+  .vc-breakdown-below .vc-muscle-val{color:var(--acc);font-weight:700}
+  .vc-breakdown-below.grade-S{--acc:#f6e27a;--acc-deep:#d4af37}
+  .vc-breakdown-below.grade-A{--acc:#f0d99a;--acc-deep:#b9923f}
+  .vc-breakdown-below.grade-B{--acc:#D5E1F0;--acc-deep:#7F91A8}
+  .vc-breakdown-below.grade-C{--acc:#d9a05f;--acc-deep:#8a5a28}
+  .vc-breakdown-below.grade-D{--acc:#8FA3BD;--acc-deep:#526278}
+  .vc-breakdown-below.grade-E{--acc:#5E6E85;--acc-deep:#344258}
 
   .vc-result-reveal{
     animation:resultCardSlam .72s cubic-bezier(.16,.9,.18,1) both;
@@ -2780,9 +2808,8 @@ function renderViewResult(view,data,photoURL){
       '<h3>Your grade is ready.</h3>'+
       '<p>Enter your email to view it. It links this result and any purchase so access can be restored — that\'s the whole account.</p>'+
       '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-label="Email address" onkeydown="if(event.key===\'Enter\')submitGate()">'+
-      '<label class="gate-consent"><input type="checkbox" id="gateConsent">Email me CALLOUT updates too (optional)</label>'+
       '<button class="btn" onclick="submitGate()">Show my grade →</button>'+
-      '<div class="gate-fine">Photo not stored by CALLOUT · marketing only if ticked · <a onclick="openModal(\'privacyModal\')">privacy</a></div>'+
+      '<div class="gate-fine">Photo not stored by CALLOUT · <a onclick="openModal(\'privacyModal\')">privacy</a></div>'+
     '</div>';
   track('scan_result',{view:view,grade:viewGrade,paid:hasEntitlementHint()});
   if(!hasAccount()) track('gate_shown',{view:view});
@@ -2805,9 +2832,7 @@ function renderViewResult(view,data,photoURL){
           '<div class="vc-strip-div"></div>'+
           '<div><div class="vc-strip-val">'+bf+'</div><div class="vc-strip-lbl">BF est.</div></div>'+
         '</div>'+
-        (seen.length?
-          '<div class="vc-section-title">Breakdown — '+viewName+' view</div>'+muscleRows
-          :'<div class="vc-cap">This view didn\'t clearly show a gradeable region. Try better lighting or framing.</div>')+
+        (seen.length?'':'<div class="vc-cap">This view didn\'t clearly show a gradeable region. Try better lighting or framing.</div>')+
         (data.verdict?'<div class="vc-verdict">"'+esc(data.verdict)+'"</div>':'')+
         focusHTML+
         '<div class="vc-footer">'+
@@ -2816,7 +2841,11 @@ function renderViewResult(view,data,photoURL){
         '</div>'+
       '</div>'+
       gateHTML+
-    '</div>';
+    '</div>'+
+    (seen.length?
+      '<div class="vc-breakdown-below grade-'+(viewGrade!=='—'?viewGrade:'C')+(hasAccount()?'':' blurred')+'">'+
+        '<div class="vc-section-title">Breakdown — '+viewName+' view</div>'+muscleRows+
+      '</div>':'');
 
   const btn=document.getElementById('resPrimary');
   if(!hasAccount()){
@@ -2854,19 +2883,10 @@ function submitGate(){
     return;
   }
 
-  const consentBox=document.getElementById('gateConsent');
-  const consent=!!(consentBox&&consentBox.checked);
-
   userEmail=email;
   saveState();
-  track('gate_submit',{marketing_consent:consent});
+  track('gate_submit');
   refreshEntitlementToken().then(refreshHome).catch(()=>{});
-
-  // Marketing list only with explicit opt-in — matches the privacy policy.
-  if(EMAIL_ENDPOINT && consent){
-    fetch(EMAIL_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'subscribe',email,consent:true})}).catch(()=>{});
-  }
 
   const card=document.querySelector('#resultBody .vc');
   if(card) card.classList.remove('blurred');
