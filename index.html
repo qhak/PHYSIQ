@@ -1732,7 +1732,29 @@
   .share-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;border-top:1px solid rgba(255,255,255,.18);padding-top:14px;margin-top:16px}
   .share-fact{min-width:0}.share-fact b{display:block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}.share-fact span{display:block;font-size:12px;line-height:1.35;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .vc-serial{display:none}.vc-certified{color:var(--soft)}
-  .res-rank{display:none!important}.res-analysis,.vc-breakdown-below{margin:0;border-top:1px solid var(--line)}
+  .res-rank{display:block;background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:30px 0 26px;margin:28px 0 0}
+  .res-rank .res-sec-eyebrow{margin:0 0 14px;padding:0}
+  .rank-heading-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:8px}
+  .rank-heading-row h3{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:0}
+  .rank-tag{flex:none;border:1px solid var(--line2);border-radius:var(--radius-xs);padding:5px 8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+  .rank-head{display:flex;align-items:baseline;justify-content:flex-start;gap:12px;margin:8px 0 4px}
+  .rank-top{font-family:'Inter',sans-serif;font-size:34px;font-weight:850;letter-spacing:-.045em;line-height:1;color:var(--blue-bright)}
+  .rank-percentile{font-size:14px;font-weight:600;color:var(--soft)}
+  .rank-description{font-size:13.5px;color:var(--dim);line-height:1.55;margin:8px 0 16px;max-width:62ch}
+  .rank-curve{display:block;width:100%;height:auto;overflow:visible;margin:0}
+  .rc-grid{stroke:var(--line);stroke-width:1;opacity:.5}
+  .rc-axis{stroke:var(--line2);stroke-width:1}
+  .rc-area{fill:rgba(52,120,246,.10)}
+  .rc-line{fill:none;stroke:var(--blue);stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round}
+  .rc-marker{stroke:var(--blue-bright);stroke-width:1.5;stroke-dasharray:3 4}
+  .rc-dot{fill:var(--blue-bright);stroke:var(--bg);stroke-width:2}
+  .rc-callout{fill:var(--blue)}
+  .rc-cotext{fill:#fff;font-family:'Inter',sans-serif;text-anchor:middle;font-weight:750}
+  .rc-axtext{fill:var(--faint);font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+  .rc-axtitle{fill:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase}
+  .rank-note{font-size:11px;color:var(--faint);line-height:1.5;margin-top:8px;text-align:left}
+  .res-rank.blurred{filter:blur(8px);pointer-events:none;user-select:none}
+  .res-analysis,.vc-breakdown-below{margin:0;border-top:1px solid var(--line)}
   .res-sec-eyebrow{margin-top:30px}.res-verdict{background:transparent;border:0;border-left:2px solid var(--blue);border-radius:0;padding:0 0 0 18px;font-style:normal;font-size:17px;line-height:1.65}
   .res-cards{gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .res-card{background:transparent;border:0;border-right:1px solid var(--line);border-radius:0;padding:18px}.res-card:last-child{border-right:0}
@@ -1741,6 +1763,10 @@
   .vc-breakdown-below .vc-muscle-track{height:4px}.vc-breakdown-below .vc-muscle-fill{box-shadow:none;background:var(--blue)}
   .vc-muscle-name small{display:block;font-family:'JetBrains Mono',monospace;font-size:8px;line-height:1.5;text-transform:uppercase;letter-spacing:.05em;color:var(--faint)}
   .field-label{display:block;width:100%;font-size:12px;font-weight:700;color:var(--soft);margin:0 0 7px;text-align:left}
+  .gate-consent{justify-content:flex-start;margin:4px 0 14px;font-size:11.5px;line-height:1.45}
+  .gate-consent input{width:17px;height:17px}
+  .gate-status{width:100%;min-height:18px;margin:9px 0 0;font-size:11.5px;line-height:1.45;color:var(--dim);text-align:left}
+  .gate-status.err{color:var(--red)}
   .inline-link{border:0;background:none;color:var(--dim);font:inherit;text-decoration:underline;cursor:pointer;padding:0}
   .bf-detail{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;align-items:baseline;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:20px}
   .bf-detail b{font-size:14px}.bf-detail span{font-size:22px;font-weight:800;color:var(--blue)}.bf-detail p{grid-column:1/-1;color:var(--faint);font-size:12px;line-height:1.5;margin:0}
@@ -1775,6 +1801,7 @@
     .res-cards{grid-template-columns:1fr}.res-card{border-right:0;border-bottom:1px solid var(--line)}.res-card:last-child{border-bottom:0}
     .upsell-feats{grid-template-columns:1fr}.prow{grid-template-columns:1fr auto;padding:20px 0}.prow-price{text-align:left}.prow-cta{grid-column:1/-1;width:100%}.prow-main{padding:20px;margin:6px -10px}
     .upgrade-context{grid-template-columns:1fr;gap:4px}.upgrade-context span{margin-bottom:8px}
+    .rank-heading-row{align-items:flex-start}.rank-heading-row h3{font-size:18px}.rank-top{font-size:30px}.rank-head{flex-wrap:wrap;gap:7px 10px}.rank-curve{margin-inline:-4px;width:calc(100% + 8px)}
     .mob-cta{display:none!important}.result-wrap{padding-inline:20px}.modal{max-height:calc(100dvh - 24px);margin:12px}.gate-overlay{padding:20px}
   }
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
@@ -3031,7 +3058,9 @@ function renderViewResult(view,data,photoURL){
       '<p>Enter your email to view it. It links this result and any purchase so access can be restored — that\'s the whole account.</p>'+
       '<label class="field-label" for="gateEmail">Email address</label>'+
       '<input class="gate-input" type="email" id="gateEmail" placeholder="you@example.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-describedby="gateHelp" onkeydown="if(event.key===\'Enter\')submitGate()">'+
-      '<button class="btn" onclick="submitGate()">Show my grade →</button>'+
+      '<label class="gate-consent" for="gateConsent"><input type="checkbox" id="gateConsent">Send me occasional CALLOUT updates and offers (optional)</label>'+
+      '<button class="btn" id="gateSubmit" onclick="submitGate()">Show my grade →</button>'+
+      '<div class="gate-status" id="gateStatus" role="status" aria-live="polite"></div>'+
       '<div class="gate-fine" id="gateHelp">Photo not stored by CALLOUT · <button class="inline-link" onclick="openModal(\'privacyModal\')">Privacy</button></div>'+
     '</div>';
   track('scan_result',{view:view,grade:viewGrade,paid:hasEntitlementHint()});
@@ -3082,6 +3111,7 @@ function renderViewResult(view,data,photoURL){
         '<div class="vc-section-title">Breakdown — '+viewName+' view</div>'+muscleRows+
       '</div>'
       :'<div class="vc-details-below grade-'+(viewGrade!=='—'?viewGrade:'C')+(hasAccount()?'':' blurred')+'"><div class="vc-cap" style="margin:0">This view didn\'t clearly show a gradeable region. Try better lighting or framing.</div></div>')+
+    buildRankHTML(viewAvg,viewGrade,!hasAccount())+
     (!isProHint()?
       '<div class="res-pro">'+
         '<div class="res-pro-eye">'+(hasEntitlementHint()?'Go further':'Unlock everything')+'</div>'+
@@ -3127,11 +3157,31 @@ function configurePrimaryBtn(o){
 // ============================================================
 //  GATE SUBMIT
 // ============================================================
-function submitGate(){
+async function submitGate(){
   const inp=document.getElementById('gateEmail');
+  const btn=document.getElementById('gateSubmit');
+  const status=document.getElementById('gateStatus');
+  const consent=!!document.getElementById('gateConsent')?.checked;
   const email=(inp&&inp.value||'').trim();
   if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
     if(inp){inp.classList.add('err');setTimeout(()=>inp.classList.remove('err'),400);}
+    if(status){status.textContent='Enter a valid email address.';status.className='gate-status err';}
+    return;
+  }
+
+  if(btn){btn.disabled=true;btn.textContent='Saving email…';}
+  if(status){status.textContent='';status.className='gate-status';}
+  try{
+    const res=await fetch(EMAIL_ENDPOINT,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'subscribe',email,consent})
+    });
+    const saved=await res.json().catch(()=>null);
+    if(!res.ok||!saved||saved.ok!==true) throw new Error(saved&&saved.error||'email_save_failed');
+  }catch(err){
+    if(btn){btn.disabled=false;btn.textContent='Show my grade →';}
+    if(status){status.textContent='We could not save your email. Check your connection and try again.';status.className='gate-status err';}
+    track('gate_email_failed',{reason:String(err&&err.message||'unknown')});
     return;
   }
 
@@ -3375,7 +3425,8 @@ function showOverall(){
         '</div>'+
       '</div>'+
     '</div>'+capHTML+
-    '<div class="vc-breakdown-below grade-'+o.grade+'"><div class="vc-section-title">Full muscle breakdown</div>'+muscleRows+'</div>';
+    '<div class="vc-breakdown-below grade-'+o.grade+'"><div class="vc-section-title">Full muscle breakdown</div>'+muscleRows+'</div>'+
+    buildRankHTML(o.capScore,o.grade,false);
 
   const backBtn=document.getElementById('overallBack');
   ['overallShareRow','overallUpsell'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
@@ -3673,7 +3724,20 @@ function buildFocusHTML(data){
 // Rough population percentile modelled from score. NOT a measured ranking — it's a
 // modelled estimate of where a physique score sits vs the general population, and
 // is always presented as an "AI estimate". Anchor points from the owner's model.
-const RANK_MAP=[[0,5],[5,5],[10,25],[15,40],[20,50],[25,57],[30,65],[35,71],[40,78],[45,83],[50,87],[55,90],[60,93],[65,95],[70,97],[75,98.3],[80,99.2],[85,99.6],[90,99.85],[95,99.95],[100,99.99]];
+const RANK_MAP=[[0,5],[5,5],[10,25],[15,40],[20,50],[25,57],[30,65],[35,71],[40,78],[45,83],[50,87],[55,90],[60,93],[65,95],[70,97],[75,98.3],[80,99.2],[85,99.6],[90,99.85],[93,99.9],[95,99.95],[98,99.98],[100,99.99]];
+const RANK_DESCRIPTIONS=[
+  [0,'Very limited visible muscular development in this photo.'],
+  [10,'Minimal visible development; visually close to a sedentary baseline.'],
+  [20,'Average untrained starting point.'],
+  [30,'Early visible training adaptation.'],
+  [40,'Noticeable shape and development are beginning to form.'],
+  [50,'Solid recreational training base.'],
+  [60,'Strong visible development and consistent conditioning.'],
+  [70,'Advanced, well-developed recreational physique.'],
+  [80,'Elite-level visible proportions and conditioning.'],
+  [90,'Exceptional visible development. A photo cannot establish enhancement status.'],
+  [100,'Competition-level visible development at the extreme end of this model.']
+];
 function scoreToPercentile(s){
   if(s==null) return null;
   if(s<=0) return 5; if(s>=100) return 99.99;
@@ -3685,50 +3749,71 @@ function scoreToPercentile(s){
 function buildRankHTML(score, grade, blurred){
   if(score==null) return '';
   const pct=scoreToPercentile(score);
-  const top=Math.max(1,Math.round(100-pct));
-  // population density = slope of the percentile curve (rare tails, dense middle-left)
-  const dens=[[0,0]];
-  for(let i=1;i<RANK_MAP.length;i++){ dens.push([(RANK_MAP[i][0]+RANK_MAP[i-1][0])/2,(RANK_MAP[i][1]-RANK_MAP[i-1][1])/(RANK_MAP[i][0]-RANK_MAP[i-1][0])]); }
-  dens.push([100,0.001]);
-  const maxD=Math.max.apply(null,dens.map(d=>d[1]));
-  function densAt(x){ for(let i=1;i<dens.length;i++){ if(x<=dens[i][0]){const a=dens[i-1],b=dens[i];return a[1]+(b[1]-a[1])*(x-a[0])/(b[0]-a[0]);} } return 0; }
-  const W=320,H=152,x0=30,x1=310,y0=20,y1=126;
+  const top=Math.max(.01,100-pct);
+  const topLabel=top<1?top.toFixed(2):top<10?top.toFixed(1):String(Math.round(top));
+  const pctLabel=pct>=99?pct.toFixed(2):pct>=90?pct.toFixed(1):String(Math.round(pct));
+  const description=RANK_DESCRIPTIONS.reduce((best,row)=>Math.abs(row[0]-score)<Math.abs(best[0]-score)?row:best,RANK_DESCRIPTIONS[0])[1];
+
+  // Density is the slope of the supplied percentile anchors. A small Gaussian
+  // kernel smooths those discrete slopes into one continuous curve; the SVG is
+  // then drawn with cubic Bézier segments so there are no angular turns.
+  const raw=[[0,0]];
+  for(let i=1;i<RANK_MAP.length;i++) raw.push([(RANK_MAP[i][0]+RANK_MAP[i-1][0])/2,(RANK_MAP[i][1]-RANK_MAP[i-1][1])/(RANK_MAP[i][0]-RANK_MAP[i-1][0])]);
+  raw.push([100,0]);
+  function densAt(x){
+    let weighted=0,weights=0;
+    raw.forEach(d=>{const z=(x-d[0])/7.5,w=Math.exp(-.5*z*z);weighted+=d[1]*w;weights+=w;});
+    return weights?weighted/weights:0;
+  }
+  const W=360,H=190,x0=24,x1=344,y0=44,y1=150;
   const plotW=x1-x0,plotH=y1-y0;
   const px=s=>x0+(s/100)*plotW;
+  const samples=[];for(let s=0;s<=100;s+=2) samples.push([s,densAt(s)]);
+  const maxD=Math.max.apply(null,samples.map(d=>d[1]));
   const py=d=>y1-(d/maxD)*plotH;
-  let pts=[]; for(let s=0;s<=100;s+=2){ pts.push(px(s).toFixed(1)+' '+py(densAt(s)).toFixed(1)); }
-  const linePath='M '+pts.join(' L ');
-  const areaPath='M '+px(0).toFixed(1)+' '+y1+' L '+pts.join(' L ')+' L '+px(100).toFixed(1)+' '+y1+' Z';
+  const points=samples.map(d=>[px(d[0]),py(d[1])]);
+  function smoothPath(pts){
+    let path='M '+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
+    for(let i=0;i<pts.length-1;i++){
+      const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;
+      const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6];
+      const c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
+      path+=' C '+c1[0].toFixed(1)+' '+c1[1].toFixed(1)+' '+c2[0].toFixed(1)+' '+c2[1].toFixed(1)+' '+p2[0].toFixed(1)+' '+p2[1].toFixed(1);
+    }
+    return path;
+  }
+  const linePath=smoothPath(points);
+  const areaPath=linePath+' L '+x1+' '+y1+' L '+x0+' '+y1+' Z';
   const mx=px(score), my=py(densAt(score));
   let grid='';
-  [0,25,50,75,100].forEach(function(s){ const gx=px(s).toFixed(1); grid+='<line class="rc-grid" x1="'+gx+'" y1="'+y0+'" x2="'+gx+'" y2="'+y1+'"/>'; });
-  [0,.25,.5,.75,1].forEach(function(f){ const gy=(y1-f*plotH).toFixed(1); grid+='<line class="rc-grid" x1="'+x0+'" y1="'+gy+'" x2="'+x1+'" y2="'+gy+'"/>'; });
+  [0,20,40,60,80,100].forEach(function(s){ const gx=px(s).toFixed(1); grid+='<line class="rc-grid" x1="'+gx+'" y1="'+y0+'" x2="'+gx+'" y2="'+y1+'"/>'; });
   let ax='';
-  [0,25,50,75,100].forEach(function(s){ ax+='<text class="rc-axtext" x="'+px(s).toFixed(1)+'" y="'+(y1+11)+'" text-anchor="middle" font-size="8">'+s+'</text>'; });
-  const midY=((y0+y1)/2).toFixed(1);
-  ax+='<text class="rc-axtitle" x="'+((x0+x1)/2).toFixed(1)+'" y="'+(y1+23)+'" text-anchor="middle" font-size="8">Score</text>';
-  ax+='<text class="rc-axtitle" x="12" y="'+midY+'" text-anchor="middle" font-size="7" transform="rotate(-90 12 '+midY+')">Population density</text>';
-  const boxW=84,boxH=30;
+  [0,20,40,60,80,100].forEach(function(s){ ax+='<text class="rc-axtext" x="'+px(s).toFixed(1)+'" y="'+(y1+14)+'" text-anchor="middle" font-size="8">'+s+'</text>'; });
+  ax+='<text class="rc-axtitle" x="'+((x0+x1)/2).toFixed(1)+'" y="'+(y1+28)+'" text-anchor="middle" font-size="8">CALLOUT SCORE</text>';
+  const boxW=92,boxH=34;
   let bx=mx-boxW/2; if(bx<x0)bx=x0; if(bx>x1-boxW)bx=x1-boxW;
-  const by=y0-6, cx=(bx+boxW/2).toFixed(1);
-  const callout='<rect class="rc-callout" x="'+bx.toFixed(1)+'" y="'+by+'" width="'+boxW+'" height="'+boxH+'" rx="7"/>'+
-    '<text class="rc-cotext" x="'+cx+'" y="'+(by+12)+'" font-size="10">You: '+Math.round(score)+'</text>'+
-    '<text class="rc-cotext" x="'+cx+'" y="'+(by+24)+'" font-size="11">Top '+top+'%</text>';
+  const by=4,cx=(bx+boxW/2).toFixed(1);
+  const callout='<rect class="rc-callout" x="'+bx.toFixed(1)+'" y="'+by+'" width="'+boxW+'" height="'+boxH+'" rx="5"/>'+
+    '<text class="rc-cotext" x="'+cx+'" y="'+(by+13)+'" font-size="9">YOUR SCORE · '+Math.round(score)+'</text>'+
+    '<text class="rc-cotext" x="'+cx+'" y="'+(by+27)+'" font-size="11">TOP '+topLabel+'%</text>';
   const gc=(grade&&grade!=='—')?' grade-'+grade:'';
   return '<div class="res-rank'+gc+(blurred?' blurred':'')+'">'+
-    '<div class="res-sec-eyebrow">Where you rank</div>'+
-    '<div class="rank-head"><span class="rank-top">Top '+top+'%</span><span class="rank-tag">AI estimate</span></div>'+
-    '<svg class="rank-curve" viewBox="0 0 '+W+' '+H+'" aria-hidden="true">'+
+    '<div class="res-sec-eyebrow">AI percentile estimate</div>'+
+    '<div class="rank-heading-row"><h3>Your estimated position</h3><span class="rank-tag">Modelled estimate</span></div>'+
+    '<div class="rank-head"><span class="rank-top">Top '+topLabel+'%</span><span class="rank-percentile">≈ '+pctLabel+' percentile</span></div>'+
+    '<p class="rank-description">'+esc(description)+'</p>'+
+    '<svg class="rank-curve" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Estimated score distribution with your score at '+Math.round(score)+' out of 100">'+
+      '<title>Estimated score distribution with your position marked</title>'+
       grid+
       '<path class="rc-area" d="'+areaPath+'"/>'+
       '<path class="rc-line" d="'+linePath+'"/>'+
       '<line class="rc-axis" x1="'+x0+'" y1="'+y1+'" x2="'+x1+'" y2="'+y1+'"/>'+
-      '<line class="rc-marker" x1="'+mx.toFixed(1)+'" y1="'+y1+'" x2="'+mx.toFixed(1)+'" y2="'+(y0+2)+'"/>'+
-      '<circle class="rc-dot" cx="'+mx.toFixed(1)+'" cy="'+my.toFixed(1)+'" r="3.4"/>'+
+      '<line class="rc-marker" x1="'+mx.toFixed(1)+'" y1="'+y1+'" x2="'+mx.toFixed(1)+'" y2="'+(by+boxH)+'"/>'+
+      '<circle class="rc-dot" cx="'+mx.toFixed(1)+'" cy="'+my.toFixed(1)+'" r="4.5"/>'+
       callout+
       ax+
     '</svg>'+
-    '<div class="rank-note">Estimated percentile against the general population — a rough model, not a measured ranking.</div>'+
+    '<div class="rank-note">AI estimate based on the supplied score-to-percentile model. It is not a measured ranking, audited population statistic, or medical assessment.</div>'+
   '</div>';
 }
 
