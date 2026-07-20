@@ -14,29 +14,36 @@
 </script>
 <title>CALLOUT — AI physique feedback from photos. No flattery.</title>
 <meta name="description" content="CALLOUT gives direct AI feedback on visible physique development from photos. First scan free. Full Body Audit is £5.99 one-time.">
+
 <!-- Open Graph / social sharing -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="CALLOUT — AI physique feedback">
 <meta property="og:description" content="Direct AI feedback on visible physique development. First scan free. Full Body Audit £5.99.">
 <meta property="og:url" content="https://callout-ai.com">
 <meta property="og:site_name" content="CALLOUT">
+
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CALLOUT — AI Physique Feedback">
 <meta name="twitter:description" content="Get a direct photo-based physique read. Free first scan.">
+
 <!-- Mobile / PWA -->
 <meta name="theme-color" content="var(--bg)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CALLOUT">
+
 <!-- Favicon — inline SVG, CALLOUT "C" mark -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305070B'/%3E%3Cpath d='M8 7 H24 Q26.5 7 26.5 9.5 V18.5 Q26.5 21 24 21 H14.5 L10 25.5 V21 H8 Q5.5 21 5.5 18.5 V9.5 Q5.5 7 8 7 Z' fill='%232F80FF'/%3E%3Crect x='14.8' y='9.6' width='2.4' height='5.6' rx='1.2' fill='%2305070B'/%3E%3Ccircle cx='16' cy='18' r='1.4' fill='%2305070B'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMDUwNzBCIi8+PHRleHQgeD0iOTAiIHk9IjEzMiIgZm9udC1mYW1pbHk9IkhlbHZldGljYSxBcmlhbCxzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjEzMCIgZmlsbD0iIzJGODBGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD48L3N2Zz4=">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
+
   :root{
     /* Foundations */
     --bg:#05070B;
@@ -44,16 +51,19 @@
     --surface:#0D1420;
     --surface-raised:#121C2B;
     --surface-hover:#17243A;
+
     /* Borders */
     --line:#1B2A40;
     --line2:#28466F;
     --line-strong:#3A6BA8;
+
     /* Text */
     --ink:#F4F8FF;
     --soft:#B9C7D9;
     --dim:#7F91A8;
     --faint:#526278;
     --quiet:#344258;
+
     /* Brand blue */
     --blue:#2F80FF;
     --blue-bright:#5B9DFF;
@@ -61,12 +71,14 @@
     --blue-muted:#173A70;
     --blue-wash:rgba(47,128,255,.10);
     --blue-glow:rgba(47,128,255,.20);
+
     /* Semantic states */
     --green:#49D17D;
     --green-wash:rgba(73,209,125,.10);
     --red:#FF6B6B;
     --red-wash:rgba(255,107,107,.10);
   }
+
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
   body{
     background:var(--bg);color:var(--ink);
@@ -76,8 +88,10 @@
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
   }
+
   /* no page-wide grain, spotlight washes, or staggered entrance choreography —
      the content carries the page */
+
   /* ─────────────────────────────────────────────────────
      NAV
      ───────────────────────────────────────────────────── */
@@ -109,12 +123,15 @@
     font-weight:700;font-size:13px;letter-spacing:.01em;
   }
   .nav .links .navcta:hover{background:var(--blue-bright);color:var(--bg)}
+
   /* ─────────────────────────────────────────────────────
      LAYOUT
      ───────────────────────────────────────────────────── */
   .wrap{max-width:1180px;margin:0 auto;padding:0 48px}
+
   .screen{display:none;animation:fadeIn .5s ease both}.screen.active{display:block}
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
   /* ─────────────────────────────────────────────────────
      HERO — bigger, bolder, more breathing room
      ───────────────────────────────────────────────────── */
@@ -128,6 +145,7 @@
     background:radial-gradient(ellipse 75% 65% at 28% 22%,var(--blue-wash),transparent 65%);
   }
   .hero-l{position:relative;z-index:1}
+
   .hero-l h1{
     font-family:'Inter',sans-serif;
     font-size:clamp(38px,5vw,62px);
@@ -137,11 +155,14 @@
     color:var(--ink);
   }
   .hero-l h1 em{font-style:normal;color:var(--blue)}
+
   .hero-l p.sub{
     color:var(--soft);font-size:18px;line-height:1.55;
     max-width:48ch;margin-bottom:40px;font-weight:400;
   }
+
   .hero-actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+
   .bigcta{
     background:var(--blue);color:var(--bg);
     border:none;border-radius:10px;
@@ -151,6 +172,7 @@
     min-height:54px;
   }
   .bigcta:hover{background:var(--blue-bright)}
+
   .hero-secondary{
     background:none;border:0;padding:0;
     font-family:inherit;font-size:14px;font-weight:500;
@@ -159,16 +181,20 @@
     padding-bottom:2px;
   }
   .hero-secondary:hover{color:var(--ink);border-bottom-color:var(--quiet)}
+
   .hero-note{
     display:block;margin-top:16px;
     font-size:13px;color:var(--faint);line-height:1.5;
   }
+
   .trust-bar{
     display:flex;align-items:center;gap:0;margin-top:20px;
     font-size:13px;color:var(--faint);flex-wrap:wrap;max-width:620px;
   }
   .trust-item{display:inline-flex;align-items:center;white-space:nowrap}
   .trust-sep{margin:0 10px;color:var(--quiet)}
+
+
   /* ─────────────────────────────────────────────────────
      WALKTHROUGH — the product, step by step
      ───────────────────────────────────────────────────── */
@@ -181,6 +207,7 @@
   }
   .walk-step h3{font-size:16.5px;font-weight:700;letter-spacing:-.012em;margin-bottom:6px;color:var(--ink)}
   .walk-step p{font-size:14px;color:var(--dim);line-height:1.65;max-width:60ch}
+
   /* setup note */
   .setup{
     max-width:780px;margin:0 auto 40px;
@@ -188,6 +215,7 @@
     padding:14px 18px;font-size:13px;color:var(--blue-bright);line-height:1.5;
   }
   .setup b{color:var(--blue-bright)}
+
   /* ─────────────────────────────────────────────────────
      SECTIONS — generous spacing
      ───────────────────────────────────────────────────── */
@@ -213,6 +241,7 @@
   details.faq-item[open]>summary::after{content:"−"}
   details.faq-item .faq-q{margin-bottom:0}
   details.faq-item .faq-a{margin-top:10px}
+
   .sec-head{text-align:left;margin-bottom:40px;max-width:660px}
   .sec-head h2{
     font-family:'Inter',sans-serif;
@@ -225,6 +254,7 @@
     color:var(--dim);font-size:15.5px;margin-top:14px;
     max-width:58ch;line-height:1.65;
   }
+
   /* ─────────────────────────────────────────────────────
      VIEW TILES — calmer, gold removed from the letter
      ───────────────────────────────────────────────────── */
@@ -261,6 +291,7 @@
     letter-spacing:-.012em;
   }
   .vtile .d{font-size:12.5px;color:var(--dim);line-height:1.45}
+
   .vtile.pay-locked{opacity:.45;cursor:default}
   .vtile.pay-locked:hover{transform:none;border-color:var(--line);box-shadow:none}
   .vtile.pay-locked .lock-badge{display:flex}
@@ -271,6 +302,7 @@
     background:rgba(5,9,16,.55);backdrop-filter:blur(3px);border-radius:14px;
   }
   .lock-badge svg{width:26px;height:26px;stroke:var(--dim);stroke-width:1.8;fill:none}
+
   /* ─────────────────────────────────────────────────────
      OVERALL CARD — quieter container, grade itself is the moment
      ───────────────────────────────────────────────────── */
@@ -302,6 +334,7 @@
     cursor:pointer;transition:background .15s;
   }
   .overall .seebtn:hover{background:var(--blue-bright)}
+
   /* ─────────────────────────────────────────────────────
      RESULT / ANALYSE WRAPPERS
      ───────────────────────────────────────────────────── */
@@ -310,7 +343,9 @@
     align-items:center;justify-content:center;padding:80px 0;
   }
   .card-area{width:100%;max-width:460px}
+
   @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
   /* ─────────────────────────────────────────────────────
      BUTTONS
      ───────────────────────────────────────────────────── */
@@ -327,6 +362,7 @@
   .btn.ghost:hover{border-color:var(--blue);color:var(--blue)}
   .btn.gold-btn{background:var(--blue);color:var(--bg)}
   .btn.gold-btn:hover{background:var(--blue-bright)}
+
   /* ─────────────────────────────────────────────────────
      SCANNER (analyse screen)
      ───────────────────────────────────────────────────── */
@@ -352,6 +388,7 @@
     color:var(--faint);font-size:12px;margin-top:10px;
     font-family:'JetBrains Mono',monospace;text-align:center;
   }
+
   /* ─────────────────────────────────────────────────────
      REFUSE / ERROR
      ───────────────────────────────────────────────────── */
@@ -364,6 +401,7 @@
   .refuse .big svg{width:30px;height:30px;stroke:var(--red);stroke-width:1.8;fill:none}
   .refuse h2{font-size:22px;font-weight:800;margin-bottom:12px;letter-spacing:-.02em}
   .refuse p{color:var(--dim);font-size:14px;line-height:1.6;max-width:34ch;margin:0 auto}
+
   /* ─────────────────────────────────────────────────────
      FOOTER
      ───────────────────────────────────────────────────── */
@@ -381,6 +419,7 @@
     transition:color .15s;
   }
   .footlink:hover{color:var(--blue)}
+
   /* ─────────────────────────────────────────────────────
      CALLOUT CARD — the centrepiece
      ───────────────────────────────────────────────────── */
@@ -458,6 +497,7 @@
   .vc-breakdown-below.grade-C,.vc-details-below.grade-C,.res-analysis.grade-C,.res-rank.grade-C{--acc:#d9a05f;--acc-deep:#8a5a28}
   .vc-breakdown-below.grade-D,.vc-details-below.grade-D,.res-analysis.grade-D,.res-rank.grade-D{--acc:#8FA3BD;--acc-deep:#526278}
   .vc-breakdown-below.grade-E,.vc-details-below.grade-E,.res-analysis.grade-E,.res-rank.grade-E{--acc:#5E6E85;--acc-deep:#344258}
+
   /* MINIMAL SCORE-FORWARD result card: the score is the hero, grade sits under it */
   .result-vc .vc-scorehero{margin-top:auto;text-align:center;padding-bottom:2px}
   .vc-score-big{
@@ -469,6 +509,7 @@
   .vc-score-grade{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin-top:14px;text-shadow:0 2px 12px rgba(0,0,0,.95)}
   .vc-score-grade .vc-score-letter{color:var(--acc);font-weight:700;margin-right:7px;font-size:13.5px}
   .vc-result-reveal .vc-score-big{animation:resultGradePunch .58s cubic-bezier(.12,.95,.18,1) .18s both}
+
   /* detail panel below the card: BF · verdict · weakness/next goal */
   .vc-details-below{
     background:var(--surface);border:1px solid var(--line);border-radius:14px;
@@ -480,6 +521,7 @@
   .vc-det-bf{display:flex;align-items:baseline;gap:11px;margin-bottom:12px}
   .vc-det-bf-val{font-family:'Bebas Neue';font-size:26px;color:var(--acc);line-height:1}
   .vc-det-bf-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+
   /* hero meta line: grade + body-fat under the score */
   .vc-score-meta{
     display:flex;justify-content:center;align-items:center;gap:11px;margin-top:14px;
@@ -489,6 +531,7 @@
   .vc-score-meta .m-grade{color:var(--acc);font-weight:700}
   .vc-score-meta .m-bf{color:var(--soft)}
   .vc-score-meta .m-sep{color:var(--quiet)}
+
   /* ── RESULT ANALYSIS (clean, data-forward) ── */
   .res-analysis{margin:0 0 12px}
   .res-sec-eyebrow{
@@ -508,6 +551,7 @@
   .res-card-lbl.focus{color:var(--blue-bright)}
   .res-card-val{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.3}
   @media(max-width:440px){.res-cards{grid-template-columns:1fr}}
+
   /* ── PRO upsell block — the main offer ── */
   .res-pro{
     background:linear-gradient(165deg,var(--surface-raised),var(--surface));
@@ -526,6 +570,7 @@
   .res-pro-cancel{font-size:12px;color:var(--faint);margin-top:12px}
   .res-pro-alt{font-size:12px;color:var(--dim);margin-top:14px}
   .res-pro-alt button{background:none;border:0;padding:0;font:inherit;color:var(--blue);text-decoration:underline;cursor:pointer}
+
   /* ── WHERE YOU RANK — estimated percentile curve ── */
   .res-rank{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px 13px;margin:0 0 12px}
   .rank-head{display:flex;align-items:baseline;justify-content:space-between;margin:2px 0 9px}
@@ -544,6 +589,7 @@
   .rc-axtitle{fill:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase}
   .rank-note{font-size:10.5px;color:var(--faint);line-height:1.5;margin-top:10px;text-align:left}
   .res-rank.blurred{filter:blur(8px);pointer-events:none;user-select:none}
+
   .vc-result-reveal{
     animation:resultCardSlam .72s cubic-bezier(.16,.9,.18,1) both;
   }
@@ -591,6 +637,7 @@
     from{opacity:0;transform:translateY(10px)}
     to{opacity:1;transform:none}
   }
+
   /* header */
   .vc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
   .vc-brand-tag{
@@ -602,6 +649,7 @@
     color:var(--faint);border:1px solid var(--line2);border-radius:20px;
     padding:4px 10px;text-transform:uppercase;
   }
+
   /* grade hero — the moment */
   .vc-grade-section{
     text-align:center;padding:6px 0 10px;
@@ -616,6 +664,7 @@
     font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;
     color:var(--soft);text-transform:uppercase;margin-top:10px;
   }
+
   /* three-stat strip */
   .vc-strip{
     display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;
@@ -632,6 +681,7 @@
     text-transform:uppercase;color:var(--faint);margin-top:5px;
   }
   .vc-strip.two{grid-template-columns:1fr 1px 1fr}
+
   /* muscle rows */
   .vc-section-title{
     font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;
@@ -658,6 +708,7 @@
     width:100%!important;
   }
   .vc-muscle-na .vc-muscle-val{color:var(--faint);font-size:10px}
+
   /* verdict */
   .vc-verdict{
     font-size:13px;color:var(--soft);line-height:1.55;font-style:italic;
@@ -672,6 +723,7 @@
   .vc-focus-row{display:grid;grid-template-columns:96px 1fr;gap:10px;font-size:12px;line-height:1.45}
   .vc-focus-lbl{font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);font-size:10px}
   .vc-focus-val{color:var(--soft)}
+
   /* the callout — weakness & next goal, the whole point of the product */
   .vc-call{
     border-top:1px solid rgba(255,255,255,.07);
@@ -685,11 +737,13 @@
   .vc-call-lbl.weak{color:var(--red)}
   .vc-call-lbl.next{color:var(--green)}
   .vc-call-val{font-size:13px;font-weight:600;color:var(--ink);line-height:1.45}
+
   /* cap note */
   .vc-cap{
     background:var(--blue-wash);border:1px solid var(--line2);border-radius:9px;
     padding:11px 14px;margin-bottom:16px;font-size:12px;color:var(--blue);line-height:1.5;
   }
+
   /* footer */
   .vc-footer{
     display:flex;justify-content:space-between;align-items:center;
@@ -704,9 +758,11 @@
     font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;
     color:var(--blue-deep);text-transform:uppercase;font-weight:600;
   }
+
   /* blur state — card pulses while gate is active */
   .vc.blurred .vc-inner{filter:blur(14px);user-select:none;pointer-events:none}
   .vc.blurred .vc-photo{filter:blur(5px)}
+
   /* ─────────────────────────────────────────────────────
      EMAIL GATE
      ───────────────────────────────────────────────────── */
@@ -737,6 +793,7 @@
   .gate-ready-dot{
     width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;
   }
+
   .gate-overlay h3{font-size:22px;font-weight:800;margin-bottom:10px;letter-spacing:-.02em}
   .gate-overlay p{font-size:13.5px;color:var(--dim);line-height:1.55;max-width:30ch;margin-bottom:20px}
   .gate-input{
@@ -754,6 +811,7 @@
   }
   .gate-fine a{color:var(--dim);text-decoration:underline;cursor:pointer}
   .gate-fine a:hover{color:var(--blue)}
+
   /* ─────────────────────────────────────────────────────
      SHARE MOMENT
      ───────────────────────────────────────────────────── */
@@ -782,6 +840,7 @@
     cursor:pointer;margin-top:12px;display:block;transition:color .12s;
   }
   .share-moment .sm-skip:hover{color:var(--dim)}
+
   /* ─────────────────────────────────────────────────────
      POST-PURCHASE CONFIRMATION
      ───────────────────────────────────────────────────── */
@@ -827,6 +886,7 @@
   .confirm-angle-status{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;flex-shrink:0}
   .confirm-angle-status.pending{color:var(--blue)}
   .confirm-angle-status.done{color:var(--green)}
+
   /* ─────────────────────────────────────────────────────
      PROGRESS — locked upsell card + live comparison view
      ───────────────────────────────────────────────────── */
@@ -847,6 +907,7 @@
   }
   .progress-card h2{font-size:28px;font-weight:900;letter-spacing:-.025em;margin-bottom:12px;line-height:1.05}
   .progress-card .pr-sub{font-size:14px;color:var(--dim);line-height:1.6;max-width:34ch;margin:0 auto 30px}
+
   .pr-chart-preview{
     background:var(--surface);border:1px solid var(--line2);border-radius:14px;
     padding:20px;margin-bottom:24px;position:relative;overflow:hidden;
@@ -874,6 +935,7 @@
   }
   .pr-feats li{font-size:13.5px;color:var(--dim);display:flex;align-items:center;gap:10px}
   .pr-feats li::before{content:'○';color:var(--faint);font-size:10px;flex-shrink:0}
+
   /* live comparison view (Pro) */
   .prog-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
   .prog-pill{
@@ -946,6 +1008,7 @@
     .cmp-name{font-size:12px}
     .cmp-grade{font-size:40px}
   }
+
   /* ─────────────────────────────────────────────────────
      IMPROVE — Pro-only training + diet audit
      ───────────────────────────────────────────────────── */
@@ -1029,6 +1092,7 @@
     .imp-sets{grid-template-columns:1fr 1fr}
     .imp-rephead{flex-direction:column;align-items:flex-start;gap:6px}
   }
+
   /* ─────────────────────────────────────────────────────
      UPSELL PANEL
      ───────────────────────────────────────────────────── */
@@ -1050,10 +1114,12 @@
   .upsell-price-sub{
     font-size:11.5px;color:var(--faint);margin:6px 0 18px;
   }
+
   /* share row */
   .share-row{display:flex;gap:10px;margin:0 0 8px}
   .share-row .btn{margin:0;flex:1;display:flex;align-items:center;justify-content:center;gap:8px}
   .share-row .btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+
   /* toast */
   .toast{
     position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(10px);
@@ -1063,6 +1129,7 @@
     pointer-events:none;z-index:10000;white-space:nowrap;
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
   /* ─────────────────────────────────────────────────────
      PRICING
      ───────────────────────────────────────────────────── */
@@ -1092,6 +1159,7 @@
     .prow{grid-template-columns:1fr auto;padding-left:14px}
     .prow-cta{grid-column:1 / -1;margin-top:4px}
   }
+
   /* trust panel — plain answers before the upload */
   .trust-panel{
     display:grid;grid-template-columns:1fr 1fr;gap:0 44px;
@@ -1101,6 +1169,7 @@
   .trust-panel h4{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:5px}
   .trust-panel p{font-size:13px;color:var(--dim);line-height:1.6}
   @media(max-width:720px){.trust-panel{grid-template-columns:1fr}}
+
   /* walkthrough demos — real components, inert and labelled */
   .walk-body{flex:1;min-width:0}
   .walk-demo{margin-top:14px;max-width:440px;pointer-events:none}
@@ -1110,12 +1179,14 @@
   .walk-views .vtile .ic{font-size:20px;margin-bottom:4px;color:var(--soft)}
   .walk-views .vtile .t{font-size:12px;margin-bottom:0}
   @media(max-width:480px){.walk-views{gap:6px}.walk-views .vtile{padding:10px 6px}}
+
   /* final CTA */
   .final-cta{max-width:660px;border-top:1px solid var(--line2);padding-top:44px}
   .final-cta h2{font-size:clamp(26px,3.4vw,38px);font-weight:900;letter-spacing:-.03em;line-height:1.08;color:var(--ink)}
   .final-cta h2 em{font-style:normal;color:var(--blue)}
   .final-cta p{color:var(--dim);font-size:15.5px;margin:12px 0 26px;line-height:1.65}
   @media(max-width:860px){.final-cta .bigcta{width:100%}}
+
   /* see-what-you-get demo section */
   .demo-grid{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:48px;align-items:start}
   .demo-block{border-top:1px solid var(--line);padding:16px 0 18px}
@@ -1123,6 +1194,7 @@
   .demo-block h3{font-size:15px;font-weight:800;letter-spacing:-.01em;color:var(--ink);margin-bottom:6px}
   .demo-block p{font-size:13.5px;color:var(--dim);line-height:1.65}
   @media(max-width:860px){.demo-grid{grid-template-columns:1fr;gap:28px}.demo-grid .card-area{margin:0 auto}}
+
   /* ─────────────────────────────────────────────────────
      SAMPLE VERDICTS
      ───────────────────────────────────────────────────── */
@@ -1131,6 +1203,7 @@
   .tone-tag{font-size:12px;font-weight:600;color:var(--blue-deep);margin-bottom:6px}
   .tone-item blockquote{font-size:16px;line-height:1.65;color:var(--soft);font-style:italic;margin:0}
   .tone-note{font-size:12.5px;color:var(--faint);margin-top:4px}
+
   /* ─────────────────────────────────────────────────────
      DISTRIBUTION
      ───────────────────────────────────────────────────── */
@@ -1172,6 +1245,7 @@
   .distrow .dp{
     font-size:12px;color:var(--dim);text-align:right;line-height:1.4;
   }
+
   .method-grid{
     display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
     margin-top:38px;
@@ -1198,6 +1272,7 @@
     background:rgba(255,255,255,.018);
   }
   @media(max-width:760px){.method-grid{grid-template-columns:1fr}}
+
   /* ─────────────────────────────────────────────────────
      FAQ
      ───────────────────────────────────────────────────── */
@@ -1209,10 +1284,12 @@
     letter-spacing:-.018em;
   }
   .faq-a{font-size:14.5px;color:var(--dim);line-height:1.65;max-width:58ch}
+
   /* demo card — static, no entrance choreography; accent stays live so the
      landing page shows the tier-colour system */
   #sampleCard .vc-grade-letter{text-shadow:none}
   #sampleCard .vc-call{margin-bottom:14px}
+
   /* ─────────────────────────────────────────────────────
      MODAL — privacy & terms
      ───────────────────────────────────────────────────── */
@@ -1293,6 +1370,7 @@
   .recovery-status{min-height:22px;font-size:13px;color:var(--dim)}
   .recovery-status.ok{color:var(--green)}
   .recovery-status.err{color:var(--red)}
+
   /* ─────────────────────────────────────────────────────
      SCAN HISTORY
      ───────────────────────────────────────────────────── */
@@ -1306,6 +1384,7 @@
   .hist-date{font-size:12px;color:var(--dim);margin-top:3px;line-height:1.5}
   .hist-score{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--blue);white-space:nowrap}
   .hist-empty{color:var(--dim);font-size:14px;line-height:1.6}
+
   /* ─────────────────────────────────────────────────────
      RESPONSIVE
      ───────────────────────────────────────────────────── */
@@ -1350,10 +1429,12 @@
     .wrap{padding:0 18px}
     .nav .brand{font-size:13px;letter-spacing:.24em}
   }
+
   /* keyboard focus everywhere */
   button:focus-visible,a:focus-visible,input:focus-visible{
     outline:2px solid var(--blue);outline-offset:3px;border-radius:6px;
   }
+
   /* respect reduced-motion: animations resolve instantly to their end state */
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{
@@ -1363,6 +1444,7 @@
     }
     html{scroll-behavior:auto}
   }
+
   /* ─────────────────────────────────────────────────────
      LAUNCH ADDITIONS — sample caption, gate consent,
      upload guide, photo-handling link, mobile sticky CTA
@@ -1408,6 +1490,7 @@
   .mob-cta.on{display:block;animation:fadeIn .3s ease both}
   .mob-cta .bigcta{width:100%;min-height:52px;font-size:16px;padding:14px 20px;margin:0}
   @media(min-width:861px){.mob-cta{display:none!important}}
+
   /* ─────────────────────────────────────────────────────
      REVEAL ANIMATION SYSTEM
      All timings controlled via CSS custom properties
@@ -1428,9 +1511,11 @@
     --ra-footer-dur:    0.22s;
     --ra-share-delay:   3.90s;   /* 9: share pulse */
   }
+
   /* --- Overlay: keeps everything invisible until animation fires --- */
   .ra-hidden { opacity: 0 !important; }
   .ra-hidden * { animation-play-state: paused !important; }
+
   /* --- Phase 1 & 2: brand tag fade in --- */
   @keyframes ra-brand-in {
     from { opacity:0; letter-spacing:.5em; }
@@ -1440,6 +1525,7 @@
     animation: ra-brand-in var(--ra-brand-dur) cubic-bezier(.16,.84,.2,1)
                var(--ra-brand-delay) both;
   }
+
   /* --- Phase 3: scan line --- */
   .vc-scan-line {
     position: absolute;
@@ -1485,6 +1571,7 @@
     animation: ra-scanline var(--ra-scan-dur) cubic-bezier(.42,0,.58,1)
                var(--ra-scan-delay) both;
   }
+
   /* --- Phase 4: grade letter slam --- */
   @keyframes ra-grade-slam {
     0%   { opacity:0; transform: scale(2.2); filter: blur(8px); }
@@ -1498,6 +1585,7 @@
     animation: ra-grade-slam var(--ra-grade-dur) cubic-bezier(.2,0,.1,1)
                var(--ra-grade-delay) both;
   }
+
   /* --- Phase 5: grade label fade up --- */
   @keyframes ra-fade-up {
     from { opacity:0; transform: translateY(10px); }
@@ -1507,6 +1595,7 @@
     animation: ra-fade-up var(--ra-label-dur) ease
                var(--ra-label-delay) both;
   }
+
   /* --- Phase 6: score strip slide up --- */
   @keyframes ra-strip-in {
     from { opacity:0; transform: translateY(16px); }
@@ -1516,6 +1605,7 @@
     animation: ra-strip-in var(--ra-strip-dur) cubic-bezier(.2,.8,.2,1)
                var(--ra-strip-delay) both;
   }
+
   /* --- Phase 7: muscle bars — controlled by JS inline delay + this keyframe --- */
   @keyframes ra-bar-in {
     from { opacity:0; transform: translateX(-8px); }
@@ -1534,6 +1624,7 @@
     transform: scaleX(0);
     width: 0 !important;
   }
+
   /* --- Phase 8: footer fade in --- */
   .ra-footer-animate .vc-footer,
   .ra-footer-animate .vc-section-title,
@@ -1541,6 +1632,7 @@
     animation: ra-fade-up 0.22s ease both;
     /* delay set inline by JS */
   }
+
   /* --- Phase 9: share button pulse after animation --- */
   @keyframes ra-share-pulse {
     0%   { box-shadow: 0 0 0 0 rgba(47,128,255,.0); transform: scale(1); }
@@ -1551,10 +1643,12 @@
   .ra-share-pulse {
     animation: ra-share-pulse 0.7s cubic-bezier(.2,.8,.2,1) both !important;
   }
+
   /* --- Badge fade in with brand --- */
   .ra-brand-animate .vc-badge {
     animation: ra-fade-up 0.3s ease calc(var(--ra-brand-delay) + 0.15s) both;
   }
+
   /* --- Cap warning fade with strip --- */
   .ra-strip-animate .vc-cap {
     animation: ra-strip-in var(--ra-strip-dur) cubic-bezier(.2,.8,.2,1)
@@ -1564,6 +1658,7 @@
     animation: ra-strip-in 0.22s ease
                calc(var(--ra-strip-delay) + 0.14s) both;
   }
+
   /* Screen-level dimmer while animation plays — isolates the card cinematically */
   .ra-cinematic-bg {
     position: fixed;
@@ -1576,6 +1671,7 @@
   }
   .ra-cinematic-bg.ra-dim { opacity: 1; }
   .ra-cinematic-bg.ra-undim { opacity: 0; transition: opacity 1.2s ease 0.4s; }
+
   /* ==========================================================
      CALLOUT 2.0 — restrained product system
      ========================================================== */
@@ -1619,10 +1715,8 @@
   .vtile .recommended{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--blue);margin-top:12px}
   .vtile.pay-locked{opacity:.62}.vtile.pay-locked .lock-badge{top:16px;right:16px}
   .photo-tips-link{margin-top:18px;min-height:44px}
-  .overall{display:grid;grid-template-columns:120px 120px minmax(0,1fr) auto;align-items:center;gap:22px;margin-top:12px;padding:22px 0;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0;background:transparent;text-align:left}
   .overall{display:grid;grid-template-columns:130px 64px 110px minmax(0,1fr);align-items:center;gap:18px;max-width:none;width:100%;margin-top:12px;padding:22px 0;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0;background:transparent;text-align:left}
   .overall .lab{margin:0}.overall .g{font-family:'Inter';font-size:38px;line-height:1}.overall .sc{margin:0;font-size:20px}.overall .cta{margin:0}
-  .overall-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}.overall-actions .recover-link{margin:0!important;min-height:44px}
   .overall-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;padding-top:2px}.overall-actions .recover-link{margin:0!important;min-height:44px}
   #demoSection{padding-top:64px}.demo-grid{grid-template-columns:minmax(280px,420px) minmax(0,1fr);gap:56px}
   .vc{border-radius:var(--radius-md);box-shadow:none;background:var(--surface);border-color:var(--line2)}
@@ -1630,7 +1724,6 @@
   .vc::after{display:none!important}.vc-stripe{height:2px;background:var(--acc)}
   .vc.grade-S,.vc.grade-A,.vc.grade-B,.vc.grade-C,.vc.grade-D,.vc.grade-E{--acc:var(--blue);--acc-deep:var(--blue-deep);--acc-glow:transparent}
   .vc-inner{padding:22px;background:linear-gradient(180deg,rgba(7,9,13,.22),rgba(7,9,13,.9))}
-  .vc-badge{border-radius:var(--radius-xs)}.vc-score-big{font-family:'Inter';font-weight:800;font-size:clamp(74px,20vw,118px);letter-spacing:-.075em;text-shadow:none}
   .vc-badge{border-radius:var(--radius-xs)}.vc-score-big{display:flex;align-items:baseline;justify-content:center;gap:7px;white-space:nowrap;font-family:'Inter';font-weight:800;font-size:clamp(74px,20vw,118px);letter-spacing:-.065em;text-shadow:none}
   .vc-score-max{flex:none;margin-left:0;letter-spacing:-.025em}
   .result-vc .vc-brand-tag{position:relative;z-index:2;display:inline-flex;align-items:center;min-height:32px;padding:7px 10px;background:rgba(7,9,13,.82);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius-xs);font-size:14px;letter-spacing:.28em;color:#73a2ff;text-shadow:none}
@@ -1668,7 +1761,6 @@
   .toast{z-index:var(--z-toast);border-radius:var(--radius-sm)}
   @media(max-width:900px){
     .nav .links .nav-optional{display:none}.views{grid-template-columns:1fr 1fr}.vtile:nth-child(2){border-right:0}.vtile:nth-child(-n+2){border-bottom:1px solid var(--line)}
-    .overall{grid-template-columns:90px 90px 1fr}.overall-actions{grid-column:1/-1;justify-content:flex-start}
     .overall{grid-template-columns:110px 54px 90px minmax(0,1fr)}.overall-actions{grid-column:1/-1;justify-content:flex-start}
     .demo-grid{grid-template-columns:1fr}.demo-grid .card-area{width:min(100%,420px);margin:0}
   }
@@ -1677,7 +1769,6 @@
     .hero{padding:54px 0 48px}.hero-l h1{font-size:42px}.hero-l p.sub{font-size:16px}.hero-actions{gap:14px}.bigcta{width:100%}.hero-secondary{min-height:44px;text-align:left}
     .trust-bar{display:grid;gap:5px}.trust-sep{display:none}.sec{padding:48px 0}.sec-head{margin-bottom:22px}
     .views{grid-template-columns:1fr}.vtile{min-height:116px;border-right:0!important;border-bottom:1px solid var(--line);padding:18px}.vtile:last-child{border-bottom:0}.vtile .ic{margin-bottom:14px}.vtile .recommended{position:absolute;right:16px;bottom:16px;margin:0}
-    .overall{grid-template-columns:68px 80px 1fr;gap:12px;padding:18px 0}.overall .lab{font-size:9px}.overall .g{font-size:30px}.overall .sc{font-size:15px}.overall .cta{font-size:12px}
     .overall{grid-template-columns:68px 48px 80px;gap:12px;padding:18px 0}.overall .lab{font-size:9px}.overall .g{font-size:30px}.overall .sc{font-size:15px}.overall .cta{grid-column:1/-1;font-size:12px}.overall-actions{grid-column:1/-1}
     .result-vc .vc-brand-tag{min-height:28px;padding:6px 8px;font-size:12px}
     .demo-grid{gap:28px}.share-facts{gap:8px}.share-fact span{font-size:11px}.vc-inner{padding:16px}.vc-header{margin-bottom:0}
@@ -1692,6 +1783,7 @@
 <body>
   <input type="file" id="filein" accept="image/*" style="display:none">
   <div class="toast" id="toast"></div>
+
   <nav class="nav" aria-label="Primary navigation">
     <button class="brand" onclick="show('screen-home')" aria-label="CALLOUT home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 4 H26 Q29 4 29 7 V20 Q29 23 26 23 H14 L8 29 V23 H6 Q3 23 3 20 V7 Q3 4 6 4 Z" fill="var(--blue)"/><rect x="14.6" y="8" width="2.8" height="7.5" rx="1.4" fill="var(--bg)"/><circle cx="16" cy="19" r="1.7" fill="var(--bg)"/></svg>CALLOUT</button>
     <div class="links">
@@ -1701,9 +1793,11 @@
       <button class="navlink navcta" onclick="beginFreeScan()">Scan free</button>
     </div>
   </nav>
+
   <!-- HOME -->
   <section class="screen active" id="screen-home">
     <div class="wrap">
+
       <!-- HERO -->
       <div class="hero">
         <div class="hero-l">
@@ -1722,8 +1816,11 @@
             <span class="trust-item">Visual estimate, not medical advice</span>
           </div>
         </div>
+
       </div>
+
       <div class="setup" id="setupNote" style="display:none"></div>
+
       <!-- SEE WHAT YOU GET — demo result, honestly labelled -->
       <section class="sec" id="demoSection" style="padding-top:0">
         <div class="sec-head">
@@ -1802,6 +1899,7 @@
           <h2>What it costs.</h2>
           <p>First scan's free. £5.99 once unlocks the full audit.</p>
         </div>
+
         <div class="plist">
           <div class="prow">
             <div class="prow-info">
@@ -1811,6 +1909,7 @@
             <div class="prow-price">Free</div>
             <button class="prow-cta" onclick="goHome('scanSection')">Start free scan</button>
           </div>
+
           <div class="prow prow-main">
             <div class="prow-info">
               <div class="prow-name">Full Body Audit</div>
@@ -1819,6 +1918,7 @@
             <div class="prow-price">£5.99<small>one-time</small></div>
             <button class="prow-cta" onclick="handlePurchase('scan')">Unlock the audit</button>
           </div>
+
           <div class="prow">
             <div class="prow-info">
               <div class="prow-name">CALLOUT Pro</div>
@@ -1827,6 +1927,7 @@
             <div class="prow-price">£9.99<small>per month</small></div>
             <button class="prow-cta" onclick="handlePurchase('pro')">Go Pro</button>
           </div>
+
           <div class="prow">
             <div class="prow-info">
               <div class="prow-name">Lifetime</div>
@@ -1836,6 +1937,7 @@
             <button class="prow-cta" onclick="handlePurchase('lifetime')">Get lifetime</button>
           </div>
         </div>
+
         <p class="pricing-notes">Payments run on Stripe. Pro renews monthly and can be cancelled anytime from the Stripe portal. <button class="recover-link" onclick="openRecoveryModal()">Already paid?</button></p>
       </section>
       <!-- SAMPLE VERDICTS -->
@@ -2044,8 +2146,19 @@
           <button class="bigcta" onclick="track('final_cta_click');beginFreeScan()">Scan free</button>
         </div>
       </section>
+
+
+
+
+
+
+
+
+
+
     </div>
   </section>
+
   <!-- ANALYSING -->
   <section class="screen" id="screen-analyse">
     <div class="wrap"><div class="analyse-wrap">
@@ -2055,6 +2168,7 @@
       <div id="tsHolder" style="margin-top:18px"></div>
     </div></div>
   </section>
+
   <!-- RESULT -->
   <section class="screen" id="screen-result">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
@@ -2062,6 +2176,7 @@
       <button class="btn" id="resPrimary" onclick="show('screen-home')">← Back to scans</button>
     </div></div></div>
   </section>
+
   <!-- OVERALL -->
   <section class="screen" id="screen-overall">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
@@ -2069,6 +2184,7 @@
       <button class="btn ghost" id="overallBack" onclick="show('screen-home')">← Back</button>
     </div></div></div>
   </section>
+
   <!-- POST-PURCHASE CONFIRMATION -->
   <section class="screen" id="screen-confirm">
     <div class="wrap"><div class="confirm-wrap"><div class="confirm-card" id="confirmBody">
@@ -2082,14 +2198,17 @@
       <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back to home</button>
     </div></div></div>
   </section>
+
   <!-- PROGRESS — scan comparison (Pro); body rendered by showProgress() -->
   <section class="screen" id="screen-progress">
     <div class="wrap"><div id="progressBody"></div></div>
   </section>
+
   <!-- IMPROVE — training + diet audit (Pro); body rendered by showImprove() -->
   <section class="screen" id="screen-improve">
     <div class="wrap"><div id="improveBody"></div></div>
   </section>
+
   <!-- SCAN HISTORY -->
   <section class="screen" id="screen-history">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
@@ -2102,6 +2221,7 @@
       <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
     </div></div></div>
   </section>
+
   <!-- UPLOAD GUIDE MODAL — shown once before the first photo pick -->
   <div class="modal-overlay" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
     <div class="modal">
@@ -2127,10 +2247,12 @@
       </div>
     </div>
   </div>
+
   <!-- MOBILE STICKY CTA -->
   <div class="mob-cta" id="mobCta" aria-hidden="true">
     <button class="bigcta" onclick="track('mobile_cta_click');beginFreeScan()">Scan free</button>
   </div>
+
   <!-- ACCOUNT RECOVERY MODAL -->
   <div class="modal-overlay" id="recoveryModal" role="dialog" aria-modal="true" aria-labelledby="recoveryTitle">
     <div class="modal">
@@ -2157,6 +2279,7 @@
       </div>
     </div>
   </div>
+
   <!-- ─────────────────────────────────────────────────────
        PRIVACY MODAL — GDPR-compliant
        ───────────────────────────────────────────────────── -->
@@ -2173,9 +2296,12 @@
       </div>
       <div class="modal-body">
         <p class="last-updated">Last updated: 11 June 2026</p>
+
         <p>CALLOUT ("we", "us", "our") is operated from the United Kingdom and complies with the UK GDPR and the Data Protection Act 2018. This policy explains what we collect, why, and what you can do about it.</p>
+
         <h3>1. Who is the data controller</h3>
         <p>CALLOUT is the controller of your personal data. For any data-related question or request, contact us at <a href="mailto:privacy@callout-ai.com">privacy@callout-ai.com</a>.</p>
+
         <h3>2. What we collect</h3>
         <ul>
           <li><strong>Your email address</strong> — submitted at the result-reveal gate and used to identify your account.</li>
@@ -2185,8 +2311,10 @@
           <li><strong>Local storage</strong> — your browser may store your email, short-lived access token, and display-only result history so the app can reopen smoothly. Payment access is checked by our server, not your browser.</li>
           <li><strong>Improve inputs (Pro)</strong> — if you use Improve, the stats, weekly sets, and diet text you enter, plus the latest generated report, are stored with your account so the report follows you across devices. Delete them any time by asking privacy@callout-ai.com.</li>
         </ul>
+
         <h3>3. How your photos are handled</h3>
         <p>Photos are transmitted to our AI provider for grading. <strong>We do not store your photos on CALLOUT servers. We do not use your photos to train CALLOUT. We do not share them with any third party other than processors needed to run the service.</strong> The AI provider processes the image under its own terms and privacy policy to return a result.</p>
+
         <h3>4. Why we process your data (legal basis)</h3>
         <ul>
           <li><strong>To deliver the service</strong> — performance of a contract you entered into with us (or steps before entering one).</li>
@@ -2194,6 +2322,7 @@
           <li><strong>To prevent abuse and secure the service</strong> — legitimate interest.</li>
           <li><strong>To send product updates or marketing</strong> — only with your consent. You can withdraw consent at any time by unsubscribing.</li>
         </ul>
+
         <h3>5. Who we share data with</h3>
         <ul>
           <li><strong>Stripe</strong> — payment processing.</li>
@@ -2202,8 +2331,10 @@
           <li><strong>Email service provider</strong> — to deliver transactional and marketing emails (where applicable).</li>
         </ul>
         <p>We do not sell your data. Ever.</p>
+
         <h3>6. International transfers</h3>
         <p>Some of our processors (including Anthropic, Stripe, and Cloudflare) may process data outside the UK and EEA, including in the United States. Where this happens, transfers are protected by Standard Contractual Clauses or equivalent safeguards approved by the UK ICO.</p>
+
         <h3>7. How long we keep data</h3>
         <ul>
           <li><strong>Photos:</strong> not retained.</li>
@@ -2211,6 +2342,7 @@
           <li><strong>Payment records:</strong> retained for 6 years to comply with UK tax law.</li>
           <li><strong>Technical logs:</strong> up to 30 days.</li>
         </ul>
+
         <h3>8. Your rights under UK GDPR</h3>
         <p>You have the right to:</p>
         <ul>
@@ -2223,19 +2355,25 @@
           <li>Lodge a complaint with the UK Information Commissioner's Office (ICO) at <a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a>.</li>
         </ul>
         <p>To exercise any of these rights, email <a href="mailto:privacy@callout-ai.com">privacy@callout-ai.com</a>. We aim to respond within 30 days.</p>
+
         <h3>9. Cookies and local storage</h3>
         <p>CALLOUT does not use tracking or advertising cookies, and does not track you across other sites. Browser localStorage holds your email, a short-lived access token, and display-only result history — this is strictly necessary to run the app and is never the source of truth for paid access. For traffic insight we use privacy-friendly, cookieless analytics (Cloudflare Web Analytics and Plausible Analytics) that measure aggregate visits — page views, referrers, approximate location, and device type — without cookies or data that identifies you personally. Because no tracking cookies are set, no cookie-consent banner is required.</p>
+
         <h3>10. Children</h3>
         <p>CALLOUT is for adults only. The grading engine is instructed to refuse any photo where the subject is not clearly 18 or over. We do not knowingly collect data from anyone under 18.</p>
+
         <h3>11. Security</h3>
         <p>All traffic to and from CALLOUT is encrypted in transit (HTTPS/TLS). Payment processing is PCI-DSS compliant via Stripe. We follow industry-standard security practices but cannot guarantee absolute security; no online service can.</p>
+
         <h3>12. Changes to this policy</h3>
         <p>If we make material changes we will update the "last updated" date and, where appropriate, notify you by email.</p>
+
         <h3>13. Contact</h3>
         <p>For any privacy question or to exercise your rights: <a href="mailto:privacy@callout-ai.com">privacy@callout-ai.com</a></p>
       </div>
     </div>
   </div>
+
   <!-- ─────────────────────────────────────────────────────
        TERMS MODAL
        ───────────────────────────────────────────────────── -->
@@ -2252,11 +2390,15 @@
       </div>
       <div class="modal-body">
         <p class="last-updated">Last updated: 11 June 2026</p>
+
         <p>By using CALLOUT you agree to these terms. If you don't agree, don't use the service.</p>
+
         <h3>1. What CALLOUT is</h3>
         <p>CALLOUT is an entertainment and self-assessment tool that uses AI vision to grade visible physique development from user-submitted photos. <strong>CALLOUT is not medical advice, a diagnostic tool, a body composition scan, or a substitute for guidance from a qualified professional.</strong></p>
+
         <h3>2. Eligibility</h3>
         <p>You must be 18 or older to use CALLOUT. The grading engine will refuse to assess any photo where the subject is not clearly an adult. By using the service you confirm you are 18+.</p>
+
         <h3>3. Photos you upload</h3>
         <ul>
           <li>Only upload photos of <strong>yourself</strong>. Do not upload photos of other people without their explicit consent.</li>
@@ -2265,6 +2407,7 @@
           <li>You grant CALLOUT a limited, non-exclusive licence to process the photo for the sole purpose of returning a grade. Photos are not stored or reused.</li>
           <li>You remain the owner of your photos.</li>
         </ul>
+
         <h3>4. Free scan and paid tiers</h3>
         <ul>
           <li><strong>Free scan:</strong> one angle, no card required. Email needed to reveal the result.</li>
@@ -2272,12 +2415,16 @@
           <li><strong>CALLOUT Pro (£9.99/month):</strong> recurring subscription. Rescans of every angle, with a fair-use cap of 20 scans per day. Includes Improve reports (up to 6 per day) — general training and nutrition guidance generated from your inputs and scan results; not medical, dietetic, or coaching advice. Renews automatically each month until cancelled.</li>
           <li><strong>Lifetime (£29.99):</strong> early-access one-time payment for lifetime CALLOUT access while available.</li>
         </ul>
+
         <h3>5. Billing and cancellation</h3>
         <p>Payments are processed by Stripe. Pro renews monthly and you can cancel at any time from your Stripe customer portal — cancellation takes effect at the end of your current billing period. One-time purchases (Full Body Audit, Lifetime) are charged once.</p>
+
         <h3>6. Refunds</h3>
         <p>Because CALLOUT is a digital service delivered immediately on payment, you expressly consent to immediate performance and waive your right to a 14-day cooling-off period for the parts of the service you have used. We will consider refund requests on a case-by-case basis where the service has not been used or where there has been a genuine technical failure. Email <a href="mailto:support@callout-ai.com">support@callout-ai.com</a>.</p>
+
         <h3>7. The grade is an opinion, not a fact</h3>
         <p>The grade CALLOUT returns is generated by an AI vision model and reflects an interpretation of visible muscle development in the submitted photo. <strong>It is not a clinical assessment, medical advice, or a body-composition measurement.</strong> Results may vary based on photo quality, lighting, pose, clothing, camera angle, and other factors. Do not make medical, training, or nutritional decisions based solely on a CALLOUT grade.</p>
+
         <h3>8. Acceptable use</h3>
         <p>You agree not to:</p>
         <ul>
@@ -2287,23 +2434,31 @@
           <li>Resell access to the service.</li>
           <li>Abuse, harass, or impersonate other users or our team.</li>
         </ul>
+
         <h3>9. Intellectual property</h3>
         <p>CALLOUT, the name, the logo, the grading engine, the UI, and all related materials are owned by us. You may not copy or reuse them without permission. Your photos remain yours.</p>
+
         <h3>10. Disclaimers</h3>
         <p>CALLOUT is provided "as is" and "as available". We make no warranties about accuracy, availability, fitness for any particular purpose, or that the service will be uninterrupted or error-free. The grading is an AI-generated opinion and may be wrong.</p>
+
         <h3>11. Limitation of liability</h3>
         <p>To the maximum extent permitted by law, CALLOUT's total liability to you for any claim arising out of or relating to the service is limited to the amount you have paid us in the 12 months before the claim. We are not liable for indirect, consequential, or incidental damages. Nothing in these terms limits liability that cannot lawfully be limited (e.g. for death or personal injury caused by negligence, or for fraud).</p>
+
         <h3>12. Termination</h3>
         <p>We may suspend or terminate your access if you breach these terms. You can stop using CALLOUT at any time and request deletion of your account by emailing <a href="mailto:privacy@callout-ai.com">privacy@callout-ai.com</a>.</p>
+
         <h3>13. Changes to the service or these terms</h3>
         <p>We may update the service or these terms from time to time. Material changes to the terms will be communicated by email or in-app notice. Continued use after changes means you accept them.</p>
+
         <h3>14. Governing law</h3>
         <p>These terms are governed by the law of England and Wales. Any dispute is subject to the exclusive jurisdiction of the courts of England and Wales, unless mandatory consumer law in your country gives you the right to use a local court.</p>
+
         <h3>15. Contact</h3>
         <p>General support: <a href="mailto:support@callout-ai.com">support@callout-ai.com</a><br>Privacy / data requests: <a href="mailto:privacy@callout-ai.com">privacy@callout-ai.com</a></p>
       </div>
     </div>
   </div>
+
   <footer>
     <div class="foot-brand">CALLOUT</div>
     <div>© 2026 CALLOUT · AI physique grading, not medical advice · Adults only</div>
@@ -2319,6 +2474,7 @@
       <a class="footlink" href="mailto:support@callout-ai.com">Contact</a>
     </div>
   </footer>
+
 <script>
 // ============================================================
 //  CONFIG — swap these and the app is fully live
@@ -2334,11 +2490,13 @@ const UNLOCK_PRICE   = "£5.99";
 // it when TURNSTILE_SECRET is set, so configure both together.
 const TURNSTILE_SITE_KEY = "0x4AAAAAAD4XysFGTshW8qs9";
 // ============================================================
+
 // ---- funnel analytics: fires to Plausible custom events when present,
 //      safely no-ops otherwise (cookieless; no consent banner required) ----
 function track(name,params){
   try{ if(typeof window.plausible==='function') window.plausible(name,{props:params||{}}); }catch(e){}
 }
+
 const VIEWS=[
   {id:"front",  letter:"F",t:"Front",     d:"chest · shoulders · arms · abs"},
   {id:"back",   letter:"B",t:"Back",      d:"back · traps · rear delts"},
@@ -2353,17 +2511,20 @@ const VIEW_MUSCLES={
   arms_side:["shoulders","chest","arms","traps","conditioning"]
 };
 const CONF_RANK={high:3,medium:2,low:1};
+
 // ---- state ----
 let profile={};
 let viewsDone={};
 let photos={};
 let pendingView=null;
+
 // ---- account / payment state ----
 let userEmail  = null;
 let entitlementToken = null;
 let entitlementTokenExp = 0;
 let refreshToken = null;    // long-lived device token from checkout / email code
 let userTierDisplay = null; // display hint from the worker only; never authority
+
 // ---- localStorage: convenience only, never authority ----
 function saveState(){
   try{
@@ -2387,6 +2548,7 @@ function loadState(){
     const v=localStorage.getItem('pq_views');   if(v) JSON.parse(v).forEach(id=>viewsDone[id]=true);
   }catch(e){}
 }
+
 function hasAccount(){ return !!userEmail; }
 function hasFreshEntitlementToken(){ return !!entitlementToken && entitlementTokenExp > Date.now() + 30000; }
 function hasEntitlementHint(){ return hasFreshEntitlementToken() && !!userTierDisplay; }
@@ -2408,6 +2570,7 @@ function clearEntitlement(){
   userTierDisplay=null;
   saveState();
 }
+
 // ---- build view tiles ----
 const grid=document.getElementById('viewGrid');
 VIEWS.forEach(v=>{
@@ -2421,12 +2584,12 @@ VIEWS.forEach(v=>{
     (v.id==='front'?'<span class="recommended">Recommended first</span>':'');
   grid.appendChild(b);
 });
+
 function beginFreeScan(){
-  const trigger=document.activeElement;
   show('screen-home');
-  setTimeout(()=>{modalReturnFocus=trigger;pick('front');},60);
   setTimeout(()=>{const workspace=document.getElementById('scanSection');if(workspace)workspace.scrollIntoView({behavior:'smooth',block:'start'});},60);
 }
+
 function viewMuscles(view){return VIEW_MUSCLES[view]||[];}
 function sanitiseStoredProfile(){
   Object.keys(profile).forEach(k=>{
@@ -2442,6 +2605,7 @@ function mentionsOutOfViewMuscle(view,text){
   const allowed=new Set(viewMuscles(view));
   return MUSCLES.some(k=>!allowed.has(k)&&new RegExp('\\b'+k.replace('_','[ _-]?')+'s?\\b','i').test(String(text||'')));
 }
+
 // ---- init ----
 window.addEventListener('DOMContentLoaded',()=>{
   const scanSection=document.getElementById('scanSection');
@@ -2453,6 +2617,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   userTierDisplay=null; // paid UI must relock until the worker re-issues a token
   refreshHome();
   if(userEmail) refreshEntitlementToken().then(refreshHome).catch(()=>{});
+
   // Handle Stripe success redirect (?session_id=...) — verified server-side
   const _params=new URLSearchParams(location.search);
   const _sessionId=_params.get('session_id');
@@ -2487,11 +2652,13 @@ window.addEventListener('DOMContentLoaded',()=>{
     renderPaymentRecovery();
     show('screen-result');
   }
+
   if(!WORKER_URL){
     const n=document.getElementById('setupNote');
     n.style.display='block';
     n.innerHTML='<b>Not connected.</b> Set WORKER_URL at the top of the script.';
   }
+
   // Modal escape key
   document.addEventListener('keydown',e=>{
     if(e.key==='Escape'){
@@ -2499,16 +2666,20 @@ window.addEventListener('DOMContentLoaded',()=>{
     }
   });
 });
+
 // ---- pick a view ----
 async function pick(viewId){
   if(!WORKER_URL){alert("Set WORKER_URL first.");return;}
+
   if(userEmail && !hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
+
   // Free scan already used and no paid access: show the paywall now instead
   // of letting the user pick + upload a photo the server will reject anyway.
   if(!hasEntitlementHint() && Object.keys(viewsDone).length>=1 && !viewsDone[viewId]){
     showPaywall();
     return;
   }
+
   pendingView=viewId;
   track('scan_pick',{view:viewId});
   let guideSeen=false;
@@ -2516,6 +2687,7 @@ async function pick(viewId){
   if(!guideSeen){openGuide(false);return;}
   document.getElementById('filein').click();
 }
+
 // ---- upload guide (shown once before first pick, reopenable) ----
 function openGuide(manual){
   if(manual) pendingView=null;
@@ -2530,8 +2702,10 @@ function guideContinue(){
   track('upload_guide_continue');
   if(pendingView) document.getElementById('filein').click();
 }
+
 async function refreshEntitlementToken(){
   if(!WORKER_URL) return false;
+
   // Preferred path: exchange the long-lived device token (granted at
   // checkout or after an email code) for a fresh short-lived access token.
   if(refreshToken){
@@ -2547,6 +2721,7 @@ async function refreshEntitlementToken(){
       else if(res.ok && data && data.active===false){ clearEntitlement(); return false; }
     }catch(err){ return false; }
   }
+
   // Fallback: direct issue by email. Only succeeds while the worker runs
   // with ALLOW_LEGACY_TOKEN_ISSUE=1; in magic-link mode the worker answers
   // code_required (and sends no email) — restoring then goes through the
@@ -2566,6 +2741,7 @@ async function refreshEntitlementToken(){
     return false;
   }
 }
+
 // ---- Turnstile (bot check on free scans) ----
 let tsWidgetId=null, tsResolve=null;
 if(TURNSTILE_SITE_KEY){
@@ -2604,6 +2780,7 @@ function getTurnstileToken(){
     setTimeout(fail,25000);
   });
 }
+
 // ---- file selected ----
 document.getElementById('filein').addEventListener('change',async e=>{
   const file=e.target.files[0]; if(!file||!pendingView) return;
@@ -2639,6 +2816,7 @@ document.getElementById('filein').addEventListener('change',async e=>{
     renderError(String(err));show('screen-result');
   }
 });
+
 function normaliseToJpeg(file){
   return new Promise((res,rej)=>{
     const url=URL.createObjectURL(file);
@@ -2729,6 +2907,7 @@ async function analyzeView(view,file,retriedToken){
   if(!res.ok){const reason=data&&(data.detail||data.error)?(": "+(data.detail||data.error)):"";throw new Error("scan failed ("+res.status+")"+reason);}
   return data;
 }
+
 function handleLocked(reason){
   clearEntitlement();
   if(reason==='rescan_requires_pro'){
@@ -2740,9 +2919,9 @@ function handleLocked(reason){
   }
   showPaywall();
 }
+
 function mergeIntoProfile(view,data){
   const m=data.muscles||{};
-  MUSCLES.forEach(k=>{
   viewMuscles(view).forEach(k=>{
     const incoming=m[k];
     if(!incoming||incoming.score==null) return;
@@ -2751,6 +2930,7 @@ function mergeIntoProfile(view,data){
     if(better) profile[k]={score:incoming.score,confidence:incoming.confidence||'medium',fromView:view};
   });
 }
+
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -2763,6 +2943,7 @@ function goHome(id){
 }
 function scoreToGrade(s){if(s>=90)return'S';if(s>=75)return'A';if(s>=61)return'B';if(s>=40)return'C';if(s>=25)return'D';return'E';}
 function gradeLabel(g){return{S:'Elite',A:'Advanced',B:'Experienced',C:'Developing',D:'Beginner',E:'Starting Out'}[g[0]]||'';}
+
 function computeOverall(){
   const have=MUSCLES.filter(k=>profile[k]);
   if(have.length===0) return null;
@@ -2773,6 +2954,7 @@ function computeOverall(){
   if(!haveBack||!haveLegs){const c=Math.min(avg,67);capped=c<avg;capScore=c;}
   return{avg,capScore,grade:scoreToGrade(capScore),missing,capped,haveBack,haveLegs,nViews:Object.keys(viewsDone).length};
 }
+
 function refreshHome(){
   const hl=document.getElementById('histLink');
   if(hl) hl.style.display=hasEntitlementHint()?'inline-block':'none';
@@ -2798,21 +2980,24 @@ function refreshHome(){
     cta.innerHTML='Grade capped while parts stay hidden. <b>Scan your '+nm+'</b> to raise the ceiling.';
   } else { cta.textContent='Full profile — every region covered.'; }
 }
+
 function replayResultCardAnimation(){
   const card=document.querySelector('#resultBody .vc');
   if(!card) return;
   card.classList.add('vc-result-reveal');
 }
+
 // ============================================================
 //  RESULT RENDERING
 // ============================================================
 function renderViewResult(view,data,photoURL){
   const m=data.muscles||{};
-  const seen=MUSCLES.filter(k=>m[k]&&m[k].score!=null);
   const seen=viewMuscles(view).filter(k=>m[k]&&m[k].score!=null);
   const ranking=viewRankings(view,m);
+
   const viewAvg=seen.length?Math.round(seen.reduce((s,k)=>s+m[k].score,0)/seen.length):null;
   const viewGrade=viewAvg!=null?scoreToGrade(viewAvg):'—';
+
   let muscleRows='';
   seen.forEach((k,i)=>{const v=m[k];
     muscleRows+='<div class="vc-muscle">'+
@@ -2820,11 +3005,10 @@ function renderViewResult(view,data,photoURL){
       '<div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:'+v.score+'%;animation-delay:'+(.12+i*.06)+'s"></div></div>'+
       '<span class="vc-muscle-val">'+v.score+'</span>'+
     '</div>';});
+
   const bf=hasEntitlementHint()?esc(data.bodyfat_range||'Not estimated'):'Paid audit';
   const viewName=VIEWS.find(v=>v.id===view).t.toUpperCase();
   const photoLayer=photoURL?'<div class="vc-photo" style="background-image:url('+photoURL+')"></div>':'';
-  const strongest=esc(data.strongest_visible_area||'Not clear');
-  const weakest=esc(data.weakest_visible_area||data.next_focus||'Not clear');
   const strongestKey=ranking.strongest;
   const weakestKey=ranking.weakest;
   const strongest=esc(strongestKey?cap(strongestKey):'Not clear');
@@ -2835,8 +3019,10 @@ function renderViewResult(view,data,photoURL){
   const safeNextFocus=mentionsOutOfViewMuscle(view,data.next_focus)
     ? (weakestKey?'Prioritise '+cap(weakestKey)+' development from this angle.':'')
     : (data.next_focus||'');
+
   const o=computeOverall();
   const tease=o?o.grade:(viewGrade!=='—'?viewGrade:'?');
+
   const gateHTML=hasAccount()?'':
     '<div class="gate-overlay" id="gateDiv">'+
       '<div class="gate-grade-tease">'+tease+'</div>'+
@@ -2850,6 +3036,7 @@ function renderViewResult(view,data,photoURL){
     '</div>';
   track('scan_result',{view:view,grade:viewGrade,paid:hasEntitlementHint()});
   if(!hasAccount()) track('gate_shown',{view:view});
+
   document.getElementById('resultBody').innerHTML=
     '<div class="vc result-vc vc-result-reveal grade-'+(viewGrade!=='—'?viewGrade:'C')+(hasAccount()?'':' blurred')+'">'+
       '<div class="vc-stripe"></div>'+
@@ -2878,18 +3065,12 @@ function renderViewResult(view,data,photoURL){
       '</div>'+
       gateHTML+
     '</div>'+
-    ((data.verdict||data.strongest_visible_area||data.weakest_visible_area||data.next_focus)?
     ((safeVerdict||strongestKey||weakestKey||safeNextFocus)?
       '<div class="res-analysis grade-'+(viewGrade!=='—'?viewGrade:'C')+(hasAccount()?'':' blurred')+'">'+
         '<div class="res-sec-eyebrow">Detailed result</div>'+
-        (data.verdict?'<div class="res-verdict">'+esc(data.verdict)+'</div>':'')+
-        ((data.strongest_visible_area||data.weakest_visible_area||data.next_focus)?
         (safeVerdict?'<div class="res-verdict">'+esc(safeVerdict)+'</div>':'')+
         ((strongestKey||weakestKey||safeNextFocus)?
           '<div class="res-cards">'+
-            (data.strongest_visible_area?'<div class="res-card"><div class="res-card-lbl str">Strength</div><div class="res-card-val">'+esc(data.strongest_visible_area)+'</div></div>':'')+
-            (data.weakest_visible_area?'<div class="res-card"><div class="res-card-lbl weak">Weakness</div><div class="res-card-val">'+esc(data.weakest_visible_area)+'</div></div>':'')+
-            (data.next_focus?'<div class="res-card"><div class="res-card-lbl focus">Main focus</div><div class="res-card-val">'+esc(data.next_focus)+'</div></div>':'')+
             (strongestKey?'<div class="res-card"><div class="res-card-lbl str">Strength</div><div class="res-card-val">'+esc(cap(strongestKey))+'</div></div>':'')+
             (weakestKey?'<div class="res-card"><div class="res-card-lbl weak">Weakness</div><div class="res-card-val">'+esc(cap(weakestKey))+'</div></div>':'')+
             (safeNextFocus?'<div class="res-card"><div class="res-card-lbl focus">Main focus</div><div class="res-card-val">'+esc(safeNextFocus)+'</div></div>':'')+
@@ -2917,6 +3098,7 @@ function renderViewResult(view,data,photoURL){
         '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CALLOUT Pro →</button>'+
         (!hasEntitlementHint()?'<div class="res-pro-alt">Just want this one grade? <button onclick="handlePurchase(\'scan\')">Full Body Audit — £5.99 once</button></div>':'')+
       '</div>':'');
+
   const btn=document.getElementById('resPrimary');
   if(!hasAccount()){
     btn.style.display='none';
@@ -2928,6 +3110,7 @@ function renderViewResult(view,data,photoURL){
     if(!hasEntitlementHint()) setTimeout(()=>injectUpsell(false),0);
   }
 }
+
 function configurePrimaryBtn(o){
   const btn=document.getElementById('resPrimary');
   if(!btn) return;
@@ -2940,6 +3123,7 @@ function configurePrimaryBtn(o){
     btn.onclick=()=>show('screen-home');
   }
 }
+
 // ============================================================
 //  GATE SUBMIT
 // ============================================================
@@ -2950,22 +3134,30 @@ function submitGate(){
     if(inp){inp.classList.add('err');setTimeout(()=>inp.classList.remove('err'),400);}
     return;
   }
+
   userEmail=email;
   saveState();
   track('gate_submit');
   refreshEntitlementToken().then(refreshHome).catch(()=>{});
+
   // unblur the card AND the detail/breakdown panels below it
   document.querySelectorAll('#resultBody .vc, #resultBody .res-rank, #resultBody .res-analysis, #resultBody .vc-details-below, #resultBody .vc-breakdown-below')
     .forEach(el=>el.classList.remove('blurred'));
+
   const gate=document.getElementById('gateDiv');
   if(gate) gate.remove();
+
   const o=computeOverall();
   configurePrimaryBtn(o);
+
   injectShareMoment(o?o.grade:(document.querySelector('.vc-grade-letter')||{}).textContent||'?', o?o.capScore:0);
+
   if(!hasEntitlementHint()) injectUpsell();
+
   refreshHome();
   showToast('Grade revealed. No take-backs.');
 }
+
 // ============================================================
 //  SCAN UPSELL — shown when scan-tier user tries to rescan
 //  after completing all 4 views
@@ -2995,6 +3187,7 @@ function showScanUpsell(){
   if(ref) ref.parentNode.insertBefore(div,ref);
   show('screen-result');
 }
+
 // ============================================================
 //  PAYWALL — shown when trying to scan a 2nd+ view unpaid
 // ============================================================
@@ -3011,6 +3204,7 @@ function showPaywall(){
   injectUpsell(true);
   show('screen-result');
 }
+
 // ============================================================
 //  SHARE MOMENT
 // ============================================================
@@ -3031,18 +3225,21 @@ function injectShareMoment(grade, score){
   const ref=document.getElementById('resPrimary');
   if(ref) ref.parentNode.insertBefore(div,ref);
 }
+
 // ============================================================
 //  UPSELL PANEL
 // ============================================================
 function injectUpsell(paywallMode){
   const old=document.getElementById('upsellPanel'); if(old) old.remove();
   track('upsell_shown',{mode:paywallMode?'paywall':'post_result'});
+
   const title  = paywallMode
     ? 'Free scan used. Your real grade needs all four angles.'
     : 'One angle isn\'t the full picture.';
   const sub    = paywallMode
     ? 'Back and legs are where most people drop — and where most people avoid the camera. That\'s the point. £5.99. One time. No subscription.'
     : 'One good angle can lie. Back and legs usually tell the part of the story people avoid.';
+
   const div=document.createElement('div');
   div.id='upsellPanel';
   div.className='upsell';
@@ -3063,9 +3260,11 @@ function injectUpsell(paywallMode){
     '<p class="upgrade-after">After payment, access is confirmed and you can upload the remaining three angles immediately.</p>'+
     '<button class="recover-link" style="display:block;margin:12px auto 0" onclick="openRecoveryModal()">Already paid?</button>'+
     '<span style="font-size:13px;color:rgba(255,255,255,0.35);cursor:pointer;display:block;text-align:center;margin-top:12px;text-decoration:underline" onclick="show(\'screen-home\')">Not now</span>';
+
   const ref=document.getElementById('resPrimary');
   if(ref) ref.parentNode.insertBefore(div,ref);
 }
+
 // ============================================================
 //  PURCHASE HANDLER
 // ============================================================
@@ -3085,6 +3284,7 @@ function handlePurchase(tier){
   renderError('Checkout is not configured yet. Please contact support@callout-ai.com.');
   show('screen-result');
 }
+
 function showConfirmScreen(){
   const sub=document.querySelector('#confirmBody .confirm-sub');
   if(sub) sub.textContent='Access confirmed'+(userTierDisplay?' · '+tierDisplayLabel(userTierDisplay):'')+'. Scan your remaining angles.';
@@ -3104,6 +3304,7 @@ function showConfirmScreen(){
   refreshHome();
   show('screen-confirm');
 }
+
 // ============================================================
 //  SHARE
 // ============================================================
@@ -3123,6 +3324,7 @@ function shareGrade(grade, score, fromMoment){
       .catch(()=>showToast('Share: '+(location.origin+location.pathname)));
   }
 }
+
 // ============================================================
 //  OVERALL SCREEN
 // ============================================================
@@ -3130,6 +3332,7 @@ function showOverall(){
   const o=computeOverall();
   if(!o){show('screen-home');return;}
   track('overall_viewed',{grade:o.grade,views:o.nViews});
+
   let muscleRows='';
   MUSCLES.forEach((k,i)=>{
     const p=profile[k];const na=!p;
@@ -3138,6 +3341,7 @@ function showOverall(){
       '<div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:'+(na?100:p.score)+'%;animation-delay:'+(.1+i*.045)+'s"></div></div>'+
       '<span class="vc-muscle-val">'+(na?'—':p.score)+'</span>'+
     '</div>';});
+
   const heroPhoto=photos.front||photos.arms_side||photos.back||photos.legs||null;
   const photoLayer=heroPhoto?'<div class="vc-photo" style="background-image:url('+heroPhoto+')"></div>':'';
   const ranked=MUSCLES.filter(k=>profile[k]).sort((a,b)=>profile[b].score-profile[a].score);
@@ -3147,6 +3351,7 @@ function showOverall(){
     '<div class="vc-cap">Grade capped — '+
       (!o.haveBack?'no back view':'')+((!o.haveBack&&!o.haveLegs)?' and ':'')+(!o.haveLegs?'no legs view':'')+
       '. Unlock to remove the ceiling.</div>':'';
+
   document.getElementById('overallBody').innerHTML=
     '<div class="vc overall-vc result-vc grade-'+o.grade+'">'+
       '<div class="vc-stripe"></div>'+
@@ -3171,9 +3376,11 @@ function showOverall(){
       '</div>'+
     '</div>'+capHTML+
     '<div class="vc-breakdown-below grade-'+o.grade+'"><div class="vc-section-title">Full muscle breakdown</div>'+muscleRows+'</div>';
+
   const backBtn=document.getElementById('overallBack');
   ['overallShareRow','overallUpsell'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
   backBtn.style.display='block';
+
   // Share row
   const shareRow=document.createElement('div');
   shareRow.id='overallShareRow'; shareRow.className='share-row';
@@ -3183,6 +3390,7 @@ function showOverall(){
       'Share my grade'+
     '</button>';
   backBtn.parentNode.insertBefore(shareRow,backBtn);
+
   if(!hasEntitlementHint()){
     const upsellDiv=document.createElement('div');
     upsellDiv.id='overallUpsell'; upsellDiv.className='upsell';
@@ -3197,10 +3405,12 @@ function showOverall(){
     backBtn.parentNode.insertBefore(upsellDiv,backBtn);
     backBtn.style.display='none';
   }
+
   show('screen-overall');
   // Trigger cinematic reveal
   requestAnimationFrame(()=>requestAnimationFrame(playRevealAnimation));
 }
+
 // ============================================================
 //  REFUSAL / ERROR RENDERING
 // ============================================================
@@ -3217,6 +3427,7 @@ function renderAccessRecovery(){
   const btn=document.getElementById('resPrimary');
   btn.style.display='none';
 }
+
 async function attemptAccessRecovery(){
   const ok=await refreshEntitlementToken();
   if(ok){
@@ -3228,6 +3439,7 @@ async function attemptAccessRecovery(){
   // Silent restore failed — verify ownership with an email code instead.
   openRecoveryModal();
 }
+
 function renderRateLimited(retryAfter){
   track('scan_rate_limited');
   const mins=retryAfter?Math.max(1,Math.ceil(retryAfter/60)):null;
@@ -3238,6 +3450,7 @@ function renderRateLimited(retryAfter){
   const btn=document.getElementById('resPrimary');
   btn.style.display='block';btn.textContent='← Back';btn.onclick=()=>show('screen-home');
 }
+
 function renderBadImage(){
   track('scan_bad_image');
   document.getElementById('resultBody').innerHTML=
@@ -3246,6 +3459,7 @@ function renderBadImage(){
   const btn=document.getElementById('resPrimary');
   btn.style.display='block';btn.textContent='← Try again';btn.onclick=()=>show('screen-home');
 }
+
 function renderPaymentRecovery(){
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse"><div class="big"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-5"/></svg></div>'+
@@ -3256,6 +3470,7 @@ function renderPaymentRecovery(){
   const btn=document.getElementById('resPrimary');
   btn.style.display='block';btn.textContent='← Back';btn.onclick=()=>show('screen-home');
 }
+
 function renderRefusal(reason){
   track('scan_refused',{reason:reason||''});
   const msg=reason==='age'
@@ -3277,6 +3492,7 @@ function renderError(detail){
   const btn=document.getElementById('resPrimary');
   btn.style.display='block';btn.textContent='← Back';btn.onclick=()=>show('screen-home');
 }
+
 // ============================================================
 //  TOAST
 // ============================================================
@@ -3285,6 +3501,7 @@ function showToast(msg){
   t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2800);
 }
+
 let recoveryStage='email';
 function handleAuthLink(){
   try{
@@ -3320,6 +3537,7 @@ function openRecoveryModal(){
   openModal('recoveryModal');
   setTimeout(()=>{if(input) input.focus();},80);
 }
+
 async function submitRecoveryEmail(){
   if(recoveryStage==='code') return submitRecoveryCode();
   const input=document.getElementById('recoveryEmail');
@@ -3390,6 +3608,7 @@ async function submitRecoveryEmail(){
     if(btn) btn.disabled=false;
   }
 }
+
 async function submitRecoveryCode(){
   const codeInput=document.getElementById('recoveryCode');
   const btn=document.getElementById('recoverySubmit');
@@ -3431,11 +3650,13 @@ async function submitRecoveryCode(){
     if(btn) btn.disabled=false;
   }
 }
+
 function makeCardId(){
   const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let id='CO-';for(let i=0;i<8;i++){if(i===4)id+='-';id+=c[Math.floor(Math.random()*c.length)];}
   return id;
 }
+
 function buildFocusHTML(data){
   // The callout block: WEAKNESS + NEXT GOAL, front and centre. Strongest
   // area lives in the verdict's voice, not as a stat row.
@@ -3448,6 +3669,7 @@ function buildFocusHTML(data){
     '<div class="vc-call-row"><span class="vc-call-lbl '+r[0]+'">'+esc(r[1])+'</span><span class="vc-call-val">'+esc(r[2])+'</span></div>'
   ).join('')+'</div>';
 }
+
 // Rough population percentile modelled from score. NOT a measured ranking — it's a
 // modelled estimate of where a physique score sits vs the general population, and
 // is always presented as an "AI estimate". Anchor points from the owner's model.
@@ -3509,9 +3731,11 @@ function buildRankHTML(score, grade, blurred){
     '<div class="rank-note">Estimated percentile against the general population — a rough model, not a measured ranking.</div>'+
   '</div>';
 }
+
 function tierDisplayLabel(tier){
   return {scan:'Full Body Audit',pro:'CALLOUT Pro',lifetime:'Lifetime'}[tier]||'Paid access';
 }
+
 // ============================================================
 //  SCAN HISTORY
 // ============================================================
@@ -3560,10 +3784,12 @@ async function showHistory(){
     body.innerHTML='<p class="hist-empty">Could not load history right now. Try again in a moment.</p>';
   }
 }
+
 // ============================================================
 //  PROGRESS — compare two scans of the same angle (Pro)
 // ============================================================
 let progHist=null, progRegion=null, progA=0, progB=0;
+
 function progShell(inner){
   return '<div class="result-wrap"><div class="card-area">'+
     '<div class="sec-head" style="margin-bottom:24px">'+
@@ -3573,6 +3799,7 @@ function progShell(inner){
     '<button class="btn ghost" style="margin-top:18px" onclick="show(\'screen-home\')">← Back</button>'+
   '</div></div>';
 }
+
 async function showProgress(){
   track('progress_viewed');
   const body=document.getElementById('progressBody');
@@ -3614,6 +3841,7 @@ async function showProgress(){
     body.innerHTML=progShell('<p class="hist-empty">Could not load your scans right now. Try again in a moment.</p>');
   }
 }
+
 function renderProgressLocked(){
   track('progress_locked_shown');
   document.getElementById('progressBody').innerHTML=
@@ -3646,15 +3874,18 @@ function renderProgressLocked(){
       '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
     '</div></div>';
 }
+
 function renderProgress(){
   const list=progHist[progRegion]||[];
   progA=Math.max(0,Math.min(progA,list.length-1));
   progB=Math.max(0,Math.min(progB,list.length-1));
+
   const pills=VIEWS.map(v=>{
     const n=(progHist[v.id]||[]).length;
     return '<button class="prog-pill'+(v.id===progRegion?' active':'')+'"'+(n<2?' disabled':'')+
       ' onclick="progPick(\''+v.id+'\')">'+esc(v.t)+'<span class="n">'+n+'</span></button>';
   }).join('');
+
   const opts=sel=>list.map((h,j)=>
     '<option value="'+j+'"'+(j===sel?' selected':'')+'>Scan '+(j+1)+' — '+esc(progDate(h.ts,true))+
     (h.score!=null?' · '+clampNum(h.score)+'/100':'')+'</option>'
@@ -3663,10 +3894,12 @@ function renderProgress(){
     '<div><div class="prog-select-lbl">Baseline</div><select class="prog-select" onchange="progSetA(this.value)">'+opts(progA)+'</select></div>'+
     '<div><div class="prog-select-lbl">Compare with</div><select class="prog-select" onchange="progSetB(this.value)">'+opts(progB)+'</select></div>'+
   '</div>';
+
   document.getElementById('progressBody').innerHTML=progShell(
     '<div class="prog-pills">'+pills+'</div>'+selects+buildCompareHTML(list[progA],list[progB])
   );
 }
+
 function progPick(r){
   if(!progHist || (progHist[r]||[]).length<2) return;
   progRegion=r; progA=0; progB=progHist[r].length-1;
@@ -3675,6 +3908,7 @@ function progPick(r){
 }
 function progSetA(v){ progA=parseInt(v,10)||0; renderProgress(); }
 function progSetB(v){ progB=parseInt(v,10)||0; renderProgress(); }
+
 function progDate(ts,withYear){
   const o=withYear?{day:'numeric',month:'short',year:'numeric'}:{day:'numeric',month:'short'};
   return new Date((ts||0)*1000).toLocaleDateString(undefined,o);
@@ -3687,9 +3921,11 @@ function deltaChip(d,cls){
   return '<span class="'+cls+' '+(d==null?'flat':(d>0?'up':(d<0?'down':'flat')))+'">'+
     (d==null?'—':(d>0?'+'+d:String(d)))+'</span>';
 }
+
 function buildCompareHTML(a,b){
   const sa=clampNum(a.score), sb=clampNum(b.score);
   const overall=(sa!=null&&sb!=null)?sb-sa:null;
+
   const head='<div class="cmp-head">'+
     '<div class="cmp-side"><div class="cmp-date">'+esc(progDate(a.ts))+'</div>'+
       '<div class="cmp-grade">'+(sa!=null?scoreToGrade(sa):'—')+'</div>'+
@@ -3699,6 +3935,7 @@ function buildCompareHTML(a,b){
       '<div class="cmp-grade">'+(sb!=null?scoreToGrade(sb):'—')+'</div>'+
       '<div class="cmp-score">'+(sb!=null?sb+'/100':'—')+'</div></div>'+
   '</div>';
+
   const ma=a.muscles||{}, mb=b.muscles||{};
   const rows=MUSCLES.filter(k=>ma[k]!=null||mb[k]!=null).map(k=>{
     const va=clampNum(ma[k]), vb=clampNum(mb[k]);
@@ -3712,17 +3949,20 @@ function buildCompareHTML(a,b){
       '<span class="cmp-nums">'+(va!=null?va:'—')+'→'+(vb!=null?vb:'—')+deltaChip(d,'cmp-chip')+'</span>'+
     '</div>';
   }).join('');
+
   return '<div class="cmp-card">'+head+
     '<div class="cmp-rows">'+(rows||'<p class="hist-empty">No muscle scores stored for these scans.</p>')+'</div>'+
     '<div class="cmp-note">Grey bar — '+esc(progDate(a.ts))+'. Blue — '+esc(progDate(b.ts))+'. '+
     'Scores are AI visual estimates: match lighting, distance and pose for the fairest comparison.</div>'+
   '</div>';
 }
+
 // ============================================================
 //  IMPROVE — training + diet audit (Pro)
 // ============================================================
 let improveRecord=null;
 const IMP_SET_FIELDS=[['chest','Chest'],['back','Back'],['shoulders','Shoulders'],['biceps','Biceps'],['triceps','Triceps'],['abs','Abs'],['quads','Quads'],['hamstrings','Hamstrings'],['glutes','Glutes'],['calves','Calves']];
+
 function impShell(inner){
   return '<div class="result-wrap"><div class="card-area">'+
     '<div class="sec-head" style="margin-bottom:24px">'+
@@ -3732,6 +3972,7 @@ function impShell(inner){
     '<button class="btn ghost" style="margin-top:18px" onclick="show(\'screen-home\')">← Back</button>'+
   '</div></div>';
 }
+
 async function showImprove(){
   track('improve_viewed');
   const body=document.getElementById('improveBody');
@@ -3754,6 +3995,7 @@ async function showImprove(){
     body.innerHTML=impShell('<p class="hist-empty">Could not load right now. Try again in a moment.</p>');
   }
 }
+
 function renderImproveLocked(){
   track('improve_locked_shown');
   document.getElementById('improveBody').innerHTML=
@@ -3773,6 +4015,7 @@ function renderImproveLocked(){
       '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
     '</div></div>';
 }
+
 function renderImproveForm(){
   const inp=(improveRecord&&improveRecord.inputs)||{};
   const stats=inp.stats||{}, sets=inp.sets||{}, intake=inp.intake||{};
@@ -3807,10 +4050,12 @@ function renderImproveForm(){
   const dt=document.getElementById('imp-diet');
   if(dt&&typeof inp.diet==='string') dt.value=inp.diet;
 }
+
 function impPickGoal(el){
   document.querySelectorAll('#impGoals .prog-pill').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
 }
+
 async function submitImprove(){
   const btn=document.getElementById('impGo');
   const st=document.getElementById('impStatus');
@@ -3875,12 +4120,14 @@ async function submitImprove(){
     btn.disabled=false;
   }
 }
+
 function hmClass(s){
   if(s==null) return 'hm-none';
   if(s<55) return 'hm-weak';
   if(s<75) return 'hm-mid';
   return 'hm-strong';
 }
+
 // Stylised front/back muscle maps. Regions are filled by score band from the
 // account's latest scan; unscanned regions render as dashed outlines.
 function impBodyMap(m){
@@ -3936,7 +4183,9 @@ function impBodyMap(m){
       '<span><i style="border:1px dashed var(--line2)"></i>Not scanned</span>'+
     '</div>';
 }
+
 function impGoalLabel(g){return {gain:'Add size',lean:'Get leaner',recomp:'Recomp'}[g]||'—';}
+
 function renderImproveReport(rep,scan){
   const inp=(improveRecord&&improveRecord.inputs)||{};
   const stats=inp.stats||{};
@@ -3946,12 +4195,14 @@ function renderImproveReport(rep,scan){
   const dateStr=new Date(created*1000).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
   const recheckDate=new Date((created+rep.recheck_weeks*7*86400)*1000)
     .toLocaleDateString(undefined,{day:'numeric',month:'short'});
+
   const meta=[impGoalLabel(inp.goal)]
     .concat(stats.weight_kg!=null?[stats.weight_kg+'kg']:[])
     .concat(stats.height_cm!=null?[stats.height_cm+'cm']:[])
     .concat(stats.training_years!=null?[stats.training_years+' yrs training']:[])
     .concat(setTotal?[setTotal+' sets/wk']:[])
     .map(t=>'<span class="imp-chipstat">'+esc(t)+'</span>').join('');
+
   let mapBlock='';
   if(scan&&scan.muscles){
     const m=scan.muscles;
@@ -3965,12 +4216,14 @@ function renderImproveReport(rep,scan){
       (chips?'<div class="imp-meta" style="margin:14px 0 0;justify-content:center">'+chips+'</div>':'')+
     '</div>';
   }
+
   const trainRows=(rep.training&&rep.training.changes||[]).map(c=>
     '<div class="imp-change"><span class="imp-change-tag">'+esc(c.area)+'</span><span class="imp-change-txt">'+esc(c.action)+'</span></div>'
   ).join('');
   const dietRows=rep.diet?(rep.diet.changes||[]).map(c=>
     '<div class="imp-change"><span class="imp-change-tag">Fix</span><span class="imp-change-txt">'+esc(c.what)+' <em>— '+esc(c.why)+'</em></span></div>'
   ).join(''):'';
+
   document.getElementById('improveBody').innerHTML=impShell(
     '<div class="imp-rephead"><div>'+
       '<div class="imp-rep-eyebrow">CALLOUT · IMPROVE REPORT</div>'+
@@ -3993,6 +4246,7 @@ function renderImproveReport(rep,scan){
     '<p class="imp-disclaimer">General training and nutrition guidance generated from your inputs and scan results. Not medical, dietetic, or coaching advice.</p>'
   );
 }
+
 function esc(value){
   return String(value==null?'':value)
     .replace(/&/g,'&amp;')
@@ -4001,7 +4255,9 @@ function esc(value){
     .replace(/"/g,'&quot;')
     .replace(/'/g,'&#39;');
 }
+
 function cap(s){return s[0].toUpperCase()+s.slice(1);}
+
 // ============================================================
 //  MODALS — privacy / terms
 // ============================================================
@@ -4039,16 +4295,19 @@ document.querySelectorAll('.modal-overlay').forEach(overlay=>{
     if(e.target===overlay) closeModal(overlay.id);
   });
 });
+
 // ============================================================
 //  REVEAL ANIMATION
 // ============================================================
 function playRevealAnimation(){
   const vc = document.querySelector('#overallBody .overall-vc');
   if(!vc) return;
+
   // ── helpers ──────────────────────────────────────────────
   const cssVar = (name) => parseFloat(
     getComputedStyle(document.documentElement).getPropertyValue(name).trim()
   ) * 1000; // → ms
+
   // ── cinematic bg dimmer ───────────────────────────────────
   let dimmer = document.getElementById('ra-dimmer');
   if(dimmer) dimmer.remove();
@@ -4058,6 +4317,7 @@ function playRevealAnimation(){
   document.body.appendChild(dimmer);
   // activate after one frame so transition fires
   requestAnimationFrame(()=>dimmer.classList.add('ra-dim'));
+
   // ── scan line element ─────────────────────────────────────
   let scanEl = vc.querySelector('.vc-scan-line');
   if(!scanEl){
@@ -4065,6 +4325,7 @@ function playRevealAnimation(){
     scanEl.className = 'vc-scan-line';
     vc.insertAdjacentElement('afterbegin', scanEl);
   }
+
   // ── start all elements invisible then animate in phases ──
   const brandTag   = vc.querySelector('.vc-brand-tag');
   const gradeLetterEl = vc.querySelector('.vc-grade-letter');
@@ -4075,12 +4336,14 @@ function playRevealAnimation(){
   const capNote    = vc.querySelector('.vc-cap');
   const muscles    = [...vc.querySelectorAll('.vc-muscle')];
   const badge      = vc.querySelector('.vc-badge');
+
   // Force everything invisible before first paint
   [brandTag, gradeLetterEl, gradeLabelEl, strip, footer, secTitle, badge]
     .filter(Boolean)
     .forEach(el => el.classList.add('ra-hidden'));
   if(capNote) capNote.classList.add('ra-hidden');
   muscles.forEach(m => m.classList.add('ra-hidden'));
+
   // ── Phase 2: brand tag ────────────────────────────────────
   const brandDelay = cssVar('--ra-brand-delay');
   setTimeout(()=>{
@@ -4088,9 +4351,11 @@ function playRevealAnimation(){
     if(badge)   { badge.classList.remove('ra-hidden'); }
     vc.classList.add('ra-brand-animate');
   }, brandDelay);
+
   // ── Phase 3: scan line sweep ──────────────────────────────
   const scanDelay = cssVar('--ra-scan-delay');
   setTimeout(()=>{ vc.classList.add('ra-scanning'); }, scanDelay);
+
   // ── Phase 4: grade slam + haptic ─────────────────────────
   const gradeDelay = cssVar('--ra-grade-delay');
   setTimeout(()=>{
@@ -4099,12 +4364,14 @@ function playRevealAnimation(){
     // Mobile haptic — verdict delivered
     if(navigator.vibrate) navigator.vibrate([80, 30, 40]);
   }, gradeDelay);
+
   // ── Phase 5: grade label ──────────────────────────────────
   const labelDelay = cssVar('--ra-label-delay');
   setTimeout(()=>{
     if(gradeLabelEl){ gradeLabelEl.classList.remove('ra-hidden'); }
     vc.classList.add('ra-label-animate');
   }, labelDelay);
+
   // ── Phase 6: score strip ──────────────────────────────────
   const stripDelay = cssVar('--ra-strip-delay');
   setTimeout(()=>{
@@ -4113,10 +4380,12 @@ function playRevealAnimation(){
     if(secTitle){ secTitle.classList.remove('ra-hidden'); }
     vc.classList.add('ra-strip-animate');
   }, stripDelay);
+
   // ── Phase 7: muscle bars staggered ───────────────────────
   const musclesDelay = cssVar('--ra-muscles-delay');
   const STAGGER = 45; // ms between each bar
   vc.classList.add('ra-bars-init');
+
   muscles.forEach((m, i)=>{
     const t = musclesDelay + (i * STAGGER);
     setTimeout(()=>{
@@ -4128,6 +4397,7 @@ function playRevealAnimation(){
       if(fill) fill.style.animationPlayState = 'running';
     }, t);
   });
+
   // ── Phase 8: footer ───────────────────────────────────────
   const footerDelay = musclesDelay + (muscles.length * STAGGER) + 120;
   setTimeout(()=>{
@@ -4136,6 +4406,7 @@ function playRevealAnimation(){
       footer.style.animation = 'ra-fade-up 0.22s ease both';
     }
   }, footerDelay);
+
   // ── Phase 9: share button pulse ───────────────────────────
   const sharePulseDelay = footerDelay + 320;
   setTimeout(()=>{
@@ -4143,6 +4414,7 @@ function playRevealAnimation(){
     dimmer.classList.remove('ra-dim');
     dimmer.classList.add('ra-undim');
     setTimeout(()=>dimmer.remove(), 1800);
+
     // pulse the share button
     const shareBtn = document.querySelector('#overallShareRow button');
     if(shareBtn){
@@ -4153,6 +4425,7 @@ function playRevealAnimation(){
     }
   }, sharePulseDelay);
 }
+
 // ============================================================
 //  PRICING VIEW TRACKING
 // ============================================================
@@ -4166,6 +4439,7 @@ function playRevealAnimation(){
   },{threshold:0.2});
   io.observe(sec);
 })();
+
 // ============================================================
 //  MOBILE STICKY CTA — shows between hero and the next
 //  conversion point; never over scan or pricing sections
