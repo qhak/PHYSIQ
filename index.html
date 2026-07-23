@@ -788,11 +788,15 @@
     margin-top:auto;
   }
   .vc-serial{
-    font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--faint);
-    letter-spacing:.08em;
+    font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--faint);
+    letter-spacing:.05em;
+  }
+  .vc-site{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;
+    color:var(--blue-bright);font-weight:700;white-space:nowrap;
   }
   .vc-certified{
-    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;
+    font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;
     color:var(--blue-deep);text-transform:uppercase;font-weight:600;
   }
 
@@ -1796,6 +1800,7 @@
                 </div>
                 <div class="vc-footer">
                   <span class="vc-serial">CO-DEMO-2026</span>
+                  <span class="vc-site">callout-ai.com</span>
                   <span class="vc-certified">AI ESTIMATE</span>
                 </div>
               </div>
@@ -2962,6 +2967,7 @@ function renderViewResult(view,data,photoURL){
         '</div>'+
         '<div class="vc-footer">'+
           '<span class="vc-serial">'+cardId+'</span>'+
+          '<span class="vc-site">callout-ai.com</span>'+
           '<span class="vc-certified">AI ESTIMATE</span>'+
         '</div>'+
       '</div>'+
@@ -3261,6 +3267,7 @@ function showOverall(){
         muscleRows+
         '<div class="vc-footer">'+
           '<span class="vc-serial">'+cardId+'</span>'+
+          '<span class="vc-site">callout-ai.com</span>'+
           '<span class="vc-certified">AI ESTIMATE</span>'+
         '</div>'+
       '</div>'+
