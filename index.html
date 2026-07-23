@@ -2974,7 +2974,7 @@ function renderViewResult(view,data,photoURL){
       gateHTML+
     '</div>'+
     buildRankHTML(viewAvg,viewGrade)+
-    buildMassCondHTML(m,seen,viewGrade)+
+    buildMassCondHTML(m,seen,viewGrade,data.bodyfat_range)+
     ((data.verdict||data.strongest_visible_area||data.weakest_visible_area||data.next_focus)?
       '<div class="res-analysis grade-'+(viewGrade!=='—'?viewGrade:'C')+(hasAccount()?'':' blurred')+'">'+
         '<div class="res-sec-eyebrow">The analysis</div>'+
@@ -3656,8 +3656,17 @@ function proVeil(title){
 
 // Mass vs conditioning — a quadrant separating size/development (Y) from leanness (X).
 // Pro-gated like the percentile. Needs both a conditioning read and at least one size muscle.
-function buildMassCondHTML(m, seen, grade){
-  const cond=(m['conditioning']&&m['conditioning'].score!=null)?Math.round(m['conditioning'].score):null;
+// Rough conditioning (leanness) score from a body-fat range, used only when the
+// model didn't return a separate conditioning score. Lower body fat = leaner = higher.
+function condFromBodyfat(bf){
+  if(!bf) return null;
+  const nums=(String(bf).match(/\d+(\.\d+)?/g)||[]).map(Number);
+  if(!nums.length) return null;
+  const mid=nums.reduce((a,b)=>a+b,0)/nums.length;
+  return Math.max(8,Math.min(96,Math.round(95-(mid-6)*2.8)));
+}
+function buildMassCondHTML(m, seen, grade, bodyfat){
+  let cond=(m['conditioning']&&m['conditioning'].score!=null)?Math.round(m['conditioning'].score):condFromBodyfat(bodyfat);
   const sizeKeys=(seen||[]).filter(k=>k!=='conditioning');
   if(cond==null||sizeKeys.length===0) return '';
   const mass=Math.round(sizeKeys.reduce((s,k)=>s+m[k].score,0)/sizeKeys.length);
