@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -2942,6 +2942,7 @@ function renderViewResult(view,data,photoURL){
       '<h3>Your grade is ready.</h3>'+
       '<p>Enter your email to view it. It links this result and any purchase so access can be restored — that\'s the whole account.</p>'+
       '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-label="Email address" onkeydown="if(event.key===\'Enter\')submitGate()">'+
+      '<label class="gate-consent"><input type="checkbox" id="gateConsent" checked> Email me physique tips and updates. No spam, unsubscribe anytime.</label>'+
       '<button class="btn" onclick="submitGate()">Show my grade →</button>'+
       '<div class="gate-fine">Photo not stored by CALLOUT · <a onclick="openModal(\'privacyModal\')">privacy</a></div>'+
     '</div>';
@@ -3032,6 +3033,12 @@ function submitGate(){
   userEmail=email;
   saveState();
   track('gate_submit');
+  // Capture the signup as a lead (fire-and-forget — never block the reveal).
+  // The email is always stored; the checkbox only sets the marketing-consent flag.
+  try{
+    const wantsMarketing=!!(document.getElementById('gateConsent')||{}).checked;
+    fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'subscribe',email:email,consent:wantsMarketing})}).catch(()=>{});
+  }catch(e){}
   refreshEntitlementToken().then(refreshHome).catch(()=>{});
 
   // unblur the card AND the detail/breakdown panels below it
