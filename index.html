@@ -1313,6 +1313,34 @@
     background:rgba(255,255,255,.018);
   }
   @media(max-width:760px){.method-grid{grid-template-columns:1fr}}
+  /* Affiliate program panel */
+  .affiliate-panel{
+    border:1px solid var(--line-strong);border-radius:16px;
+    background:var(--surface);padding:40px 40px 44px;
+  }
+  .affiliate-h{
+    font-family:'Inter',sans-serif;font-size:clamp(26px,3.4vw,36px);
+    font-weight:900;letter-spacing:-.03em;line-height:1.08;color:var(--ink);
+  }
+  .affiliate-h em{font-style:normal;color:var(--blue)}
+  .affiliate-lead{color:var(--dim);font-size:15.5px;margin-top:14px;max-width:58ch;line-height:1.65}
+  .affiliate-rules{margin-top:34px;border-top:1px solid var(--line2);padding-top:28px}
+  .affiliate-rules h3{
+    font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--soft);margin-bottom:16px;font-family:'JetBrains Mono',monospace;
+  }
+  .affiliate-rules ul{list-style:none;display:grid;gap:12px}
+  .affiliate-rules li{position:relative;padding-left:24px;color:var(--soft);font-size:14.5px;line-height:1.6}
+  .affiliate-rules li b{color:var(--ink);font-weight:700}
+  .affiliate-rules li::before{content:'';position:absolute;left:5px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--blue)}
+  .affiliate-cta{margin-top:34px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .affiliate-cta .bigcta{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+  .affiliate-cta-sub{color:var(--dim);font-size:13.5px}
+  @media(max-width:760px){
+    .affiliate-panel{padding:28px 22px 32px}
+    .affiliate-cta{gap:12px}
+    .affiliate-cta .bigcta{width:100%}
+  }
 
   /* ─────────────────────────────────────────────────────
      FAQ
@@ -1723,6 +1751,7 @@
     <div class="links">
       <button class="navlink" onclick="goHome('howStrip')">How it works</button>
       <button class="navlink" onclick="goHome('pricingSection')">Pricing</button>
+      <button class="navlink" onclick="goHome('affiliateSection')">Affiliates</button>
       <button class="navlink navcta" onclick="goHome('scanSection')">Get called out</button>
     </div>
   </nav>
@@ -2070,39 +2099,50 @@
         </details>
 </section>
       <!-- AFFILIATES -->
-      <section class="sec fold-sec" id="affiliateSection" style="padding-top:0">
-        <details class="sec-fold">
-          <summary><h2>Refer CALLOUT. Earn 40%.</h2></summary>
-          <div class="sec-fold-body">
-          <p class="fold-intro">Got an audience that lifts? Send them to CALLOUT and take a cut of every sale you bring in.</p>
-        <div class="method-grid">
-          <div class="method-item">
-            <div class="method-k">01 · Your cut</div>
-            <h3>40% of every sale</h3>
-            <p>You earn 40% on every purchase made through your link — the £5.99 audit, £9.99 Pro, or the £29.99 lifetime. Pro keeps paying out for as long as your referral stays subscribed.</p>
+      <section class="sec" id="affiliateSection">
+        <div class="affiliate-panel">
+          <div class="res-sec-eyebrow">Affiliate program</div>
+          <h2 class="affiliate-h">Refer CALLOUT. <em>Earn 40%.</em></h2>
+          <p class="affiliate-lead">Got an audience that lifts? Send people to CALLOUT and earn 40% of every sale you bring in — and Pro keeps paying you for as long as they stay subscribed.</p>
+          <div class="method-grid">
+            <div class="method-item">
+              <div class="method-k">01 · Your cut</div>
+              <h3>40% of every sale</h3>
+              <p>40% on every purchase made through your link — the £5.99 audit, £9.99 Pro, or the £29.99 lifetime. Pro keeps paying you every month your referral stays subscribed.</p>
+            </div>
+            <div class="method-item">
+              <div class="method-k">02 · Minimum</div>
+              <h3>£20 to cash out</h3>
+              <p>Earnings build up until they clear £20. Over the line, you get paid — anything under just rolls into the next month.</p>
+            </div>
+            <div class="method-item">
+              <div class="method-k">03 · Ceiling</div>
+              <h3>Up to £1,000 / month</h3>
+              <p>Payouts are capped at £1,000 per affiliate per month — plenty of room for a real push, and it keeps the program sustainable.</p>
+            </div>
+            <div class="method-item">
+              <div class="method-k">04 · Payout</div>
+              <h3>Paid every month</h3>
+              <p>Cleared earnings are paid out once a month. No lock-ins, no games — refer, earn, get paid.</p>
+            </div>
           </div>
-          <div class="method-item">
-            <div class="method-k">02 · Minimum</div>
-            <h3>£20 to cash out</h3>
-            <p>Earnings build up until they clear £20. Once you're over the line, they get paid — anything under just rolls into the next month.</p>
+          <div class="affiliate-rules">
+            <h3>The rules</h3>
+            <ul>
+              <li>You earn <b>40% commission</b> on every sale made through your referral link — audit, Pro, and lifetime all count.</li>
+              <li>Pro referrals pay out <b>40% every month</b> for as long as that person stays subscribed.</li>
+              <li>Payouts run <b>monthly</b>. You need at least <b>£20</b> in cleared earnings to get paid; anything under rolls over to the next month.</li>
+              <li>Earnings are capped at <b>£1,000 per month</b> per affiliate.</li>
+              <li>Self-referrals, fake sign-ups, spam, and misleading claims about CALLOUT void your earnings.</li>
+              <li><b>18+ only</b>, same as CALLOUT itself.</li>
+            </ul>
           </div>
-          <div class="method-item">
-            <div class="method-k">03 · Ceiling</div>
-            <h3>Up to £1,000 / month</h3>
-            <p>Payouts are capped at £1,000 per affiliate per month — plenty of room for a real referral push, and it keeps the program sustainable.</p>
-          </div>
-          <div class="method-item">
-            <div class="method-k">04 · Payout</div>
-            <h3>Paid every month</h3>
-            <p>Cleared earnings are paid out once a month. No lock-ins, no games — refer, earn, get paid.</p>
+          <div class="affiliate-cta">
+            <a class="bigcta" href="mailto:affiliates@callout-ai.com?subject=CALLOUT%20affiliate%20application&body=Where%20I%27d%20promote%20CALLOUT%3A%0AAudience%2Fplatform%20%2B%20size%3A%0ALink%3A%0A" onclick="track('affiliate_apply_click')">Become an affiliate</a>
+            <span class="affiliate-cta-sub">or email affiliates@callout-ai.com</span>
           </div>
         </div>
-        <div class="method-note">
-          Want in? Email <a class="recover-link" href="mailto:affiliates@callout-ai.com?subject=CALLOUT%20affiliate%20program">affiliates@callout-ai.com</a> with where you'd promote CALLOUT, and we'll set you up with a referral link.
-        </div>
-                </div>
-        </details>
-</section>
+      </section>
       <!-- FAQ -->
       <section class="sec" id="faqSection" style="padding-top:0">
         <div class="sec-head">
