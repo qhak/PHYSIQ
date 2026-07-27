@@ -3652,7 +3652,7 @@ function buildFocusHTML(data){
 // modelled estimate of where a physique score sits vs the general population, and
 // is always presented as an "AI estimate". Anchor points from the owner's model:
 // pop average ≈ 25 (top 50%), average gym-goer ≈ 50 (top 15%), elite tail is very thin.
-const RANK_MAP=[[0,0.5],[10,2],[15,13],[20,25],[25,50],[30,59],[35,68],[40,74],[45,81],[50,85],[55,90],[60,95.5],[65,98],[70,99],[75,99.4],[80,99.7],[85,99.93],[90,99.99],[92,99.994],[95,99.9998],[100,99.9999]];
+const RANK_MAP=[[0,0.5],[10,2],[15,13],[20,25],[25,50],[30,59],[35,68],[40,74],[45,81],[50,85],[55,90],[60,95.5],[65,98],[70,99],[75,99.4],[80,99.8],[85,99.97],[90,99.9999],[92,99.99997],[95,99.999998],[100,99.999999]];
 function scoreToPercentile(s){
   if(s==null) return null;
   const last=RANK_MAP[RANK_MAP.length-1];
