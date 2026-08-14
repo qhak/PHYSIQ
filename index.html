@@ -12,6 +12,8 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
+<!-- Lucid Analytics (self-hosted, cookieless) -->
+<script defer data-domain="callout-ai.com" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
 <title>CALLOUT — AI physique feedback from photos. No flattery.</title>
 <meta name="description" content="CALLOUT gives direct AI feedback on visible physique development from photos. First scan free. Full Body Audit is £5.99 one-time.">
 
@@ -2525,6 +2527,7 @@ const TURNSTILE_SITE_KEY = "0x4AAAAAAD4XysFGTshW8qs9";
 //      safely no-ops otherwise (cookieless; no consent banner required) ----
 function track(name,params){
   try{ if(typeof window.plausible==='function') window.plausible(name,{props:params||{}}); }catch(e){}
+  try{ if(typeof window.stats==='function') window.stats(name,params||{}); }catch(e){}
 }
 
 const VIEWS=[
