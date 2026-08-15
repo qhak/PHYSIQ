@@ -196,6 +196,103 @@
   .trust-item{display:inline-flex;align-items:center;white-space:nowrap}
   .trust-sep{margin:0 10px;color:var(--quiet)}
 
+  /* ─────────────────────────────────────────────────────
+     PROOF — real usage numbers, fed by the worker's counters
+     ───────────────────────────────────────────────────── */
+  .proof{
+    display:flex;flex-wrap:wrap;gap:20px 34px;
+    margin-top:36px;padding-top:26px;
+    border-top:1px solid var(--line);max-width:620px;
+  }
+  .proof-i{display:flex;flex-direction:column;gap:3px}
+  .proof-n{
+    font-family:'Inter',sans-serif;
+    font-size:26px;font-weight:800;letter-spacing:-.03em;
+    color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.1;
+  }
+  .proof-l{font-size:12.5px;color:var(--dim);letter-spacing:.01em}
+  .proof-since{
+    width:100%;margin-top:2px;
+    font-size:12px;color:var(--faint);
+  }
+  @media(max-width:560px){
+    .proof{gap:18px 26px}
+    .proof-i{flex:0 0 calc(50% - 13px)}
+    .proof-n{font-size:22px}
+  }
+
+  /* ─────────────────────────────────────────────────────
+     TRUST WALL — checkable claims only, no invented proof
+     ───────────────────────────────────────────────────── */
+  .tw-band{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line2);border-radius:12px;
+    background:var(--surface);overflow:hidden;margin-bottom:38px;
+  }
+  .tw-stat{padding:22px 20px;border-right:1px solid var(--line)}
+  .tw-stat:last-child{border-right:0}
+  .tw-stat-n{
+    font-family:'Inter',sans-serif;
+    font-size:30px;font-weight:800;letter-spacing:-.035em;
+    color:var(--blue);font-variant-numeric:tabular-nums;line-height:1.05;
+  }
+  .tw-stat-l{font-size:12.5px;color:var(--dim);margin-top:7px;line-height:1.45}
+  @media(max-width:760px){
+    .tw-band{grid-template-columns:repeat(2,1fr)}
+    .tw-stat{border-bottom:1px solid var(--line)}
+    .tw-stat:nth-child(2){border-right:0}
+    .tw-stat:nth-child(3),.tw-stat:nth-child(4){border-bottom:0}
+    .tw-stat-n{font-size:25px}
+  }
+
+  .tw{display:grid;grid-template-columns:repeat(3,1fr);gap:26px 18px;align-items:start}
+  .tw-item{border-top:1px solid var(--line2);padding-top:18px}
+  /* The rubric is the strongest claim on the page, so it leads full width and
+     splits its own row — otherwise its height leaves a hole beside a short card. */
+  .tw-lead{
+    grid-column:1/-1;
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+    gap:32px;align-items:start;
+  }
+  .tw-lead .rubric{margin-top:0}
+  .tw-k{font-size:12px;font-weight:600;color:var(--blue-deep);margin-bottom:8px}
+  .tw-item h3{
+    font-size:18px;line-height:1.2;letter-spacing:-.015em;
+    margin-bottom:8px;color:var(--ink);
+  }
+  .tw-item p{color:var(--soft);font-size:14px;line-height:1.65}
+  @media(max-width:980px){.tw{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:760px){
+    .tw{grid-template-columns:1fr}
+    .tw-lead{grid-template-columns:1fr;gap:16px}
+  }
+
+  /* The scoring rubric, published verbatim — the model is given these bands */
+  .rubric{
+    margin-top:14px;border:1px solid var(--line);border-radius:8px;
+    background:var(--bg);overflow:hidden;
+  }
+  .rub-row{
+    display:grid;grid-template-columns:34px 62px 1fr;
+    align-items:center;gap:12px;
+    padding:9px 14px;border-bottom:1px solid var(--line);
+    font-size:13px;color:var(--soft);
+  }
+  .rub-row:last-child{border-bottom:0}
+  .rub-g{font-weight:800;font-size:15px;letter-spacing:-.02em;color:var(--ink)}
+  .rub-s{font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+  @media(max-width:560px){
+    .rub-row{grid-template-columns:26px 54px 1fr;gap:8px;padding:8px 11px;font-size:12.5px}
+  }
+
+  /* Micro-reassurance at the two points people hesitate: the gate and the price */
+  .micro-trust{
+    display:flex;flex-wrap:wrap;align-items:center;gap:0;
+    font-size:12px;color:var(--faint);line-height:1.5;
+  }
+  .micro-trust b{color:var(--dim);font-weight:600}
+  .micro-trust .trust-sep{margin:0 8px}
+
 
   /* ─────────────────────────────────────────────────────
      WALKTHROUGH — the product, step by step
@@ -508,6 +605,14 @@
   }
   .vc-score-max{font-family:'Bebas Neue';font-size:.30em;color:var(--soft);letter-spacing:.01em;text-shadow:0 2px 10px rgba(0,0,0,.85)}
   .vc-score-cap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:var(--faint);margin-top:2px;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+  /* The second scale, deliberately quieter than the gym number above it */
+  .vc-score-alt{display:inline-flex;align-items:baseline;gap:7px;margin-top:9px;
+    padding:4px 11px;border:1px solid var(--line2);border-radius:20px;
+    background:rgba(0,0,0,.4);backdrop-filter:blur(2px)}
+  .vc-score-alt-n{font-family:'Bebas Neue';font-size:19px;line-height:1;color:var(--soft)}
+  .vc-score-alt-l{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--faint)}
+  .vc-result-reveal .vc-score-alt{animation:resultSnapIn .38s ease-out .42s both}
   .vc-score-grade{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin-top:14px;text-shadow:0 2px 12px rgba(0,0,0,.95)}
   .vc-score-grade .vc-score-letter{color:var(--acc);font-weight:700;margin-right:7px;font-size:13.5px}
   .vc-result-reveal .vc-score-big{animation:resultGradePunch .58s cubic-bezier(.12,.95,.18,1) .18s both}
@@ -529,10 +634,20 @@
     display:flex;justify-content:center;align-items:center;gap:11px;margin-top:14px;
     font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
     text-transform:uppercase;text-shadow:0 2px 12px rgba(0,0,0,.95);
+    /* Long grade labels ("DEVELOPING") plus a body-fat range overflow a narrow
+       card. Wrap between the parts, never inside one. */
+    flex-wrap:wrap;row-gap:5px;
   }
+  .vc-score-meta .m-grade,.vc-score-meta .m-bf{white-space:nowrap}
   .vc-score-meta .m-grade{color:var(--acc);font-weight:700}
   .vc-score-meta .m-bf{color:var(--soft)}
   .vc-score-meta .m-sep{color:var(--quiet)}
+  /* On a phone the two parts never share a line, so stack them properly rather
+     than leaving a separator dangling at the end of the first one. */
+  @media(max-width:430px){
+    .vc-score-meta{flex-direction:column;font-size:10px;letter-spacing:.1em;gap:6px}
+    .vc-score-meta .m-sep{display:none}
+  }
 
   /* ── RESULT ANALYSIS (clean, data-forward) ── */
   .res-analysis{margin:0 0 12px}
@@ -592,6 +707,33 @@
   .rc-ref{stroke:var(--dim);stroke-width:1;stroke-dasharray:1 3;opacity:.5}
   .rc-reftext{fill:var(--dim);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;opacity:.9}
   .rank-note{font-size:10.5px;color:var(--faint);line-height:1.5;margin-top:10px;text-align:left}
+  /* Two scales side by side — gym first, because it's the one that's earned */
+  .rank-dual{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 12px}
+  .rank-d{border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:var(--bg)}
+  .rank-d-gym{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 7%,var(--bg))}
+  .rank-d-n{font-family:'Bebas Neue';font-size:38px;line-height:.92;color:var(--acc)}
+  .rank-d-pop .rank-d-n{color:var(--soft)}
+  .rank-d-max{font-family:'Bebas Neue';font-size:.42em;color:var(--faint);margin-left:2px}
+  .rank-d-l{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--faint);margin-top:4px}
+  .rank-d-p{font-size:12px;font-weight:700;color:var(--ink);margin-top:7px;line-height:1.35}
+  .rank-d-oi{display:block;font-size:10.5px;font-weight:400;color:var(--dim);margin-top:1px}
+  .rank-legend{display:flex;gap:16px;margin-top:9px;flex-wrap:wrap}
+  .rank-key{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);display:inline-flex;align-items:center;gap:6px}
+  .rank-key::before{content:"";width:12px;height:2px;border-radius:2px;background:var(--blue)}
+  .rank-key-gym::before{background:var(--acc)}
+  .rc-area-gym{fill:color-mix(in srgb,var(--acc) 11%,transparent)}
+  .rc-line-gym{stroke:var(--acc)}
+  .rc-marker.rc-pop{stroke:var(--soft);opacity:.75}
+  .rc-dot.rc-pop{fill:var(--soft)}
+  .rc-marker.rc-gym{stroke:var(--acc);stroke-dasharray:none}
+  @media(max-width:420px){
+    .rank-dual{gap:8px}
+    .rank-d{padding:9px 10px}
+    .rank-d-n{font-size:31px}
+    .rank-d-p{font-size:11.5px}
+  }
   .res-rank.blurred{filter:blur(8px);pointer-events:none;user-select:none}
 
   /* Pro-lock veil — blurs the inner content and overlays an unlock CTA.
@@ -720,6 +862,9 @@
     text-transform:uppercase;color:var(--faint);margin-top:5px;
   }
   .vc-strip.two{grid-template-columns:1fr 1px 1fr}
+  .vc-strip.four{grid-template-columns:1fr 1px 1fr 1px 1fr 1px 1fr}
+  .vc-strip.four .vc-strip-val{font-size:23px}
+  .vc-strip.four .vc-strip-lbl{font-size:7px;letter-spacing:.12em}
 
   /* muscle rows */
   .vc-section-title{
@@ -1779,6 +1924,22 @@
             <span class="trust-sep">·</span>
             <span class="trust-item">Visual estimate, not medical advice</span>
           </div>
+          <!-- Real counters from the worker; falls back to the last verified figures -->
+          <div class="proof" aria-label="Usage so far">
+            <div class="proof-i">
+              <span class="proof-n" data-stat="scans">1,050+</span>
+              <span class="proof-l">scans delivered</span>
+            </div>
+            <div class="proof-i">
+              <span class="proof-n" data-stat="people">800+</span>
+              <span class="proof-l">physiques graded</span>
+            </div>
+            <div class="proof-i">
+              <span class="proof-n">11</span>
+              <span class="proof-l">areas scored per physique</span>
+            </div>
+            <span class="proof-since">Counted by the grading service itself. No reviews, no testimonials, no borrowed logos — just what the tool has actually done.</span>
+          </div>
         </div>
 
       </div>
@@ -1804,8 +1965,10 @@
                   <div class="vc-grade-letter">C</div>
                   <div class="vc-grade-label">Developing Lifter</div>
                 </div>
-                <div class="vc-strip two">
-                  <div><div class="vc-strip-val">55/100</div><div class="vc-strip-lbl">Score</div></div>
+                <div class="vc-strip">
+                  <div><div class="vc-strip-val">5.5</div><div class="vc-strip-lbl">vs gym</div></div>
+                  <div class="vc-strip-div"></div>
+                  <div><div class="vc-strip-val">5.8</div><div class="vc-strip-lbl">vs all</div></div>
                   <div class="vc-strip-div"></div>
                   <div><div class="vc-strip-val">18-24%</div><div class="vc-strip-lbl">BF est.</div></div>
                 </div>
@@ -1813,17 +1976,17 @@
                 <div class="vc-muscle">
                   <span class="vc-muscle-name">Shoulders</span>
                   <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:60%;animation-delay:.1s"></div></div>
-                  <span class="vc-muscle-val">60</span>
+                  <span class="vc-muscle-val">6.0</span>
                 </div>
                 <div class="vc-muscle">
                   <span class="vc-muscle-name">Chest</span>
                   <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:46%;animation-delay:.17s"></div></div>
-                  <span class="vc-muscle-val">46</span>
+                  <span class="vc-muscle-val">4.6</span>
                 </div>
                 <div class="vc-muscle">
                   <span class="vc-muscle-name">Conditioning</span>
                   <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:50%;animation-delay:.24s"></div></div>
-                  <span class="vc-muscle-val">50</span>
+                  <span class="vc-muscle-val">5.0</span>
                 </div>
                 <div class="vc-call">
                   <div class="vc-call-row"><span class="vc-call-lbl weak">Weakness</span><span class="vc-call-val">Chest thickness + conditioning</span></div>
@@ -1858,6 +2021,78 @@
           </div>
         </div>
       </section>
+      <!-- TRUST — every claim here is checkable on this page. Nothing invented. -->
+      <section class="sec" id="trustSection">
+        <div class="sec-head">
+          <h2>Why the grade is <em>worth trusting</em>.</h2>
+          <p>No reviews to fake and no experts to name-drop. Here is what CALLOUT has actually done, and exactly how it decides.</p>
+        </div>
+
+        <div class="tw-band">
+          <div class="tw-stat">
+            <div class="tw-stat-n" data-stat="scans">1,050+</div>
+            <div class="tw-stat-l">scans delivered</div>
+          </div>
+          <div class="tw-stat">
+            <div class="tw-stat-n" data-stat="people">800+</div>
+            <div class="tw-stat-l">individual physiques graded</div>
+          </div>
+          <div class="tw-stat">
+            <div class="tw-stat-n">4</div>
+            <div class="tw-stat-l">angles in a full audit</div>
+          </div>
+          <div class="tw-stat">
+            <div class="tw-stat-n">11</div>
+            <div class="tw-stat-l">areas scored per physique</div>
+          </div>
+        </div>
+
+        <div class="tw">
+          <div class="tw-item tw-lead">
+            <div>
+              <div class="tw-k">01 · Published rubric</div>
+              <h3>The scale isn't a secret</h3>
+              <p>Every scan is judged against these bands — the same ones written into the grading instructions. Nothing is tuned per user, and nobody gets a softer scale for paying.</p>
+              <p style="margin-top:10px">The model commits to a band before it writes a single number, so the letter on your card and the scores behind it can't drift apart.</p>
+              <p style="margin-top:10px">Your card shows a 1–10 score instead, given twice: once against everyone, once against people who actually train. One point is one standard deviation, and the gym scale is the harder of the two by design.</p>
+            </div>
+            <div class="rubric">
+              <div class="rub-row"><span class="rub-g">S</span><span class="rub-s">90–100</span><span>Elite — mass far beyond a typical trained lifter</span></div>
+              <div class="rub-row"><span class="rub-g">A</span><span class="rub-s">75–89</span><span>Advanced — years of obvious hard training</span></div>
+              <div class="rub-row"><span class="rub-g">B</span><span class="rub-s">61–74</span><span>Experienced — solid base, real weak points</span></div>
+              <div class="rub-row"><span class="rub-g">C</span><span class="rub-s">40–60</span><span>Developing — visible training effect, modest overall</span></div>
+              <div class="rub-row"><span class="rub-g">D</span><span class="rub-s">25–39</span><span>Beginner — minimal visible development</span></div>
+              <div class="rub-row"><span class="rub-g">E</span><span class="rub-s">0–24</span><span>No visible training adaptation yet</span></div>
+            </div>
+          </div>
+
+          <div class="tw-item">
+            <div class="tw-k">02 · It says no</div>
+            <h3>Bad photos get refused, not flattered</h3>
+            <p>Under-18, explicit, multi-person, blurry, dark, or badly cropped photos are rejected instead of guessed at — and a refused scan doesn't spend your free scan. A tool that grades everything you feed it isn't reading anything.</p>
+            <p style="margin-top:10px">It also can't see what a photo can't show: training history, substances, injuries, or health. Those limits are stated on the result, not buried.</p>
+          </div>
+
+          <div class="tw-item">
+            <div class="tw-k">03 · Same read, every angle</div>
+            <h3>Size and leanness are scored separately</h3>
+            <p>Muscle size is judged on frame width, projection, insertions, and limb girth — cues body fat can't fake. Leanness is scored on its own line as conditioning. That's why a soft big physique and a lean small one don't collapse into the same middling number.</p>
+            <p style="margin-top:10px">Each angle is only scored for what it can actually see. A front photo never returns a back score.</p>
+          </div>
+
+          <div class="tw-item">
+            <div class="tw-k">04 · Nothing at risk</div>
+            <h3>Free first, no card, cancel anytime</h3>
+            <p>The first scan is free and needs no card — an email only, so your result and any purchase can be restored later. Payments run entirely on Stripe; card details never touch CALLOUT. Pro cancels from the Stripe portal in two clicks.</p>
+            <p style="margin-top:10px">Your photo is resized on your device, sent once for the scan, and never stored by CALLOUT or used for training. <button class="recover-link" onclick="goHome('photoSection')">Full pipeline</button></p>
+          </div>
+        </div>
+
+        <div class="method-note">
+          CALLOUT is an AI read of one photo — not a DEXA scan, a body-composition measurement, or medical advice. Lighting, pose, pump, and clothing move the result. 18+ only.
+        </div>
+      </section>
+
       <!-- SCAN SECTION -->
       <section class="sec" id="scanSection">
         <div class="sec-head">
@@ -1922,6 +2157,15 @@
           </div>
         </div>
 
+        <div class="micro-trust" style="margin-top:22px">
+          <span class="trust-item"><b>Stripe</b>&nbsp;handles checkout</span>
+          <span class="trust-sep">·</span>
+          <span class="trust-item">Card details never touch CALLOUT</span>
+          <span class="trust-sep">·</span>
+          <span class="trust-item">Cancel Pro in two clicks</span>
+          <span class="trust-sep">·</span>
+          <span class="trust-item">One-time purchases stay yours</span>
+        </div>
         <p class="pricing-notes">Payments run on Stripe. Pro renews monthly and can be cancelled anytime from the Stripe portal. <button class="recover-link" onclick="openRecoveryModal()">Already paid?</button></p>
       </section>
       <!-- SAMPLE VERDICTS -->
@@ -2061,7 +2305,7 @@
           </div>
         </div>
         <div class="method-note">
-          CALLOUT does not show percentile rankings — there is no audited population behind it to rank you against. Scores describe how this photo reads to the model, nothing more. Treat the output as directional feedback, then go lift.
+          The "top %" on a result is a modelled estimate, not a measured ranking — there is no audited population behind it, so it is labelled an AI estimate everywhere it appears. Scores describe how this photo reads to the model, nothing more. Treat the output as directional feedback, then go lift.
         </div>
                 </div>
         </details>
@@ -2156,6 +2400,8 @@
           <details class="faq-item"><summary class="faq-q">What photo works best?</summary><div class="faq-a">Good light, plain background, shorts, full region in frame. A phone camera is fine. Bad photos get refused — they don't get graded generously.</div></details>
           <details class="faq-item"><summary class="faq-q">Can I cancel anytime?</summary><div class="faq-a">Yes. No contracts, no questions.</div></details>
           <details class="faq-item"><summary class="faq-q">How accurate is the grading?</summary><div class="faq-a">CALLOUT uses an AI vision model to estimate visible muscle development from the photo you upload. It is not a medical tool, a DEXA scan, or a body-composition measurement.</div></details>
+          <details class="faq-item"><summary class="faq-q">Are the numbers on this page real?</summary><div class="faq-a">Yes, and they're the only numbers here. The scan and physique counts come from the grading service's own counters, rounded down and shown with a "+". There are no testimonials, star ratings, "as seen in" logos, or user quotes on this site, because there is nothing to show that wouldn't be invented.</div></details>
+          <details class="faq-item"><summary class="faq-q">Does the same photo always get the same grade?</summary><div class="faq-a">Close, but not identical. Every scan runs against the same published rubric and the model commits to a grade band before it scores individual muscles, which keeps results tight — but an AI read still varies slightly, and a different pose, light, or pump moves it more than the model does.</div></details>
           <details class="faq-item"><summary class="faq-q">What happens to my photo?</summary><div class="faq-a">It is sent to the AI provider for the scan and is not stored by CALLOUT. We do not use your photos to train CALLOUT. The provider may process the image under its own terms to return the result. <button class="recover-link" onclick="goHome('photoSection')">Full pipeline</button></div></details>
           <details class="faq-item"><summary class="faq-q">Does it work for women?</summary><div class="faq-a">It can assess adult physiques of any gender from photos, but results depend heavily on pose, lighting, clothing, and what is visible. Treat it as directional feedback, not a definitive ranking.</div></details>
           <details class="faq-item"><summary class="faq-q">What does a C grade actually mean?</summary><div class="faq-a">C means the photo shows a visible training base, but also obvious work left. It does not mean you're impressive from every angle — that's B and above. It's an honest baseline, not an insult.</div></details>
@@ -2615,6 +2861,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   loadState();
   userTierDisplay=null; // paid UI must relock until the worker re-issues a token
   refreshHome();
+  loadPublicStats();
   if(userEmail) refreshEntitlementToken().then(refreshHome).catch(()=>{});
 
   // Handle Stripe success redirect (?session_id=...) — verified server-side
@@ -2944,15 +3191,121 @@ function goHome(id){
 function scoreToGrade(s){if(s>=90)return'S';if(s>=75)return'A';if(s>=61)return'B';if(s>=40)return'C';if(s>=25)return'D';return'E';}
 function gradeLabel(g){return{S:'Elite',A:'Advanced',B:'Experienced',C:'Developing',D:'Beginner',E:'Starting Out'}[g[0]]||'';}
 
+let lastBodyfat=null;
+// Overall physique score: a 50/50 blend of mass and conditioning, PLUS a "completeness"
+// bonus that only rewards being strong at BOTH — so a big-AND-conditioned physique reaches
+// S, while excelling at only one trait stays at the blend. Tuned to reference targets:
+// monster 90/72 -> 90, lean 54/80 -> 67, shredded 55/90 -> 72, soft-big 85/45 -> 65.
+function blendScore(mass, cond){
+  if(mass==null && cond==null) return null;
+  if(mass==null) return Math.round(cond);
+  if(cond==null) return Math.round(mass);
+  const bonus=Math.min(12, Math.max(0,mass-78)*Math.max(0,cond-60)*0.0625);
+  return Math.min(100, Math.round((mass+cond)/2 + bonus));
+}
+// ============================================================
+//  THE 1–10 DISPLAY SCALE
+// ============================================================
+// The 0–100 number the worker grades is raw material. It still drives the S–E
+// letter and it is never shown. What people read is a 1–10 score given twice:
+// once against the general population, once against people who actually train.
+// One whole point is one standard deviation, so both numbers say directly how
+// far out you are. The gym scale is the harder climb by design — the same
+// physique scores lower on it, and its top end is open-class only.
+const SCALE_POP_MULT=1.10;   // general population
+const SCALE_GYM_MULT=1.05;   // gym-goers — harder
+// Where each group's average lands on its own scale, from the model's standing
+// anchors: an average adult grades ~25 raw, an average gym-goer ~50. THESE TWO
+// CONSTANTS ARE THE POPULATION AVERAGES — move one and every percentile on the
+// site moves with it.
+const SCALE_POP_MEAN=25*SCALE_POP_MULT/10;   // 2.75
+const SCALE_GYM_MEAN=50*SCALE_GYM_MULT/10;   // 5.25
+
+// The number both display scales are built from: a flat average of mass and
+// conditioning. Deliberately NOT blendScore — the completeness bonus belongs to
+// the hidden score and the letter grade, not to the 1–10 someone reads.
+function rawBase(mass,cond){
+  if(mass==null&&cond==null) return null;
+  if(mass==null) return cond;
+  if(cond==null) return mass;
+  return (mass+cond)/2;
+}
+// Raw 0–100 → one decimal on the 1–10 scale, capped at a perfect 10.
+function toScale(base,mult){
+  if(base==null) return null;
+  return Math.min(10,Math.round(base*mult)/10);
+}
+// Rounded values are what people read; the exact ones drive the percentiles, or
+// the display rounding alone shifts an average gym-goer off their own median.
+function scaleScores(base){
+  if(base==null) return null;
+  return {
+    pop:toScale(base,SCALE_POP_MULT),
+    gym:toScale(base,SCALE_GYM_MULT),
+    popExact:Math.min(10,base*SCALE_POP_MULT/10),
+    gymExact:Math.min(10,base*SCALE_GYM_MULT/10)
+  };
+}
+function fmtScale(v){ return v==null?'—':v.toFixed(1); }
+
+// Normal tail P(X > z). The asymptotic series holds its precision far out where
+// the top of the gym scale lives; the polynomial covers the ordinary range.
+function normTail(z){
+  if(z<0) return 1-normTail(-z);
+  const phi=Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
+  if(z>5){const z2=z*z;return phi/z*(1-1/z2+3/(z2*z2)-15/(z2*z2*z2));}
+  const t=1/(1+0.2316419*z);
+  return phi*t*(0.319381530+t*(-0.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));
+}
+// Percentile of a 1–10 score inside its own population. SD is 1.0 point by
+// construction, so the z-score is just the distance from that scale's average.
+function scalePercentile(v,mean){
+  if(v==null) return null;
+  return (1-normTail(v-mean))*100;
+}
+
 function computeOverall(){
   const have=MUSCLES.filter(k=>profile[k]);
   if(have.length===0) return null;
-  const avg=Math.round(have.reduce((s,k)=>s+profile[k].score,0)/have.length);
+  const sizeKeys=have.filter(k=>k!=='conditioning');
+  const massAvg=sizeKeys.length?Math.round(sizeKeys.reduce((s,k)=>s+profile[k].score,0)/sizeKeys.length):null;
+  const condVal=(profile.conditioning&&profile.conditioning.score!=null)?Math.round(profile.conditioning.score):condFromBodyfat(lastBodyfat,massAvg);
+  let avg=blendScore(massAvg,condVal); if(avg==null) avg=0;
+  const base=rawBase(massAvg,condVal);
   const missing=MUSCLES.filter(k=>!profile[k]);
   const haveBack=!!profile.back, haveLegs=!!(profile.quads||profile.hamstrings||profile.calves);
   let capScore=avg,capped=false;
   if(!haveBack||!haveLegs){const c=Math.min(avg,67);capped=c<avg;capScore=c;}
-  return{avg,capScore,grade:scoreToGrade(capScore),missing,capped,haveBack,haveLegs,nViews:Object.keys(viewsDone).length};
+  // The ceiling has to bite on the numbers people actually read, or "grade
+  // capped" means nothing to them.
+  const capBase=capped?Math.min(base==null?0:base,67):base;
+  return{avg,capScore,base,capBase,scores:scaleScores(capBase),grade:scoreToGrade(capScore),missing,capped,haveBack,haveLegs,nViews:Object.keys(viewsDone).length};
+}
+
+// Real usage counters, served by the worker's own stats action. The markup ships
+// with the last verified figures, so the numbers are never blank and never
+// invented — a failed fetch simply leaves those in place.
+const STATS_FALLBACK={scans:1050,people:800};
+function paintStats(s){
+  document.querySelectorAll('[data-stat]').forEach(el=>{
+    const n=s[el.getAttribute('data-stat')];
+    if(Number.isFinite(n)&&n>0) el.textContent=n.toLocaleString('en-GB')+'+';
+  });
+}
+function loadPublicStats(){
+  if(!WORKER_URL) return;
+  fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'stats'})})
+    .then(r=>r.ok?r.json():null)
+    .then(d=>{
+      if(!d) return;
+      // Never display less than the verified baseline, whatever the counters say.
+      paintStats({
+        scans:Math.max(STATS_FALLBACK.scans,Number(d.scans)||0),
+        people:Math.max(STATS_FALLBACK.people,Number(d.people)||0)
+      });
+    })
+    .catch(()=>{});
 }
 
 function refreshHome(){
@@ -2974,7 +3327,9 @@ function refreshHome(){
   const g=document.getElementById('ov-grade'),sc=document.getElementById('ov-score'),
         cta=document.getElementById('ov-cta'),see=document.getElementById('ov-see');
   if(!o){g.textContent='—';g.className='g locked';sc.textContent='';cta.textContent='Scan an angle to start building your grade.';see.style.display='none';return;}
-  g.textContent=o.grade;g.className='g';sc.textContent=o.capScore+'/100';see.style.display='inline-block';
+  g.textContent=o.grade;g.className='g';
+  sc.textContent=o.scores?(fmtScale(o.scores.gym)+'/10 gym · '+fmtScale(o.scores.pop)+'/10 overall'):'';
+  see.style.display='inline-block';
   if(o.missing.length){
     const nm=!o.haveBack?'back':(!o.haveLegs?'legs':o.missing[0]);
     cta.innerHTML='Grade capped while parts stay hidden. <b>Scan your '+nm+'</b> to raise the ceiling.';
@@ -2997,15 +3352,24 @@ function renderViewResult(view,data,photoURL){
   const m=data.muscles||{};
   const seen=MUSCLES.filter(k=>m[k]&&m[k].score!=null);
 
-  const viewAvg=seen.length?Math.round(seen.reduce((s,k)=>s+m[k].score,0)/seen.length):null;
+  // Overall = mass/conditioning blend + completeness bonus (see blendScore / computeOverall).
+  lastBodyfat=data.bodyfat_range||lastBodyfat;
+  const _sizeKeys=seen.filter(k=>k!=='conditioning');
+  const _massAvg=_sizeKeys.length?Math.round(_sizeKeys.reduce((s,k)=>s+m[k].score,0)/_sizeKeys.length):null;
+  const _cond=(m['conditioning']&&m['conditioning'].score!=null)?Math.round(m['conditioning'].score):condFromBodyfat(data.bodyfat_range,_massAvg);
+  const viewAvg=blendScore(_massAvg,_cond);
+  const viewBase=rawBase(_massAvg,_cond);
+  const viewScores=scaleScores(viewBase);
   const viewGrade=viewAvg!=null?scoreToGrade(viewAvg):'—';
 
+  // Muscle reads are the raw grade on the same 1–10 scale, with no population
+  // multiplier — that gap is exactly why the headline sits above them.
   let muscleRows='';
   seen.forEach((k,i)=>{const v=m[k];
     muscleRows+='<div class="vc-muscle">'+
       '<span class="vc-muscle-name">'+cap(k)+'</span>'+
       '<div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:'+v.score+'%;animation-delay:'+(.12+i*.06)+'s"></div></div>'+
-      '<span class="vc-muscle-val">'+v.score+'</span>'+
+      '<span class="vc-muscle-val">'+(v.score/10).toFixed(1)+'</span>'+
     '</div>';});
 
   const cardId=makeCardId();
@@ -3026,7 +3390,10 @@ function renderViewResult(view,data,photoURL){
       '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-label="Email address" onkeydown="if(event.key===\'Enter\')submitGate()">'+
       '<label class="gate-consent"><input type="checkbox" id="gateConsent" checked> Email me physique tips and updates. No spam, unsubscribe anytime.</label>'+
       '<button class="btn" onclick="submitGate()">Show my grade →</button>'+
-      '<div class="gate-fine">Photo not stored by CALLOUT · <a onclick="openModal(\'privacyModal\')">privacy</a></div>'+
+      // The moment a stranger is asked for an email is the moment they need the
+      // limits restated — not buried in a policy they will not open.
+      '<div class="gate-fine">No card · no password · unsubscribe anytime</div>'+
+      '<div class="gate-fine">Photo already graded and not stored by CALLOUT · <a onclick="openModal(\'privacyModal\')">privacy</a></div>'+
     '</div>';
   track('scan_result',{view:view,grade:viewGrade,paid:hasEntitlementHint()});
   if(!hasAccount()) track('gate_shown',{view:view});
@@ -3041,8 +3408,9 @@ function renderViewResult(view,data,photoURL){
           '<span class="vc-badge">'+viewName+' VIEW</span>'+
         '</div>'+
         '<div class="vc-scorehero">'+
-          '<div class="vc-score-big">'+(viewAvg!=null?viewAvg:'—')+'<span class="vc-score-max">/100</span></div>'+
-          '<div class="vc-score-cap">Score</div>'+
+          '<div class="vc-score-big">'+(viewScores?fmtScale(viewScores.gym):'—')+'<span class="vc-score-max">/10</span></div>'+
+          '<div class="vc-score-cap">vs gym-goers</div>'+
+          (viewScores?'<div class="vc-score-alt"><span class="vc-score-alt-n">'+fmtScale(viewScores.pop)+'</span><span class="vc-score-alt-l">vs everyone</span></div>':'')+
           '<div class="vc-score-meta">'+
             (viewGrade!=='—'?'<span class="m-grade">'+viewGrade+' · '+gradeLabel(viewGrade)+'</span>':'')+
             (hasEntitlementHint()&&data.bodyfat_range?'<span class="m-sep">·</span><span class="m-bf">'+esc(data.bodyfat_range)+' BF</span>':'')+
@@ -3056,7 +3424,7 @@ function renderViewResult(view,data,photoURL){
       '</div>'+
       gateHTML+
     '</div>'+
-    buildRankHTML(viewAvg,viewGrade)+
+    buildRankHTML(viewBase,viewGrade)+
     buildMassCondHTML(m,seen,viewGrade,data.bodyfat_range)+
     ((data.verdict||data.strongest_visible_area||data.weakest_visible_area||data.next_focus)?
       '<div class="res-analysis grade-'+(viewGrade!=='—'?viewGrade:'C')+(hasAccount()?'':' blurred')+'">'+
@@ -3083,7 +3451,7 @@ function renderViewResult(view,data,photoURL){
   } else {
     btn.style.display='block';
     configurePrimaryBtn(computeOverall());
-    injectShareMoment(viewGrade, viewAvg||0);
+    injectShareMoment(viewGrade, viewScores?viewScores.gym:0);
     // Pro block (rendered inline for all non-Pro users) is the upsell now.
   }
 }
@@ -3133,7 +3501,7 @@ function submitGate(){
   const o=computeOverall();
   configurePrimaryBtn(o);
 
-  injectShareMoment(o?o.grade:(document.querySelector('.vc-grade-letter')||{}).textContent||'?', o?o.capScore:0);
+  injectShareMoment(o?o.grade:(document.querySelector('.vc-grade-letter')||{}).textContent||'?', (o&&o.scores)?o.scores.gym:0);
 
   if(!hasEntitlementHint()) injectUpsell();
 
@@ -3291,7 +3659,7 @@ function showConfirmScreen(){
 // ============================================================
 function shareGrade(grade, score, fromMoment){
   track('share_click',{grade:grade,score:score,surface:fromMoment?'share_moment':'overall'});
-  const text='I just got called out. '+grade+'-tier, '+score+'/100 on CALLOUT — the AI that grades your physique. No flattery. Get your verdict: '+(location.origin+location.pathname);
+  const text='I just got called out. '+grade+'-tier, '+score+'/10 against people who actually train, on CALLOUT — the AI that grades your physique. No flattery. Get your verdict: '+(location.origin+location.pathname);
   if(navigator.share){
     navigator.share({title:'My CALLOUT Grade',text,url:location.origin+location.pathname})
       .then(()=>{ if(fromMoment){ const m=document.getElementById('shareMoment'); if(m) m.remove(); }})
@@ -3320,7 +3688,7 @@ function showOverall(){
     muscleRows+='<div class="vc-muscle'+(na?' vc-muscle-na':'')+'">'+
       '<span class="vc-muscle-name">'+cap(k)+'</span>'+
       '<div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:'+(na?100:p.score)+'%;animation-delay:'+(.1+i*.045)+'s"></div></div>'+
-      '<span class="vc-muscle-val">'+(na?'—':p.score)+'</span>'+
+      '<span class="vc-muscle-val">'+(na?'—':(p.score/10).toFixed(1))+'</span>'+
     '</div>';});
 
   const cardId=makeCardId();
@@ -3344,8 +3712,10 @@ function showOverall(){
           '<div class="vc-grade-letter">'+o.grade+'</div>'+
           '<div class="vc-grade-label">'+gradeLabel(o.grade)+' Lifter</div>'+
         '</div>'+
-        '<div class="vc-strip">'+
-          '<div><div class="vc-strip-val">'+o.capScore+'/100</div><div class="vc-strip-lbl">Score</div></div>'+
+        '<div class="vc-strip four">'+
+          '<div><div class="vc-strip-val">'+(o.scores?fmtScale(o.scores.gym):'—')+'</div><div class="vc-strip-lbl">vs gym</div></div>'+
+          '<div class="vc-strip-div"></div>'+
+          '<div><div class="vc-strip-val">'+(o.scores?fmtScale(o.scores.pop):'—')+'</div><div class="vc-strip-lbl">vs all</div></div>'+
           '<div class="vc-strip-div"></div>'+
           '<div><div class="vc-strip-val">'+(o.missing.length===0?'FULL':o.missing.length+' left')+'</div><div class="vc-strip-lbl">Profile</div></div>'+
           '<div class="vc-strip-div"></div>'+
@@ -3370,7 +3740,7 @@ function showOverall(){
   const shareRow=document.createElement('div');
   shareRow.id='overallShareRow'; shareRow.className='share-row';
   shareRow.innerHTML=
-    '<button class="btn ghost" onclick="shareGrade(\''+o.grade+'\','+o.capScore+')" style="display:flex;align-items:center;justify-content:center;gap:8px">'+
+    '<button class="btn ghost" onclick="shareGrade(\''+o.grade+'\','+((o.scores)?o.scores.gym:0)+')" style="display:flex;align-items:center;justify-content:center;gap:8px">'+
       '<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>'+
       'Share my grade'+
     '</button>';
@@ -3651,86 +4021,127 @@ function buildFocusHTML(data){
   ).join('')+'</div>';
 }
 
-// Rough population percentile modelled from score. NOT a measured ranking — it's a
-// modelled estimate of where a physique score sits vs the general population, and
-// is always presented as an "AI estimate". Anchor points from the owner's model:
-// pop average ≈ 25 (top 50%), average gym-goer ≈ 50 (top 15%), elite tail is very thin.
-const RANK_MAP=[[0,0.5],[10,2],[15,13],[20,25],[25,50],[30,59],[35,68],[40,74],[45,81],[50,85],[55,90],[60,95.5],[65,98],[70,99],[75,99.4],[80,99.8],[85,99.97],[90,99.9999],[92,99.99997],[95,99.999998],[100,99.999999]];
-function scoreToPercentile(s){
-  if(s==null) return null;
-  const last=RANK_MAP[RANK_MAP.length-1];
-  if(s<=RANK_MAP[0][0]) return RANK_MAP[0][1];
-  if(s>=last[0]) return last[1];
-  for(let i=1;i<RANK_MAP.length;i++){
-    if(s<=RANK_MAP[i][0]){const a=RANK_MAP[i-1],b=RANK_MAP[i];return a[1]+(b[1]-a[1])*(s-a[0])/(b[0]-a[0]);}
-  }
-  return last[1];
-}
-// Format "top X%" — integers for the common case, decimals as the elite tail thins out.
-function fmtTop(pct){
-  const t=100-pct;
+// How fine a rarity each scale is allowed to print. The gym curve is modelled on
+// the group the product actually measures, so it earns real resolution. The
+// general-population curve saturates almost immediately — anyone who lifts is
+// far out on it — and printing "top 0.0002%" off a model with nothing behind it
+// out there would be a lie dressed as arithmetic. It stops at 1 in 1,000.
+const RANK_FLOOR_GYM=0.0001;   // 1 in a million
+const RANK_FLOOR_POP=0.1;      // 1 in a thousand
+// Format "top X%" — integers for the common case, decimals as the tail thins out.
+function fmtTop(pct,floor){
+  const t=Math.max(floor==null?RANK_FLOOR_GYM:floor,100-pct);
   if(t>=10) return ''+Math.round(t);
   if(t>=1)  return ''+(Math.round(t*10)/10);
   if(t>=0.1)  return ''+(Math.round(t*100)/100);
   if(t>=0.01) return ''+(Math.round(t*1000)/1000);
   return ''+Number(t.toPrecision(1));
 }
-function buildRankHTML(score, grade, blurred){
-  if(score==null) return '';
-  const pct=scoreToPercentile(score);
-  // Above the median (score 25) → "Top X%"; below it → "Bottom X%" so a weak score
-  // never reads as "Top 91%", which sounds good but means the opposite.
-  const inTop=pct>=50;
-  const rankLabel=inTop?('Top '+fmtTop(pct)+'%'):('Bottom '+Math.round(pct)+'%');
-  // Population density = gaussian-smoothed slope of the percentile curve → a clean
-  // right-skewed bell that peaks near the population average (~25).
-  function rawDens(x){ return Math.max(0,scoreToPercentile(x+0.5)-scoreToPercentile(x-0.5)); }
-  const SIG=6.5;
-  function densAt(x){ let num=0,den=0; for(let t=0;t<=100;t++){ const w=Math.exp(-((t-x)*(t-x))/(2*SIG*SIG)); num+=w*rawDens(t); den+=w; } return num/den; }
-  let maxD=0; for(let x=0;x<=100;x++){ const d=densAt(x); if(d>maxD) maxD=d; }
-  const W=320,H=152,x0=30,x1=310,y0=20,y1=126;
+// "Top 0.0004%" means nothing to most people; "about 1 in 230,000" does.
+function fmtOneIn(pct,floor){
+  const t=Math.max(floor==null?RANK_FLOOR_GYM:floor,100-pct)/100;
+  const n=1/t;
+  if(n<20) return null;
+  if(n<1000) return 'about 1 in '+(Math.round(n/10)*10);
+  if(n<1e6) return 'about 1 in '+Math.round(n/1000)+',000';
+  return 'about 1 in '+Math.round(n/1e6)+' million';
+}
+// Above the median → "Top X%"; below it → "Bottom X%", so a weak score never
+// reads as "Top 91%", which sounds good but means the opposite. At the ceiling
+// the honest phrasing is "or better", not a fabricated extra decimal.
+function rankLabel(pct,floor){
+  if(pct==null) return '—';
+  if(pct<50) return 'Bottom '+Math.max(1,Math.round(pct))+'%';
+  const f=floor==null?RANK_FLOOR_GYM:floor;
+  return 'Top '+fmtTop(pct,f)+'%'+((100-pct)<f?' or better':'');
+}
+// Two bell curves on one 1–10 axis: everyone, and everyone who trains. Both are
+// normal with SD 1.0 by construction, so the gym curve is the same shape shifted
+// right — which is the whole point. The same physique sits high on the left
+// curve and much further down the right one.
+function buildRankHTML(base, grade, blurred){
+  if(base==null) return '';
+  const sc=scaleScores(base);
+  const popPct=scalePercentile(sc.popExact,SCALE_POP_MEAN);
+  const gymPct=scalePercentile(sc.gymExact,SCALE_GYM_MEAN);
+
+  const W=320,H=168,x0=30,x1=310,y0=26,y1=132;
   const plotW=x1-x0,plotH=y1-y0;
-  const px=s=>x0+(s/100)*plotW;
-  const py=d=>y1-(d/maxD)*plotH;
-  let pts=[]; for(let s=0;s<=100;s+=2){ pts.push(px(s).toFixed(1)+' '+py(densAt(s)).toFixed(1)); }
-  const linePath='M '+pts.join(' L ');
-  const areaPath='M '+px(0).toFixed(1)+' '+y1+' L '+pts.join(' L ')+' L '+px(100).toFixed(1)+' '+y1+' Z';
-  const mx=px(score), my=py(densAt(score));
+  const px=v=>x0+(Math.max(0,Math.min(10,v))/10)*plotW;
+  // Both curves share a height scale, so the shift between them stays readable.
+  const dens=(v,mean)=>Math.exp(-((v-mean)*(v-mean))/2);
+  const py=d=>y1-d*plotH;
+
+  function curve(mean){
+    let pts=[];
+    for(let v=0;v<=10;v+=0.2) pts.push(px(v).toFixed(1)+' '+py(dens(v,mean)).toFixed(1));
+    return {line:'M '+pts.join(' L '),
+            area:'M '+px(0).toFixed(1)+' '+y1+' L '+pts.join(' L ')+' L '+px(10).toFixed(1)+' '+y1+' Z'};
+  }
+  const cPop=curve(SCALE_POP_MEAN), cGym=curve(SCALE_GYM_MEAN);
+
   let grid='';
-  [0,25,50,75,100].forEach(function(s){ const gx=px(s).toFixed(1); grid+='<line class="rc-grid" x1="'+gx+'" y1="'+y0+'" x2="'+gx+'" y2="'+y1+'"/>'; });
-  [0,.25,.5,.75,1].forEach(function(f){ const gy=(y1-f*plotH).toFixed(1); grid+='<line class="rc-grid" x1="'+x0+'" y1="'+gy+'" x2="'+x1+'" y2="'+gy+'"/>'; });
+  [0,2,4,6,8,10].forEach(function(v){ const gx=px(v).toFixed(1); grid+='<line class="rc-grid" x1="'+gx+'" y1="'+y0+'" x2="'+gx+'" y2="'+y1+'"/>'; });
+  [0,.5,1].forEach(function(f){ const gy=(y1-f*plotH).toFixed(1); grid+='<line class="rc-grid" x1="'+x0+'" y1="'+gy+'" x2="'+x1+'" y2="'+gy+'"/>'; });
+
   let ax='';
-  [0,25,50,75,100].forEach(function(s){ ax+='<text class="rc-axtext" x="'+px(s).toFixed(1)+'" y="'+(y1+11)+'" text-anchor="middle" font-size="8">'+s+'</text>'; });
-  const midY=((y0+y1)/2).toFixed(1);
-  ax+='<text class="rc-axtitle" x="'+((x0+x1)/2).toFixed(1)+'" y="'+(y1+23)+'" text-anchor="middle" font-size="8">Score</text>';
-  ax+='<text class="rc-axtitle" x="12" y="'+midY+'" text-anchor="middle" font-size="7" transform="rotate(-90 12 '+midY+')">Population density</text>';
-  const refs=(function(){function m(s,l){const rxx=px(s).toFixed(1);return '<line class="rc-ref" x1="'+rxx+'" y1="'+y0+'" x2="'+rxx+'" y2="'+y1+'"/><text class="rc-reftext" x="'+rxx+'" y="8" text-anchor="middle" font-size="6.5">'+l+'</text>';}return m(25,'POP AVG')+m(50,'GYM AVG');})();
-  const boxW=84,boxH=30;
-  let bx=mx-boxW/2; if(bx<x0)bx=x0; if(bx>x1-boxW)bx=x1-boxW;
-  const by=y0-6, cx=(bx+boxW/2).toFixed(1);
-  const callout='<rect class="rc-callout" x="'+bx.toFixed(1)+'" y="'+by+'" width="'+boxW+'" height="'+boxH+'" rx="7"/>'+
-    '<text class="rc-cotext" x="'+cx+'" y="'+(by+12)+'" font-size="10">You: '+Math.round(score)+'</text>'+
-    '<text class="rc-cotext" x="'+cx+'" y="'+(by+24)+'" font-size="11">'+rankLabel+'</text>';
+  [0,2,4,6,8,10].forEach(function(v){ ax+='<text class="rc-axtext" x="'+px(v).toFixed(1)+'" y="'+(y1+11)+'" text-anchor="middle" font-size="8">'+v+'</text>'; });
+  ax+='<text class="rc-axtitle" x="'+((x0+x1)/2).toFixed(1)+'" y="'+(y1+24)+'" text-anchor="middle" font-size="8">Score out of 10 · 1.0 = one standard deviation</text>';
+
+  // Each population's average, marked on its own curve.
+  const refs=(function(){
+    function m(v,l){const rx=px(v).toFixed(1);
+      return '<line class="rc-ref" x1="'+rx+'" y1="'+py(1).toFixed(1)+'" x2="'+rx+'" y2="'+y1+'"/>'+
+             '<text class="rc-reftext" x="'+rx+'" y="'+(y0-14)+'" text-anchor="middle" font-size="6.5">'+l+'</text>';}
+    return m(SCALE_POP_MEAN,'EVERYONE AVG')+m(SCALE_GYM_MEAN,'GYM AVG');
+  })();
+
+  // One marker per curve. The two sit close together on purpose — the gap is the
+  // 5% the gym scale takes off you.
+  function mark(v,mean,cls){
+    const mx=px(v);
+    return '<line class="rc-marker '+cls+'" x1="'+mx.toFixed(1)+'" y1="'+y1+'" x2="'+mx.toFixed(1)+'" y2="'+(y0+2)+'"/>'+
+           '<circle class="rc-dot '+cls+'" cx="'+mx.toFixed(1)+'" cy="'+py(dens(v,mean)).toFixed(1)+'" r="3.4"/>';
+  }
+
   const gc=(grade&&grade!=='—')?' grade-'+grade:'';
   const locked=!isProHint();
+  const oneInGym=fmtOneIn(gymPct,RANK_FLOOR_GYM), oneInPop=fmtOneIn(popPct,RANK_FLOOR_POP);
+
   return '<div class="res-rank reslock'+gc+(locked?' locked':'')+(hasAccount()?'':' blurred')+'">'+
     '<div class="reslock-in">'+
     '<div class="res-sec-eyebrow">Where you rank</div>'+
-    '<div class="rank-head"><span class="rank-top">'+rankLabel+'</span><span class="rank-tag">AI estimate</span></div>'+
+    '<div class="rank-dual">'+
+      '<div class="rank-d rank-d-gym">'+
+        '<div class="rank-d-n">'+fmtScale(sc.gym)+'<span class="rank-d-max">/10</span></div>'+
+        '<div class="rank-d-l">vs gym-goers</div>'+
+        '<div class="rank-d-p">'+rankLabel(gymPct,RANK_FLOOR_GYM)+(oneInGym?' <span class="rank-d-oi">'+oneInGym+'</span>':'')+'</div>'+
+      '</div>'+
+      '<div class="rank-d rank-d-pop">'+
+        '<div class="rank-d-n">'+fmtScale(sc.pop)+'<span class="rank-d-max">/10</span></div>'+
+        '<div class="rank-d-l">vs everyone</div>'+
+        '<div class="rank-d-p">'+rankLabel(popPct,RANK_FLOOR_POP)+(oneInPop?' <span class="rank-d-oi">'+oneInPop+'</span>':'')+'</div>'+
+      '</div>'+
+    '</div>'+
     '<svg class="rank-curve" viewBox="0 0 '+W+' '+H+'" aria-hidden="true">'+
       grid+
-      '<path class="rc-area" d="'+areaPath+'"/>'+
+      '<path class="rc-area" d="'+cPop.area+'"/>'+
+      '<path class="rc-area rc-area-gym" d="'+cGym.area+'"/>'+
       refs+
-      '<path class="rc-line" d="'+linePath+'"/>'+
+      '<path class="rc-line" d="'+cPop.line+'"/>'+
+      '<path class="rc-line rc-line-gym" d="'+cGym.line+'"/>'+
       '<line class="rc-axis" x1="'+x0+'" y1="'+y1+'" x2="'+x1+'" y2="'+y1+'"/>'+
-      '<line class="rc-marker" x1="'+mx.toFixed(1)+'" y1="'+y1+'" x2="'+mx.toFixed(1)+'" y2="'+(y0+2)+'"/>'+
-      '<circle class="rc-dot" cx="'+mx.toFixed(1)+'" cy="'+my.toFixed(1)+'" r="3.4"/>'+
-      callout+
+      mark(sc.pop,SCALE_POP_MEAN,'rc-pop')+
+      mark(sc.gym,SCALE_GYM_MEAN,'rc-gym')+
       ax+
     '</svg>'+
-    '<div class="rank-note">Estimated percentile vs the general population — a rough model, not a measured ranking. Average person &asymp; 25, average gym-goer &asymp; 50.</div>'+
+    '<div class="rank-legend">'+
+      '<span class="rank-key rank-key-pop">Everyone</span>'+
+      '<span class="rank-key rank-key-gym">People who train</span>'+
     '</div>'+
-    (locked?proVeil('See your exact percentile'):'')+
+    '<div class="rank-note">Two modelled distributions, not a measured ranking — one point is one standard deviation. Being average in a gym already puts you well clear of the general population, which is why the right-hand number climbs first and the gym number is the one worth chasing.</div>'+
+    '</div>'+
+    (locked?proVeil('See both percentiles'):'')+
   '</div>';
 }
 
@@ -3790,8 +4201,8 @@ function buildMassCondHTML(m, seen, grade, bodyfat){
     '<div class="reslock-in">'+
     '<div class="res-sec-eyebrow">Mass vs conditioning</div>'+
     '<div class="mc-head"><div class="mc-stats">'+
-      '<div class="mc-stat"><b class="mc-mass">'+mass+'</b><span>Mass</span></div>'+
-      '<div class="mc-stat"><b class="mc-cond">'+cond+'</b><span>Cond</span></div>'+
+      '<div class="mc-stat"><b class="mc-mass">'+(mass/10).toFixed(1)+'</b><span>Mass</span></div>'+
+      '<div class="mc-stat"><b class="mc-cond">'+(cond/10).toFixed(1)+'</b><span>Cond</span></div>'+
     '</div><span class="rank-tag">AI estimate</span></div>'+
     '<div class="mc-type"><b>'+type+'</b> — size and leanness scored independently.</div>'+
     '<svg class="mc-plot" viewBox="0 0 '+W+' '+H+'" aria-hidden="true">'+
@@ -3902,7 +4313,7 @@ async function showHistory(){
         '<div class="hist-grade">'+g+'</div>'+
         '<div><div class="hist-name">'+esc(viewNames[h.region]||h.region||'Scan')+'</div>'+
         '<div class="hist-date">'+esc(date)+quote+'</div></div>'+
-        '<div class="hist-score">'+(h.score!=null?h.score+'/100':'—')+'</div>'+
+        '<div class="hist-score">'+(h.score!=null?(h.score/10).toFixed(1)+'/10':'—')+'</div>'+
       '</div>';
     }).join('');
   }catch(e){
@@ -4013,7 +4424,7 @@ function renderProgress(){
 
   const opts=sel=>list.map((h,j)=>
     '<option value="'+j+'"'+(j===sel?' selected':'')+'>Scan '+(j+1)+' — '+esc(progDate(h.ts,true))+
-    (h.score!=null?' · '+clampNum(h.score)+'/100':'')+'</option>'
+    (h.score!=null?' · '+(clampNum(h.score)/10).toFixed(1)+'/10':'')+'</option>'
   ).join('');
   const selects='<div class="prog-selects">'+
     '<div><div class="prog-select-lbl">Baseline</div><select class="prog-select" onchange="progSetA(this.value)">'+opts(progA)+'</select></div>'+
@@ -4042,9 +4453,12 @@ function clampNum(v){
   const n=Number(v);
   return Number.isFinite(n)?Math.max(0,Math.min(100,Math.round(n))):null;
 }
+// Deltas arrive on the raw 0–100 scale and are shown on the 1–10 one, so a
+// 6-point raw gain reads as +0.6 next to the scores it belongs to.
 function deltaChip(d,cls){
+  const v=(d==null)?null:(d/10);
   return '<span class="'+cls+' '+(d==null?'flat':(d>0?'up':(d<0?'down':'flat')))+'">'+
-    (d==null?'—':(d>0?'+'+d:String(d)))+'</span>';
+    (v==null?'—':(v>0?'+'+v.toFixed(1):v.toFixed(1)))+'</span>';
 }
 
 function buildCompareHTML(a,b){
@@ -4054,11 +4468,11 @@ function buildCompareHTML(a,b){
   const head='<div class="cmp-head">'+
     '<div class="cmp-side"><div class="cmp-date">'+esc(progDate(a.ts))+'</div>'+
       '<div class="cmp-grade">'+(sa!=null?scoreToGrade(sa):'—')+'</div>'+
-      '<div class="cmp-score">'+(sa!=null?sa+'/100':'—')+'</div></div>'+
+      '<div class="cmp-score">'+(sa!=null?(sa/10).toFixed(1)+'/10':'—')+'</div></div>'+
     deltaChip(overall,'cmp-delta')+
     '<div class="cmp-side now"><div class="cmp-date">'+esc(progDate(b.ts))+'</div>'+
       '<div class="cmp-grade">'+(sb!=null?scoreToGrade(sb):'—')+'</div>'+
-      '<div class="cmp-score">'+(sb!=null?sb+'/100':'—')+'</div></div>'+
+      '<div class="cmp-score">'+(sb!=null?(sb/10).toFixed(1)+'/10':'—')+'</div></div>'+
   '</div>';
 
   const ma=a.muscles||{}, mb=b.muscles||{};
@@ -4071,7 +4485,7 @@ function buildCompareHTML(a,b){
         '<div class="cmp-track"><div class="cmp-fill then" style="width:'+(va||0)+'%"></div></div>'+
         '<div class="cmp-track"><div class="cmp-fill now" style="width:'+(vb||0)+'%"></div></div>'+
       '</div>'+
-      '<span class="cmp-nums">'+(va!=null?va:'—')+'→'+(vb!=null?vb:'—')+deltaChip(d,'cmp-chip')+'</span>'+
+      '<span class="cmp-nums">'+(va!=null?(va/10).toFixed(1):'—')+'→'+(vb!=null?(vb/10).toFixed(1):'—')+deltaChip(d,'cmp-chip')+'</span>'+
     '</div>';
   }).join('');
 

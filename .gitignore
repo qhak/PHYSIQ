@@ -1,0 +1,5 @@
+# Internal card-studio — must NEVER be deployed publicly
+dev.html
+
+# OS cruft
+.DS_Store
