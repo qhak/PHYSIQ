@@ -3214,12 +3214,23 @@ function blendScore(mass, cond){
 // physique scores lower on it, and its top end is open-class only.
 const SCALE_POP_MULT=1.10;   // general population
 const SCALE_GYM_MULT=1.05;   // gym-goers — harder
-// Where each group's average lands on its own scale, from the model's standing
-// anchors: an average adult grades ~25 raw, an average gym-goer ~50. THESE TWO
-// CONSTANTS ARE THE POPULATION AVERAGES — move one and every percentile on the
-// site moves with it.
-const SCALE_POP_MEAN=25*SCALE_POP_MULT/10;   // 2.75
-const SCALE_GYM_MEAN=50*SCALE_GYM_MULT/10;   // 5.25
+// Both scales work identically: average sits dead centre at 5.0 and one whole
+// point is one standard deviation, so any score reads straight off as distance
+// from average — 7.3 is 2.3 SD out, and a perfect 10.0 is exactly 5 SD.
+// The ONLY difference between the two is the multiplier above: being measured
+// against everyone (x1.10) is a slightly easier climb than being measured
+// against people who train (x1.05), so the same physique scores a little higher
+// and ranks a little rarer on the population side.
+// Move either of these and every percentile on the site moves with it.
+const SCALE_POP_MEAN=5.0;
+const SCALE_GYM_MEAN=5.0;
+// How many standard deviations one whole point is worth on each scale. The gym
+// scale is the reference: 1 point = 1 SD, so 10.0 is exactly 5 SD out. The
+// general population is a tighter cluster — almost everyone is untrained, so the
+// same one-point step covers more of the spread — hence 1 point = 1.5 SD there,
+// and ranks climb faster against everyone than against people who train.
+const SCALE_GYM_SD_PER_POINT=1.0;
+const SCALE_POP_SD_PER_POINT=1.1;
 
 // The number both display scales are built from: a flat average of mass and
 // conditioning. Deliberately NOT blendScore — the completeness bonus belongs to
@@ -3257,11 +3268,11 @@ function normTail(z){
   const t=1/(1+0.2316419*z);
   return phi*t*(0.319381530+t*(-0.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));
 }
-// Percentile of a 1–10 score inside its own population. SD is 1.0 point by
-// construction, so the z-score is just the distance from that scale's average.
-function scalePercentile(v,mean){
+// Percentile of a 1–10 score inside its own population. Distance from that
+// scale's average, converted to standard deviations by its own SD-per-point.
+function scalePercentile(v,mean,sdPerPoint){
   if(v==null) return null;
-  return (1-normTail(v-mean))*100;
+  return (1-normTail((v-mean)*(sdPerPoint==null?1:sdPerPoint)))*100;
 }
 
 function computeOverall(){
@@ -4021,13 +4032,12 @@ function buildFocusHTML(data){
   ).join('')+'</div>';
 }
 
-// How fine a rarity each scale is allowed to print. The gym curve is modelled on
-// the group the product actually measures, so it earns real resolution. The
-// general-population curve saturates almost immediately — anyone who lifts is
-// far out on it — and printing "top 0.0002%" off a model with nothing behind it
-// out there would be a lie dressed as arithmetic. It stops at 1 in 1,000.
-const RANK_FLOOR_GYM=0.0001;   // 1 in a million
-const RANK_FLOOR_POP=0.1;      // 1 in a thousand
+// Both scales now print real rarity. The only ceiling is reality: once the
+// modelled figure passes the number of people alive there is nobody left to be
+// rarer than, so "1 in N" stops describing anything and we say so instead.
+const WORLD_POP=8.2e9;
+const RANK_FLOOR_GYM=100/WORLD_POP;
+const RANK_FLOOR_POP=100/WORLD_POP;
 // Format "top X%" — integers for the common case, decimals as the tail thins out.
 function fmtTop(pct,floor){
   const t=Math.max(floor==null?RANK_FLOOR_GYM:floor,100-pct);
@@ -4037,23 +4047,32 @@ function fmtTop(pct,floor){
   if(t>=0.01) return ''+(Math.round(t*1000)/1000);
   return ''+Number(t.toPrecision(1));
 }
-// "Top 0.0004%" means nothing to most people; "about 1 in 230,000" does.
-function fmtOneIn(pct,floor){
+// How many people you'd have to line up to find one of you. "Top 0.0004%" means
+// nothing to most readers; "about 1 in 230,000" does.
+function oneInCount(pct,floor){
   const t=Math.max(floor==null?RANK_FLOOR_GYM:floor,100-pct)/100;
-  const n=1/t;
-  if(n<20) return null;
+  return 1/t;
+}
+function fmtOneIn(pct,floor){
+  const n=oneInCount(pct,floor);
+  // Past the world's population the label already says so — don't repeat it.
+  if(n<20||n>WORLD_POP) return null;
   if(n<1000) return 'about 1 in '+(Math.round(n/10)*10);
-  if(n<1e6) return 'about 1 in '+Math.round(n/1000)+',000';
-  return 'about 1 in '+Math.round(n/1e6)+' million';
+  if(n<1e6) return 'about 1 in '+Math.round(n/1000).toLocaleString('en-GB')+',000';
+  if(n<1e9) return 'about 1 in '+(Math.round(n/1e5)/10)+' million';
+  return 'about 1 in '+(Math.round(n/1e8)/10)+' billion';
 }
 // Above the median → "Top X%"; below it → "Bottom X%", so a weak score never
-// reads as "Top 91%", which sounds good but means the opposite. At the ceiling
-// the honest phrasing is "or better", not a fabricated extra decimal.
+// reads as "Top 91%", which sounds good but means the opposite. Beyond the world
+// population a percentage is unreadable anyway ("top 0.000000000003%"), so the
+// label states the honest thing instead.
 function rankLabel(pct,floor){
   if(pct==null) return '—';
-  if(pct<50) return 'Bottom '+Math.max(1,Math.round(pct))+'%';
-  const f=floor==null?RANK_FLOOR_GYM:floor;
-  return 'Top '+fmtTop(pct,f)+'%'+((100-pct)<f?' or better':'');
+  // Guard the exact median: floating point lands it at 49.999… and "Bottom 50%"
+  // for a dead-average physique reads worse than "Top 50%" for the same thing.
+  if(pct<49.995) return 'Bottom '+Math.max(1,Math.round(pct))+'%';
+  if(oneInCount(pct,floor)>WORLD_POP) return 'Rarer than 1 in 8 billion';
+  return 'Top '+fmtTop(pct,floor==null?RANK_FLOOR_GYM:floor)+'%';
 }
 // Two bell curves on one 1–10 axis: everyone, and everyone who trains. Both are
 // normal with SD 1.0 by construction, so the gym curve is the same shape shifted
@@ -4062,23 +4081,27 @@ function rankLabel(pct,floor){
 function buildRankHTML(base, grade, blurred){
   if(base==null) return '';
   const sc=scaleScores(base);
-  const popPct=scalePercentile(sc.popExact,SCALE_POP_MEAN);
-  const gymPct=scalePercentile(sc.gymExact,SCALE_GYM_MEAN);
+  const popPct=scalePercentile(sc.popExact,SCALE_POP_MEAN,SCALE_POP_SD_PER_POINT);
+  const gymPct=scalePercentile(sc.gymExact,SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT);
 
   const W=320,H=168,x0=30,x1=310,y0=26,y1=132;
   const plotW=x1-x0,plotH=y1-y0;
   const px=v=>x0+(Math.max(0,Math.min(10,v))/10)*plotW;
   // Both curves share a height scale, so the shift between them stays readable.
-  const dens=(v,mean)=>Math.exp(-((v-mean)*(v-mean))/2);
+  const dens=(v,mean,sdpp)=>{const z=(v-mean)*(sdpp==null?1:sdpp);return Math.exp(-(z*z)/2);};
   const py=d=>y1-d*plotH;
 
-  function curve(mean){
+  function curve(mean,sdpp){
     let pts=[];
-    for(let v=0;v<=10;v+=0.2) pts.push(px(v).toFixed(1)+' '+py(dens(v,mean)).toFixed(1));
+    for(let v=0;v<=10;v+=0.1) pts.push(px(v).toFixed(1)+' '+py(dens(v,mean,sdpp)).toFixed(1));
     return {line:'M '+pts.join(' L '),
             area:'M '+px(0).toFixed(1)+' '+y1+' L '+pts.join(' L ')+' L '+px(10).toFixed(1)+' '+y1+' Z'};
   }
-  const cPop=curve(SCALE_POP_MEAN), cGym=curve(SCALE_GYM_MEAN);
+  const cPop=curve(SCALE_POP_MEAN,SCALE_POP_SD_PER_POINT), cGym=curve(SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT);
+  // When both scales share an average the two bells sit exactly on top of each
+  // other, and drawing both just looks like a rendering fault. Draw one, and let
+  // the two markers carry the comparison.
+  const oneCurve=Math.abs(SCALE_POP_MEAN-SCALE_GYM_MEAN)<0.05 && Math.abs(SCALE_POP_SD_PER_POINT-SCALE_GYM_SD_PER_POINT)<0.02;
 
   let grid='';
   [0,2,4,6,8,10].forEach(function(v){ const gx=px(v).toFixed(1); grid+='<line class="rc-grid" x1="'+gx+'" y1="'+y0+'" x2="'+gx+'" y2="'+y1+'"/>'; });
@@ -4086,22 +4109,25 @@ function buildRankHTML(base, grade, blurred){
 
   let ax='';
   [0,2,4,6,8,10].forEach(function(v){ ax+='<text class="rc-axtext" x="'+px(v).toFixed(1)+'" y="'+(y1+11)+'" text-anchor="middle" font-size="8">'+v+'</text>'; });
-  ax+='<text class="rc-axtitle" x="'+((x0+x1)/2).toFixed(1)+'" y="'+(y1+24)+'" text-anchor="middle" font-size="8">Score out of 10 · 1.0 = one standard deviation</text>';
+  ax+='<text class="rc-axtitle" x="'+((x0+x1)/2).toFixed(1)+'" y="'+(y1+24)+'" text-anchor="middle" font-size="8">Score out of 10 · average 5.0</text>';
 
   // Each population's average, marked on its own curve.
   const refs=(function(){
     function m(v,l){const rx=px(v).toFixed(1);
       return '<line class="rc-ref" x1="'+rx+'" y1="'+py(1).toFixed(1)+'" x2="'+rx+'" y2="'+y1+'"/>'+
              '<text class="rc-reftext" x="'+rx+'" y="'+(y0-14)+'" text-anchor="middle" font-size="6.5">'+l+'</text>';}
-    return m(SCALE_POP_MEAN,'EVERYONE AVG')+m(SCALE_GYM_MEAN,'GYM AVG');
+    // Two labels at the same x overprint into unreadable mush. When the scales
+    // share an average there is only one line to label, whatever the widths.
+    const sameMean=Math.abs(SCALE_POP_MEAN-SCALE_GYM_MEAN)<0.05;
+    return sameMean?m(SCALE_GYM_MEAN,'AVERAGE'):(m(SCALE_POP_MEAN,'EVERYONE AVG')+m(SCALE_GYM_MEAN,'GYM AVG'));
   })();
 
   // One marker per curve. The two sit close together on purpose — the gap is the
   // 5% the gym scale takes off you.
-  function mark(v,mean,cls){
+  function mark(v,mean,sdpp,cls){
     const mx=px(v);
     return '<line class="rc-marker '+cls+'" x1="'+mx.toFixed(1)+'" y1="'+y1+'" x2="'+mx.toFixed(1)+'" y2="'+(y0+2)+'"/>'+
-           '<circle class="rc-dot '+cls+'" cx="'+mx.toFixed(1)+'" cy="'+py(dens(v,mean)).toFixed(1)+'" r="3.4"/>';
+           '<circle class="rc-dot '+cls+'" cx="'+mx.toFixed(1)+'" cy="'+py(dens(v,mean,sdpp)).toFixed(1)+'" r="3.4"/>';
   }
 
   const gc=(grade&&grade!=='—')?' grade-'+grade:'';
@@ -4125,21 +4151,21 @@ function buildRankHTML(base, grade, blurred){
     '</div>'+
     '<svg class="rank-curve" viewBox="0 0 '+W+' '+H+'" aria-hidden="true">'+
       grid+
-      '<path class="rc-area" d="'+cPop.area+'"/>'+
+      (oneCurve?'':'<path class="rc-area" d="'+cPop.area+'"/>')+
       '<path class="rc-area rc-area-gym" d="'+cGym.area+'"/>'+
       refs+
-      '<path class="rc-line" d="'+cPop.line+'"/>'+
+      (oneCurve?'':'<path class="rc-line" d="'+cPop.line+'"/>')+
       '<path class="rc-line rc-line-gym" d="'+cGym.line+'"/>'+
       '<line class="rc-axis" x1="'+x0+'" y1="'+y1+'" x2="'+x1+'" y2="'+y1+'"/>'+
-      mark(sc.pop,SCALE_POP_MEAN,'rc-pop')+
-      mark(sc.gym,SCALE_GYM_MEAN,'rc-gym')+
+      mark(sc.pop,SCALE_POP_MEAN,SCALE_POP_SD_PER_POINT,'rc-pop')+
+      mark(sc.gym,SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT,'rc-gym')+
       ax+
     '</svg>'+
     '<div class="rank-legend">'+
-      '<span class="rank-key rank-key-pop">Everyone</span>'+
-      '<span class="rank-key rank-key-gym">People who train</span>'+
+      '<span class="rank-key rank-key-gym">People who train · 1 pt = 1 SD</span>'+
+      '<span class="rank-key rank-key-pop">Everyone · 1 pt = '+SCALE_POP_SD_PER_POINT+' SD</span>'+
     '</div>'+
-    '<div class="rank-note">Two modelled distributions, not a measured ranking — one point is one standard deviation. Being average in a gym already puts you well clear of the general population, which is why the right-hand number climbs first and the gym number is the one worth chasing.</div>'+
+    '<div class="rank-note">Two modelled distributions, not a measured ranking. Both average 5.0. Against people who train, one point is one standard deviation — so '+fmtScale(sc.gym)+' is '+((sc.gymExact-SCALE_GYM_MEAN)*SCALE_GYM_SD_PER_POINT).toFixed(1)+' SD out. The general population is a tighter cluster, so the same step covers more ground and '+fmtScale(sc.pop)+' is '+((sc.popExact-SCALE_POP_MEAN)*SCALE_POP_SD_PER_POINT).toFixed(1)+' SD out. The gym number is the one worth chasing.</div>'+
     '</div>'+
     (locked?proVeil('See both percentiles'):'')+
   '</div>';
