@@ -2960,10 +2960,15 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 // ---- pick a view ----
-async function pick(viewId){
+// NOTE: this must stay synchronous up to the filein.click() below. Browsers
+// only honour a programmatic click on a file input while still inside the
+// trusted user gesture; any `await` first drops out of it and Safari silently
+// refuses to open the picker, so the button appears to do nothing at all.
+// The entitlement refresh therefore runs in the background, never awaited here.
+function pick(viewId){
   if(!WORKER_URL){alert("Set WORKER_URL first.");return;}
 
-  if(userEmail && !hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
+  if(userEmail && !hasFreshEntitlementToken()) refreshEntitlementToken().catch(()=>{});
 
   // Free scan already used and no paid access: show the paywall now instead
   // of letting the user pick + upload a photo the server will reject anyway.
@@ -3696,7 +3701,7 @@ function showConfirmScreen(){
   const anglesHTML=VIEWS.map(v=>{
     const done=!!viewsDone[v.id];
     return '<button class="confirm-angle-btn'+(done?' done-angle':'')+'" '+
-      (done?'disabled':('onclick="show(\'screen-home\');setTimeout(()=>pick(\''+v.id+'\'),120)"'))+'>'+
+      (done?'disabled':('onclick="show(\'screen-home\');pick(\''+v.id+'\')"'))+'>'+
       '<span class="confirm-angle-letter">'+v.letter+'</span>'+
       '<span class="confirm-angle-info">'+
         '<span class="confirm-angle-name">'+v.t+'</span>'+
