@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Cloudflare Web Analytics -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"155203367c0a44f0881448c3b9d7168d"}'></script>
+<!-- Plausible (cookieless) -->
+<script async src="https://plausible.io/js/pa-YubRMKjoy6gKaXDo4vfCf.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<!-- Lucid Analytics (self-hosted, cookieless) -->
+<script defer data-domain="callout-ai.com" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
+
+<title>FFMI Calculator — Free Fat-Free Mass Index & Natural Muscle Potential | Callout-AI</title>
+<meta name="description" content="Free FFMI calculator. Enter your height, weight and body fat % to get your Fat-Free Mass Index and normalized FFMI — the standard reference for natural muscular development.">
+<link rel="canonical" href="https://callout-ai.com/ffmi-calculator.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="FFMI Calculator — Free Fat-Free Mass Index Tool">
+<meta property="og:description" content="Enter height, weight and body fat % for your FFMI and normalized FFMI — the standard reference point for natural muscular development. Free, no signup.">
+<meta property="og:url" content="https://callout-ai.com/ffmi-calculator.html">
+<meta property="og:site_name" content="Callout-AI">
+<meta property="og:image" content="https://callout-ai.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FFMI Calculator — Callout-AI">
+<meta name="twitter:description" content="Free Fat-Free Mass Index calculator. Height, weight, body fat % in — your FFMI out.">
+<meta name="twitter:image" content="https://callout-ai.com/og-image.png">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "FFMI Calculator — Fat-Free Mass Index Explained",
+  "description": "Free FFMI calculator with normalized FFMI, plus what the number actually means for natural muscular development.",
+  "image": "https://callout-ai.com/og-image.png",
+  "url": "https://callout-ai.com/ffmi-calculator.html",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Callout-AI",
+    "url": "https://callout-ai.com",
+    "logo": "https://callout-ai.com/og-image.png"
+  }
+}
+</script>
+
+<!-- Favicon — Callout-AI "C" mark -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305070B'/%3E%3Cpath d='M8 7 H24 Q26.5 7 26.5 9.5 V18.5 Q26.5 21 24 21 H14.5 L10 25.5 V21 H8 Q5.5 21 5.5 18.5 V9.5 Q5.5 7 8 7 Z' fill='%232F80FF'/%3E%3Crect x='14.8' y='9.6' width='2.4' height='5.6' rx='1.2' fill='%2305070B'/%3E%3Ccircle cx='16' cy='18' r='1.4' fill='%2305070B'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<!-- FAQ structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"What is FFMI?","acceptedAnswer":{"@type":"Answer","text":"FFMI stands for Fat-Free Mass Index. It measures how much muscle mass you carry relative to your height, similar to how BMI relates weight to height — except FFMI strips out body fat first, so it actually reflects muscle rather than being thrown off by it."}},
+    {"@type":"Question","name":"What is a good FFMI?","acceptedAnswer":{"@type":"Answer","text":"Roughly: under 18 is untrained, 18-20 is average, 20-22 is visibly muscular from consistent training, 22-23 is advanced, and 23-25 is excellent. Around 25 is the figure most commonly cited in lifting communities as a rough natural ceiling, though genetics vary a lot and this is a reference point, not a hard rule."}},
+    {"@type":"Question","name":"Is 25 FFMI actually the natural limit?","acceptedAnswer":{"@type":"Answer","text":"No single number is a hard limit — it depends heavily on individual genetics, frame, and training history. 25 is simply the figure most often cited as an approximate upper range for drug-free lifters based on older research and decades of anecdotal data, not a scientifically proven ceiling every natural lifter will hit."}},
+    {"@type":"Question","name":"Why does FFMI need body fat percentage?","acceptedAnswer":{"@type":"Answer","text":"FFMI is calculated from fat-free mass, so it needs to know how much of your weight is fat versus everything else. Without a body fat estimate, the calculator can't separate muscle mass from total weight."}}
+  ]
+}
+</script>
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#05070B; --bg2:#090E17; --surface:#0D1420; --surface-raised:#121C2B;
+    --line:#1B2A40; --line2:#28466F; --line-strong:#3A6BA8;
+    --ink:#F4F8FF; --soft:#B9C7D9; --dim:#7F91A8; --faint:#526278; --quiet:#344258;
+    --blue:#2F80FF; --blue-bright:#5B9DFF; --blue-deep:#1558C0;
+    --green:#49D17D; --red:#FF6B6B;
+  }
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    line-height:1.6;
+  }
+  a{color:inherit}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+
+  .nav{
+    position:sticky;top:0;z-index:100;background:rgba(5,7,11,.82);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .nav-in{max-width:960px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-family:'Inter';font-weight:900;letter-spacing:.28em;font-size:15px;color:var(--ink);text-decoration:none}
+  .nav-cta{
+    background:var(--blue);color:var(--bg);text-decoration:none;
+    font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:9px;transition:background .18s;
+  }
+  .nav-cta:hover{background:var(--blue-bright)}
+
+  .hero{padding:64px 0 40px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
+  h1{font-size:clamp(30px,5.2vw,46px);font-weight:900;letter-spacing:-.03em;line-height:1.06}
+  h1 em{font-style:normal;color:var(--blue)}
+  .lede{color:var(--soft);font-size:17px;margin-top:20px;max-width:62ch}
+  .cta-row{margin-top:32px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .bigcta{
+    background:var(--blue);color:var(--bg);text-decoration:none;border-radius:10px;
+    padding:16px 30px;font-weight:700;font-size:16px;
+    display:inline-flex;align-items:center;justify-content:center;min-height:54px;transition:background .18s;
+    border:none;cursor:pointer;font-family:inherit;
+  }
+  .bigcta:hover{background:var(--blue-bright)}
+  .cta-sub{color:var(--dim);font-size:13.5px}
+
+  section.block{padding:34px 0;border-top:1px solid var(--line)}
+  h2{font-size:clamp(23px,3.4vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:16px}
+  h2 em{font-style:normal;color:var(--blue)}
+  h3{font-size:18px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;color:var(--ink)}
+  p.body{color:var(--soft);font-size:16px;margin-bottom:16px}
+  p.body:last-child{margin-bottom:0}
+  strong{color:var(--ink);font-weight:700}
+  .answer{border-left:3px solid var(--blue);background:var(--surface);border-radius:0 10px 10px 0;padding:16px 20px;font-size:16.5px;color:var(--ink);margin-top:20px}
+
+  .ladder{display:grid;gap:10px;margin-top:24px}
+  .rung{display:flex;align-items:flex-start;gap:16px;border:1px solid var(--line);border-radius:11px;padding:14px 16px;background:var(--surface)}
+  .rung.top{border-color:var(--line-strong);background:var(--surface-raised)}
+  .rung .g{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;width:64px;text-align:center;flex-shrink:0;line-height:1.4;color:var(--blue)}
+  .rung .gt{font-size:15px}
+  .rung .gt b{color:var(--ink)}
+  .rung .gt span{color:var(--dim)}
+
+  ul.checks{list-style:none;display:grid;gap:12px;margin-top:8px}
+  ul.checks li{position:relative;padding-left:26px;color:var(--soft);font-size:16px}
+  ul.checks li::before{content:'';position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--blue)}
+  ul.checks li b{color:var(--ink)}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+  .step{border-top:1px solid var(--line2);padding-top:16px}
+  .step .k{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue-deep);margin-bottom:8px}
+
+  details.faq{border-bottom:1px solid var(--line);padding:20px 0}
+  details.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:14px;font-weight:700;font-size:17px}
+  details.faq summary::-webkit-details-marker{display:none}
+  details.faq summary::after{content:"+";color:var(--blue);font-weight:600}
+  details.faq[open] summary::after{content:"−"}
+  details.faq .a{margin-top:12px;color:var(--soft);font-size:15.5px}
+
+  .note{border:1px solid var(--line2);border-radius:10px;padding:16px 18px;background:rgba(255,255,255,.018);color:var(--dim);font-size:14px;line-height:1.7;margin-top:8px}
+
+  .final{text-align:center;padding:56px 0 30px}
+  .final h2{margin-bottom:14px}
+  .final p{color:var(--dim);font-size:16px;margin-bottom:26px}
+
+  footer{border-top:1px solid var(--line);padding:34px 22px;text-align:center;color:var(--faint);font-size:13px;line-height:1.9}
+  footer a{color:var(--dim);text-decoration:none}
+  footer a:hover{color:var(--blue)}
+  .foot-brand{font-family:'Inter';font-weight:900;letter-spacing:.28em;color:var(--soft);margin-bottom:8px}
+
+  /* Calculator */
+  .calc{border:1px solid var(--line2);border-radius:14px;background:var(--surface);padding:24px;margin-top:24px}
+  .calc-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:12.5px;color:var(--dim);font-weight:600}
+  .field .unit-row{display:flex;gap:8px}
+  .field input{
+    background:var(--bg2);border:1px solid var(--line2);border-radius:8px;color:var(--ink);
+    font-family:'JetBrains Mono',monospace;font-size:15px;padding:10px 12px;width:100%;
+  }
+  .field input:focus{outline:none;border-color:var(--blue)}
+  .unit-toggle{display:flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;flex-shrink:0}
+  .unit-toggle button{
+    background:var(--bg2);color:var(--dim);border:none;padding:0 12px;font-size:12.5px;font-weight:700;
+    cursor:pointer;font-family:inherit;
+  }
+  .unit-toggle button.active{background:var(--blue);color:var(--bg)}
+  .calc-result{margin-top:18px;border-top:1px solid var(--line2);padding-top:18px;display:none}
+  .calc-result.show{display:block}
+  .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .result-card{background:var(--bg2);border:1px solid var(--line2);border-radius:10px;padding:16px}
+  .result-card .rlabel{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  .result-card .rval{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--blue-bright)}
+  .result-tag{margin-top:14px;color:var(--soft);font-size:14.5px}
+  .result-tag b{color:var(--ink)}
+
+  @media(max-width:640px){
+    .steps{grid-template-columns:1fr}
+    .hero{padding:44px 0 30px}
+    .bigcta{width:100%}
+    .calc-row{grid-template-columns:1fr}
+    .result-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="https://callout-ai.com/">Callout-AI</a>
+    <a class="nav-cta" href="https://callout-ai.com/#scanSection" onclick="plausible('seo_cta_click')">Get your grade — free</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Free tool</div>
+    <h1>FFMI <em>calculator</em></h1>
+    <p class="lede">Fat-Free Mass Index — the standard reference for how much muscle you're actually carrying relative to your height. Enter your numbers below, no signup, nothing sent anywhere.</p>
+
+    <div class="calc" id="calc">
+      <div class="calc-row">
+        <div class="field">
+          <label for="height">Height</label>
+          <div class="unit-row">
+            <input type="number" id="height" placeholder="178" inputmode="decimal">
+            <div class="unit-toggle" id="heightUnit">
+              <button type="button" data-unit="cm" class="active">cm</button>
+              <button type="button" data-unit="in">in</button>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="weight">Weight</label>
+          <div class="unit-row">
+            <input type="number" id="weight" placeholder="82" inputmode="decimal">
+            <div class="unit-toggle" id="weightUnit">
+              <button type="button" data-unit="kg" class="active">kg</button>
+              <button type="button" data-unit="lb">lb</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="bf">Body fat % (estimate)</label>
+        <input type="number" id="bf" placeholder="15" inputmode="decimal">
+      </div>
+      <div class="cta-row" style="margin-top:16px">
+        <button class="bigcta" id="calcBtn" type="button">Calculate FFMI</button>
+        <span class="cta-sub">Don't know your body fat %? <a href="https://callout-ai.com/#scanSection" onclick="plausible('seo_cta_click')" style="color:var(--blue)">Get an AI estimate from a photo</a></span>
+      </div>
+      <div class="calc-result" id="result">
+        <div class="result-grid">
+          <div class="result-card">
+            <div class="rlabel">FFMI</div>
+            <div class="rval" id="ffmiVal">—</div>
+          </div>
+          <div class="result-card">
+            <div class="rlabel">Normalized FFMI</div>
+            <div class="rval" id="nffmiVal">—</div>
+          </div>
+        </div>
+        <div class="result-tag" id="resultTag"></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>What FFMI actually is</h2>
+    <p class="body">FFMI is like BMI's more honest cousin. BMI just divides your weight by your height — it can't tell a bodybuilder from someone carrying extra fat, because it doesn't know what the weight <em>is</em>. <strong>FFMI strips out body fat first</strong>, so what's left is a number that actually tracks muscle mass relative to your height.</p>
+    <p class="body">It comes from a 1995 study (Kouri et al.) that measured drug-free and steroid-using bodybuilders and found a rough ceiling in the natural group's FFMI scores — which is where the "25 is about the natural limit" figure you'll see everywhere originally came from.</p>
+  </section>
+
+  <section class="block">
+    <h2>What the <em>number</em> means</h2>
+    <div class="ladder">
+      <div class="rung"><span class="g">&lt;18</span><span class="gt"><b>Below average</b> — <span>little visible muscular development yet.</span></span></div>
+      <div class="rung"><span class="g">18–20</span><span class="gt"><b>Average</b> — <span>typical for someone with little to no training history.</span></span></div>
+      <div class="rung"><span class="g">20–22</span><span class="gt"><b>Muscular</b> — <span>visible, consistent training shows here.</span></span></div>
+      <div class="rung"><span class="g">22–23</span><span class="gt"><b>Advanced</b> — <span>clearly built, years of serious training.</span></span></div>
+      <div class="rung top"><span class="g">23–25</span><span class="gt"><b>Excellent</b> — <span>near the upper range most often cited for natural training.</span></span></div>
+      <div class="rung top"><span class="g">25+</span><span class="gt"><b>Exceptional</b> — <span>rare. The figure most commonly referenced as an approximate natural ceiling — not a hard rule.</span></span></div>
+    </div>
+    <div class="note" style="margin-top:20px">These bands (and the "25" figure especially) are commonly cited reference points from older research and decades of anecdotal data — not a scientifically proven hard limit. Genetics, frame size, limb length, and training history all move where any individual actually lands. Treat FFMI as a rough compass, not a verdict.</div>
+  </section>
+
+  <section class="block">
+    <h2>Why it needs your <em>body fat %</em></h2>
+    <p class="body">FFMI can't work off weight alone — it needs to know how much of that weight is actually muscle versus fat. If you don't know your body fat percentage precisely, a rough estimate is fine for this calculator; the number moves slowly with small errors in body fat.</p>
+    <p class="body">If you want a more accurate starting point than guessing in a mirror, an AI photo grade will give you a body fat range along with a full muscle-by-muscle breakdown — worth running once so future FFMI checks are working off a real number instead of a guess.</p>
+  </section>
+
+  <section class="block">
+    <h2>Questions</h2>
+    <details class="faq"><summary>What is FFMI?</summary><div class="a">FFMI stands for Fat-Free Mass Index. It measures how much muscle mass you carry relative to your height, similar to how BMI relates weight to height — except FFMI strips out body fat first, so it actually reflects muscle rather than being thrown off by it.</div></details>
+    <details class="faq"><summary>What is a good FFMI?</summary><div class="a">Roughly: under 18 is untrained, 18-20 is average, 20-22 is visibly muscular from consistent training, 22-23 is advanced, and 23-25 is excellent. Around 25 is the figure most commonly cited in lifting communities as a rough natural ceiling, though genetics vary a lot and this is a reference point, not a hard rule.</div></details>
+    <details class="faq"><summary>Is 25 FFMI actually the natural limit?</summary><div class="a">No single number is a hard limit — it depends heavily on individual genetics, frame, and training history. 25 is simply the figure most often cited as an approximate upper range for drug-free lifters based on older research and decades of anecdotal data, not a scientifically proven ceiling every natural lifter will hit.</div></details>
+    <details class="faq"><summary>Why does FFMI need body fat percentage?</summary><div class="a">FFMI is calculated from fat-free mass, so it needs to know how much of your weight is fat versus everything else. Without a body fat estimate, the calculator can't separate muscle mass from total weight.</div></details>
+  </section>
+
+  <section class="final">
+    <h2>Want the <em>full</em> picture?</h2>
+    <p>FFMI is one number. A real grade breaks down every muscle group.</p>
+    <a class="bigcta" href="https://callout-ai.com/#scanSection" onclick="plausible('seo_cta_click')">Get your full grade — free</a>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-brand">Callout-AI</div>
+  <div>© 2026 Callout-AI · AI physique grading, not medical advice · Adults only</div>
+  <div style="margin-top:8px">
+    <a href="https://callout-ai.com/">Home</a> ·
+    <a href="https://callout-ai.com/#pricingSection">Pricing</a> ·
+    <a href="/s-tier-physique.html">What is an S-tier physique?</a> ·
+    <a href="/brutally-honest-physique-rating.html">Brutally honest physique rating</a> ·
+    <a href="/bmi-calculator.html">BMI calculator</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var heightUnit = 'cm', weightUnit = 'kg';
+
+  document.getElementById('heightUnit').addEventListener('click', function(e){
+    var btn = e.target.closest('button'); if(!btn) return;
+    heightUnit = btn.dataset.unit;
+    this.querySelectorAll('button').forEach(function(b){b.classList.toggle('active', b===btn)});
+  });
+  document.getElementById('weightUnit').addEventListener('click', function(e){
+    var btn = e.target.closest('button'); if(!btn) return;
+    weightUnit = btn.dataset.unit;
+    this.querySelectorAll('button').forEach(function(b){b.classList.toggle('active', b===btn)});
+  });
+
+  document.getElementById('calcBtn').addEventListener('click', function(){
+    var hRaw = parseFloat(document.getElementById('height').value);
+    var wRaw = parseFloat(document.getElementById('weight').value);
+    var bf = parseFloat(document.getElementById('bf').value);
+
+    if(!hRaw || !wRaw || bf===undefined || isNaN(bf) || bf<0 || bf>=70){
+      alert('Enter a valid height, weight and body fat % (0-70).');
+      return;
+    }
+
+    var heightM = heightUnit==='cm' ? hRaw/100 : hRaw*0.0254;
+    var weightKg = weightUnit==='kg' ? wRaw : wRaw*0.453592;
+
+    var leanMassKg = weightKg * (1 - (bf/100));
+    var ffmi = leanMassKg / (heightM*heightM);
+    var nFfmi = ffmi + 6.1 * (1.8 - heightM);
+
+    document.getElementById('ffmiVal').textContent = ffmi.toFixed(1);
+    document.getElementById('nffmiVal').textContent = nFfmi.toFixed(1);
+
+    var tag;
+    if(nFfmi < 18) tag = 'Below average';
+    else if(nFfmi < 20) tag = 'Average';
+    else if(nFfmi < 22) tag = 'Muscular';
+    else if(nFfmi < 23) tag = 'Advanced';
+    else if(nFfmi < 25) tag = 'Excellent';
+    else tag = 'Exceptional — at or beyond the range most often cited as a natural reference ceiling';
+
+    document.getElementById('resultTag').innerHTML = 'Normalized FFMI of <b>' + nFfmi.toFixed(1) + '</b> — <b>' + tag + '</b>.';
+    document.getElementById('result').classList.add('show');
+    if(window.plausible) plausible('ffmi_calculated');
+  });
+})();
+</script>
+
+</body>
+</html>
