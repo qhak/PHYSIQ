@@ -176,6 +176,13 @@
   .pct-table tr:last-child td{border-bottom:none}
   .pct-table td.pct{color:var(--ink);font-weight:700}
 
+  .more-tools{margin-top:20px;padding-top:18px;border-top:1px solid var(--line2)}
+  .mt-label{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .mt-links{display:flex;gap:8px;flex-wrap:wrap}
+  .mt-chip{background:var(--bg2);border:1px solid var(--line2);border-radius:20px;color:var(--soft);text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;transition:border-color .18s,color .18s}
+  .mt-chip:hover{border-color:var(--blue);color:var(--ink)}
+  .mt-chip.mt-all{background:var(--blue);border-color:var(--blue);color:var(--bg)}
+
   @media(max-width:640px){
     .hero{padding:44px 0 30px}
     .bigcta{width:100%}
@@ -225,6 +232,15 @@
           <div class="rval" id="ormVal">—</div>
         </div>
         <table class="pct-table" id="pctTable"></table>
+        <div class="more-tools">
+          <div class="mt-label">More free tools</div>
+          <div class="mt-links">
+            <a class="mt-chip" href="/ffmi-calculator.html">FFMI</a>
+            <a class="mt-chip" href="/lean-body-mass-calculator.html">Lean body mass</a>
+            <a class="mt-chip" href="/macro-calculator.html">Macros</a>
+            <a class="mt-chip mt-all" href="/tools.html">All tools →</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -272,7 +288,8 @@
     <a href="/ffmi-calculator.html">FFMI calculator</a> ·
     <a href="/bmi-calculator.html">BMI calculator</a> ·
     <a href="/lean-body-mass-calculator.html">Lean body mass calculator</a> ·
-    <a href="/macro-calculator.html">Macro calculator</a>
+    <a href="/macro-calculator.html">Macro calculator</a> ·
+    <a href="/tools.html">All free tools</a>
   </div>
 </footer>
 

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Cloudflare Web Analytics -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"155203367c0a44f0881448c3b9d7168d"}'></script>
+<!-- Plausible (cookieless) -->
+<script async src="https://plausible.io/js/pa-YubRMKjoy6gKaXDo4vfCf.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<!-- Lucid Analytics (self-hosted, cookieless) -->
+<script defer data-domain="callout-ai.com" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
+
+<title>Free Fitness Calculators — FFMI, BMI, 1RM, Macros & More | Callout-AI</title>
+<meta name="description" content="Free fitness calculators: FFMI, BMI, one-rep max, lean body mass, and macros. No signup, nothing sent anywhere. Plus an AI physique grade if you want the full picture.">
+<link rel="canonical" href="https://callout-ai.com/tools.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Fitness Calculators — Callout-AI">
+<meta property="og:description" content="FFMI, BMI, one-rep max, lean body mass, and macro calculators. Free, instant, no signup.">
+<meta property="og:url" content="https://callout-ai.com/tools.html">
+<meta property="og:site_name" content="Callout-AI">
+<meta property="og:image" content="https://callout-ai.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Fitness Calculators — Callout-AI">
+<meta name="twitter:description" content="FFMI, BMI, 1RM, lean body mass, and macro calculators. Free, no signup.">
+<meta name="twitter:image" content="https://callout-ai.com/og-image.png">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Free Fitness Calculators",
+  "url": "https://callout-ai.com/tools.html",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"FFMI Calculator","url":"https://callout-ai.com/ffmi-calculator.html"},
+    {"@type":"ListItem","position":2,"name":"BMI Calculator","url":"https://callout-ai.com/bmi-calculator.html"},
+    {"@type":"ListItem","position":3,"name":"One Rep Max Calculator","url":"https://callout-ai.com/one-rep-max-calculator.html"},
+    {"@type":"ListItem","position":4,"name":"Lean Body Mass Calculator","url":"https://callout-ai.com/lean-body-mass-calculator.html"},
+    {"@type":"ListItem","position":5,"name":"Macro Calculator","url":"https://callout-ai.com/macro-calculator.html"}
+  ]
+}
+</script>
+
+<!-- Favicon — Callout-AI "C" mark -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305070B'/%3E%3Cpath d='M8 7 H24 Q26.5 7 26.5 9.5 V18.5 Q26.5 21 24 21 H14.5 L10 25.5 V21 H8 Q5.5 21 5.5 18.5 V9.5 Q5.5 7 8 7 Z' fill='%232F80FF'/%3E%3Crect x='14.8' y='9.6' width='2.4' height='5.6' rx='1.2' fill='%2305070B'/%3E%3Ccircle cx='16' cy='18' r='1.4' fill='%2305070B'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#05070B; --bg2:#090E17; --surface:#0D1420; --surface-raised:#121C2B;
+    --line:#1B2A40; --line2:#28466F; --line-strong:#3A6BA8;
+    --ink:#F4F8FF; --soft:#B9C7D9; --dim:#7F91A8; --faint:#526278; --quiet:#344258;
+    --blue:#2F80FF; --blue-bright:#5B9DFF; --blue-deep:#1558C0;
+    --green:#49D17D; --red:#FF6B6B;
+  }
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    line-height:1.6;
+  }
+  a{color:inherit}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+
+  .nav{
+    position:sticky;top:0;z-index:100;background:rgba(5,7,11,.82);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .nav-in{max-width:960px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-family:'Inter';font-weight:900;letter-spacing:.28em;font-size:15px;color:var(--ink);text-decoration:none}
+  .nav-cta{
+    background:var(--blue);color:var(--bg);text-decoration:none;
+    font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:9px;transition:background .18s;
+  }
+  .nav-cta:hover{background:var(--blue-bright)}
+
+  .hero{padding:64px 0 40px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
+  h1{font-size:clamp(30px,5.2vw,46px);font-weight:900;letter-spacing:-.03em;line-height:1.06}
+  h1 em{font-style:normal;color:var(--blue)}
+  .lede{color:var(--soft);font-size:17px;margin-top:20px;max-width:62ch}
+
+  .tool-grid{display:grid;gap:14px;margin-top:32px}
+  .tool-card{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    border:1px solid var(--line2);border-radius:12px;background:var(--surface);
+    padding:20px 22px;text-decoration:none;transition:border-color .18s,background .18s;
+  }
+  .tool-card:hover{border-color:var(--line-strong);background:var(--surface-raised)}
+  .tool-card .tname{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:4px}
+  .tool-card .tdesc{font-size:14px;color:var(--dim)}
+  .tool-card .arrow{font-size:20px;color:var(--blue);flex-shrink:0}
+
+  section.block{padding:34px 0;border-top:1px solid var(--line)}
+  h2{font-size:clamp(23px,3.4vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:16px}
+  h2 em{font-style:normal;color:var(--blue)}
+  p.body{color:var(--soft);font-size:16px;margin-bottom:16px}
+  strong{color:var(--ink);font-weight:700}
+
+  .cta-row{margin-top:32px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .bigcta{
+    background:var(--blue);color:var(--bg);text-decoration:none;border-radius:10px;
+    padding:16px 30px;font-weight:700;font-size:16px;
+    display:inline-flex;align-items:center;justify-content:center;min-height:54px;transition:background .18s;
+  }
+  .bigcta:hover{background:var(--blue-bright)}
+  .cta-sub{color:var(--dim);font-size:13.5px}
+
+  .final{text-align:center;padding:56px 0 30px}
+  .final h2{margin-bottom:14px}
+  .final p{color:var(--dim);font-size:16px;margin-bottom:26px}
+
+  footer{border-top:1px solid var(--line);padding:34px 22px;text-align:center;color:var(--faint);font-size:13px;line-height:1.9}
+  footer a{color:var(--dim);text-decoration:none}
+  footer a:hover{color:var(--blue)}
+  .foot-brand{font-family:'Inter';font-weight:900;letter-spacing:.28em;color:var(--soft);margin-bottom:8px}
+
+  @media(max-width:640px){
+    .hero{padding:44px 0 30px}
+    .bigcta{width:100%}
+    .tool-card{padding:16px 18px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="https://callout-ai.com/">Callout-AI</a>
+    <a class="nav-cta" href="https://callout-ai.com/#scanSection" onclick="plausible('seo_cta_click')">Get your grade — free</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Free tools</div>
+    <h1>Fitness <em>calculators</em></h1>
+    <p class="lede">Five free calculators, no signup, nothing sent anywhere — the numbers, and what they actually mean.</p>
+
+    <div class="tool-grid">
+      <a class="tool-card" href="/ffmi-calculator.html">
+        <div><div class="tname">FFMI Calculator</div><div class="tdesc">Fat-Free Mass Index — how much muscle you carry relative to height.</div></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="tool-card" href="/bmi-calculator.html">
+        <div><div class="tname">BMI Calculator</div><div class="tdesc">The standard number, plus an honest take on where it breaks down.</div></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="tool-card" href="/one-rep-max-calculator.html">
+        <div><div class="tname">One Rep Max Calculator</div><div class="tdesc">Estimate your 1RM from any weight and rep count, plus a % table.</div></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="tool-card" href="/lean-body-mass-calculator.html">
+        <div><div class="tname">Lean Body Mass Calculator</div><div class="tdesc">With a body fat % you know, or estimated without one.</div></div>
+        <div class="arrow">→</div>
+      </a>
+      <a class="tool-card" href="/macro-calculator.html">
+        <div><div class="tname">Macro Calculator</div><div class="tdesc">Daily calorie, protein, carb and fat targets for your goal.</div></div>
+        <div class="arrow">→</div>
+      </a>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>Numbers are half the <em>picture</em></h2>
+    <p class="body">Every calculator here gives you a number based on a formula — useful, but formulas don't know what you actually look like. If you want the other half, Callout-AI grades your physique S to E from one photo: per-muscle scores, an honest weakest-point callout, no flattery.</p>
+    <div class="cta-row">
+      <a class="bigcta" href="https://callout-ai.com/#scanSection" onclick="plausible('seo_cta_click')">Get your grade — free</a>
+      <span class="cta-sub">One photo, graded S to E. No card.</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-brand">Callout-AI</div>
+  <div>© 2026 Callout-AI · AI physique grading, not medical advice · Adults only</div>
+  <div style="margin-top:8px">
+    <a href="https://callout-ai.com/">Home</a> ·
+    <a href="https://callout-ai.com/#pricingSection">Pricing</a> ·
+    <a href="/s-tier-physique.html">S-tier physique</a> ·
+    <a href="/brutally-honest-physique-rating.html">Brutally honest rating</a>
+  </div>
+</footer>
+
+</body>
+</html>

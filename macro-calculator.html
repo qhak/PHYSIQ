@@ -173,6 +173,13 @@
   .macro-card .mval{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--ink)}
   .macro-card .munit{font-size:11px;color:var(--dim)}
 
+  .more-tools{margin-top:20px;padding-top:18px;border-top:1px solid var(--line2)}
+  .mt-label{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .mt-links{display:flex;gap:8px;flex-wrap:wrap}
+  .mt-chip{background:var(--bg2);border:1px solid var(--line2);border-radius:20px;color:var(--soft);text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;transition:border-color .18s,color .18s}
+  .mt-chip:hover{border-color:var(--blue);color:var(--ink)}
+  .mt-chip.mt-all{background:var(--blue);border-color:var(--blue);color:var(--bg)}
+
   @media(max-width:640px){
     .hero{padding:44px 0 30px}
     .bigcta{width:100%}
@@ -278,6 +285,15 @@
             <div class="munit">grams/day</div>
           </div>
         </div>
+        <div class="more-tools">
+          <div class="mt-label">More free tools</div>
+          <div class="mt-links">
+            <a class="mt-chip" href="/ffmi-calculator.html">FFMI</a>
+            <a class="mt-chip" href="/bmi-calculator.html">BMI</a>
+            <a class="mt-chip" href="/one-rep-max-calculator.html">1RM</a>
+            <a class="mt-chip mt-all" href="/tools.html">All tools →</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -325,7 +341,8 @@
     <a href="/ffmi-calculator.html">FFMI calculator</a> ·
     <a href="/bmi-calculator.html">BMI calculator</a> ·
     <a href="/one-rep-max-calculator.html">1RM calculator</a> ·
-    <a href="/lean-body-mass-calculator.html">Lean body mass calculator</a>
+    <a href="/lean-body-mass-calculator.html">Lean body mass calculator</a> ·
+    <a href="/tools.html">All free tools</a>
   </div>
 </footer>
 
