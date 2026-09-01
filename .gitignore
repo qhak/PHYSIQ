@@ -3,3 +3,8 @@ dev.html
 
 # OS cruft
 .DS_Store
+
+# Local Claude Code config — internal notes, must not be served publicly.
+# Netlify publishes from the repo root, so anything committed here is live on the site.
+CLAUDE.md
+.claude/
