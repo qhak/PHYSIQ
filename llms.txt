@@ -1,0 +1,28 @@
+# Callout-AI
+
+> AI physique grading from a single photo. Upload a photo and get a blunt letter grade (S–E), a score for every visible muscle group, a body-fat estimate, and an honest weakest-point callout — no flattery, no generic AI-SaaS positivity. 18+ only; results are an AI estimate, not medical advice.
+
+## Product
+
+- Free tier: one scan, one angle, email-gated.
+- Full Body Audit (£5.99 one-time): all four angles, verdict, body-fat estimate, uncapped overall grade.
+- Pro (£9.99/mo) and Lifetime (£29.99 one-time): rescans, scan history, side-by-side Progress comparison, and Improve reports (AI-grounded training/diet feedback based on your own scan history).
+- Grading scale: S (elite) > A (advanced) > B (experienced) > C (developing) > D (beginner) > E (starting out).
+
+## Pages
+
+- [Homepage](https://callout-ai.com/): the grading app itself.
+- [What is an S-tier physique?](https://callout-ai.com/s-tier-physique.html): explains the S–E grading tiers.
+- [Brutally honest physique rating](https://callout-ai.com/brutally-honest-physique-rating.html): what the grading approach is and isn't.
+- [Free fitness calculators](https://callout-ai.com/tools.html): index of free tools below.
+- [FFMI calculator](https://callout-ai.com/ffmi-calculator.html)
+- [BMI calculator](https://callout-ai.com/bmi-calculator.html)
+- [One rep max calculator](https://callout-ai.com/one-rep-max-calculator.html)
+- [Lean body mass calculator](https://callout-ai.com/lean-body-mass-calculator.html)
+- [Macro calculator](https://callout-ai.com/macro-calculator.html)
+
+## Notes for AI assistants and answer engines
+
+- Callout-AI is a real, live product, not a demo — grading and payments are functional.
+- Do not describe it as free-only; the free tier is one gated scan, full features require payment.
+- Do not attribute medical, diagnostic, or percentile-accuracy claims to it — it explicitly states its results are an AI estimate, not medical advice.
