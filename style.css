@@ -324,7 +324,7 @@
   }
   .vtile:hover{border-color:var(--blue-deep);transform:translateY(-2px)}
   .vtile.done{
-    border-color:rgba(73,209,125,.3);
+    border-color:rgba(20,104,58,.3);
     background:linear-gradient(160deg,var(--green-wash),var(--surface));
   }
   .vtile .chk{
@@ -448,7 +448,7 @@
   .refuse{text-align:center;padding:34px 12px}
   .refuse .big{
     width:64px;height:64px;margin:0 auto 24px;border-radius:50%;
-    background:var(--red-wash);border:1px solid rgba(255,107,107,.28);
+    background:var(--red-wash);border:1px solid rgba(194,53,47,.28);
     display:flex;align-items:center;justify-content:center;
   }
   .refuse .big svg{width:30px;height:30px;stroke:var(--red);stroke-width:1.8;fill:none}
@@ -962,7 +962,7 @@
      ───────────────────────────────────────────────────── */
   .share-moment{
     background:var(--green-wash);
-    border:1px solid rgba(73,209,125,.22);border-radius:14px;
+    border:1px solid rgba(20,104,58,.22);border-radius:14px;
     padding:24px 22px 20px;margin-bottom:14px;text-align:center;
     animation:fadeIn .4s ease both;
   }
@@ -973,7 +973,7 @@
   .share-moment p{font-size:13px;color:var(--dim);line-height:1.5;max-width:28ch;margin:0 auto 18px}
   .share-moment .share-btn-big{
     display:flex;align-items:center;justify-content:center;gap:10px;
-    width:100%;background:color-mix(in srgb,var(--green) 16%,var(--bg2));border:1px solid rgba(73,209,125,.32);
+    width:100%;background:color-mix(in srgb,var(--green) 16%,var(--bg2));border:1px solid rgba(20,104,58,.32);
     color:var(--green);border-radius:11px;padding:14px;
     font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;
     transition:background .18s,border-color .18s,transform .18s;min-height:50px;
@@ -996,12 +996,12 @@
   .confirm-card{
     width:100%;max-width:460px;
     background:var(--green-wash);
-    border:1px solid rgba(73,209,125,.25);border-radius:16px;
+    border:1px solid rgba(20,104,58,.25);border-radius:16px;
     padding:42px 32px;text-align:center;
   }
   .confirm-icon{
     width:58px;height:58px;border-radius:50%;
-    background:var(--green-wash);border:1px solid rgba(73,209,125,.3);
+    background:var(--green-wash);border:1px solid rgba(20,104,58,.3);
     display:flex;align-items:center;justify-content:center;margin:0 auto 22px;
   }
   .confirm-icon svg{width:26px;height:26px;stroke:var(--green);stroke-width:2;fill:none}
@@ -1018,7 +1018,7 @@
     font-family:inherit;
   }
   .confirm-angle-btn:hover{border-color:var(--blue-deep);background:var(--surface-hover)}
-  .confirm-angle-btn.done-angle{border-color:rgba(73,209,125,.25);background:var(--green-wash)}
+  .confirm-angle-btn.done-angle{border-color:rgba(20,104,58,.25);background:var(--green-wash)}
   .confirm-angle-letter{
     font-family:'Inter',sans-serif;font-weight:900;font-size:24px;
     color:var(--soft);line-height:1;width:28px;flex-shrink:0;text-align:center;
@@ -1709,14 +1709,14 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(47,128,255,.18) 10%,
-      rgba(91,157,255,.72) 35%,
-      rgba(234,242,255,.95) 50%,
-      rgba(91,157,255,.72) 65%,
-      rgba(47,128,255,.18) 90%,
+      rgba(27,98,214,.18) 10%,
+      rgba(27,98,214,.72) 35%,
+      rgba(18,66,143,.95) 50%,
+      rgba(27,98,214,.72) 65%,
+      rgba(27,98,214,.18) 90%,
       transparent 100%
     );
-    box-shadow:0 0 10px 2px rgba(91,157,255,.25);
+    box-shadow:0 0 10px 2px rgba(27,98,214,.25);
     opacity: 0;
     top: 0;
   }
@@ -1729,7 +1729,7 @@
     top: 0;
     background: linear-gradient(
       180deg,
-      rgba(47,128,255,.08) 0%,
+      rgba(27,98,214,.08) 0%,
       transparent 100%
     );
     pointer-events: none;
@@ -1808,10 +1808,10 @@
 
   /* --- Phase 9: share button pulse after animation --- */
   @keyframes ra-share-pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(47,128,255,.0); transform: scale(1); }
+    0%   { box-shadow: 0 0 0 0 rgba(27,98,214,.0); transform: scale(1); }
     30%  { box-shadow: 0 0 0 8px var(--blue-glow); transform: scale(1.04); }
-    60%  { box-shadow: 0 0 0 16px rgba(47,128,255,.0); transform: scale(.98); }
-    100% { box-shadow: 0 0 0 0 rgba(47,128,255,.0); transform: scale(1); }
+    60%  { box-shadow: 0 0 0 16px rgba(27,98,214,.0); transform: scale(.98); }
+    100% { box-shadow: 0 0 0 0 rgba(27,98,214,.0); transform: scale(1); }
   }
   .ra-share-pulse {
     animation: ra-share-pulse 0.7s cubic-bezier(.2,.8,.2,1) both !important;
