@@ -14,8 +14,8 @@
 <!-- Lucid Analytics (self-hosted, cookieless) -->
 <script defer data-domain="callout-ai.com" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
 
-<title>FFMI Calculator — Free Fat-Free Mass Index & Natural Muscle Potential | Callout-AI</title>
-<meta name="description" content="Free FFMI calculator. Enter your height, weight and body fat % to get your Fat-Free Mass Index and normalized FFMI — the standard reference for natural muscular development.">
+<title>FFMI Calculator — Free Fat-Free Mass Index | Callout-AI</title>
+<meta name="description" content="Free FFMI calculator. Enter height, weight and body fat % for your Fat-Free Mass Index and normalized FFMI — the reference for natural muscle limits.">
 <link rel="canonical" href="https://callout-ai.com/ffmi-calculator.html">
 
 <!-- Open Graph -->
@@ -191,6 +191,13 @@
   .mt-chip{background:var(--bg2);border:1px solid var(--line2);border-radius:20px;color:var(--soft);text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;transition:border-color .18s,color .18s}
   .mt-chip:hover{border-color:var(--blue);color:var(--ink)}
   .mt-chip.mt-all{background:var(--blue);border-color:var(--blue);color:var(--bg)}
+  .next-step{margin-top:18px;background:var(--bg2);border:1px solid var(--line2);border-left:2px solid var(--blue);border-radius:10px;padding:15px 17px}
+  .ns-why{color:var(--soft);font-size:14.5px;line-height:1.62}
+  .ns-why b{color:var(--ink);font-weight:700}
+  .ns-cta{display:inline-flex;align-items:center;gap:8px;margin-top:12px;color:var(--blue-bright);text-decoration:none;font-weight:700;font-size:14px}
+  .ns-cta:hover{color:var(--ink)}
+  .ns-arrow{transition:transform .18s}
+  .ns-cta:hover .ns-arrow{transform:translateX(3px)}
 
   @media(max-width:640px){
     .steps{grid-template-columns:1fr}
@@ -260,6 +267,10 @@
           </div>
         </div>
         <div class="result-tag" id="resultTag"></div>
+        <div class="next-step" id="nextStep" hidden>
+          <div class="ns-why" id="nsWhy"></div>
+          <a class="ns-cta" id="nsCta" href="/tools.html"><span id="nsCtaText"></span><span class="ns-arrow">&rarr;</span></a>
+        </div>
         <div class="more-tools">
           <div class="mt-label">More free tools</div>
           <div class="mt-links">
@@ -345,6 +356,16 @@
     this.querySelectorAll('button').forEach(function(b){b.classList.toggle('active', b===btn)});
   });
 
+
+  function nextStep(why, txt, href, ev){
+    document.getElementById('nsWhy').innerHTML = why;
+    document.getElementById('nsCtaText').textContent = txt;
+    var a = document.getElementById('nsCta');
+    a.href = href;
+    a.onclick = function(){ if(window.plausible) plausible(ev); };
+    document.getElementById('nextStep').hidden = false;
+  }
+
   document.getElementById('calcBtn').addEventListener('click', function(){
     var hRaw = parseFloat(document.getElementById('height').value);
     var wRaw = parseFloat(document.getElementById('weight').value);
@@ -375,6 +396,20 @@
 
     document.getElementById('resultTag').innerHTML = 'Normalized FFMI of <b>' + nFfmi.toFixed(1) + '</b> — <b>' + tag + '</b>.';
     document.getElementById('result').classList.add('show');
+    (function(){
+      var why, txt, href, ev;
+      if(nFfmi < 20){
+        why = 'A low FFMI is a lean-mass problem, not a training-intensity problem. The lever that moves it is eating enough protein and calories, consistently, for months.';
+        txt = 'Work out your calorie and protein targets'; href = '/macro-calculator.html'; ev = 'ffmi_next_macros';
+      } else if(nFfmi < 23){
+        why = 'This number is only as good as the body fat % you typed in. Be wrong by five points and your FFMI moves by roughly a full point — which is the difference between two of the bands above.';
+        txt = 'Get a body fat estimate from a photo'; href = 'https://callout-ai.com/#scanSection'; ev = 'seo_cta_click';
+      } else {
+        why = 'You are at or above the range most often cited as a natural ceiling. Past this point the number stops being the useful question — <b>which muscle groups are lagging</b> is.';
+        txt = 'See what separates the tiers'; href = '/s-tier-physique.html'; ev = 'ffmi_next_stier';
+      }
+      nextStep(why, txt, href, ev);
+    })();
     if(window.plausible) plausible('ffmi_calculated');
   });
 })();

@@ -14,8 +14,8 @@
 <!-- Lucid Analytics (self-hosted, cookieless) -->
 <script defer data-domain="callout-ai.com" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
 
-<title>Macro Calculator — Free Protein, Carb & Fat Targets | Callout-AI</title>
-<meta name="description" content="Free macro calculator. Get daily calorie, protein, carb and fat targets for cutting, maintaining, or bulking — based on Mifflin-St Jeor and evidence-based protein ranges.">
+<title>Macro Calculator — Protein, Carb & Fat Targets | Callout-AI</title>
+<meta name="description" content="Free macro calculator. Get daily calorie, protein, carb and fat targets for cutting, maintaining or bulking — based on Mifflin-St Jeor. No signup.">
 <link rel="canonical" href="https://callout-ai.com/macro-calculator.html">
 
 <!-- Open Graph -->
@@ -179,6 +179,13 @@
   .mt-chip{background:var(--bg2);border:1px solid var(--line2);border-radius:20px;color:var(--soft);text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;transition:border-color .18s,color .18s}
   .mt-chip:hover{border-color:var(--blue);color:var(--ink)}
   .mt-chip.mt-all{background:var(--blue);border-color:var(--blue);color:var(--bg)}
+  .next-step{margin-top:18px;background:var(--bg2);border:1px solid var(--line2);border-left:2px solid var(--blue);border-radius:10px;padding:15px 17px}
+  .ns-why{color:var(--soft);font-size:14.5px;line-height:1.62}
+  .ns-why b{color:var(--ink);font-weight:700}
+  .ns-cta{display:inline-flex;align-items:center;gap:8px;margin-top:12px;color:var(--blue-bright);text-decoration:none;font-weight:700;font-size:14px}
+  .ns-cta:hover{color:var(--ink)}
+  .ns-arrow{transition:transform .18s}
+  .ns-cta:hover .ns-arrow{transform:translateX(3px)}
 
   @media(max-width:640px){
     .hero{padding:44px 0 30px}
@@ -285,6 +292,10 @@
             <div class="munit">grams/day</div>
           </div>
         </div>
+        <div class="next-step" id="nextStep" hidden>
+          <div class="ns-why" id="nsWhy"></div>
+          <a class="ns-cta" id="nsCta" href="/tools.html"><span id="nsCtaText"></span><span class="ns-arrow">&rarr;</span></a>
+        </div>
         <div class="more-tools">
           <div class="mt-label">More free tools</div>
           <div class="mt-links">
@@ -361,6 +372,16 @@
     this.querySelectorAll('button').forEach(function(b){b.classList.toggle('active', b===btn)});
   });
 
+
+  function nextStep(why, txt, href, ev){
+    document.getElementById('nsWhy').innerHTML = why;
+    document.getElementById('nsCtaText').textContent = txt;
+    var a = document.getElementById('nsCta');
+    a.href = href;
+    a.onclick = function(){ if(window.plausible) plausible(ev); };
+    document.getElementById('nextStep').hidden = false;
+  }
+
   document.getElementById('calcBtn').addEventListener('click', function(){
     var sex = document.getElementById('sex').value;
     var age = parseInt(document.getElementById('age').value, 10);
@@ -398,6 +419,20 @@
     document.getElementById('carbVal').textContent = Math.round(carbG);
     document.getElementById('fatVal').textContent = Math.round(fatG);
     document.getElementById('result').classList.add('show');
+    (function(){
+      var why, txt, href, ev;
+      if(goal === 'cut'){
+        why = 'A cut only works if you keep the muscle you already have. The scale will drop either way — what matters is whether lean mass holds, and you cannot tell that without a starting point.';
+        txt = 'Get a baseline before you start'; href = '/ffmi-calculator.html'; ev = 'macro_next_ffmi';
+      } else if(goal === 'bulk'){
+        why = 'A surplus will add weight. Whether it adds <b>muscle</b> is a separate question, and three months in is too late to wish you had a before.';
+        txt = 'Get a baseline physique grade'; href = 'https://callout-ai.com/#scanSection'; ev = 'seo_cta_click';
+      } else {
+        why = 'Maintenance is the hardest phase to judge, because the scale barely moves in either direction while composition quietly changes underneath it.';
+        txt = 'Get a baseline you can measure against'; href = 'https://callout-ai.com/#scanSection'; ev = 'seo_cta_click';
+      }
+      nextStep(why, txt, href, ev);
+    })();
     if(window.plausible) plausible('macros_calculated');
   });
 })();

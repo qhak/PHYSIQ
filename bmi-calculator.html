@@ -14,7 +14,7 @@
 <!-- Lucid Analytics (self-hosted, cookieless) -->
 <script defer data-domain="callout-ai.com" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
 
-<title>BMI Calculator — Free, Instant, and Honest About Its Limits | Callout-AI</title>
+<title>BMI Calculator — Free, Instant, Honest | Callout-AI</title>
 <meta name="description" content="Free BMI calculator — instant result plus an honest explanation of what BMI actually measures and where it breaks down for anyone who lifts.">
 <link rel="canonical" href="https://callout-ai.com/bmi-calculator.html">
 
@@ -190,6 +190,13 @@
   .mt-chip{background:var(--bg2);border:1px solid var(--line2);border-radius:20px;color:var(--soft);text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;transition:border-color .18s,color .18s}
   .mt-chip:hover{border-color:var(--blue);color:var(--ink)}
   .mt-chip.mt-all{background:var(--blue);border-color:var(--blue);color:var(--bg)}
+  .next-step{margin-top:18px;background:var(--bg2);border:1px solid var(--line2);border-left:2px solid var(--blue);border-radius:10px;padding:15px 17px}
+  .ns-why{color:var(--soft);font-size:14.5px;line-height:1.62}
+  .ns-why b{color:var(--ink);font-weight:700}
+  .ns-cta{display:inline-flex;align-items:center;gap:8px;margin-top:12px;color:var(--blue-bright);text-decoration:none;font-weight:700;font-size:14px}
+  .ns-cta:hover{color:var(--ink)}
+  .ns-arrow{transition:transform .18s}
+  .ns-cta:hover .ns-arrow{transform:translateX(3px)}
 
   @media(max-width:640px){
     .steps{grid-template-columns:1fr}
@@ -247,6 +254,10 @@
           <div class="rval" id="bmiVal">—</div>
         </div>
         <div class="result-tag" id="resultTag"></div>
+        <div class="next-step" id="nextStep" hidden>
+          <div class="ns-why" id="nsWhy"></div>
+          <a class="ns-cta" id="nsCta" href="/tools.html"><span id="nsCtaText"></span><span class="ns-arrow">&rarr;</span></a>
+        </div>
         <div class="more-tools">
           <div class="mt-label">More free tools</div>
           <div class="mt-links">
@@ -343,6 +354,16 @@
     this.querySelectorAll('button').forEach(function(b){b.classList.toggle('active', b===btn)});
   });
 
+
+  function nextStep(why, txt, href, ev){
+    document.getElementById('nsWhy').innerHTML = why;
+    document.getElementById('nsCtaText').textContent = txt;
+    var a = document.getElementById('nsCta');
+    a.href = href;
+    a.onclick = function(){ if(window.plausible) plausible(ev); };
+    document.getElementById('nextStep').hidden = false;
+  }
+
   document.getElementById('calcBtn').addEventListener('click', function(){
     var hRaw = parseFloat(document.getElementById('height').value);
     var wRaw = parseFloat(document.getElementById('weight').value);
@@ -367,6 +388,18 @@
 
     document.getElementById('resultTag').innerHTML = 'BMI of <b>' + bmi.toFixed(1) + '</b> falls in the <b>' + tag + '</b> WHO reference category — remember, this says nothing about how much of that weight is muscle.';
     document.getElementById('result').classList.add('show');
+    (function(){
+      var why, txt, href, ev = 'bmi_next_ffmi';
+      if(bmi >= 25){
+        why = 'BMI counts muscle as excess weight. If you lift, landing in the <b>overweight</b> band often just means you carry more lean mass than a height-and-weight formula expects.';
+      } else if(bmi < 18.5){
+        why = 'A low BMI says you are light for your height. It says nothing about how much of that weight is muscle — those are different problems with different fixes.';
+      } else {
+        why = 'A normal BMI is not the same as a good body composition. Two people at this exact number can look completely different depending on what the weight is made of.';
+      }
+      why += ' FFMI strips body fat out first, so what is left actually tracks muscle.';
+      nextStep(why, 'Check your FFMI instead', '/ffmi-calculator.html', ev);
+    })();
     if(window.plausible) plausible('bmi_calculated');
   });
 })();

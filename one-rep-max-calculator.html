@@ -182,6 +182,13 @@
   .mt-chip{background:var(--bg2);border:1px solid var(--line2);border-radius:20px;color:var(--soft);text-decoration:none;font-size:13px;font-weight:600;padding:8px 14px;transition:border-color .18s,color .18s}
   .mt-chip:hover{border-color:var(--blue);color:var(--ink)}
   .mt-chip.mt-all{background:var(--blue);border-color:var(--blue);color:var(--bg)}
+  .next-step{margin-top:18px;background:var(--bg2);border:1px solid var(--line2);border-left:2px solid var(--blue);border-radius:10px;padding:15px 17px}
+  .ns-why{color:var(--soft);font-size:14.5px;line-height:1.62}
+  .ns-why b{color:var(--ink);font-weight:700}
+  .ns-cta{display:inline-flex;align-items:center;gap:8px;margin-top:12px;color:var(--blue-bright);text-decoration:none;font-weight:700;font-size:14px}
+  .ns-cta:hover{color:var(--ink)}
+  .ns-arrow{transition:transform .18s}
+  .ns-cta:hover .ns-arrow{transform:translateX(3px)}
 
   @media(max-width:640px){
     .hero{padding:44px 0 30px}
@@ -232,6 +239,10 @@
           <div class="rval" id="ormVal">—</div>
         </div>
         <table class="pct-table" id="pctTable"></table>
+        <div class="next-step" id="nextStep" hidden>
+          <div class="ns-why" id="nsWhy"></div>
+          <a class="ns-cta" id="nsCta" href="/tools.html"><span id="nsCtaText"></span><span class="ns-arrow">&rarr;</span></a>
+        </div>
         <div class="more-tools">
           <div class="mt-label">More free tools</div>
           <div class="mt-links">
@@ -304,6 +315,16 @@
     this.querySelectorAll('button').forEach(function(b){b.classList.toggle('active', b===btn)});
   });
 
+
+  function nextStep(why, txt, href, ev){
+    document.getElementById('nsWhy').innerHTML = why;
+    document.getElementById('nsCtaText').textContent = txt;
+    var a = document.getElementById('nsCta');
+    a.href = href;
+    a.onclick = function(){ if(window.plausible) plausible(ev); };
+    document.getElementById('nextStep').hidden = false;
+  }
+
   document.getElementById('calcBtn').addEventListener('click', function(){
     var wRaw = parseFloat(document.getElementById('weight').value);
     var reps = parseInt(document.getElementById('reps').value, 10);
@@ -324,6 +345,20 @@
     });
     document.getElementById('pctTable').innerHTML = rows;
     document.getElementById('result').classList.add('show');
+    (function(){
+      var why, txt, href, ev;
+      if(reps <= 5){
+        why = 'Estimated from <b>' + reps + ' rep' + (reps===1?'':'s') + '</b> — about as tight as this formula gets. Close enough to program percentages off.';
+        txt = 'Work out the intake that supports the lift'; href = '/macro-calculator.html'; ev = '1rm_next_macros';
+      } else if(reps <= 10){
+        why = 'Estimated from <b>' + reps + ' reps</b>. The formula drifts the further you get from a true single, so treat this as a working figure rather than a tested max.';
+        txt = 'Work out the intake that supports the lift'; href = '/macro-calculator.html'; ev = '1rm_next_macros';
+      } else {
+        why = 'Estimated from <b>' + reps + ' reps</b>, which is a long way from a single. Above about ten reps the Epley formula becomes a ballpark — <b>do not load a bar off this number</b>. Retest somewhere in the 3-5 rep range for something usable.';
+        txt = 'Meanwhile, check where your lean mass sits'; href = '/ffmi-calculator.html'; ev = '1rm_next_ffmi';
+      }
+      nextStep(why, txt, href, ev);
+    })();
     if(window.plausible) plausible('1rm_calculated');
   });
 })();
