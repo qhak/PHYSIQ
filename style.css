@@ -487,7 +487,7 @@
     background:linear-gradient(170deg,var(--surface),var(--bg2));
     border:1px solid var(--line2);
     border-color:color-mix(in srgb,var(--acc) 16%,transparent);
-    box-shadow:0 24px 48px -24px rgba(0,0,0,.8),0 0 44px -16px var(--blue-glow);
+    box-shadow:0 24px 48px -24px rgba(14,15,16,.13),0 0 44px -16px var(--blue-glow);
     aspect-ratio:1/1;
     display:flex;flex-direction:column;
   }
@@ -510,7 +510,7 @@
     background-size:cover;background-position:center 16%;
     z-index:1;opacity:.92;filter:saturate(1.06) contrast(1.05);
     border:2px solid var(--blue);
-    box-shadow:0 0 0 5px var(--blue-wash),0 18px 40px -18px rgba(0,0,0,.85);
+    box-shadow:0 0 0 5px var(--blue-wash),0 18px 40px -18px rgba(14,15,16,.15);
   }
   .vc-inner{
     position:relative;z-index:3;flex:1;display:flex;flex-direction:column;
@@ -541,7 +541,7 @@
   .vc-breakdown-below.blurred{filter:blur(8px);pointer-events:none;user-select:none}
   /* coloured progress bars in the below panel — carry the grade's medal accent */
   .vc-breakdown-below .vc-muscle{margin-bottom:11px}
-  .vc-breakdown-below .vc-muscle-track{height:7px;background:rgba(255,255,255,.06)}
+  .vc-breakdown-below .vc-muscle-track{height:7px;background:rgba(14,15,16,.09)}
   .vc-breakdown-below .vc-muscle-fill{animation:none;transform:none;box-shadow:0 0 10px -2px var(--acc-deep)}
   .vc-breakdown-below .vc-muscle-val{color:var(--acc);font-weight:700}
   .vc-breakdown-below.grade-S,.vc-details-below.grade-S,.res-analysis.grade-S,.res-rank.grade-S,.res-mc.grade-S{--acc:#9B7400;--acc-deep:#6E5200}
@@ -828,8 +828,8 @@
   .vc-muscle{display:flex;align-items:center;gap:10px;margin-bottom:8px}
   .vc-muscle-name{font-size:12px;font-weight:500;color:var(--soft);width:88px;flex-shrink:0}
   .vc-muscle-track{
-    flex:1;height:5px;background:rgba(255,255,255,.04);
-    border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.05);
+    flex:1;height:5px;background:rgba(14,15,16,.07);
+    border-radius:4px;overflow:hidden;border:1px solid rgba(14,15,16,.09);
   }
   .vc-muscle-fill{
     height:100%;border-radius:4px;
@@ -850,12 +850,12 @@
   /* verdict */
   .vc-verdict{
     font-size:13px;color:var(--soft);line-height:1.55;font-style:italic;
-    border-top:1px solid rgba(255,255,255,.05);padding-top:10px;
+    border-top:1px solid rgba(14,15,16,.09);padding-top:10px;
     margin-top:2px;margin-bottom:10px;
   }
   .vc-focus{
     display:grid;grid-template-columns:1fr;gap:6px;
-    border-top:1px solid rgba(255,255,255,.05);
+    border-top:1px solid rgba(14,15,16,.09);
     padding-top:10px;margin:2px 0 10px;
   }
   .vc-focus-row{display:grid;grid-template-columns:96px 1fr;gap:10px;font-size:12px;line-height:1.45}
@@ -864,7 +864,7 @@
 
   /* the callout — weakness & next goal, the whole point of the product */
   .vc-call{
-    border-top:1px solid rgba(255,255,255,.07);
+    border-top:1px solid rgba(14,15,16,.11);
     padding-top:10px;margin:2px 0 10px;display:grid;gap:8px;
   }
   .vc-call-row{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:baseline}
@@ -1363,7 +1363,7 @@
     padding:16px 22px;border-bottom:1px solid var(--line);transition:background .15s;
   }
   .distrow:last-child{border-bottom:none}
-  .distrow:hover{background:rgba(255,255,255,.02)}
+  .distrow:hover{background:rgba(14,15,16,.035)}
   .distrow .dg{
     font-family:'Bebas Neue';font-size:36px;text-align:center;line-height:1;padding-left:8px;
   }
@@ -1411,7 +1411,7 @@
     margin-top:28px;border:1px solid var(--line2);
     padding:16px 18px;border-radius:8px;
     color:var(--soft);font-size:14px;line-height:1.65;
-    background:rgba(255,255,255,.018);
+    background:rgba(14,15,16,.03);
   }
   @media(max-width:760px){.method-grid{grid-template-columns:1fr}}
   /* Affiliate program panel */
