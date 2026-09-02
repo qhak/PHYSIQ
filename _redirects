@@ -1,3 +1,24 @@
+# --- Old domain -> new domain -------------------------------------------------
+# callout-ai.com is kept registered forever (published video shortlinks and
+# Google's existing index both point at it) but must 301 to cutrank.app rather
+# than serve a duplicate copy of the site.
+#
+# EXCEPTION, must stay first: the Search Console verification file has to remain
+# reachable on the OLD domain, otherwise that property loses verification and the
+# Change of Address flow can't run. Serve it, don't redirect it.
+https://callout-ai.com/google47e58fafcbf4ab45.html   /google47e58fafcbf4ab45.html   200
+http://callout-ai.com/google47e58fafcbf4ab45.html    /google47e58fafcbf4ab45.html   200
+
+# Everything else moves permanently. The ! forces the redirect to win over the
+# static file that exists at the same path.
+https://callout-ai.com/*       https://cutrank.app/:splat   301!
+http://callout-ai.com/*        https://cutrank.app/:splat   301!
+https://www.callout-ai.com/*   https://cutrank.app/:splat   301!
+http://www.callout-ai.com/*    https://cutrank.app/:splat   301!
+
+# --- UTM shortlinks (published in videos - never renumber or remove) ----------
+# On the old domain these take two hops: /t1 -> cutrank.app/t1 -> /?utm_source=...
+# Query strings are preserved by Netlify, so tracking still lands correctly.
 /t1   /?utm_source=tiktok1    302
 /t2   /?utm_source=tiktok2    302
 /t3   /?utm_source=tiktok3    302
