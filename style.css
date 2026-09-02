@@ -491,12 +491,12 @@
     aspect-ratio:1/1;
     display:flex;flex-direction:column;
   }
-  .vc.grade-S{--acc:#f6e27a;--acc-deep:#d4af37;--acc-glow:rgba(246,226,122,.5)}
-  .vc.grade-A{--acc:#f0d99a;--acc-deep:#b9923f;--acc-glow:rgba(240,217,154,.4)}
-  .vc.grade-B{--acc:#D5E1F0;--acc-deep:#565A5E;--acc-glow:rgba(213,225,240,.32)}
-  .vc.grade-C{--acc:#d9a05f;--acc-deep:#8a5a28;--acc-glow:rgba(217,160,95,.32)}
-  .vc.grade-D{--acc:#8FA3BD;--acc-deep:#696D72;--acc-glow:rgba(143,163,189,.22)}
-  .vc.grade-E{--acc:#5E6E85;--acc-deep:#85898E;--acc-glow:rgba(94,110,133,.18)}
+  .vc.grade-S{--acc:#9B7400;--acc-deep:#6E5200;--acc-glow:rgba(155,116,0,.22)}
+  .vc.grade-A{--acc:#A8842B;--acc-deep:#7C601D;--acc-glow:rgba(168,132,43,.18)}
+  .vc.grade-B{--acc:#63686D;--acc-deep:#474B4F;--acc-glow:rgba(99,104,109,.16)}
+  .vc.grade-C{--acc:#8A5524;--acc-deep:#653D19;--acc-glow:rgba(138,85,36,.16)}
+  .vc.grade-D{--acc:#7B8087;--acc-deep:#5B6066;--acc-glow:rgba(123,128,135,.14)}
+  .vc.grade-E{--acc:#7E838A;--acc-deep:#5E636A;--acc-glow:rgba(126,131,138,.12)}
   /* foil stripe — takes the grade accent */
   .vc-stripe{
     position:absolute;top:0;left:0;right:0;height:2px;z-index:6;
@@ -529,9 +529,9 @@
     background:linear-gradient(180deg,rgba(5,9,16,.28) 0%,rgba(5,9,16,.04) 15%,rgba(5,9,16,.02) 45%,rgba(5,9,16,.54) 60%,rgba(5,9,16,.9) 77%,rgba(5,9,16,.99) 100%);
   }
   .result-vc .vc-grade-section{margin-top:auto}
-  .result-vc .vc-header .vc-brand-tag,.result-vc .vc-header .vc-badge{text-shadow:0 1px 10px rgba(0,0,0,.8)}
-  .result-vc .vc-grade-letter{text-shadow:0 6px 26px rgba(0,0,0,.5)}
-  .result-vc .vc-grade-label{text-shadow:0 2px 12px rgba(0,0,0,.85)}
+  .result-vc .vc-header .vc-brand-tag,.result-vc .vc-header .vc-badge{text-shadow:none}
+  .result-vc .vc-grade-letter{text-shadow:none}
+  .result-vc .vc-grade-label{text-shadow:none}
   /* detailed muscle breakdown now lives in its own panel below the card */
   .vc-breakdown-below{
     background:var(--surface);border:1px solid var(--line);border-radius:14px;
@@ -544,21 +544,21 @@
   .vc-breakdown-below .vc-muscle-track{height:7px;background:rgba(255,255,255,.06)}
   .vc-breakdown-below .vc-muscle-fill{animation:none;transform:none;box-shadow:0 0 10px -2px var(--acc-deep)}
   .vc-breakdown-below .vc-muscle-val{color:var(--acc);font-weight:700}
-  .vc-breakdown-below.grade-S,.vc-details-below.grade-S,.res-analysis.grade-S,.res-rank.grade-S,.res-mc.grade-S{--acc:#f6e27a;--acc-deep:#d4af37}
-  .vc-breakdown-below.grade-A,.vc-details-below.grade-A,.res-analysis.grade-A,.res-rank.grade-A,.res-mc.grade-A{--acc:#f0d99a;--acc-deep:#b9923f}
-  .vc-breakdown-below.grade-B,.vc-details-below.grade-B,.res-analysis.grade-B,.res-rank.grade-B,.res-mc.grade-B{--acc:#D5E1F0;--acc-deep:#565A5E}
-  .vc-breakdown-below.grade-C,.vc-details-below.grade-C,.res-analysis.grade-C,.res-rank.grade-C,.res-mc.grade-C{--acc:#d9a05f;--acc-deep:#8a5a28}
-  .vc-breakdown-below.grade-D,.vc-details-below.grade-D,.res-analysis.grade-D,.res-rank.grade-D,.res-mc.grade-D{--acc:#8FA3BD;--acc-deep:#696D72}
-  .vc-breakdown-below.grade-E,.vc-details-below.grade-E,.res-analysis.grade-E,.res-rank.grade-E,.res-mc.grade-E{--acc:#5E6E85;--acc-deep:#85898E}
+  .vc-breakdown-below.grade-S,.vc-details-below.grade-S,.res-analysis.grade-S,.res-rank.grade-S,.res-mc.grade-S{--acc:#9B7400;--acc-deep:#6E5200}
+  .vc-breakdown-below.grade-A,.vc-details-below.grade-A,.res-analysis.grade-A,.res-rank.grade-A,.res-mc.grade-A{--acc:#A8842B;--acc-deep:#7C601D}
+  .vc-breakdown-below.grade-B,.vc-details-below.grade-B,.res-analysis.grade-B,.res-rank.grade-B,.res-mc.grade-B{--acc:#63686D;--acc-deep:#474B4F}
+  .vc-breakdown-below.grade-C,.vc-details-below.grade-C,.res-analysis.grade-C,.res-rank.grade-C,.res-mc.grade-C{--acc:#8A5524;--acc-deep:#653D19}
+  .vc-breakdown-below.grade-D,.vc-details-below.grade-D,.res-analysis.grade-D,.res-rank.grade-D,.res-mc.grade-D{--acc:#7B8087;--acc-deep:#5B6066}
+  .vc-breakdown-below.grade-E,.vc-details-below.grade-E,.res-analysis.grade-E,.res-rank.grade-E,.res-mc.grade-E{--acc:#7E838A;--acc-deep:#5E636A}
 
   /* MINIMAL SCORE-FORWARD result card: the score is the hero, grade sits under it */
   .result-vc .vc-scorehero{margin-top:auto;text-align:center;padding-bottom:2px}
   .vc-score-big{
     font-family:'Bebas Neue';font-size:clamp(96px,27vw,138px);line-height:.8;color:var(--acc);
-    text-shadow:0 2px 12px rgba(0,0,0,.85),0 5px 32px rgba(0,0,0,.55),0 0 52px var(--acc-glow);
+    text-shadow:none;
   }
-  .vc-score-max{font-family:'Bebas Neue';font-size:.30em;color:var(--soft);letter-spacing:.01em;text-shadow:0 2px 10px rgba(0,0,0,.85)}
-  .vc-score-cap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:var(--faint);margin-top:2px;text-shadow:0 2px 10px rgba(0,0,0,.9)}
+  .vc-score-max{font-family:'Bebas Neue';font-size:.30em;color:var(--soft);letter-spacing:.01em;text-shadow:none}
+  .vc-score-cap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:var(--faint);margin-top:2px;text-shadow:none}
   /* The second scale, deliberately quieter than the gym number above it */
   .vc-score-alt{display:inline-flex;align-items:baseline;gap:7px;margin-top:9px;
     padding:4px 11px;border:1px solid var(--line2);border-radius:20px;
@@ -567,7 +567,7 @@
   .vc-score-alt-l{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.2em;
     text-transform:uppercase;color:var(--faint)}
   .vc-result-reveal .vc-score-alt{animation:resultSnapIn .38s ease-out .42s both}
-  .vc-score-grade{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin-top:14px;text-shadow:0 2px 12px rgba(0,0,0,.95)}
+  .vc-score-grade{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);margin-top:14px;text-shadow:none}
   .vc-score-grade .vc-score-letter{color:var(--acc);font-weight:700;margin-right:7px;font-size:13.5px}
   .vc-result-reveal .vc-score-big{animation:resultGradePunch .58s cubic-bezier(.12,.95,.18,1) .18s both}
 
@@ -587,7 +587,7 @@
   .vc-score-meta{
     display:flex;justify-content:center;align-items:center;gap:11px;margin-top:14px;
     font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
-    text-transform:uppercase;text-shadow:0 2px 12px rgba(0,0,0,.95);
+    text-transform:uppercase;text-shadow:none;
     /* Long grade labels ("DEVELOPING") plus a body-fat range overflow a narrow
        card. Wrap between the parts, never inside one. */
     flex-wrap:wrap;row-gap:5px;
@@ -793,7 +793,7 @@
   .vc-grade-letter{
     font-family:'Bebas Neue';font-size:clamp(88px,24vw,118px);line-height:.84;
     color:var(--acc);
-    text-shadow:0 2px 12px rgba(0,0,0,.85),0 4px 28px rgba(0,0,0,.6),0 0 46px var(--acc-glow);
+    text-shadow:none;
   }
   .vc-grade-label{
     font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;
