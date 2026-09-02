@@ -653,7 +653,7 @@ function renderViewResult(view,data,photoURL){
       // The moment a stranger is asked for an email is the moment they need the
       // limits restated — not buried in a policy they will not open.
       '<div class="gate-fine">No card · no password · unsubscribe anytime</div>'+
-      '<div class="gate-fine">Photo already graded and not stored by Callout-AI · <a onclick="openModal(\'privacyModal\')">privacy</a></div>'+
+      '<div class="gate-fine">Photo already graded and not stored by CutRank · <a onclick="openModal(\'privacyModal\')">privacy</a></div>'+
     '</div>';
   track('scan_result',{view:view,grade:viewGrade,paid:hasEntitlementHint()});
   if(!hasAccount()) track('gate_shown',{view:view});
@@ -664,7 +664,7 @@ function renderViewResult(view,data,photoURL){
       photoLayer+
       '<div class="vc-inner">'+
         '<div class="vc-header">'+
-          '<span class="vc-brand-tag">Callout-AI</span>'+
+          '<span class="vc-brand-tag">CutRank</span>'+
           '<span class="vc-badge">'+viewName+' VIEW</span>'+
         '</div>'+
         '<div class="vc-scorehero">'+
@@ -825,7 +825,7 @@ function injectShareMoment(grade, score){
   div.id='shareMoment';
   div.className='share-moment';
   div.innerHTML=
-    '<div class="sm-eye">You\'ve been called out</div>'+
+    '<div class="sm-eye">You\'ve been ranked</div>'+
     '<h3>Post your grade.</h3>'+
     '<p>Tag the friend who needs humbling.</p>'+
     '<button class="share-btn-big" onclick="shareGrade(\''+grade+'\','+score+',true)">'+
@@ -919,9 +919,9 @@ function showConfirmScreen(){
 // ============================================================
 function shareGrade(grade, score, fromMoment){
   track('share_click',{grade:grade,score:score,surface:fromMoment?'share_moment':'overall'});
-  const text='I just got called out. '+grade+'-tier, '+score+'/10 against people who actually train, on Callout-AI — the AI that grades your physique. No flattery. Get your verdict: '+(location.origin+location.pathname);
+  const text='I just got ranked. '+grade+'-tier, '+score+'/10 against people who actually train, on CutRank — the AI that grades your physique. No flattery. Get your verdict: '+(location.origin+location.pathname);
   if(navigator.share){
-    navigator.share({title:'My Callout-AI Grade',text,url:location.origin+location.pathname})
+    navigator.share({title:'My CutRank Grade',text,url:location.origin+location.pathname})
       .then(()=>{ if(fromMoment){ const m=document.getElementById('shareMoment'); if(m) m.remove(); }})
       .catch(()=>{});
   } else {
@@ -965,7 +965,7 @@ function showOverall(){
       photoLayer+
       '<div class="vc-inner">'+
         '<div class="vc-header">'+
-          '<span class="vc-brand-tag">Callout-AI</span>'+
+          '<span class="vc-brand-tag">CutRank</span>'+
           '<span class="vc-badge">'+o.nViews+' VIEW'+(o.nViews!==1?'S':'')+' · OVERALL</span>'+
         '</div>'+
         '<div class="vc-grade-section">'+
@@ -1079,7 +1079,7 @@ function renderPaymentRecovery(){
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse"><div class="big"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-5"/></svg></div>'+
     '<h2>Payment received?</h2>'+
-    '<p>Stripe sent you back without a checkout session ID, so Callout-AI cannot unlock access from the URL. Enter the checkout email and we will restore access from the server if there is an active purchase.</p>'+
+    '<p>Stripe sent you back without a checkout session ID, so CutRank cannot unlock access from the URL. Enter the checkout email and we will restore access from the server if there is an active purchase.</p>'+
     '<button class="btn gold-btn" onclick="openRecoveryModal()">Restore access →</button>'+
     '<p style="font-size:12px;color:var(--faint);line-height:1.5;margin-top:14px">Still stuck? support@callout-ai.com</p></div>';
   const btn=document.getElementById('resPrimary');
@@ -1089,7 +1089,7 @@ function renderPaymentRecovery(){
 function renderRefusal(reason){
   track('scan_refused',{reason:reason||''});
   const msg=reason==='age'
-    ?{h:"We can't grade this one",p:"Callout-AI is adults only, and we can only assess photos where the subject is clearly 18 or over."}
+    ?{h:"We can't grade this one",p:"CutRank is adults only, and we can only assess photos where the subject is clearly 18 or over."}
     :reason==='unclear_subject'
     ?{h:"Couldn't tell who to grade",p:"There seem to be multiple people. Use a photo where one person is clearly the subject."}
     :{h:"Couldn't read this view",p:"Need a clear, well-lit photo of an adult — shorts only, full region in frame, plain background."};
@@ -1427,7 +1427,7 @@ function proVeil(title){
       '<rect x="4.5" y="10.5" width="15" height="9.5" rx="2.2" stroke="currentColor" stroke-width="1.8"/>'+
       '<path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8"/></svg>'+
     '<div class="reslock-t">'+title+'</div>'+
-    '<div class="reslock-s">Callout-AI Pro</div>'+
+    '<div class="reslock-s">CutRank Pro</div>'+
     '<button class="btn gold-btn reslock-btn" onclick="handlePurchase(\'pro\')">Unlock with Pro →</button>'+
   '</div>';
 }
@@ -1502,7 +1502,7 @@ function buildUpsellHTML(){
   if(isProHint()) return '';
   const pro='<div class="res-plan rp-featured">'+
       '<div class="rp-tag">Best value</div>'+
-      '<div class="rp-name">Callout-AI Pro</div>'+
+      '<div class="rp-name">CutRank Pro</div>'+
       '<div class="rp-price">£9.99<small>/mo</small></div>'+
       '<div class="rp-desc">Everything in the Audit — plus track and improve over time.</div>'+
       '<ul class="rp-list">'+
@@ -1544,7 +1544,7 @@ function buildUpsellHTML(){
 }
 
 function tierDisplayLabel(tier){
-  return {scan:'Full Body Audit',pro:'Callout-AI Pro',lifetime:'Lifetime'}[tier]||'Paid access';
+  return {scan:'Full Body Audit',pro:'CutRank Pro',lifetime:'Lifetime'}[tier]||'Paid access';
 }
 
 // ============================================================
@@ -1680,7 +1680,7 @@ function renderProgressLocked(){
         '<li>Improve: training + diet audits against your scan</li>'+
         '<li>Scan history tied to your email, on any device</li>'+
       '</ul>'+
-      '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get Callout-AI Pro →</button>'+
+      '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CutRank Pro →</button>'+
       '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">← Back</button>'+
       '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
     '</div></div>';
@@ -1816,7 +1816,7 @@ function renderImproveLocked(){
     '<div class="progress-wrap"><div class="progress-card">'+
       '<div class="progress-lock-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>'+
       '<div class="pr-eye">Pro feature</div>'+
-      '<h2>Your split, called out.</h2>'+
+      '<h2>Your split, ranked.</h2>'+
       '<p class="pr-sub">Enter your weekly sets and a normal day of eating. Improve audits both against what your scan actually shows — and tells you what to change.</p>'+
       '<ul class="pr-feats">'+
         '<li>Training analysis — your volume vs your visible weak points</li>'+
@@ -1824,7 +1824,7 @@ function renderImproveLocked(){
         '<li>Built from your latest scan, not a questionnaire</li>'+
         '<li>Rescan after — Progress shows whether it worked</li>'+
       '</ul>'+
-      '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get Callout-AI Pro →</button>'+
+      '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CutRank Pro →</button>'+
       '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">← Back</button>'+
       '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
     '</div></div>';
@@ -1991,7 +1991,7 @@ function impBodyMap(m){
     '</svg>';
   return '<div class="imp-maps">'+front+back+'</div>'+
     '<div class="imp-legend">'+
-      '<span><i style="background:var(--red);opacity:.5"></i>Called out</span>'+
+      '<span><i style="background:var(--red);opacity:.5"></i>Ranked</span>'+
       '<span><i style="background:var(--blue-muted)"></i>Building</span>'+
       '<span><i style="background:var(--blue);opacity:.75"></i>Strong</span>'+
       '<span><i style="border:1px dashed var(--line2)"></i>Not scanned</span>'+
@@ -2040,7 +2040,7 @@ function renderImproveReport(rep,scan){
 
   document.getElementById('improveBody').innerHTML=impShell(
     '<div class="imp-rephead"><div>'+
-      '<div class="imp-rep-eyebrow">Callout-AI · IMPROVE REPORT</div>'+
+      '<div class="imp-rep-eyebrow">CutRank · IMPROVE REPORT</div>'+
       '<div class="imp-rep-serial">'+esc(serial)+' · '+esc(dateStr)+'</div>'+
     '</div></div>'+
     (meta?'<div class="imp-meta">'+meta+'</div>':'')+
