@@ -352,7 +352,7 @@
   .lock-badge{
     display:none;position:absolute;inset:0;
     align-items:center;justify-content:center;
-    background:rgba(5,9,16,.55);backdrop-filter:blur(3px);border-radius:14px;
+    background:rgba(252,252,250,.55);backdrop-filter:blur(3px);border-radius:14px;
   }
   .lock-badge svg{width:26px;height:26px;stroke:var(--dim);stroke-width:1.8;fill:none}
 
@@ -515,7 +515,7 @@
   .vc-inner{
     position:relative;z-index:3;flex:1;display:flex;flex-direction:column;
     padding:20px 22px 16px;
-    background:linear-gradient(180deg,transparent 0%,rgba(5,9,16,.28) 34%,rgba(5,9,16,.9) 70%,rgba(5,9,16,.97) 100%);
+    background:linear-gradient(180deg,transparent 0%,rgba(252,252,250,.28) 34%,rgba(252,252,250,.9) 70%,rgba(252,252,250,.97) 100%);
   }
   /* PHOTO-FORWARD result card: physique full-bleed, breakdown lives below.
      Scoped to .result-vc so the overall/full-body card keeps its circle crop. */
@@ -526,7 +526,7 @@
   }
   .result-vc .vc-inner{
     padding:18px 22px 16px;
-    background:linear-gradient(180deg,rgba(5,9,16,.28) 0%,rgba(5,9,16,.04) 15%,rgba(5,9,16,.02) 45%,rgba(5,9,16,.54) 60%,rgba(5,9,16,.9) 77%,rgba(5,9,16,.99) 100%);
+    background:linear-gradient(180deg,rgba(252,252,250,.28) 0%,rgba(252,252,250,.04) 15%,rgba(252,252,250,.02) 45%,rgba(252,252,250,.54) 60%,rgba(252,252,250,.9) 77%,rgba(252,252,250,.99) 100%);
   }
   .result-vc .vc-grade-section{margin-top:auto}
   .result-vc .vc-header .vc-brand-tag,.result-vc .vc-header .vc-badge{text-shadow:none}
@@ -562,7 +562,7 @@
   /* The second scale, deliberately quieter than the gym number above it */
   .vc-score-alt{display:inline-flex;align-items:baseline;gap:7px;margin-top:9px;
     padding:4px 11px;border:1px solid var(--line2);border-radius:20px;
-    background:rgba(0,0,0,.4);backdrop-filter:blur(2px)}
+    background:rgba(252,252,250,.78);backdrop-filter:blur(2px)}
   .vc-score-alt-n{font-family:'Bebas Neue';font-size:19px;line-height:1;color:var(--soft)}
   .vc-score-alt-l{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.2em;
     text-transform:uppercase;color:var(--faint)}
@@ -912,7 +912,7 @@
     position:absolute;inset:0;z-index:20;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     padding:32px 28px;text-align:center;
-    background:rgba(5,9,16,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:rgba(252,252,250,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     border-radius:16px;
     animation:fadeIn .35s ease both;
   }
@@ -1056,7 +1056,7 @@
   }
   .pr-chart-preview::after{
     content:'';position:absolute;inset:0;
-    background:rgba(5,9,16,.65);backdrop-filter:blur(5px);border-radius:14px;
+    background:rgba(252,252,250,.65);backdrop-filter:blur(5px);border-radius:14px;
   }
   .pr-chart-label{
     font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;
@@ -1654,7 +1654,7 @@
   .mob-cta{
     position:fixed;left:0;right:0;bottom:0;z-index:90;display:none;
     padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-    background:rgba(5,9,16,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    background:rgba(252,252,250,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
     border-top:1px solid var(--line);
   }
   .mob-cta.on{display:block;animation:fadeIn .3s ease both}
@@ -1833,7 +1833,7 @@
   .ra-cinematic-bg {
     position: fixed;
     inset: 0;
-    background: rgba(5,9,16,.75);
+    background: rgba(252,252,250,.75);
     z-index: 2;
     pointer-events: none;
     opacity: 0;
