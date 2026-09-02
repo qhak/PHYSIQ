@@ -73,11 +73,11 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   :root{
-    --bg:#05070B; --bg2:#090E17; --surface:#0D1420; --surface-raised:#121C2B;
-    --line:#1B2A40; --line2:#28466F; --line-strong:#3A6BA8;
-    --ink:#F4F8FF; --soft:#B9C7D9; --dim:#7F91A8; --faint:#526278; --quiet:#344258;
-    --blue:#2F80FF; --blue-bright:#5B9DFF; --blue-deep:#1558C0;
-    --green:#49D17D; --red:#FF6B6B; --amber:#E8A13A;
+    --bg:#F1F1ED; --bg2:#F7F7F4; --surface:#FCFCFA; --surface-raised:#FFFFFF;
+    --line:#E5E5DF; --line2:#CFCFC6; --line-strong:#A9A99D;
+    --ink:#0E0F10; --soft:#35383C; --dim:#565A5E; --faint:#696D72; --quiet:#85898E;
+    --blue:#1B62D6; --blue-bright:#2F80FF; --blue-deep:#12428F;
+    --green:#14683A; --red:#C2352F; --amber:#E8A13A;
   }
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
   body{
@@ -133,7 +133,7 @@
   ul.checks li::before{content:'';position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--red)}
   ul.checks li b{color:var(--ink)}
 
-  .note{border:1px solid var(--line2);border-radius:10px;padding:16px 18px;background:rgba(255,255,255,.018);color:var(--dim);font-size:14px;line-height:1.7;margin-top:18px}
+  .note{border:1px solid var(--line2);border-radius:10px;padding:16px 18px;background:rgba(14,15,16,.018);color:var(--dim);font-size:14px;line-height:1.7;margin-top:18px}
   .callout{border-left:3px solid var(--amber);background:rgba(232,161,58,0.06);border-radius:0 10px 10px 0;padding:15px 18px;color:var(--soft);font-size:15px;margin:18px 0}
 
   details.faq{border-bottom:1px solid var(--line);padding:20px 0}
@@ -185,15 +185,15 @@
     </div>
     <div class="hero-art" aria-hidden="true">
       <svg width="130" height="160" viewBox="0 0 130 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g stroke="#2F80FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <g stroke="#1B62D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
           <rect x="14" y="40" width="32" height="80" rx="5"/>
           <path d="M18 36h24a3 3 0 0 1 3 3v1H15v-1a3 3 0 0 1 3-3z"/>
           <rect x="62" y="58" width="32" height="62" rx="5"/>
           <path d="M66 54h24a3 3 0 0 1 3 3v1H63v-1a3 3 0 0 1 3-3z"/>
         </g>
-        <rect x="16" y="84" width="28" height="34" rx="3" fill="#2F80FF" opacity="0.15"/>
-        <rect x="64" y="96" width="28" height="22" rx="3" fill="#2F80FF" opacity="0.15"/>
-        <g stroke="#28466F" stroke-width="1.5" stroke-linecap="round">
+        <rect x="16" y="84" width="28" height="34" rx="3" fill="#1B62D6" opacity="0.15"/>
+        <rect x="64" y="96" width="28" height="22" rx="3" fill="#1B62D6" opacity="0.15"/>
+        <g stroke="#CFCFC6" stroke-width="1.5" stroke-linecap="round">
           <path d="M104 70v44"/><path d="M99 78h10"/><path d="M99 96h10"/>
         </g>
       </svg>
@@ -218,7 +218,7 @@
       <div class="tier-sub">Real drugs with real trial data — being used by people they weren't prescribed to, often sourced outside a pharmacy.</div>
 
       <div class="compound">
-        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#49D17D" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="14" width="11" height="15.5" rx="2" fill="#49D17D" opacity="0.18"/></svg></div>
+        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#14683A" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="14" width="11" height="15.5" rx="2" fill="#14683A" opacity="0.18"/></svg></div>
         <div>
           <div class="cname">Semaglutide / tirzepatide (Ozempic, Wegovy, Mounjaro)</div>
           <div class="cfor">Licensed for type 2 diabetes and weight management. Used in fitness circles for cutting.</div>
@@ -227,7 +227,7 @@
       </div>
 
       <div class="compound">
-        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#49D17D" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="17" width="11" height="12.5" rx="2" fill="#49D17D" opacity="0.18"/></svg></div>
+        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#14683A" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="17" width="11" height="12.5" rx="2" fill="#14683A" opacity="0.18"/></svg></div>
         <div>
           <div class="cname">Tesamorelin</div>
           <div class="cfor">A growth-hormone-releasing hormone analogue, approved for a specific condition (HIV-associated lipodystrophy). Marketed in fitness contexts for fat loss.</div>
@@ -275,7 +275,7 @@
       <div class="tier-sub">Never completed human trials. Sold under "not for human consumption" labelling, which is a legal workaround rather than a caution.</div>
 
       <div class="compound">
-        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#FF6B6B" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="20" width="11" height="9.5" rx="2" fill="#FF6B6B" opacity="0.16"/></svg></div>
+        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#C2352F" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="20" width="11" height="9.5" rx="2" fill="#C2352F" opacity="0.16"/></svg></div>
         <div>
           <div class="cname">BPC-157</div>
           <div class="cfor">Marketed for tendon, ligament and gut healing. Probably the single most-discussed peptide in gyms right now.</div>
@@ -284,7 +284,7 @@
       </div>
 
       <div class="compound">
-        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#FF6B6B" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="18" width="11" height="11.5" rx="2" fill="#FF6B6B" opacity="0.16"/></svg></div>
+        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#C2352F" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="18" width="11" height="11.5" rx="2" fill="#C2352F" opacity="0.16"/></svg></div>
         <div>
           <div class="cname">TB-500</div>
           <div class="cfor">A synthetic version of part of thymosin beta-4. Marketed for injury recovery and inflammation.</div>
@@ -293,7 +293,7 @@
       </div>
 
       <div class="compound">
-        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#FF6B6B" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="16" width="11" height="13.5" rx="2" fill="#FF6B6B" opacity="0.16"/></svg></div>
+        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#C2352F" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="16" width="11" height="13.5" rx="2" fill="#C2352F" opacity="0.16"/></svg></div>
         <div>
           <div class="cname">Melanotan II</div>
           <div class="cfor">Marketed for tanning without sun exposure, sometimes alongside physique-related claims.</div>
@@ -308,7 +308,7 @@
       <div class="tier-sub">Different classes of compound entirely, marketed under the same umbrella because the word sells.</div>
 
       <div class="compound">
-        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#526278" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="23" width="11" height="6.5" rx="2" fill="#526278" opacity="0.2"/></svg></div>
+        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#696D72" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="23" width="11" height="6.5" rx="2" fill="#696D72" opacity="0.2"/></svg></div>
         <div>
           <div class="cname">MK-677 (ibutamoren)</div>
           <div class="cfor">Marketed for GH stimulation alongside actual peptides.</div>
@@ -317,7 +317,7 @@
       </div>
 
       <div class="compound">
-        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#526278" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="24" width="11" height="5.5" rx="2" fill="#526278" opacity="0.2"/></svg></div>
+        <div class="vial" aria-hidden="true"><svg width="20" height="32" viewBox="0 0 22 34" fill="none"><g stroke="#696D72" stroke-width="1.8" stroke-linejoin="round" fill="none"><rect x="4" y="8" width="14" height="23" rx="3"/><path d="M6 5h10a2 2 0 0 1 2 2v1H4V7a2 2 0 0 1 2-2z"/></g><rect x="5.5" y="24" width="11" height="5.5" rx="2" fill="#696D72" opacity="0.2"/></svg></div>
         <div>
           <div class="cname">SARMs (ostarine, RAD-140 and others)</div>
           <div class="cfor">Regularly sold by the same vendors and discussed in the same breath.</div>
