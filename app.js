@@ -128,7 +128,7 @@ window.addEventListener('DOMContentLoaded',()=>{
           showConfirmScreen();
         } else {
           track('purchase_verify_failed',{reason:d.reason||''});
-          renderError('Payment could not be verified. If you were charged, contact support@callout-ai.com.');
+          renderError('Payment could not be verified. If you were charged, contact support@cutrank.app.');
           show('screen-result');
         }
       })
@@ -678,7 +678,7 @@ function renderViewResult(view,data,photoURL){
         '</div>'+
         '<div class="vc-footer">'+
           '<span class="vc-serial">'+cardId+'</span>'+
-          '<span class="vc-site">callout-ai.com</span>'+
+          '<span class="vc-site">cutrank.app</span>'+
           '<span class="vc-certified">AI ESTIMATE</span>'+
         '</div>'+
       '</div>'+
@@ -890,7 +890,7 @@ function handlePurchase(tier){
     window.location.href=url;
     return;
   }
-  renderError('Checkout is not configured yet. Please contact support@callout-ai.com.');
+  renderError('Checkout is not configured yet. Please contact support@cutrank.app.');
   show('screen-result');
 }
 
@@ -986,7 +986,7 @@ function showOverall(){
         muscleRows+
         '<div class="vc-footer">'+
           '<span class="vc-serial">'+cardId+'</span>'+
-          '<span class="vc-site">callout-ai.com</span>'+
+          '<span class="vc-site">cutrank.app</span>'+
           '<span class="vc-certified">AI ESTIMATE</span>'+
         '</div>'+
       '</div>'+
@@ -1081,7 +1081,7 @@ function renderPaymentRecovery(){
     '<h2>Payment received?</h2>'+
     '<p>Stripe sent you back without a checkout session ID, so CutRank cannot unlock access from the URL. Enter the checkout email and we will restore access from the server if there is an active purchase.</p>'+
     '<button class="btn gold-btn" onclick="openRecoveryModal()">Restore access →</button>'+
-    '<p style="font-size:12px;color:var(--faint);line-height:1.5;margin-top:14px">Still stuck? support@callout-ai.com</p></div>';
+    '<p style="font-size:12px;color:var(--faint);line-height:1.5;margin-top:14px">Still stuck? support@cutrank.app</p></div>';
   const btn=document.getElementById('resPrimary');
   btn.style.display='block';btn.textContent='← Back';btn.onclick=()=>show('screen-home');
 }
@@ -1188,11 +1188,11 @@ async function submitRecoveryEmail(){
       });
       const sdata=await sent.json().catch(()=>null);
       if(sent.status===429){
-        if(status){status.textContent='Too many attempts today. Try again later, or email support@callout-ai.com.';status.className='recovery-status err';}
+        if(status){status.textContent='Too many attempts today. Try again later, or email support@cutrank.app.';status.className='recovery-status err';}
         return;
       }
       if(!sent.ok){
-        if(status){status.textContent=(sdata&&sdata.message)||'Could not send the code. Contact support@callout-ai.com.';status.className='recovery-status err';}
+        if(status){status.textContent=(sdata&&sdata.message)||'Could not send the code. Contact support@cutrank.app.';status.className='recovery-status err';}
         return;
       }
       userEmail=email; saveState();
@@ -1212,9 +1212,9 @@ async function submitRecoveryEmail(){
     clearEntitlement();
     userEmail=email;
     saveState();
-    if(status){status.textContent='No active purchase found for that email. For help, contact support@callout-ai.com.';status.className='recovery-status err';}
+    if(status){status.textContent='No active purchase found for that email. For help, contact support@cutrank.app.';status.className='recovery-status err';}
   }catch(e){
-    if(status){status.textContent='Could not check purchase status. Try again, or contact support@callout-ai.com.';status.className='recovery-status err';}
+    if(status){status.textContent='Could not check purchase status. Try again, or contact support@cutrank.app.';status.className='recovery-status err';}
   }finally{
     if(btn) btn.disabled=false;
   }

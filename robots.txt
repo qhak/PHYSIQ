@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://callout-ai.com/sitemap.xml
+Sitemap: https://cutrank.app/sitemap.xml

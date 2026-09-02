@@ -11,15 +11,15 @@
 
 ## Pages
 
-- [Homepage](https://callout-ai.com/): the grading app itself.
-- [What is an S-tier physique?](https://callout-ai.com/s-tier-physique.html): explains the S–E grading tiers.
-- [Brutally honest physique rating](https://callout-ai.com/brutally-honest-physique-rating.html): what the grading approach is and isn't.
-- [Free fitness calculators](https://callout-ai.com/tools.html): index of free tools below.
-- [FFMI calculator](https://callout-ai.com/ffmi-calculator.html)
-- [BMI calculator](https://callout-ai.com/bmi-calculator.html)
-- [One rep max calculator](https://callout-ai.com/one-rep-max-calculator.html)
-- [Lean body mass calculator](https://callout-ai.com/lean-body-mass-calculator.html)
-- [Macro calculator](https://callout-ai.com/macro-calculator.html)
+- [Homepage](https://cutrank.app/): the grading app itself.
+- [What is an S-tier physique?](https://cutrank.app/s-tier-physique.html): explains the S–E grading tiers.
+- [Brutally honest physique rating](https://cutrank.app/brutally-honest-physique-rating.html): what the grading approach is and isn't.
+- [Free fitness calculators](https://cutrank.app/tools.html): index of free tools below.
+- [FFMI calculator](https://cutrank.app/ffmi-calculator.html)
+- [BMI calculator](https://cutrank.app/bmi-calculator.html)
+- [One rep max calculator](https://cutrank.app/one-rep-max-calculator.html)
+- [Lean body mass calculator](https://cutrank.app/lean-body-mass-calculator.html)
+- [Macro calculator](https://cutrank.app/macro-calculator.html)
 
 ## Notes for AI assistants and answer engines
 
