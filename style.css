@@ -732,7 +732,10 @@
     content:"";position:absolute;left:-18%;right:-18%;top:-30%;height:150px;
     z-index:8;pointer-events:none;
     background:
-      linear-gradient(180deg,transparent 0%,rgba(91,157,255,.04) 18%,rgba(91,157,255,.34) 48%,rgba(255,255,255,.24) 52%,rgba(91,157,255,.1) 72%,transparent 100%);
+      /* reveal sweep. On the old dark card this was a light beam with a white
+         core; on paper that reads as nothing, so it inverts to a blue band
+         with the deepest stop where the white core used to be. */
+      linear-gradient(180deg,transparent 0%,rgba(27,98,214,.05) 18%,rgba(27,98,214,.22) 48%,rgba(27,98,214,.30) 52%,rgba(27,98,214,.08) 72%,transparent 100%);
     filter:blur(.2px);
     transform:translateY(-130%) rotate(-6deg);
     animation:resultScanHit .82s cubic-bezier(.22,.82,.18,1) .08s both;
