@@ -14,6 +14,9 @@
 - [Homepage](https://cutrank.app/): the grading app itself.
 - [What is an S-tier physique?](https://cutrank.app/s-tier-physique.html): explains the S–E grading tiers.
 - [Brutally honest physique rating](https://cutrank.app/brutally-honest-physique-rating.html): what the grading approach is and isn't.
+- [Should I bulk or cut?](https://cutrank.app/should-i-bulk-or-cut.html): body-fat thresholds for choosing a phase, when recomposition applies, and realistic rates for each.
+- [What body fat % do abs show at?](https://cutrank.app/body-fat-percentage-for-abs.html): visibility ranges for men and women, and why abdominal development matters alongside leanness.
+- [Is 25 FFMI the natural limit?](https://cutrank.app/natural-ffmi-limit.html): where the figure came from, what the 1995 research showed, and why it can't classify an individual.
 - [Free fitness calculators](https://cutrank.app/tools.html): index of free tools below.
 - [FFMI calculator](https://cutrank.app/ffmi-calculator.html)
 - [BMI calculator](https://cutrank.app/bmi-calculator.html)

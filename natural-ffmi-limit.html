@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- Cloudflare Web Analytics -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"155203367c0a44f0881448c3b9d7168d"}'></script>
+<!-- Plausible (cookieless) -->
+<script async src="https://plausible.io/js/pa-zCmPrWbPvknVAOLA5TAa8.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<!-- Lucid Analytics (self-hosted, cookieless) -->
+<script defer data-domain="cutrank.app" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
+
+<title>Is 25 FFMI the Natural Limit? | CutRank</title>
+<meta name="description" content="Where the 25 FFMI natural limit came from, what the 1995 study actually showed, why it gets misused as proof of steroid use, and how to check your own number.">
+<link rel="canonical" href="https://cutrank.app/natural-ffmi-limit.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Is 25 FFMI Really the Natural Limit?">
+<meta property="og:description" content="Where the number came from, what the 1995 study actually showed, and why it's a reference point rather than a ceiling.">
+<meta property="og:url" content="https://cutrank.app/natural-ffmi-limit.html">
+<meta property="og:site_name" content="CutRank">
+<meta property="og:image" content="https://cutrank.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Is 25 FFMI the Natural Limit? — CutRank">
+<meta name="twitter:description" content="Where the number came from, and what it does and doesn't prove.">
+<meta name="twitter:image" content="https://cutrank.app/og-image.png">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Is 25 FFMI the Natural Limit?",
+  "description": "The origin of the 25 FFMI figure, what the 1995 research actually showed, and why it works as a reference point but fails as proof of anything.",
+  "image": "https://cutrank.app/og-image.png",
+  "url": "https://cutrank.app/natural-ffmi-limit.html",
+  "publisher": {
+    "@type": "Organization",
+    "name": "CutRank",
+    "url": "https://cutrank.app",
+    "logo": "https://cutrank.app/og-image.png"
+  }
+}
+</script>
+
+<!-- Favicon — CutRank rank mark -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230E0F10'/%3E%3Crect x='6.5' y='18' width='5' height='8' rx='1.6' fill='%231B62D6'/%3E%3Crect x='13.5' y='12.5' width='5' height='13.5' rx='1.6' fill='%232F80FF'/%3E%3Crect x='20.5' y='6.5' width='5' height='19.5' rx='1.6' fill='%239B7400'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<!-- FAQ structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Is 25 FFMI the natural limit?","acceptedAnswer":{"@type":"Answer","text":"No single number is a hard limit. 25 is the figure most often cited as an approximate upper range for drug-free lifters, based on a 1995 study by Kouri and colleagues that compared steroid users and non-users. It describes where most drug-free lifters in that sample topped out — it is not a biological ceiling that applies to every individual."}},
+    {"@type":"Question","name":"Can a natural lifter exceed 25 FFMI?","acceptedAnswer":{"@type":"Answer","text":"Yes. Some can, particularly tall lifters, those with exceptional genetics, and anyone whose body fat percentage has been underestimated. Because FFMI is calculated from a body fat estimate, a measurement error of a few percentage points is enough to push a number above or below 25 on its own."}},
+    {"@type":"Question","name":"Does an FFMI above 25 prove someone uses steroids?","acceptedAnswer":{"@type":"Answer","text":"No, and using it that way is a misuse of the research. The original study reported a pattern across a group, not a test that can classify one person. Body fat measurement error, height, frame size and genetic variation all move an individual's FFMI enough to make it unreliable as evidence about anyone."}},
+    {"@type":"Question","name":"What is a realistic FFMI for a natural lifter?","acceptedAnswer":{"@type":"Answer","text":"Most trained, drug-free lifters land somewhere between 20 and 23. Reaching 23 to 25 generally reflects years of consistent training with favourable genetics. Above 25 is uncommon in drug-free lifters but not impossible, and the figure is only as reliable as the body fat estimate behind it."}}
+  ]
+}
+</script>
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#F1F1ED; --bg2:#F7F7F4; --surface:#FCFCFA; --surface-raised:#FFFFFF;
+    --line:#E5E5DF; --line2:#CFCFC6; --line-strong:#A9A99D;
+    --ink:#0E0F10; --soft:#35383C; --dim:#565A5E; --faint:#696D72; --quiet:#85898E;
+    --blue:#1B62D6; --blue-bright:#2F80FF; --blue-deep:#12428F;
+    --green:#14683A; --red:#C2352F;
+  }
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    line-height:1.6;
+  }
+  a{color:inherit}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+
+  .nav{
+    position:sticky;top:0;z-index:100;background:rgba(247,247,244,.86);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .nav-in{max-width:960px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-family:'Inter';font-weight:900;letter-spacing:.28em;font-size:15px;color:var(--ink);text-decoration:none}
+  .nav-cta{
+    background:var(--blue);color:var(--bg);text-decoration:none;
+    font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:9px;transition:background .18s;
+  }
+  .nav-cta:hover{background:var(--blue-bright)}
+
+  .hero{padding:64px 0 40px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
+  h1{font-size:clamp(30px,5.2vw,46px);font-weight:900;letter-spacing:-.03em;line-height:1.06}
+  h1 em{font-style:normal;color:var(--blue)}
+  .lede{color:var(--soft);font-size:17px;margin-top:20px;max-width:62ch}
+  .cta-row{margin-top:32px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .bigcta{
+    background:var(--blue);color:var(--bg);text-decoration:none;border-radius:10px;
+    padding:16px 30px;font-weight:700;font-size:16px;
+    display:inline-flex;align-items:center;justify-content:center;min-height:54px;transition:background .18s;
+  }
+  .bigcta:hover{background:var(--blue-bright)}
+  .cta-sub{color:var(--dim);font-size:13.5px}
+
+  section.block{padding:34px 0;border-top:1px solid var(--line)}
+  h2{font-size:clamp(23px,3.4vw,30px);font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:16px}
+  h2 em{font-style:normal;color:var(--blue)}
+  h3{font-size:18px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px;color:var(--ink)}
+  p.body{color:var(--soft);font-size:16px;margin-bottom:16px}
+  p.body:last-child{margin-bottom:0}
+  strong{color:var(--ink);font-weight:700}
+  .answer{border-left:3px solid var(--blue);background:var(--surface);border-radius:0 10px 10px 0;padding:16px 20px;font-size:16.5px;color:var(--ink);margin-top:20px}
+
+  .ladder{display:grid;gap:10px;margin-top:24px}
+  .rung{display:flex;align-items:flex-start;gap:16px;border:1px solid var(--line);border-radius:11px;padding:14px 16px;background:var(--surface)}
+  .rung.top{border-color:var(--line-strong);background:var(--surface-raised)}
+  .rung .g{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;width:64px;text-align:center;flex-shrink:0;line-height:1.4;color:var(--blue)}
+  .rung .gt{font-size:15px}
+  .rung .gt b{color:var(--ink)}
+  .rung .gt span{color:var(--dim)}
+
+  ul.checks{list-style:none;display:grid;gap:12px;margin-top:8px}
+  ul.checks li{position:relative;padding-left:26px;color:var(--soft);font-size:16px}
+  ul.checks li::before{content:'';position:absolute;left:4px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--blue)}
+  ul.checks li b{color:var(--ink)}
+
+  .sensitivity{border:1px solid var(--line2);border-radius:11px;background:var(--surface);padding:18px 20px;margin-top:22px}
+  .sensitivity .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+  .srow{display:grid;grid-template-columns:110px 1fr 78px;gap:12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+  .srow:first-of-type{border-top:0}
+  .srow .bf{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--dim)}
+  .srow .bar{height:9px;border-radius:3px;background:var(--blue);opacity:.85}
+  .srow .val{font-family:'JetBrains Mono',monospace;font-size:14.5px;font-weight:700;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+  .srow.over .bar{background:var(--red)}
+  .srow.over .val{color:var(--red)}
+
+  details.faq{border-bottom:1px solid var(--line);padding:20px 0}
+  details.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:14px;font-weight:700;font-size:17px}
+  details.faq summary::-webkit-details-marker{display:none}
+  details.faq summary::after{content:"+";color:var(--blue);font-weight:600}
+  details.faq[open] summary::after{content:"−"}
+  details.faq .a{margin-top:12px;color:var(--soft);font-size:15.5px}
+
+  .note{border:1px solid var(--line2);border-radius:10px;padding:16px 18px;background:rgba(14,15,16,.018);color:var(--dim);font-size:14px;line-height:1.7;margin-top:8px}
+
+  .final{text-align:center;padding:56px 0 30px}
+  .final h2{margin-bottom:14px}
+  .final p{color:var(--dim);font-size:16px;margin-bottom:26px}
+
+  footer{border-top:1px solid var(--line);padding:34px 22px;text-align:center;color:var(--faint);font-size:13px;line-height:1.9}
+  footer a{color:var(--dim);text-decoration:none}
+  footer a:hover{color:var(--blue)}
+  .foot-brand{font-family:'Inter';font-weight:900;letter-spacing:.28em;color:var(--soft);margin-bottom:8px}
+
+  @media(max-width:640px){
+    .hero{padding:44px 0 30px}
+    .bigcta{width:100%}
+    .srow{grid-template-columns:88px 1fr 64px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="https://cutrank.app/">CutRank</a>
+    <a class="nav-cta" href="/ffmi-calculator.html">Calculate your FFMI</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">The 25 figure, examined</div>
+    <h1>Is <em>25 FFMI</em> really the natural limit?</h1>
+    <div class="answer">No — not as a hard ceiling. <strong>25</strong> is the figure most often cited as an approximate upper range for drug-free lifters, and it comes from a single 1995 study comparing steroid users with non-users. It describes <strong>where most drug-free lifters in that sample topped out</strong>. It was never a biological limit, and it can't classify an individual.</div>
+    <div class="cta-row">
+      <a class="bigcta" href="/ffmi-calculator.html">Calculate your FFMI — free</a>
+      <span class="cta-sub">Takes about twenty seconds.</span>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>Where the number <em>came from</em></h2>
+    <p class="body">In 1995, Kouri and colleagues published a study comparing the fat-free mass index of male athletes who used anabolic steroids against those who didn't. The drug-free group clustered below an FFMI of roughly 25, while the steroid-using group frequently exceeded it.</p>
+    <p class="body">That's the entire origin of the number. It has since been repeated so many times that it's often stated as though it were a law of physiology — but what the study reported was <strong>a pattern in one sample of people, measured once, in the mid-nineties</strong>.</p>
+    <p class="body">Which doesn't make it useless. As a rough reference for what drug-free training tends to produce, it holds up reasonably well, and it's a genuinely helpful sanity check against the physiques sold as natural online. The problem is what people do with it next.</p>
+  </section>
+
+  <section class="block">
+    <h2>What it <em>can't</em> tell you</h2>
+    <p class="body">The common misuse is treating 25 as a test: this person is above it, therefore they're using something. That reasoning doesn't survive contact with how the number is produced.</p>
+    <ul class="checks">
+      <li><b>A group average can't classify an individual.</b> Finding that most drug-free lifters fall below a line says nothing definitive about any specific person above it. Distributions have tails, and people at the tail are exactly who ends up competing.</li>
+      <li><b>It depends entirely on a body fat estimate.</b> FFMI is calculated from fat-free mass, which is calculated from body fat percentage — a number almost nobody measures accurately. See below for how much that moves things.</li>
+      <li><b>Height distorts it.</b> Lean mass doesn't scale with height squared, so raw FFMI quietly favours taller lifters. The normalization adjustment exists precisely because of this, and plenty of published FFMI figures don't apply it.</li>
+      <li><b>Genetic variation is real and large.</b> Frame width, muscle belly length and insertion points all change how much lean mass a body carries at the same height.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2>How much a <em>bad body fat guess</em> moves it</h2>
+    <p class="body">This is the part that undermines most confident FFMI arguments. Take an 85&nbsp;kg lifter at 1.80&nbsp;m and change only the body fat estimate:</p>
+    <div class="sensitivity">
+      <div class="lbl">85&nbsp;kg · 1.80&nbsp;m · FFMI at different body fat estimates</div>
+      <div class="srow"><span class="bf">20% BF</span><span class="bar" style="width:74%"></span><span class="val">21.0</span></div>
+      <div class="srow"><span class="bf">17% BF</span><span class="bar" style="width:78%"></span><span class="val">21.8</span></div>
+      <div class="srow"><span class="bf">14% BF</span><span class="bar" style="width:82%"></span><span class="val">22.6</span></div>
+      <div class="srow"><span class="bf">11% BF</span><span class="bar" style="width:86%"></span><span class="val">23.3</span></div>
+      <div class="srow over"><span class="bf">8% BF</span><span class="bar" style="width:90%"></span><span class="val">24.1</span></div>
+    </div>
+    <p class="body" style="margin-top:20px">Same person, same weight, same height — and the FFMI swings by more than three points purely on the body fat figure you feed it. <strong>Being wrong by five percentage points on body fat is completely ordinary</strong> when people are eyeballing it, and that's more than enough to move someone across the line in either direction.</p>
+    <p class="body">Which is why an argument that rests on someone's FFMI usually rests, underneath, on a stranger's guess about their body fat.</p>
+  </section>
+
+  <section class="block">
+    <h2>What's actually <em>realistic</em></h2>
+    <div class="ladder">
+      <div class="rung"><span class="g">20–22</span><span class="gt"><b>Where most trained lifters land</b> — <span>years of consistent work, clearly muscular in normal clothes.</span></span></div>
+      <div class="rung"><span class="g">22–23</span><span class="gt"><b>Advanced</b> — <span>obviously built. Long-term consistency showing.</span></span></div>
+      <div class="rung top"><span class="g">23–25</span><span class="gt"><b>Excellent</b> — <span>years of training plus favourable genetics. Uncommon but entirely achievable drug-free.</span></span></div>
+      <div class="rung"><span class="g">25+</span><span class="gt"><b>Rare</b> — <span>uncommon in drug-free lifters, and not impossible. Also where measurement error is most likely to be doing the work.</span></span></div>
+    </div>
+    <p class="body" style="margin-top:20px">If you want your own number, the <a href="/ffmi-calculator.html" style="color:var(--blue);font-weight:600">FFMI calculator</a> gives both the raw and the height-normalized figure, and shows the formula so you can check the working yourself.</p>
+  </section>
+
+  <section class="block">
+    <h2>Getting the input right</h2>
+    <p class="body">Everything above points at the same weak link: the body fat percentage you type in. If it's a guess, your FFMI is a guess with extra steps.</p>
+    <p class="body">CutRank estimates body fat from a single photo alongside a full muscle-by-muscle breakdown — which is a better starting point than a mirror, and takes about as long. It's an estimate rather than a measurement, but it's an estimate that isn't influenced by what you'd like the answer to be.</p>
+    <div class="cta-row">
+      <a class="bigcta" href="https://cutrank.app/#scanSection" onclick="plausible('seo_cta_click')">Get a body fat estimate — free</a>
+      <span class="cta-sub">One photo. No card.</span>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>A note on what this page isn't</h2>
+    <div class="note">
+      This is an explanation of where a widely-cited number came from and what it does and doesn't support — not a method for assessing anyone. FFMI cannot determine what someone has or hasn't taken, and this page shouldn't be used to make that claim about a specific person. CutRank reads one photo and returns an estimate, not a measurement; lighting, pose and angle all move the result. General information, not medical advice. <strong>18+ only.</strong>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Questions</h2>
+    <details class="faq"><summary>Is 25 FFMI the natural limit?</summary><div class="a">No single number is a hard limit. 25 is the figure most often cited as an approximate upper range for drug-free lifters, based on a 1995 study by Kouri and colleagues comparing steroid users and non-users. It describes where most drug-free lifters in that sample topped out — not a biological ceiling that applies to every individual.</div></details>
+    <details class="faq"><summary>Can a natural lifter exceed 25 FFMI?</summary><div class="a">Yes. Particularly tall lifters, those with exceptional genetics, and anyone whose body fat percentage has been underestimated. Because FFMI is calculated from a body fat estimate, an error of a few percentage points is enough to push a number above or below 25 on its own.</div></details>
+    <details class="faq"><summary>Does an FFMI above 25 prove someone uses steroids?</summary><div class="a">No, and using it that way misreads the research. The original study reported a pattern across a group, not a test that classifies one person. Body fat measurement error, height, frame size and genetic variation all move an individual's FFMI enough to make it unreliable as evidence about anybody.</div></details>
+    <details class="faq"><summary>What is a realistic FFMI for a natural lifter?</summary><div class="a">Most trained, drug-free lifters land between 20 and 23. Reaching 23 to 25 generally reflects years of consistent training with favourable genetics. Above 25 is uncommon drug-free but not impossible — and the figure is only ever as reliable as the body fat estimate behind it.</div></details>
+    <details class="faq"><summary>What's the difference between FFMI and normalized FFMI?</summary><div class="a">Normalized FFMI adjusts for height. Lean mass scales faster than height squared, so the raw figure quietly favours taller lifters; the normalization adds a correction for anyone under 1.8 m. The 25 reference figure is usually discussed in normalized terms, which is one more reason two people quoting FFMI numbers can be talking past each other.</div></details>
+  </section>
+
+  <section class="final">
+    <h2>Find out where <em>you</em> actually sit</h2>
+    <p>Both figures, the formula, and no guessing at the input.</p>
+    <a class="bigcta" href="/ffmi-calculator.html">Calculate your FFMI — free</a>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-brand">CutRank</div>
+  <div>© 2026 CutRank · AI physique grading, not medical advice · Adults only</div>
+  <div style="margin-top:8px">
+    <a href="https://cutrank.app/">Home</a> ·
+    <a href="https://cutrank.app/#pricingSection">Pricing</a> ·
+    <a href="/ffmi-calculator.html">FFMI calculator</a> ·
+    <a href="/s-tier-physique.html">What is an S-tier physique?</a> ·
+    <a href="/should-i-bulk-or-cut.html">Should I bulk or cut?</a> ·
+    <a href="/body-fat-percentage-for-abs.html">What body fat % for abs?</a> ·
+    <a href="/brutally-honest-physique-rating.html">Brutally honest physique rating</a> ·
+    <a href="/lean-body-mass-calculator.html">Lean body mass calculator</a> ·
+    <a href="/tools.html">All free tools</a> ·
+    <a href="/what-are-peptides.html">What are peptides?</a>
+  </div>
+</footer>
+
+</body>
+</html>
