@@ -149,6 +149,12 @@
   details.faq .a{margin-top:12px;color:var(--soft);font-size:15.5px}
 
   .note{border:1px solid var(--line2);border-radius:10px;padding:16px 18px;background:rgba(14,15,16,.018);color:var(--dim);font-size:14px;line-height:1.7;margin-top:8px}
+  .formula{border:1px solid var(--line2);border-radius:11px;background:var(--surface);padding:18px 20px;margin-top:22px}
+  .formula .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+  .formula .fx{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--ink);line-height:1.65;margin-top:7px;overflow-x:auto}
+  .formula .fx em{font-style:normal;color:var(--blue)}
+  .formula .wk{margin-top:18px;padding-top:15px;border-top:1px solid var(--line);color:var(--dim);font-size:14px;line-height:1.7}
+  .formula .wk b{color:var(--ink)}
 
   .final{text-align:center;padding:56px 0 30px}
   .final h2{margin-bottom:14px}
@@ -288,6 +294,23 @@
     <h2>What FFMI actually is</h2>
     <p class="body">FFMI is like BMI's more honest cousin. BMI just divides your weight by your height — it can't tell a bodybuilder from someone carrying extra fat, because it doesn't know what the weight <em>is</em>. <strong>FFMI strips out body fat first</strong>, so what's left is a number that actually tracks muscle mass relative to your height.</p>
     <p class="body">It comes from a 1995 study (Kouri et al.) that measured drug-free and steroid-using bodybuilders and found a rough ceiling in the natural group's FFMI scores — which is where the "25 is about the natural limit" figure you'll see everywhere originally came from.</p>
+  </section>
+
+  <section class="block">
+    <h2>The <em>formula</em></h2>
+    <p class="body">Two steps: take the fat out of your weight, then divide by height squared. Same shape as BMI — it just runs on the lean part only.</p>
+    <div class="formula">
+      <div class="lbl">Fat-free mass</div>
+      <div class="fx">weight (kg) <em>×</em> (1 <em>−</em> body fat % <em>÷</em> 100)</div>
+      <div class="lbl" style="margin-top:18px">FFMI</div>
+      <div class="fx">fat-free mass <em>÷</em> height (m) <em>²</em></div>
+      <div class="lbl" style="margin-top:18px">Normalized FFMI</div>
+      <div class="fx">FFMI <em>+</em> 6.1 <em>×</em> (1.8 <em>−</em> height in m)</div>
+      <div class="wk">
+        <b>Worked example.</b> 80&nbsp;kg at 15% body fat, 1.75&nbsp;m tall. Fat-free mass is 80 × 0.85 = <b>68&nbsp;kg</b>. FFMI is 68 ÷ (1.75 × 1.75) = <b>22.2</b>. Then normalized: 22.2 + 6.1 × (1.8 − 1.75) = <b>22.5</b>.
+      </div>
+    </div>
+    <div class="note" style="margin-top:20px"><strong>Why normalize at all?</strong> Lean mass scales faster than height squared, so dividing by height² under-corrects and quietly flatters taller lifters. The normalization adds a small amount back for anyone under 1.8&nbsp;m, which is why it&rsquo;s the normalized figure the bands below refer to — and the one this calculator grades you on.</div>
   </section>
 
   <section class="block">
