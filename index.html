@@ -134,125 +134,63 @@
   <section class="screen active" id="screen-home">
     <div class="wrap">
 
-      <!-- HERO -->
+      <!-- First impression: a clear promise, an honest example, then the scan. -->
       <div class="hero">
         <div class="hero-l">
-          <h1>Upload a photo.<br>Get <em>ranked</em>.</h1>
-          <p class="sub">One photo gets you an S–E grade, muscle-by-muscle scores, and the weak point you've been ignoring — first scan's free.</p>
+          <span class="section-kicker">PHYSIQUE FEEDBACK. NO FLATTERY.</span>
+          <h1>Know your rank.<br>Find your<br><em>next focus.</em></h1>
+          <p class="sub">One photo. An S–E grade, a score for each visible muscle group, and a clear read on what needs work.</p>
           <div class="hero-actions">
-            <button class="bigcta" onclick="track('hero_cta_click');document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get graded — free</button>
-            <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">See a demo result</button>
+            <button class="bigcta" onclick="track('hero_cta_click');goHome('scanSection')">Get my free grade <span aria-hidden="true">↗</span></button>
+            <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">Explore the example ↓</button>
           </div>
-          <span class="hero-note">No account. No card. Just an email when your result is ready.</span>
-          <div class="trust-bar" aria-label="Trust signals">
-            <span class="trust-item">First scan free</span>
-            <span class="trust-sep">·</span>
-            <span class="trust-item">Photos not stored by CutRank</span>
-            <span class="trust-sep">·</span>
-            <span class="trust-item">Visual estimate, not medical advice</span>
-          </div>
-          <!-- Real counters from the worker; falls back to the last verified figures -->
-          <div class="proof" aria-label="Usage so far">
-            <div class="proof-i">
-              <span class="proof-n" data-stat="scans">1,050+</span>
-              <span class="proof-l">scans delivered</span>
-            </div>
-            <div class="proof-i">
-              <span class="proof-n" data-stat="people">800+</span>
-              <span class="proof-l">physiques graded</span>
-            </div>
-            <div class="proof-i">
-              <span class="proof-n">11</span>
-              <span class="proof-l">areas scored per physique</span>
-            </div>
-            <span class="proof-since">Counted by the grading service itself. No reviews, no testimonials, no borrowed logos — just what the tool has actually done.</span>
-          </div>
+          <span class="hero-note">First scan free. Email to reveal. No card or password.</span>
+          <div class="hero-assurance"><span>Photos not stored by CutRank</span><span>18+ · AI visual estimate</span></div>
         </div>
-
+        <div class="hero-preview" id="demoSection">
+          <div class="preview-caption"><span>YOUR RESULT, AT A GLANCE</span><span>EXAMPLE / 01</span></div>
+          <article class="rank-preview vc grade-C" id="sampleCard" aria-label="Example physique result, using illustrative values">
+            <div class="preview-top"><span class="preview-brand">CutRank</span><span class="preview-label">FRONT VIEW · DEMO</span></div>
+            <div class="preview-verdict"><div><span class="preview-eyebrow">YOUR GRADE</span><div class="preview-grade">C<span>Developing</span></div></div><div class="preview-score">5.5<span>/10 · VS GYM-GOERS</span></div></div>
+            <div class="preview-breakdown"><div><span>Shoulders</span><span class="preview-track"><i style="width:60%"></i></span><b>6.0</b></div><div><span>Chest</span><span class="preview-track"><i style="width:46%"></i></span><b>4.6</b></div><div><span>Conditioning</span><span class="preview-track"><i style="width:50%"></i></span><b>5.0</b></div></div>
+            <div class="preview-focus"><span class="preview-eyebrow">NEXT FOCUS</span><p>Chest development trails your shoulders.</p><span>A clear priority for your next training block.</span></div>
+            <div class="preview-bottom"><span>AI ESTIMATE</span><span>cutrank.app</span></div>
+          </article>
+          <p class="sample-note">Illustrative values. Your scan scores what your photo shows.</p>
+        </div>
       </div>
-
       <div class="setup" id="setupNote" style="display:none"></div>
-
-      <!-- SEE WHAT YOU GET — demo result, honestly labelled -->
-      <section class="sec" id="demoSection" style="padding-top:0">
-        <div class="sec-head">
-          <h2>See what you get.</h2>
-          <p>Example result — demo values, not real user stats.</p>
+      <section class="sec" id="scanSection">
+        <div class="sec-head"><span class="section-kicker">01 / THE SCAN</span>
+          <h2>Your first scan starts here.</h2>
+          <p>Start with a front photo for chest, shoulders and arms. Or choose the angle you want feedback on.</p>
         </div>
-        <div class="demo-grid">
-          <div class="card-area">
-            <div class="vc grade-C" id="sampleCard">
-              <div class="vc-stripe"></div>
-              <div class="vc-inner">
-                <div class="vc-header">
-                  <span class="vc-brand-tag">CutRank</span>
-                  <span class="vc-badge">DEMO RESULT</span>
-                </div>
-                <div class="vc-grade-section">
-                  <div class="vc-grade-letter">C</div>
-                  <div class="vc-grade-label">Developing Lifter</div>
-                </div>
-                <div class="vc-strip">
-                  <div><div class="vc-strip-val">5.5</div><div class="vc-strip-lbl">vs gym</div></div>
-                  <div class="vc-strip-div"></div>
-                  <div><div class="vc-strip-val">5.8</div><div class="vc-strip-lbl">vs all</div></div>
-                  <div class="vc-strip-div"></div>
-                  <div><div class="vc-strip-val">18-24%</div><div class="vc-strip-lbl">BF est.</div></div>
-                </div>
-                <div class="vc-section-title">Breakdown — Front view</div>
-                <div class="vc-muscle">
-                  <span class="vc-muscle-name">Shoulders</span>
-                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:60%;animation-delay:.1s"></div></div>
-                  <span class="vc-muscle-val">6.0</span>
-                </div>
-                <div class="vc-muscle">
-                  <span class="vc-muscle-name">Chest</span>
-                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:46%;animation-delay:.17s"></div></div>
-                  <span class="vc-muscle-val">4.6</span>
-                </div>
-                <div class="vc-muscle">
-                  <span class="vc-muscle-name">Conditioning</span>
-                  <div class="vc-muscle-track"><div class="vc-muscle-fill" style="width:50%;animation-delay:.24s"></div></div>
-                  <span class="vc-muscle-val">5.0</span>
-                </div>
-                <div class="vc-call">
-                  <div class="vc-call-row"><span class="vc-call-lbl weak">Weakness</span><span class="vc-call-val">Chest thickness + conditioning</span></div>
-                  <div class="vc-call-row"><span class="vc-call-lbl next">Next goal</span><span class="vc-call-val">Add chest volume or cut until the torso stops hiding.</span></div>
-                </div>
-                <div class="vc-footer">
-                  <span class="vc-serial">CO-DEMO-2026</span>
-                  <span class="vc-site">cutrank.app</span>
-                  <span class="vc-certified">AI ESTIMATE</span>
-                </div>
-              </div>
-            </div>
-            <div class="sample-note">Demo result · example values, not a real user</div>
-          </div>
-          <div class="demo-info">
-            <div class="demo-block">
-              <h3>Free scan</h3>
-              <p>One angle, graded S–E, every visible-muscle score. No card.</p>
-            </div>
-            <div class="demo-block">
-              <h3>Full Body Audit — £5.99 once</h3>
-              <p>All four angles — written verdict, weak points, body-fat estimate, uncapped overall grade.</p>
-            </div>
-            <div class="demo-block">
-              <h3>Pro — £9.99/month</h3>
-              <p>Rescans, progress comparisons, and Improve — your training and diet audited against your actual scan.</p>
-            </div>
-            <div class="demo-block">
-              <h3>What no scan can know</h3>
-              <p>Training history, substances, injuries, health — anything the photo can't show. Not medical advice.</p>
-            </div>
-          </div>
+        <p class="scan-terms">One angle free · Email to reveal · No card required</p>
+        <div class="views" id="viewGrid"></div>
+        <button class="photo-tips-link" onclick="openGuide(true)">Photo tips — what gets a clean read</button>
+        <div class="overall">
+          <div class="lab">Overall Grade</div>
+          <div class="g locked" id="ov-grade">—</div>
+          <div class="sc" id="ov-score"></div>
+          <div class="cta" id="ov-cta">Scan an angle to start building your grade.</div>
+          <button class="seebtn" id="ov-see" style="display:none" onclick="showOverall()">See full breakdown →</button>
+          <button class="recover-link" id="histLink" style="display:none;margin-top:16px" onclick="showHistory()">Scan history →</button>
+          <button class="recover-link" id="progLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showProgress()">Progress →</button>
+          <button class="recover-link" id="impLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showImprove()">Improve →</button>
         </div>
       </section>
+
+      <section class="journey" aria-label="From your first scan to your next training block">
+        <div><span class="section-kicker">01 / UNDERSTAND</span><h3>See where you stand.</h3><p>Your grade and visible-muscle scores give you a starting point.</p></div>
+        <div><span class="section-kicker">02 / FOCUS</span><h3>Know what needs work.</h3><p>See your strengths, weak points and the next focus from your scan.</p></div>
+        <div><span class="section-kicker">03 / COMPARE</span><h3>Come back with progress.</h3><p>With Pro, compare scans after your next training block. Keep the pose and lighting consistent.</p></div>
+      </section>
       <!-- TRUST — every claim here is checkable on this page. Nothing invented. -->
-      <section class="sec" id="trustSection">
+      <section class="sec trust-disclosure" id="trustSection"><details>
+        <summary><span><span class="section-kicker">THE METHOD</span><span class="disclosure-title">What goes into your grade?</span></span><span class="disclosure-toggle" aria-hidden="true">+</span></summary><div class="disclosure-body">
         <div class="sec-head">
           <h2>Why the grade is <em>worth trusting</em>.</h2>
-          <p>No reviews to fake and no experts to name-drop. Here is what CutRank has actually done, and exactly how it decides.</p>
+          <p>The scoring bands, photo limits and privacy details behind every scan.</p>
         </div>
 
         <div class="tw-band">
@@ -318,27 +256,8 @@
         <div class="method-note">
           CutRank is an AI read of one photo — not a DEXA scan, a body-composition measurement, or medical advice. Lighting, pose, pump, and clothing move the result. 18+ only.
         </div>
-      </section>
+      </div></details></section>
 
-      <!-- SCAN SECTION -->
-      <section class="sec" id="scanSection">
-        <div class="sec-head">
-          <h2>Pick an angle. Get ranked.</h2>
-          <p>First scan is free — one angle, fully graded. The £5.99 Full Body Audit unlocks the other three.</p>
-        </div>
-        <div class="views" id="viewGrid"></div>
-        <button class="photo-tips-link" onclick="openGuide(true)">Photo tips — what gets a clean read</button>
-        <div class="overall">
-          <div class="lab">Overall Grade</div>
-          <div class="g locked" id="ov-grade">—</div>
-          <div class="sc" id="ov-score"></div>
-          <div class="cta" id="ov-cta">Scan an angle to start building your grade.</div>
-          <button class="seebtn" id="ov-see" style="display:none" onclick="showOverall()">See full breakdown →</button>
-          <button class="recover-link" id="histLink" style="display:none;margin-top:16px" onclick="showHistory()">Scan history →</button>
-          <button class="recover-link" id="progLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showProgress()">Progress →</button>
-          <button class="recover-link" id="impLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showImprove()">Improve →</button>
-        </div>
-      </section>
       <!-- PRICING -->
       <section class="sec" id="pricingSection">
         <div class="sec-head">
@@ -399,7 +318,7 @@
       <section class="sec" id="verdictSection" style="padding-top:0">
         <div class="sec-head">
           <h2>This is the tone. Read it before you upload.</h2>
-          <p>If you want encouragement, ask a friend.</p>
+          <p>Direct feedback, with something useful to take into your next session.</p>
         </div>
         <div class="tone">
           <figure class="tone-item">
@@ -572,7 +491,7 @@
         </details>
 </section>
       <!-- AFFILIATES -->
-      <section class="sec" id="affiliateSection">
+      <section class="sec affiliate-disclosure" id="affiliateSection"><details><summary><span><span class="section-kicker">FOR CREATORS</span><span class="disclosure-title">Share CutRank. Earn 40%.</span></span><span class="disclosure-toggle" aria-hidden="true">+</span></summary><div class="disclosure-body">
         <div class="affiliate-panel">
           <div class="res-sec-eyebrow">Affiliate program</div>
           <h2 class="affiliate-h">Refer CutRank. <em>Earn 40%.</em></h2>
@@ -615,7 +534,7 @@
             <span class="affiliate-cta-sub">or email affiliates@cutrank.app</span>
           </div>
         </div>
-      </section>
+      </div></details></section>
       <!-- FAQ -->
       <section class="sec" id="faqSection" style="padding-top:0">
         <div class="sec-head">
@@ -643,8 +562,8 @@
       <!-- FINAL CTA -->
       <section class="sec" id="finalCta" style="padding-top:0">
         <div class="final-cta">
-          <h2>Enough reading. <em>Get graded.</em></h2>
-          <p>One angle, fully graded, free. The mirror's been lying long enough.</p>
+          <h2>Your starting point.<br><em>One photo away.</em></h2>
+          <p>Get a grade, understand your weak points, and decide what to work on next.</p>
           <button class="bigcta" onclick="track('final_cta_click');document.getElementById('scanSection').scrollIntoView({behavior:'smooth'})">Get graded — free</button>
         </div>
       </section>
@@ -665,8 +584,9 @@
   <section class="screen" id="screen-analyse">
     <div class="wrap"><div class="analyse-wrap">
       <div class="scanner"><div class="ring"></div><div class="ring spin"></div><div class="core"><span id="scanLetter">F</span></div></div>
-      <div class="analyse-status" id="aStatus">reading image…</div>
+      <div class="analyse-status" id="aStatus" role="status" aria-live="polite">reading image…</div>
       <div class="analyse-sub" id="aSub">grading</div>
+      <p class="analyse-help">Keep this page open while we read your photo.<br>Your result will appear here.</p>
       <div id="tsHolder" style="margin-top:18px"></div>
     </div></div>
   </section>
@@ -730,7 +650,7 @@
       <div class="modal-head">
         <div>
           <div class="modal-eyebrow">Before you upload</div>
-          <div class="modal-title" id="guideTitle">Give the AI something it can grade</div>
+          <div class="modal-title" id="guideTitle">A clear photo. A better read.</div>
         </div>
         <button class="modal-close" onclick="closeModal('guideModal')" aria-label="Close">
           <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -738,12 +658,12 @@
       </div>
       <div class="modal-body">
         <ul class="guide-list">
-          <li><span class="gn">01</span><span><b>Good light, facing you.</b> Window light or a bright room. Backlight and gym-mirror shadows hide detail.</span></li>
-          <li><span class="gn">02</span><span><b>Plain background, phone at chest height.</b> Arm's length or a timer, with the whole region for your chosen angle in frame.</span></li>
-          <li><span class="gn">03</span><span><b>Shorts on. Nothing explicit.</b> Explicit uploads are refused automatically.</span></li>
-          <li><span class="gn">04</span><span><b>Adults only, one person in frame.</b> If the subject isn't clearly 18+, the scan refuses.</span></li>
+          <li><span class="gn">01</span><span><b>Face the light.</b> Use a bright room. Avoid backlighting and heavy shadows.</span></li>
+          <li><span class="gn">02</span><span><b>Keep the whole area in frame.</b> Plain background, camera at chest height.</span></li>
+          <li><span class="gn">03</span><span><b>Keep shorts on.</b> No explicit photos.</span></li>
+          <li><span class="gn">04</span><span><b>One adult, 18+.</b> No other people in the frame.</span></li>
         </ul>
-        <div class="guide-note">Blurry, dark, or cropped photos get refused or scored at low confidence — never graded generously.</div>
+        <div class="guide-note">A refused photo won’t use your free scan. For progress comparisons, use the same lighting and pose each time.</div>
         <button class="btn gold-btn" id="guideContinueBtn" onclick="guideContinue()">Choose photo →</button>
         <label class="guide-skip"><input type="checkbox" id="guideDontShow" checked>Don't show this again</label>
       </div>

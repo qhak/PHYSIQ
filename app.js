@@ -94,6 +94,7 @@ VIEWS.forEach(v=>{
   const b=document.createElement('button');b.className='vtile';b.id='vt-'+v.id;
   b.onclick=()=>pick(v.id);
   b.innerHTML=
+    (v.id==='front'?'<span class="view-recommend">RECOMMENDED FIRST SCAN</span>':'')+
     '<span class="chk">✓ done</span>'+
     '<div class="lock-badge"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>'+
     '<div class="ic">'+v.letter+'</div><div class="t">'+v.t+'</div><div class="d">'+v.d+'</div>';
@@ -435,7 +436,14 @@ function show(id){
 }
 function goHome(id){
   show('screen-home');
-  setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});},60);
+  setTimeout(()=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    // Navigation to a folded explanation also opens it.
+    const details=el.querySelector('details');
+    if(details) details.open=true;
+    el.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  },60);
 }
 function scoreToGrade(s){if(s>=90)return'S';if(s>=75)return'A';if(s>=61)return'B';if(s>=40)return'C';if(s>=25)return'D';return'E';}
 function gradeLabel(g){return{S:'Elite',A:'Advanced',B:'Experienced',C:'Developing',D:'Beginner',E:'Starting Out'}[g[0]]||'';}
@@ -648,7 +656,7 @@ function renderViewResult(view,data,photoURL){
       '<h3>Your grade is ready.</h3>'+
       '<p>Enter your email to view it. It links this result and any purchase so access can be restored — that\'s the whole account.</p>'+
       '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-label="Email address" onkeydown="if(event.key===\'Enter\')submitGate()">'+
-      '<label class="gate-consent"><input type="checkbox" id="gateConsent" checked> Email me physique tips and updates. No spam, unsubscribe anytime.</label>'+
+      '<label class="gate-consent"><input type="checkbox" id="gateConsent"> Also send me physique tips and product updates (optional).</label>'+
       '<button class="btn" onclick="submitGate()">Show my grade →</button>'+
       // The moment a stranger is asked for an email is the moment they need the
       // limits restated — not buried in a policy they will not open.
@@ -714,9 +722,12 @@ function renderViewResult(view,data,photoURL){
     injectShareMoment(viewGrade, viewScores?viewScores.gym:0);
     // Pro block (rendered inline for all non-Pro users) is the upsell now.
   }
+  const resultCard=document.querySelector('#resultBody .result-vc');
+  if(resultCard){resultCard.dataset.grade=viewGrade;resultCard.dataset.score=viewScores?viewScores.gym:0;}
 }
 
 function configurePrimaryBtn(o){
+  renderResultNext();
   const btn=document.getElementById('resPrimary');
   if(!btn) return;
   btn.style.display='block';
@@ -725,8 +736,25 @@ function configurePrimaryBtn(o){
     btn.onclick=showOverall;
   } else {
     btn.textContent='← Back to scans';
-    btn.onclick=()=>show('screen-home');
+    btn.onclick=()=>goHome('scanSection');
   }
+}
+
+// Present existing product destinations alongside the result; no entitlement changes.
+function renderResultNext(){
+  const body=document.getElementById('resultBody');
+  if(!body || !body.querySelector('.result-vc') || !hasAccount()) return;
+  const old=document.getElementById('resultNext');if(old)old.remove();
+  const next=document.createElement('section');next.id='resultNext';next.className='result-next';
+  const pro=isProHint(),paid=hasEntitlementHint();
+  next.innerHTML='<span class="section-kicker">YOUR NEXT STEP</span>'+
+    '<h3>'+(pro?'Turn the feedback into a plan.':paid?'Build the full picture.':'Make this your starting point.')+'</h3>'+
+    '<p>'+(pro?'Use Improve to review your training and diet against this scan. After your next training block, compare the same angle in similar lighting.':paid?'Add the remaining angles for a fuller picture of your development. Your scan history is available below.':'Take the main focus into your next training block. A full audit adds the other angles; Pro lets you compare scans over time.')+'</p>'+
+    '<div class="result-next-actions">'+
+    (pro?'<button onclick="showImprove()">Review my training ↗</button><button onclick="showProgress()">Compare progress</button>':
+      '<button onclick="goHome(\'scanSection\')">'+(paid?'Continue my audit':'Back to my scans')+' →</button>')+
+    (paid?'<button onclick="showHistory()">Scan history</button>':'')+'</div>';
+  body.appendChild(next);
 }
 
 // ============================================================
@@ -761,9 +789,13 @@ function submitGate(){
   const o=computeOverall();
   configurePrimaryBtn(o);
 
-  injectShareMoment(o?o.grade:(document.querySelector('.vc-grade-letter')||{}).textContent||'?', (o&&o.scores)?o.scores.gym:0);
-
-  if(!hasEntitlementHint()) injectUpsell();
+  const revealedCard=document.querySelector('#resultBody .result-vc');
+  if(revealedCard){
+    revealedCard.scrollTop=0;
+    revealedCard.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  injectShareMoment(revealedCard?revealedCard.dataset.grade:'?',revealedCard?Number(revealedCard.dataset.score):0);
+  // The inline Audit / Pro comparison already contains the upgrade options.
 
   refreshHome();
   showToast('Grade revealed. No take-backs.');
@@ -827,12 +859,12 @@ function injectShareMoment(grade, score){
   div.innerHTML=
     '<div class="sm-eye">You\'ve been ranked</div>'+
     '<h3>Post your grade.</h3>'+
-    '<p>Tag the friend who needs humbling.</p>'+
+    '<p>Share your starting point, or keep it for yourself.</p>'+
     '<button class="share-btn-big" onclick="shareGrade(\''+grade+'\','+score+',true)">'+
       '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>'+
       'Share my '+grade+' grade →'+
     '</button>'+
-    '<span class="sm-skip" onclick="this.closest(\'.share-moment\').remove()">Maybe later</span>';
+    '<button class="sm-skip" onclick="this.closest(\'.share-moment\').remove()">Keep it private</button>';
   const ref=document.getElementById('resPrimary');
   if(ref) ref.parentNode.insertBefore(div,ref);
 }
