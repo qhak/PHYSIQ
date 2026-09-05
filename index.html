@@ -110,6 +110,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
 
 <link rel="stylesheet" href="/style.css">
+
+<!-- Cloudflare Turnstile. Required: the worker enforces TURNSTILE_SECRET, so
+     without this script getTurnstileToken() waits 10s for window.turnstile,
+     gives up, sends an empty ts_token, and every free scan fails 403. -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
   <input type="file" id="filein" accept="image/*" style="display:none">
