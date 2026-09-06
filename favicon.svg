@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">CutRank favicon</title>
+  <desc id="desc">A geometric white capital R with three rising blue steps on a near-black rounded square.</desc>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="#0E0F10"/>
+  <path fill="#F7F7F4" fill-rule="evenodd" d="M132 104h150c81 0 130 45 130 115 0 52-30 91-78 108l84 81H314l-64-72h-25v72h-93V104Zm93 72v90h51c31 0 50-17 50-45 0-29-19-45-50-45h-51Z"/>
+  <path fill="#2F80FF" d="M188 408v-48h34v-34h34v-34h34v42l-38 42-34 32h-30Z"/>
+</svg>
