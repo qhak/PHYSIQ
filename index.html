@@ -127,6 +127,7 @@
       <button class="navlink" onclick="goHome('howStrip')">How it works</button>
       <button class="navlink" onclick="goHome('pricingSection')">Pricing</button>
       <button class="navlink" onclick="goHome('affiliateSection')">Affiliates</button>
+      <button class="navlink" onclick="showStrength()">Strength</button>
       <button class="navlink navcta" onclick="goHome('scanSection')">Get ranked</button>
     </div>
   </nav>
@@ -178,6 +179,7 @@
           <button class="recover-link" id="histLink" style="display:none;margin-top:16px" onclick="showHistory()">Scan history →</button>
           <button class="recover-link" id="progLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showProgress()">Progress →</button>
           <button class="recover-link" id="impLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showImprove()">Improve →</button>
+          <button class="recover-link" style="margin-top:16px;margin-left:16px" onclick="showProfile()">Profile &rarr;</button>
         </div>
       </section>
 
@@ -492,16 +494,16 @@
         </details>
 </section>
       <!-- AFFILIATES -->
-      <section class="sec affiliate-disclosure" id="affiliateSection"><details><summary><span><span class="section-kicker">FOR CREATORS</span><span class="disclosure-title">Share CutRank. Earn 40%.</span></span><span class="disclosure-toggle" aria-hidden="true">+</span></summary><div class="disclosure-body">
+      <section class="sec affiliate-disclosure" id="affiliateSection"><details><summary><span><span class="section-kicker">FOR CREATORS</span><span class="disclosure-title">Share CutRank. Earn 50%.</span></span><span class="disclosure-toggle" aria-hidden="true">+</span></summary><div class="disclosure-body">
         <div class="affiliate-panel">
           <div class="res-sec-eyebrow">Affiliate program</div>
-          <h2 class="affiliate-h">Refer CutRank. <em>Earn 40%.</em></h2>
-          <p class="affiliate-lead">Got an audience that lifts? Send people to CutRank and earn 40% of every sale you bring in — and Pro keeps paying you for as long as they stay subscribed.</p>
+          <h2 class="affiliate-h">Refer CutRank. <em>Earn 50%.</em></h2>
+          <p class="affiliate-lead">Got an audience that lifts? Send people to CutRank and earn <b>50% of every one-off sale</b> you bring in — half the price, straight to you. Pro subscriptions pay 30% every month for as long as they stay subscribed.</p>
           <div class="method-grid">
             <div class="method-item">
               <div class="method-k">01 · Your cut</div>
-              <h3>40% of every sale</h3>
-              <p>40% on every purchase made through your link — the £5.99 audit, £9.99 Pro, or the £29.99 lifetime. Pro keeps paying you every month your referral stays subscribed.</p>
+              <h3>50% of every one-off</h3>
+              <p>Half of every one-off sale through your link — £3.00 on the £5.99 audit, £15.00 on the £29.99 lifetime. £9.99 Pro pays <b>30% every month</b> instead, for as long as that person stays subscribed.</p>
             </div>
             <div class="method-item">
               <div class="method-k">02 · Minimum</div>
@@ -522,8 +524,8 @@
           <div class="affiliate-rules">
             <h3>The rules</h3>
             <ul>
-              <li>You earn <b>40% commission</b> on every sale made through your referral link — audit, Pro, and lifetime all count.</li>
-              <li>Pro referrals pay out <b>40% every month</b> for as long as that person stays subscribed.</li>
+              <li>You earn <b>50% commission</b> on every one-off sale made through your referral link — the £5.99 audit and the £29.99 lifetime.</li>
+              <li>Pro referrals pay out <b>30% every month</b> for as long as that person stays subscribed — recurring, so one referral keeps paying.</li>
               <li>Payouts run <b>monthly</b>. You need at least <b>£20</b> in cleared earnings to get paid; anything under rolls over to the next month.</li>
               <li>Earnings are capped at <b>£1,000 per month</b> per affiliate.</li>
               <li>Self-referrals, fake sign-ups, spam, and misleading claims about CutRank void your earnings.</li>
@@ -630,6 +632,21 @@
   <!-- IMPROVE — training + diet audit (Pro); body rendered by showImprove() -->
   <section class="screen" id="screen-improve">
     <div class="wrap"><div id="improveBody"></div></div>
+  </section>
+
+  <!-- STRENGTH — lift ranking, client-side only; body rendered by renderStrength() -->
+  <section class="screen" id="screen-strength">
+    <div class="wrap"><div class="result-wrap"><div class="card-area">
+      <div id="strengthBody"></div>
+      <button class="btn ghost" style="margin-top:10px" onclick="show('screen-home')">&larr; Back</button>
+    </div></div></div>
+  </section>
+
+  <!-- PROFILE — physique rank + strength rank; body rendered by renderProfile() -->
+  <section class="screen" id="screen-profile">
+    <div class="wrap"><div class="result-wrap"><div class="card-area">
+      <div id="profileBody"></div>
+    </div></div></div>
   </section>
 
   <!-- SCAN HISTORY -->

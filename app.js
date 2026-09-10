@@ -64,6 +64,7 @@ function loadState(){
     const p=localStorage.getItem('pq_profile'); if(p) profile=JSON.parse(p);
     const v=localStorage.getItem('pq_views');   if(v) JSON.parse(v).forEach(id=>viewsDone[id]=true);
   }catch(e){}
+  loadStrength();
 }
 
 function hasAccount(){ return !!userEmail; }
@@ -483,11 +484,11 @@ const SCALE_POP_MEAN=5.0;
 const SCALE_GYM_MEAN=5.0;
 // How many standard deviations one whole point is worth on each scale. The gym
 // scale is the reference: 1 point = 1 SD, so 10.0 is exactly 5 SD out. The
-// general population is a tighter cluster — almost everyone is untrained, so the
-// same one-point step covers more of the spread — hence 1 point = 1.5 SD there,
-// and ranks climb faster against everyone than against people who train.
+// general population uses the same reference: one score point is one standard
+// deviation. That keeps the scale simple enough to explain and makes the two
+// population comparisons directly comparable.
 const SCALE_GYM_SD_PER_POINT=1.0;
-const SCALE_POP_SD_PER_POINT=1.1;
+const SCALE_POP_SD_PER_POINT=1.0;
 
 // The number both display scales are built from: a flat average of mass and
 // conditioning. Deliberately NOT blendScore — the completeness bonus belongs to
@@ -616,6 +617,25 @@ function replayResultCardAnimation(){
 // ============================================================
 //  RESULT RENDERING
 // ============================================================
+function buildSignatureCard(grade, photoURL, viewLabel, bodyfat, extraClass, gateHTML){
+  const known = grade && grade !== '—';
+  return '<div class="vc result-vc signature-card grade-' + (known ? grade : 'C') + ' ' + (extraClass || '') + '">' +
+    '<div class="vc-inner">' +
+      '<div class="vc-header"><span class="vc-brand-tag">CutRank</span><span class="vc-badge">' + esc(viewLabel) + '</span></div>' +
+      '<div class="signature-main' + (photoURL ? '' : ' signature-no-photo') + '">' +
+        (photoURL ? '<div class="vc-disc-wrap"><img class="vc-disc" src="' + esc(photoURL) + '" alt="Your uploaded physique photo"></div>' : '') +
+        '<div class="vc-grade-section"><div class="signature-label">Your physique</div>' +
+          '<div class="vc-grade-letter">' + esc(grade || '—') + '</div>' +
+          '<div class="vc-grade-label">' + (known ? gradeLabel(grade) : 'Not graded') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="vc-footer">' +
+        (bodyfat ? '<span class="signature-bodyfat">Body fat ' + esc(bodyfat) + ' · est.</span>' : '') +
+        '<span class="signature-footnote"><span>AI estimate</span><span class="vc-site">cutrank.app</span></span>' +
+      '</div>' +
+    '</div>' + (gateHTML || '') + '</div>';
+}
+
 function renderViewResult(view,data,photoURL){
   const m=data.muscles||{};
   const seen=MUSCLES.filter(k=>m[k]&&m[k].score!=null);
@@ -640,11 +660,7 @@ function renderViewResult(view,data,photoURL){
       '<span class="vc-muscle-val">'+(v.score/10).toFixed(1)+'</span>'+
     '</div>';});
 
-  const cardId=makeCardId();
-  const bf=hasEntitlementHint()?esc(data.bodyfat_range||'Not estimated'):'Paid audit';
   const viewName=VIEWS.find(v=>v.id===view).t.toUpperCase();
-  const photoLayer=photoURL?'<div class="vc-photo" style="background-image:url('+photoURL+')"></div>':'';
-  const focusHTML=buildFocusHTML(data);
 
   const o=computeOverall();
   const tease=o?o.grade:(viewGrade!=='—'?viewGrade:'?');
@@ -667,31 +683,8 @@ function renderViewResult(view,data,photoURL){
   if(!hasAccount()) track('gate_shown',{view:view});
 
   document.getElementById('resultBody').innerHTML=
-    '<div class="vc result-vc vc-result-reveal grade-'+(viewGrade!=='—'?viewGrade:'C')+(hasAccount()?'':' blurred')+'">'+
-      '<div class="vc-stripe"></div>'+
-      photoLayer+
-      '<div class="vc-inner">'+
-        '<div class="vc-header">'+
-          '<span class="vc-brand-tag">CutRank</span>'+
-          '<span class="vc-badge">'+viewName+' VIEW</span>'+
-        '</div>'+
-        '<div class="vc-scorehero">'+
-          '<div class="vc-score-big">'+(viewScores?fmtScale(viewScores.gym):'—')+'<span class="vc-score-max">/10</span></div>'+
-          '<div class="vc-score-cap">vs gym-goers</div>'+
-          (viewScores?'<div class="vc-score-alt"><span class="vc-score-alt-n">'+fmtScale(viewScores.pop)+'</span><span class="vc-score-alt-l">vs everyone</span></div>':'')+
-          '<div class="vc-score-meta">'+
-            (viewGrade!=='—'?'<span class="m-grade">'+viewGrade+' · '+gradeLabel(viewGrade)+'</span>':'')+
-            (hasEntitlementHint()&&data.bodyfat_range?'<span class="m-sep">·</span><span class="m-bf">'+esc(data.bodyfat_range)+' BF</span>':'')+
-          '</div>'+
-        '</div>'+
-        '<div class="vc-footer">'+
-          '<span class="vc-serial">'+cardId+'</span>'+
-          '<span class="vc-site">cutrank.app</span>'+
-          '<span class="vc-certified">AI ESTIMATE</span>'+
-        '</div>'+
-      '</div>'+
-      gateHTML+
-    '</div>'+
+    buildSignatureCard(viewGrade,photoURL,VIEWS.find(v=>v.id===view).t+' view',
+      hasEntitlementHint()?data.bodyfat_range:null,hasAccount()?'':'blurred',gateHTML)+
     buildRankHTML(viewBase,viewGrade)+
     buildMassCondHTML(m,seen,viewGrade,data.bodyfat_range)+
     ((data.verdict||data.strongest_visible_area||data.weakest_visible_area||data.next_focus)?
@@ -983,46 +976,17 @@ function showOverall(){
       '<span class="vc-muscle-val">'+(na?'—':(p.score/10).toFixed(1))+'</span>'+
     '</div>';});
 
-  const cardId=makeCardId();
   const heroPhoto=photos.front||photos.arms_side||photos.back||photos.legs||null;
-  const photoLayer=heroPhoto?'<div class="vc-photo" style="background-image:url('+heroPhoto+')"></div>':'';
   const capHTML=o.capped?
-    '<div class="vc-cap">⚠ Grade capped — '+
+    '<div class="vc-cap">Grade capped — '+
       (!o.haveBack?'no back view':'')+((!o.haveBack&&!o.haveLegs)?' and ':'')+(!o.haveLegs?'no legs view':'')+
-      '. Unlock to remove the ceiling.</div>':'';
-
+      '. Complete your remaining views to build the full picture.</div>':'';
   document.getElementById('overallBody').innerHTML=
-    '<div class="vc overall-vc grade-'+o.grade+'">'+
-      '<div class="vc-stripe"></div>'+
-      photoLayer+
-      '<div class="vc-inner">'+
-        '<div class="vc-header">'+
-          '<span class="vc-brand-tag">CutRank</span>'+
-          '<span class="vc-badge">'+o.nViews+' VIEW'+(o.nViews!==1?'S':'')+' · OVERALL</span>'+
-        '</div>'+
-        '<div class="vc-grade-section">'+
-          '<div class="vc-grade-letter">'+o.grade+'</div>'+
-          '<div class="vc-grade-label">'+gradeLabel(o.grade)+' Lifter</div>'+
-        '</div>'+
-        '<div class="vc-strip four">'+
-          '<div><div class="vc-strip-val">'+(o.scores?fmtScale(o.scores.gym):'—')+'</div><div class="vc-strip-lbl">vs gym</div></div>'+
-          '<div class="vc-strip-div"></div>'+
-          '<div><div class="vc-strip-val">'+(o.scores?fmtScale(o.scores.pop):'—')+'</div><div class="vc-strip-lbl">vs all</div></div>'+
-          '<div class="vc-strip-div"></div>'+
-          '<div><div class="vc-strip-val">'+(o.missing.length===0?'FULL':o.missing.length+' left')+'</div><div class="vc-strip-lbl">Profile</div></div>'+
-          '<div class="vc-strip-div"></div>'+
-          '<div><div class="vc-strip-val">'+o.nViews+'/4</div><div class="vc-strip-lbl">Views</div></div>'+
-        '</div>'+
-        capHTML+
-        '<div class="vc-section-title">Full muscle breakdown</div>'+
-        muscleRows+
-        '<div class="vc-footer">'+
-          '<span class="vc-serial">'+cardId+'</span>'+
-          '<span class="vc-site">cutrank.app</span>'+
-          '<span class="vc-certified">AI ESTIMATE</span>'+
-        '</div>'+
-      '</div>'+
-    '</div>';
+    buildSignatureCard(o.grade,heroPhoto,o.nViews+' view'+(o.nViews!==1?'s':'')+' · Overall',
+      hasEntitlementHint()?lastBodyfat:null,'overall-vc','')+
+    capHTML+
+    buildRankHTML(o.capBase,o.grade)+
+    '<details class="signature-breakdown"><summary>Muscle breakdown · '+(MUSCLES.length-o.missing.length)+'/'+MUSCLES.length+' regions</summary><div>'+muscleRows+'</div></details>';
 
   const backBtn=document.getElementById('overallBack');
   ['overallShareRow','overallUpsell'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
@@ -1355,102 +1319,67 @@ function rankLabel(pct,floor){
   if(oneInCount(pct,floor)>WORLD_POP) return 'Rarer than 1 in 8 billion';
   return 'Top '+fmtTop(pct,floor==null?RANK_FLOOR_GYM:floor)+'%';
 }
-// Two bell curves on one 1–10 axis: everyone, and everyone who trains. Both are
-// normal with SD 1.0 by construction, so the gym curve is the same shape shifted
-// right — which is the whole point. The same physique sits high on the left
-// curve and much further down the right one.
-function buildRankHTML(base, grade, blurred){
+// One population comparison. Score conversion, percentile maths and access
+// rules are shared with the existing app; only presentation changes here.
+function buildRankHTML(base, grade, blurred, opts){
   if(base==null) return '';
-  const sc=scaleScores(base);
-  const popPct=scalePercentile(sc.popExact,SCALE_POP_MEAN,SCALE_POP_SD_PER_POINT);
-  const gymPct=scalePercentile(sc.gymExact,SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT);
-
-  const W=320,H=168,x0=30,x1=310,y0=26,y1=132;
-  const plotW=x1-x0,plotH=y1-y0;
-  const px=v=>x0+(Math.max(0,Math.min(10,v))/10)*plotW;
-  // Both curves share a height scale, so the shift between them stays readable.
-  const dens=(v,mean,sdpp)=>{const z=(v-mean)*(sdpp==null?1:sdpp);return Math.exp(-(z*z)/2);};
-  const py=d=>y1-d*plotH;
-
-  function curve(mean,sdpp){
-    let pts=[];
-    for(let v=0;v<=10;v+=0.1) pts.push(px(v).toFixed(1)+' '+py(dens(v,mean,sdpp)).toFixed(1));
-    return {line:'M '+pts.join(' L '),
-            area:'M '+px(0).toFixed(1)+' '+y1+' L '+pts.join(' L ')+' L '+px(10).toFixed(1)+' '+y1+' Z'};
+  const free=!!(opts&&opts.free), sc=scaleScores(base);
+  const pct=scalePercentile(sc.popExact,SCALE_POP_MEAN,SCALE_POP_SD_PER_POINT);
+  const label=rankLabel(pct,RANK_FLOOR_POP);
+  const locked=free?false:!isProHint(), gated=!free&&(!hasAccount()||blurred);
+  // A taller drawing area gives the distribution enough presence without
+  // changing its width or the one-score-point / one-standard-deviation scale.
+  const W=480,H=210,x0=12,x1=468,y0=8,y1=154;
+  const px=v=>x0+Math.max(0,Math.min(10,v))/10*(x1-x0);
+  // The curve is the same normal distribution used by scalePercentile: one
+  // score point is one standard deviation, so its sigma is the inverse of
+  // the points-per-standard-deviation value. Dividing by the peak preserves
+  // the true shape while fitting the PDF inside this SVG.
+  const sigma=1/SCALE_POP_SD_PER_POINT;
+  const gaussianPdf=v=>{
+    const z=(v-SCALE_POP_MEAN)/sigma;
+    return Math.exp(-0.5*z*z)/(sigma*Math.sqrt(2*Math.PI));
+  };
+  const peak=gaussianPdf(SCALE_POP_MEAN);
+  const py=v=>y1-(gaussianPdf(v)/peak)*(y1-y0);
+  function points(from,to){
+    const result=[];
+    for(let i=0;i<=100;i++){
+      const v=from+(to-from)*i/100;
+      result.push(px(v).toFixed(2)+' '+py(v).toFixed(2));
+    }
+    return result.join(' L ');
   }
-  const cPop=curve(SCALE_POP_MEAN,SCALE_POP_SD_PER_POINT), cGym=curve(SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT);
-  // When both scales share an average the two bells sit exactly on top of each
-  // other, and drawing both just looks like a rendering fault. Draw one, and let
-  // the two markers carry the comparison.
-  const oneCurve=Math.abs(SCALE_POP_MEAN-SCALE_GYM_MEAN)<0.05 && Math.abs(SCALE_POP_SD_PER_POINT-SCALE_GYM_SD_PER_POINT)<0.02;
-
-  let grid='';
-  [0,2,4,6,8,10].forEach(function(v){ const gx=px(v).toFixed(1); grid+='<line class="rc-grid" x1="'+gx+'" y1="'+y0+'" x2="'+gx+'" y2="'+y1+'"/>'; });
-  [0,.5,1].forEach(function(f){ const gy=(y1-f*plotH).toFixed(1); grid+='<line class="rc-grid" x1="'+x0+'" y1="'+gy+'" x2="'+x1+'" y2="'+gy+'"/>'; });
-
-  let ax='';
-  [0,2,4,6,8,10].forEach(function(v){ ax+='<text class="rc-axtext" x="'+px(v).toFixed(1)+'" y="'+(y1+11)+'" text-anchor="middle" font-size="8">'+v+'</text>'; });
-  ax+='<text class="rc-axtitle" x="'+((x0+x1)/2).toFixed(1)+'" y="'+(y1+24)+'" text-anchor="middle" font-size="8">Score out of 10 · average 5.0</text>';
-
-  // Each population's average, marked on its own curve.
-  const refs=(function(){
-    function m(v,l){const rx=px(v).toFixed(1);
-      return '<line class="rc-ref" x1="'+rx+'" y1="'+py(1).toFixed(1)+'" x2="'+rx+'" y2="'+y1+'"/>'+
-             '<text class="rc-reftext" x="'+rx+'" y="'+(y0-14)+'" text-anchor="middle" font-size="6.5">'+l+'</text>';}
-    // Two labels at the same x overprint into unreadable mush. When the scales
-    // share an average there is only one line to label, whatever the widths.
-    const sameMean=Math.abs(SCALE_POP_MEAN-SCALE_GYM_MEAN)<0.05;
-    return sameMean?m(SCALE_GYM_MEAN,'AVERAGE'):(m(SCALE_POP_MEAN,'EVERYONE AVG')+m(SCALE_GYM_MEAN,'GYM AVG'));
-  })();
-
-  // One marker per curve. The two sit close together on purpose — the gap is the
-  // 5% the gym scale takes off you.
-  function mark(v,mean,sdpp,cls){
-    const mx=px(v);
-    return '<line class="rc-marker '+cls+'" x1="'+mx.toFixed(1)+'" y1="'+y1+'" x2="'+mx.toFixed(1)+'" y2="'+(y0+2)+'"/>'+
-           '<circle class="rc-dot '+cls+'" cx="'+mx.toFixed(1)+'" cy="'+py(dens(v,mean,sdpp)).toFixed(1)+'" r="3.4"/>';
-  }
-
-  const gc=(grade&&grade!=='—')?' grade-'+grade:'';
-  const locked=!isProHint();
-  const oneInGym=fmtOneIn(gymPct,RANK_FLOOR_GYM), oneInPop=fmtOneIn(popPct,RANK_FLOOR_POP);
-
-  return '<div class="res-rank reslock'+gc+(locked?' locked':'')+(hasAccount()?'':' blurred')+'">'+
-    '<div class="reslock-in">'+
-    '<div class="res-sec-eyebrow">Where you rank</div>'+
-    '<div class="rank-dual">'+
-      '<div class="rank-d rank-d-gym">'+
-        '<div class="rank-d-n">'+fmtScale(sc.gym)+'<span class="rank-d-max">/10</span></div>'+
-        '<div class="rank-d-l">vs gym-goers</div>'+
-        '<div class="rank-d-p">'+rankLabel(gymPct,RANK_FLOOR_GYM)+(oneInGym?' <span class="rank-d-oi">'+oneInGym+'</span>':'')+'</div>'+
-      '</div>'+
-      '<div class="rank-d rank-d-pop">'+
-        '<div class="rank-d-n">'+fmtScale(sc.pop)+'<span class="rank-d-max">/10</span></div>'+
-        '<div class="rank-d-l">vs everyone</div>'+
-        '<div class="rank-d-p">'+rankLabel(popPct,RANK_FLOOR_POP)+(oneInPop?' <span class="rank-d-oi">'+oneInPop+'</span>':'')+'</div>'+
-      '</div>'+
-    '</div>'+
-    '<svg class="rank-curve" viewBox="0 0 '+W+' '+H+'" aria-hidden="true">'+
-      grid+
-      (oneCurve?'':'<path class="rc-area" d="'+cPop.area+'"/>')+
-      '<path class="rc-area rc-area-gym" d="'+cGym.area+'"/>'+
-      refs+
-      (oneCurve?'':'<path class="rc-line" d="'+cPop.line+'"/>')+
-      '<path class="rc-line rc-line-gym" d="'+cGym.line+'"/>'+
-      '<line class="rc-axis" x1="'+x0+'" y1="'+y1+'" x2="'+x1+'" y2="'+y1+'"/>'+
-      mark(sc.pop,SCALE_POP_MEAN,SCALE_POP_SD_PER_POINT,'rc-pop')+
-      mark(sc.gym,SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT,'rc-gym')+
-      ax+
-    '</svg>'+
-    '<div class="rank-legend">'+
-      '<span class="rank-key rank-key-gym">People who train · 1 pt = 1 SD</span>'+
-      '<span class="rank-key rank-key-pop">Everyone · 1 pt = '+SCALE_POP_SD_PER_POINT+' SD</span>'+
-    '</div>'+
-    '<div class="rank-note">Two modelled distributions, not a measured ranking. Both average 5.0. Against people who train, one point is one standard deviation — so '+fmtScale(sc.gym)+' is '+((sc.gymExact-SCALE_GYM_MEAN)*SCALE_GYM_SD_PER_POINT).toFixed(1)+' SD out. The general population is a tighter cluster, so the same step covers more ground and '+fmtScale(sc.pop)+' is '+((sc.popExact-SCALE_POP_MEAN)*SCALE_POP_SD_PER_POINT).toFixed(1)+' SD out. The gym number is the one worth chasing.</div>'+
-    '</div>'+
-    (locked?proVeil('See both percentiles'):'')+
-  '</div>';
+  const line='M '+points(0,10);
+  const area=line+' L '+x1+' '+y1+' L '+x0+' '+y1+' Z';
+  // Blue is the portion of the modelled population the person has passed. The
+  // marker is placed from the unrounded score on a SCORE axis, not a percentile
+  // axis, so the filled curve and displayed percentile always use one model.
+  const passed='M '+px(0).toFixed(2)+' '+y1+' L '+points(0,sc.popExact)+' L '+px(sc.popExact).toFixed(2)+' '+y1+' Z';
+  const mx=px(sc.popExact).toFixed(2), my=py(sc.popExact).toFixed(2);
+  const oneIn=fmtOneIn(pct,RANK_FLOOR_POP);
+  return '<section class="res-rank rank-single reslock'+(locked?' locked':'')+(gated?' blurred':'')+'" aria-label="Everyone percentile">'+
+    '<div class="reslock-in"'+(locked||gated?' inert aria-hidden="true"':'')+'>'+
+      '<h3>Where you rank</h3>'+
+      '<div class="rank-summary"><div><div class="rank-cohort">Everyone</div>'+
+        '<div class="rank-score">'+fmtScale(sc.pop)+' <span>/10</span></div></div>'+
+        '<div class="rank-placement">'+esc(label)+'</div></div>'+
+      '<svg class="rank-single-curve" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc('Modelled score distribution for everyone. Your score: '+fmtScale(sc.pop)+' out of 10. '+label)+ '">'+
+        '<desc>'+esc('The blue area represents '+pct.toFixed(1)+'% of the modelled population passed by this score.')+'</desc>'+
+        '<path class="rank-bell-area" d="'+area+'"/><path class="rank-bell-passed" d="'+passed+'"/>'+
+        '<path class="rank-bell-line" d="'+line+'"/>'+
+        '<line class="rank-baseline" x1="'+x0+'" y1="'+y1+'" x2="'+x1+'" y2="'+y1+'"/>'+
+        '<line class="rank-position" x1="'+mx+'" y1="'+y1+'" x2="'+mx+'" y2="'+Math.min(y1-18,Number(my)).toFixed(2)+'"/>'+
+        '<circle class="rank-position-dot" cx="'+mx+'" cy="'+my+'" r="4"/>'+
+      '</svg>'+
+      '<div class="rank-axis-labels" aria-hidden="true"><span>0</span><span>Score /10 · average 5.0</span><span>10</span></div>'+
+      '<div class="rank-method"><p>Modelled estimate, not a measured ranking.</p>'+
+        '<details><summary>How this is estimated</summary><p>Your score is compared with a model of the general population, centred at '+SCALE_POP_MEAN.toFixed(1)+'. Each score point represents '+SCALE_POP_SD_PER_POINT+' standard deviation'+(SCALE_POP_SD_PER_POINT===1?'':'s')+'. The curve uses the same distribution and your unrounded score; the displayed score is rounded.'+
+          (oneIn?' '+esc(oneIn.charAt(0).toUpperCase()+oneIn.slice(1))+ ' in this model.':'')+
+          ' This is an estimate, not a ranking from a measured population sample.</p></details></div>'+
+    '</div>'+(locked?proVeil('See your percentile'):'')+'</section>';
 }
+
 
 // Shared Pro-lock overlay for premium result sections.
 function proVeil(title){
@@ -2132,6 +2061,7 @@ document.querySelectorAll('.modal-overlay').forEach(overlay=>{
 function playRevealAnimation(){
   const vc = document.querySelector('#overallBody .overall-vc');
   if(!vc) return;
+  if(vc.classList.contains('signature-card')) return;
 
   // ── helpers ──────────────────────────────────────────────
   const cssVar = (name) => parseFloat(
@@ -2297,3 +2227,691 @@ function playRevealAnimation(){
   const s=document.getElementById('scanSection'); if(s) io.observe(s);
   const p=document.getElementById('pricingSection'); if(p) io.observe(p);
 })();
+
+// ============================================================
+// STRENGTH — a second rank, on the same scale as the physique one.
+//
+// The whole point of this module is that it lands on the SAME 0-100 base
+// the photo grade produces, so scaleScores/scoreToGrade/buildRankHTML all
+// work on it unchanged and the two ranks can be plotted against each other
+// honestly. If you change the anchors below, the strength half of the
+// profile chart stops being comparable to the physique half.
+//
+// Runs entirely in the browser. No worker call, no API cost, no account.
+// ============================================================
+
+// Reference bodyweight for the tables below. Every threshold is quoted at
+// this weight and scaled from it.
+const STR_REF_BW = 55;
+
+// Absolute strength rises roughly with bodyweight^(2/3) — the surface law
+// (Lietzke), which is the standard basis for bodyweight-adjusted lifting
+// scores. So the required BODYWEIGHT MULTIPLE falls with bodyweight^(-1/3):
+// 2.0x bench at 100kg is a far rarer feat than 2.0x at 50kg, and the
+// thresholds have to say so.
+const STR_SCALE_EXP = -1 / 3;
+
+// Weight classes exist as the reference frame the standards are quoted in,
+// but they are DELIBERATELY NEVER SHOWN and never used to bucket anyone.
+// Bucketing would put a cliff at every boundary — 59.9kg and 60.0kg would
+// get different thresholds for the same lift. Scaling continuously on the
+// real bodyweight passes through the same values at each class midpoint
+// with no cliff, which is what the classes were approximating anyway.
+//   <50 · 50-59 · 60-69 · 70-79 · 80-89 · 90-99 · 100-109 · 110-119 · 120+
+
+// Muscle groups. REAR DELTS ARE DELIBERATELY ABSENT — the owner excluded
+// them, and there is no isolation lift for them anyone loads heavily enough
+// to rank honestly. Order here is the order they appear in the UI.
+const STR_GROUPS = [
+  { k:'chest',      name:'Chest',        side:'front' },
+  { k:'frontdelt',  name:'Front delts',  side:'front' },
+  { k:'latdelt',    name:'Lateral delts',side:'front' },
+  { k:'biceps',     name:'Biceps',       side:'front' },
+  { k:'forearms',   name:'Forearms',     side:'front' },
+  { k:'core',       name:'Core',         side:'front' },
+  { k:'quads',      name:'Quads',        side:'front' },
+  { k:'back',       name:'Back',         side:'back'  },
+  { k:'traps',      name:'Traps',        side:'back'  },
+  { k:'triceps',    name:'Triceps',      side:'back'  },
+  { k:'glutes',     name:'Glutes',       side:'back'  },
+  { k:'hamstrings', name:'Hamstrings',   side:'back'  },
+  { k:'calves',     name:'Calves',       side:'back'  }
+];
+function strGroup(k){ return STR_GROUPS.find(g => g.k === k) || null; }
+
+// Units. 'kg' is total load on the bar or stack; 'kgph' is per hand, so a
+// pair of 30s is 30; 'add' is weight ADDED to a bodyweight movement.
+const STR_UNITS = { kg:'kg', kgph:'kg per hand', add:'kg added' };
+
+// The exercise library. `ref` is [novice, intermediate, advanced, elite] as a
+// bodyweight multiple at STR_REF_BW. Bench is the owner's own ladder, used
+// verbatim; the rest sit in the range of commonly-cited published standards.
+// `total:true` means the movement already carries the lifter, so the scaling
+// runs on bodyweight + added rather than on the added weight alone.
+//
+// CONFIDENCE: `soft:true` marks a lift whose ladder is a considered estimate
+// rather than something anchored in competition records or long-established
+// norms — every dumbbell, cable and machine movement, and the small isolation
+// work. Machine loads are not even comparable between manufacturers, and no
+// federation contests a lateral raise. Those rows carry a visible "rough
+// standard" marker. Do NOT quietly drop the flag to make the UI tidier: it is
+// the difference between an estimate and a claim.
+// Crowd-sourced lifting sites were considered as a source and rejected — the
+// data is self-reported by self-selected app users with no rep standard, so
+// it measures who logs lifts, not who lifts.
+const STR_EX = [
+  // ---- chest ----
+  { k:'bench',        name:'Barbell bench press',    g:'chest', u:'kg',   ref:[0.80,1.20,1.50,1.80] , t:'compound' },
+  { k:'inclbench',    name:'Incline barbell press',  g:'chest', u:'kg',   ref:[0.65,1.00,1.28,1.55] , t:'secondary' },
+  { k:'dbbench',      name:'Dumbbell bench press',   g:'chest', u:'kgph', ref:[0.30,0.46,0.60,0.74] , t:'secondary' , soft:true },
+  { k:'incldb',       name:'Incline dumbbell press', g:'chest', u:'kgph', ref:[0.25,0.40,0.52,0.65] , t:'secondary' , soft:true },
+  { k:'dip',          name:'Weighted dip',           g:'chest', u:'add',  ref:[1.15,1.38,1.62,1.90], total:true , t:'secondary' },
+  { k:'machpress',    name:'Machine chest press',    g:'chest', u:'kg',   ref:[0.70,1.05,1.35,1.65] , t:'secondary' , soft:true },
+  { k:'cablefly',     name:'Cable fly',              g:'chest', u:'kgph', ref:[0.12,0.20,0.28,0.36] , t:'isolation' , soft:true },
+  // ---- front delts ----
+  { k:'ohp',          name:'Overhead press',         g:'frontdelt', u:'kg',   ref:[0.50,0.75,0.95,1.15] , t:'secondary' },
+  { k:'pushpress',    name:'Push press',             g:'frontdelt', u:'kg',   ref:[0.65,0.95,1.20,1.45] , t:'secondary' },
+  { k:'dbshoulder',   name:'Seated DB shoulder press',g:'frontdelt',u:'kgph', ref:[0.20,0.32,0.43,0.54] , t:'secondary' , soft:true },
+  { k:'frontraise',   name:'Front raise',            g:'frontdelt', u:'kgph', ref:[0.08,0.13,0.18,0.23] , t:'isolation' , soft:true },
+  // ---- lateral delts ----
+  { k:'latraise',     name:'DB lateral raise',       g:'latdelt', u:'kgph', ref:[0.08,0.14,0.21,0.28] , t:'isolation' , soft:true },
+  { k:'cablelat',     name:'Cable lateral raise',    g:'latdelt', u:'kgph', ref:[0.07,0.12,0.18,0.24] , t:'isolation' , soft:true },
+  { k:'uprightrow',   name:'Upright row',            g:'latdelt', u:'kg',   ref:[0.35,0.55,0.72,0.90] , t:'secondary' , soft:true },
+  // ---- back ----
+  { k:'deadlift',     name:'Deadlift',               g:'back', u:'kg',   ref:[1.20,1.80,2.35,2.85] , t:'compound' },
+  { k:'pullup',       name:'Weighted pull-up',       g:'back', u:'add',  ref:[1.10,1.28,1.50,1.75], total:true , t:'secondary' },
+  { k:'chinup',       name:'Weighted chin-up',       g:'back', u:'add',  ref:[1.15,1.35,1.58,1.85], total:true , t:'secondary' },
+  { k:'barbellrow',   name:'Barbell row',            g:'back', u:'kg',   ref:[0.70,1.05,1.35,1.65] , t:'secondary' },
+  { k:'pendlay',      name:'Pendlay row',            g:'back', u:'kg',   ref:[0.65,1.00,1.28,1.55] , t:'secondary' },
+  { k:'tbar',         name:'T-bar row',              g:'back', u:'kg',   ref:[0.70,1.05,1.35,1.65] , t:'secondary' , soft:true },
+  { k:'pulldown',     name:'Lat pulldown',           g:'back', u:'kg',   ref:[0.65,0.95,1.20,1.45] , t:'secondary' , soft:true },
+  { k:'cablerow',     name:'Seated cable row',       g:'back', u:'kg',   ref:[0.65,0.95,1.22,1.50] , t:'secondary' , soft:true },
+  // ---- traps ----
+  { k:'shrug',        name:'Barbell shrug',          g:'traps', u:'kg',   ref:[1.00,1.50,1.95,2.40] , t:'secondary' , soft:true },
+  { k:'dbshrug',      name:'Dumbbell shrug',         g:'traps', u:'kgph', ref:[0.40,0.62,0.82,1.00] , t:'secondary' , soft:true },
+  // ---- biceps ----
+  { k:'strict',       name:'Strict curl',            g:'biceps', u:'kg',   ref:[0.30,0.48,0.66,0.85] , t:'isolation' },
+  { k:'curl',         name:'Barbell curl',           g:'biceps', u:'kg',   ref:[0.35,0.55,0.75,0.95] , t:'isolation' },
+  { k:'dbcurl',       name:'Dumbbell curl',          g:'biceps', u:'kgph', ref:[0.14,0.22,0.30,0.38] , t:'isolation' , soft:true },
+  { k:'preacher',     name:'Preacher curl',          g:'biceps', u:'kg',   ref:[0.25,0.40,0.53,0.66] , t:'isolation' , soft:true },
+  { k:'hammer',       name:'Hammer curl',            g:'biceps', u:'kgph', ref:[0.15,0.24,0.32,0.41] , t:'isolation' , soft:true },
+  // ---- triceps ----
+  { k:'cgbench',      name:'Close-grip bench press', g:'triceps', u:'kg',  ref:[0.65,1.00,1.28,1.55] , t:'secondary' },
+  { k:'skullcrusher', name:'Skullcrusher',           g:'triceps', u:'kg',  ref:[0.25,0.40,0.54,0.68] , t:'isolation' , soft:true },
+  { k:'pushdown',     name:'Cable pushdown',         g:'triceps', u:'kg',  ref:[0.35,0.55,0.72,0.90] , t:'isolation' , soft:true },
+  { k:'overheadext',  name:'Overhead tricep extension',g:'triceps',u:'kg', ref:[0.22,0.35,0.47,0.60] , t:'isolation' , soft:true },
+  // ---- forearms ----
+  { k:'wristcurl',    name:'Barbell wrist curl',     g:'forearms', u:'kg',   ref:[0.30,0.48,0.63,0.78] , t:'isolation' , soft:true },
+  { k:'farmers',      name:"Farmer's walk",          g:'forearms', u:'kgph', ref:[0.50,0.75,1.00,1.25] , t:'secondary' , soft:true },
+  // ---- quads ----
+  { k:'squat',        name:'Back squat',             g:'quads', u:'kg',   ref:[1.00,1.50,1.95,2.40] , t:'compound' },
+  { k:'frontsquat',   name:'Front squat',            g:'quads', u:'kg',   ref:[0.80,1.20,1.55,1.90] , t:'secondary' },
+  { k:'hacksquat',    name:'Hack squat',             g:'quads', u:'kg',   ref:[1.00,1.50,1.95,2.40] , t:'secondary' , soft:true },
+  { k:'legpress',     name:'Leg press',              g:'quads', u:'kg',   ref:[1.80,2.70,3.50,4.30] , t:'secondary' , soft:true },
+  { k:'legext',       name:'Leg extension',          g:'quads', u:'kg',   ref:[0.50,0.78,1.02,1.25] , t:'isolation' , soft:true },
+  { k:'bulgarian',    name:'Bulgarian split squat',  g:'quads', u:'kgph', ref:[0.25,0.40,0.55,0.70] , t:'secondary' , soft:true },
+  // ---- hamstrings ----
+  { k:'rdl',          name:'Romanian deadlift',      g:'hamstrings', u:'kg', ref:[0.95,1.45,1.88,2.30] , t:'secondary' },
+  { k:'legcurl',      name:'Lying leg curl',         g:'hamstrings', u:'kg', ref:[0.40,0.62,0.82,1.00] , t:'isolation' , soft:true },
+  { k:'goodmorning',  name:'Good morning',           g:'hamstrings', u:'kg', ref:[0.55,0.85,1.10,1.35] , t:'secondary' },
+  // ---- glutes ----
+  { k:'hipthrust',    name:'Hip thrust',             g:'glutes', u:'kg', ref:[1.20,1.85,2.45,3.00] , t:'secondary' , soft:true },
+  { k:'sumo',         name:'Sumo deadlift',          g:'glutes', u:'kg', ref:[1.25,1.85,2.40,2.90] , t:'compound' },
+  // ---- calves ----
+  { k:'standcalf',    name:'Standing calf raise',    g:'calves', u:'kg', ref:[0.80,1.25,1.65,2.05] , t:'isolation' , soft:true },
+  { k:'seatcalf',     name:'Seated calf raise',      g:'calves', u:'kg', ref:[0.50,0.78,1.02,1.25] , t:'isolation' , soft:true },
+  // ---- core ----
+  { k:'cablecrunch',  name:'Cable crunch',           g:'core', u:'kg',  ref:[0.35,0.55,0.72,0.90] , t:'isolation' , soft:true },
+  { k:'hangingleg',   name:'Weighted hanging leg raise', g:'core', u:'add', ref:[0.05,0.12,0.20,0.30] , t:'isolation' , soft:true }
+];
+function strEx(k){ return STR_EX.find(e => e.k === k) || null; }
+
+// The four thresholds are the four grade boundaries the photo grade already
+// uses, so a level name and a letter mean the same thing on both halves of
+// the profile: elite=S, advanced=A, intermediate=B, novice=C, under that D/E.
+const STR_LEVELS = ['Novice', 'Intermediate', 'Advanced', 'Elite'];
+const STR_ANCHORS = [40, 61, 75, 90];
+// Above the elite threshold the scale keeps going rather than flattening —
+// otherwise every elite lifter reads identically and the top of the ladder
+// carries no information. It approaches 100 ASYMPTOTICALLY and never reaches
+// it: each further step costs more than the last.
+//
+// HOW FAR the tail runs is per-lift and is NOT a free parameter. `head` is
+// roughly where the human ceiling sits as a multiple of the elite threshold,
+// and it differs enormously by lift type. Records sit far above elite on a
+// bench press; an isolation lift has a hard biomechanical ceiling barely
+// above it. A single global headroom (the first attempt used 1.6x for
+// everything) produced impossible targets — it wanted a 73kg strict curl
+// from a 59kg lifter to score 95, when a 67.5kg strict curl won the 75kg
+// class at the 2023 Strict Curl World Cup. Scaled down, the real ceiling
+// there is nearer 57kg.
+const STR_HEAD = { compound:1.55, secondary:1.42, isolation:1.20 };
+// Reaching `head` scores ~98: ln(1/(1-0.8)) = 1.609, so k = 1.609/(head-1).
+const STR_HEAD_K = 1.609;
+
+// Free tier ranks this many muscle groups. Pro ranks all of them and gets
+// the heatmap. Enforced in the UI only — this is a client-side tool with
+// nothing worth protecting server-side, unlike the scan.
+const STR_FREE_GROUPS = 5;
+
+// Epley, identical to one-rep-max-calculator.html. The two must not disagree:
+// someone will check. Accuracy falls off hard above ~10 reps, which the UI says.
+function strEpley(weight, reps){
+  if(!(weight > 0)) return null;
+  const r = (reps > 0) ? reps : 1;
+  return weight * (1 + r / 30);
+}
+
+// Thresholds for one exercise at one bodyweight, as bodyweight multiples.
+function strThresholds(ex, bw){
+  const f = Math.pow(bw / STR_REF_BW, STR_SCALE_EXP);
+  // A pull-up or dip already carries the lifter, so the scaling has to run on
+  // TOTAL load (bodyweight + added) and the ADDED weight is what falls out of
+  // it. Scaling the added weight directly would wrongly let a 120kg lifter
+  // add the same multiple as a 55kg one.
+  if(ex.total) return ex.ref.map(v => v * f - 1);
+  return ex.ref.map(v => v * f);
+}
+
+// One exercise → the same 0-100 base the photo grade produces.
+function strExScore(ex, bw, kg){
+  if(!(bw > 0) || !(kg > 0)) return null;
+  const mult = kg / bw;
+  const t = strThresholds(ex, bw);
+  if(mult <= 0) return 0;
+  if(mult < t[0]) return Math.max(0, (mult / t[0]) * STR_ANCHORS[0]);
+  for(let i = 0; i < t.length - 1; i++){
+    if(mult < t[i + 1]){
+      const span = t[i + 1] - t[i];
+      const frac = span > 0 ? (mult - t[i]) / span : 0;
+      return STR_ANCHORS[i] + frac * (STR_ANCHORS[i + 1] - STR_ANCHORS[i]);
+    }
+  }
+  const top = t[t.length - 1];
+  const over = top > 0 ? (mult - top) / top : 0;
+  const head = STR_HEAD[ex.t] || STR_HEAD.isolation;
+  return 90 + 10 * (1 - Math.exp(-(STR_HEAD_K / (head - 1)) * over));
+}
+
+function strLevelName(ex, bw, kg){
+  if(!(bw > 0) || !(kg > 0)) return null;
+  const mult = kg / bw, t = strThresholds(ex, bw);
+  let name = 'Beginner';
+  for(let i = 0; i < t.length; i++) if(mult >= t[i]) name = STR_LEVELS[i];
+  return name;
+}
+
+// ---- persistence: convenience only, same posture as the physique profile ----
+// entries: { <exerciseKey>: {w:<weight>, r:<reps>} }
+let strengthData = { bw:null, entries:{} };
+function saveStrength(){
+  try{ localStorage.setItem('pq_strength', JSON.stringify(strengthData)); }catch(e){}
+}
+function loadStrength(){
+  try{
+    const raw = localStorage.getItem('pq_strength');
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    if(!d || typeof d !== 'object') return;
+    const out = { bw:(d.bw > 0 ? d.bw : null), entries:{} };
+    // Migrate the first-version shape ({lifts:{key:kg}}), which stored a bare
+    // 1RM with no rep count, into the {w,r} entry shape.
+    const src = d.entries || d.lifts;
+    if(src && typeof src === 'object'){
+      Object.keys(src).forEach(function(k){
+        if(!strEx(k)) return;               // drop keys no longer in the library
+        const v = src[k];
+        if(v && typeof v === 'object'){ if(v.w > 0) out.entries[k] = { w:v.w, r:(v.r > 0 ? v.r : 1) }; }
+        else if(v > 0){ out.entries[k] = { w:v, r:1 }; }
+      });
+    }
+    strengthData = out;
+  }catch(e){}
+}
+
+// Which groups the person has actually entered anything for, in library order.
+function strEnteredGroups(){
+  const seen = {};
+  Object.keys(strengthData.entries).forEach(function(k){
+    const ex = strEx(k); if(ex) seen[ex.g] = true;
+  });
+  return STR_GROUPS.filter(g => seen[g.k]);
+}
+// Free users rank the first STR_FREE_GROUPS groups they filled in; the rest
+// are held back. Pro ranks everything.
+function strGroupsAllowed(){
+  const entered = strEnteredGroups();
+  if(isProHint()) return entered.map(g => g.k);
+  return entered.slice(0, STR_FREE_GROUPS).map(g => g.k);
+}
+
+// Per-group scores. A group is the average of the exercises entered for it,
+// so adding a sixth chest lift refines chest rather than drowning out legs.
+function computeStrengthGroups(){
+  const bw = strengthData.bw;
+  if(!(bw > 0)) return [];
+  const allowed = strGroupsAllowed();
+  const byGroup = {};
+  Object.keys(strengthData.entries).forEach(function(k){
+    const ex = strEx(k); if(!ex) return;
+    const e = strengthData.entries[k];
+    const orm = strEpley(e.w, e.r);
+    const s = strExScore(ex, bw, orm);
+    if(s == null) return;
+    (byGroup[ex.g] = byGroup[ex.g] || []).push({ ex:ex, orm:orm, w:e.w, r:e.r, score:s, level:strLevelName(ex, bw, orm) });
+  });
+  return STR_GROUPS.filter(g => byGroup[g.k]).map(function(g){
+    const rows = byGroup[g.k];
+    const score = rows.reduce((a, r) => a + r.score, 0) / rows.length;
+    return {
+      group:g, rows:rows, score:score,
+      grade:scoreToGrade(score),
+      locked:allowed.indexOf(g.k) === -1
+    };
+  });
+}
+
+// The strength equivalent of computeOverall(): same shape, same scale.
+// Overall is the mean of GROUP scores, not of exercises — otherwise whoever
+// logs the most chest lifts gets the highest strength rank.
+function computeStrength(){
+  const groups = computeStrengthGroups();
+  const open = groups.filter(g => !g.locked);
+  if(open.length === 0) return null;
+  const base = open.reduce((a, g) => a + g.score, 0) / open.length;
+  return {
+    base: base,
+    scores: scaleScores(base),
+    grade: scoreToGrade(base),
+    groups: groups,
+    ranked: open.length,
+    held: groups.length - open.length,
+    nEx: Object.keys(strengthData.entries).length
+  };
+}
+
+// ---- Strength screen ----------------------------------------------------
+
+let strSearchQ = '';
+
+function showStrength(){
+  show('screen-strength');
+  renderStrength();
+  track('strength_open', {});
+}
+
+function strSetSearch(v){
+  strSearchQ = v || '';
+  const box = document.getElementById('strPickList');
+  if(box) box.innerHTML = strPickListHTML();
+}
+
+// Search matches the exercise name OR its muscle group, so "delts" finds the
+// raises and "chest" finds the presses without anyone knowing the exact name.
+function strSearchHits(){
+  const q = strSearchQ.trim().toLowerCase();
+  const free = STR_EX.filter(e => !strengthData.entries[e.k]);
+  if(!q) return free;
+  return free.filter(function(e){
+    const g = strGroup(e.g);
+    return e.name.toLowerCase().indexOf(q) !== -1 || (g && g.name.toLowerCase().indexOf(q) !== -1);
+  });
+}
+
+function strPickListHTML(){
+  const hits = strSearchHits();
+  if(hits.length === 0) return '<div class="str-pick-none">Nothing matches that. Try a muscle group &mdash; &ldquo;chest&rdquo;, &ldquo;delts&rdquo;, &ldquo;back&rdquo;.</div>';
+  return hits.slice(0, 40).map(function(e){
+    const g = strGroup(e.g);
+    return '<button type="button" class="str-pick" onclick="strAdd(\'' + e.k + '\')">' +
+        '<span class="str-pick-name">' + e.name + '</span>' +
+        '<span class="str-pick-g">' + (g ? g.name : '') + '</span>' +
+        '<span class="str-pick-add">+</span>' +
+      '</button>';
+  }).join('') + (hits.length > 40 ? '<div class="str-pick-none">' + (hits.length - 40) + ' more &mdash; keep typing to narrow it.</div>' : '');
+}
+
+function strAdd(k){
+  const ex = strEx(k);
+  if(!ex || strengthData.entries[k]) return;
+  strengthData.entries[k] = { w:null, r:1 };
+  saveStrength();
+  renderStrength();
+  track('strength_add_exercise', { ex:k, group:ex.g });
+  setTimeout(function(){ const el = document.getElementById('strw-' + k); if(el) el.focus(); }, 40);
+}
+
+function strRemove(k){
+  delete strengthData.entries[k];
+  saveStrength();
+  renderStrength();
+}
+
+// Reading straight from the DOM on every edit keeps one source of truth and
+// means a half-typed row never silently reverts under the person's cursor.
+function strSyncFromDOM(){
+  const bwEl = document.getElementById('str-bw');
+  if(bwEl){ const bw = parseFloat(bwEl.value); strengthData.bw = (bw > 0) ? bw : null; }
+  Object.keys(strengthData.entries).forEach(function(k){
+    const w = document.getElementById('strw-' + k), r = document.getElementById('strr-' + k);
+    if(!w) return;
+    const wv = parseFloat(w.value), rv = parseInt(r ? r.value : '1', 10);
+    strengthData.entries[k] = { w:(wv > 0 ? wv : null), r:(rv > 0 ? rv : 1) };
+  });
+  saveStrength();
+}
+
+function strRecalc(){
+  strSyncFromDOM();
+  const out = document.getElementById('strResultWrap');
+  if(out) out.innerHTML = strResultHTML(computeStrength());
+}
+
+function strEntryRow(k){
+  const ex = strEx(k), e = strengthData.entries[k], g = strGroup(ex.g);
+  const bw = strengthData.bw;
+  const orm = strEpley(e.w, e.r);
+  const lvl = (bw > 0 && orm) ? strLevelName(ex, bw, orm) : null;
+  // A single is its own 1RM, so showing "est. 1RM" there would be noise.
+  const est = (orm && e.r > 1) ? '<span class="str-e-orm">&asymp; ' + orm.toFixed(1) + 'kg 1RM</span>' : '';
+  return '<div class="str-e">' +
+      '<div class="str-e-top">' +
+        '<span class="str-e-name">' + ex.name + '</span>' +
+        '<button type="button" class="str-e-x" onclick="strRemove(\'' + k + '\')" aria-label="Remove ' + ex.name + '">&times;</button>' +
+      '</div>' +
+      '<div class="str-e-g">' + (g ? g.name : '') + '</div>' +
+      '<div class="str-e-in">' +
+        '<label><input type="number" inputmode="decimal" step="0.5" min="0" max="700" id="strw-' + k + '" ' +
+          'value="' + (e.w > 0 ? e.w : '') + '" placeholder="0" oninput="strRecalc()" aria-label="' + ex.name + ' weight"> ' +
+          '<span>' + STR_UNITS[ex.u] + '</span></label>' +
+        '<label><input type="number" inputmode="numeric" step="1" min="1" max="30" id="strr-' + k + '" ' +
+          'value="' + (e.r > 0 ? e.r : 1) + '" oninput="strRecalc()" aria-label="' + ex.name + ' reps"> ' +
+          '<span>reps</span></label>' +
+      '</div>' +
+      '<div class="str-e-out">' + est + (lvl ? '<span class="str-e-lvl">' + lvl + '</span>' : '') +
+        // Epley drifts badly above ~10 reps -- one-rep-max-calculator.html says
+        // so on the same formula, and a high-rep entry silently inflating into
+        // an Elite grade is exactly how this rank loses credibility.
+        (e.r > 10 ? '<span class="str-e-warn">high reps &mdash; rough estimate</span>' : '') +
+        (ex.soft ? '<span class="str-e-soft">rough standard</span>' : '') +
+      '</div>' +
+    '</div>';
+}
+
+function renderStrength(){
+  const keys = Object.keys(strengthData.entries);
+  const entered = strEnteredGroups().length;
+
+  const body =
+    '<div class="sec-head" style="margin-bottom:22px">' +
+      '<h2>Rank your lifts.</h2>' +
+      '<p>Strength scored against bodyweight, on the same 1&ndash;10 scale as the photo grade &mdash; so the two can be read side by side. ' +
+        'Enter any set and the 1RM is worked out for you.</p>' +
+    '</div>' +
+    '<div class="str-form">' +
+      '<label class="str-row str-row-bw">' +
+        '<span class="str-row-name">Bodyweight</span>' +
+        '<span class="str-row-in">' +
+          '<input type="number" inputmode="decimal" step="0.1" min="30" max="250" id="str-bw" ' +
+            'value="' + (strengthData.bw > 0 ? strengthData.bw : '') + '" placeholder="—" oninput="strRecalc()" aria-label="Bodyweight in kg">' +
+          '<span class="str-row-unit">kg</span>' +
+        '</span>' +
+      '</label>' +
+      '<div class="str-search">' +
+        '<input type="search" id="strSearch" placeholder="Search an exercise or muscle group…" ' +
+          'value="' + esc(strSearchQ) + '" oninput="strSetSearch(this.value)" aria-label="Search exercises">' +
+        '<div class="str-pick-list" id="strPickList">' + strPickListHTML() + '</div>' +
+      '</div>' +
+      (keys.length ?
+        '<div class="str-entries">' + keys.map(strEntryRow).join('') + '</div>' :
+        '<div class="str-empty">No lifts yet. Search above and add the ones you actually train.</div>') +
+      (entered > 0 && !isProHint() ?
+        '<div class="str-cap-note">Free ranks <b>' + STR_FREE_GROUPS + ' muscle groups</b>. ' +
+          'You have ' + entered + '. Pro ranks every group and unlocks the body heatmap.</div>' : '') +
+    '</div>' +
+    '<div id="strResultWrap">' + strResultHTML(computeStrength()) + '</div>';
+
+  document.getElementById('strengthBody').innerHTML = body;
+}
+
+function strGroupRowHTML(g){
+  if(g.locked){
+    return '<div class="str-g str-g-locked">' +
+        '<span class="str-g-name">' + g.group.name + '</span>' +
+        '<span class="str-g-lock">Pro</span>' +
+      '</div>';
+  }
+  return '<div class="str-g grade-' + g.grade + '">' +
+      '<span class="str-g-name">' + g.group.name + '</span>' +
+      '<span class="str-g-n">' + (g.score / 10).toFixed(1) + '</span>' +
+      '<div class="str-g-track"><div class="str-g-fill" style="width:' + Math.min(100, g.score).toFixed(0) + '%"></div></div>' +
+      '<span class="str-g-lvl">' + gradeLabel(g.grade) + '</span>' +
+    '</div>';
+}
+
+function strResultHTML(r){
+  if(!r) return '';
+  const gc = ' grade-' + r.grade;
+  return '<div id="strResult" class="str-result' + gc + '">' +
+      '<div class="res-sec-eyebrow">Your strength rank</div>' +
+      '<div class="str-hero">' +
+        '<div class="str-hero-letter">' + r.grade + '</div>' +
+        '<div class="str-hero-right">' +
+          '<div class="str-hero-label">' + gradeLabel(r.grade) + '</div>' +
+          '<div class="str-hero-scores">' +
+            '<div class="str-hero-stat"><b>' + fmtScale(r.scores.gym) + '</b><span>vs gym-goers</span></div>' +
+            '<div class="str-hero-stat"><b>' + fmtScale(r.scores.pop) + '</b><span>vs everyone</span></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="str-groups">' + r.groups.map(strGroupRowHTML).join('') + '</div>' +
+      (r.held > 0 ? '<div class="str-cap-note">' + r.held + ' more muscle group' + (r.held > 1 ? 's' : '') +
+        ' entered but not ranked on Free.</div>' : '') +
+      '<div class="rank-note">Each group is the average of the exercises you entered for it, and the overall rank ' +
+        'is the average of the groups &mdash; so logging five chest lifts refines chest rather than outweighing legs. ' +
+        'Thresholds are estimates, not measured fact. Anything tagged ' +
+        '<b>rough standard</b> is a considered guess rather than a figure anchored in ' +
+        'competition records &mdash; no federation contests a lateral raise, and machine ' +
+        'loads are not comparable between manufacturers.</div>' +
+      strHeatmapHTML(r) +
+      buildRankHTML(r.base, r.grade, false, { free:true }) +
+      '<button class="btn ghost" style="margin-top:12px" onclick="showProfile()">See your full profile &rarr;</button>' +
+    '</div>';
+}
+
+// ---- Body heatmap (Pro) -------------------------------------------------
+// Coordinates trace the neutral anatomical artwork, in its native 1254px square.
+// Paired regions are mirrored about each figure's midline. Rear delts remain
+// outside the map. All scores, group membership and Pro gating are unchanged.
+const STR_BODY = {
+  front:{
+    axis:344,
+    pair:[
+      {k:'chest',d:'M263 260 C287 259 321 268 334 289 C340 308 343 344 335 361 C329 382 295 384 269 377 C243 371 229 350 225 329 C232 305 245 279 263 260 Z'},
+      {k:'latdelt',d:'M233 251 C201 250 180 267 169 291 C160 312 164 342 178 362 L190 342 C194 310 211 276 233 251 Z'},
+      {k:'frontdelt',d:'M236 251 C246 250 257 252 265 257 C250 280 232 304 219 329 L191 343 C197 309 210 276 236 251 Z'},
+      {k:'biceps',d:'M217 333 C229 352 228 382 215 415 C205 440 193 453 180 455 C164 445 168 417 179 390 C188 364 201 344 217 333 Z'},
+      {k:'forearms',d:'M148 436 C164 446 169 462 165 490 C160 529 145 563 130 590 L120 608 L105 605 C111 574 111 540 119 505 C125 475 135 449 148 436 Z M173 460 L197 450 C196 481 180 522 160 548 L136 584 C143 549 165 499 173 460 Z'},
+      {k:'core',d:'M325 377 C331 375 338 378 340 385 L340 402 C324 402 308 405 291 414 L283 397 C296 387 310 380 325 377 Z M290 417 C306 408 329 405 339 409 L341 438 C325 437 309 439 290 445 C286 436 286 426 290 417 Z M290 449 C307 442 328 442 340 445 L341 484 C327 490 313 491 300 488 C292 480 289 463 290 449 Z M295 494 C308 491 329 493 341 499 L340 557 L310 555 C301 540 295 516 295 494 Z M245 397 C254 420 268 438 282 448 L291 546 C274 533 253 509 248 487 C242 460 237 428 245 397 Z'},
+      {k:'quads',d:'M216 681 L274 697 C275 725 261 759 249 784 C246 800 239 818 230 833 C215 812 204 791 201 766 C197 736 205 700 216 681 Z M278 698 L332 702 C328 750 311 785 300 814 C295 835 283 850 274 842 C256 835 254 813 253 795 C265 761 280 727 278 698 Z'}
+    ]
+  },
+  back:{
+    axis:900,
+    pair:[
+      {k:'traps',d:'M856 205 C843 222 813 237 789 249 C818 248 839 251 855 265 C871 280 889 293 892 313 L893 404 C875 387 859 366 848 343 C837 318 835 290 832 270 L815 257 C840 253 859 233 865 215 L867 205 Z'},
+      {k:'back',d:'M779 365 C810 369 837 369 851 360 C860 381 877 403 887 421 C887 444 874 468 860 488 L842 519 C829 484 813 466 800 440 C787 414 781 389 779 365 Z'},
+      {k:'triceps',d:'M755 329 C767 342 778 365 777 388 C775 415 754 445 737 459 C725 441 717 414 724 388 C731 361 744 338 755 329 Z M729 340 C718 359 704 381 703 404 C701 421 706 438 715 448 C715 415 723 378 739 355 Z'},
+      {k:'forearms',d:'M700 444 C713 449 724 462 725 480 C719 510 703 544 688 578 L678 612 L661 613 C662 578 665 541 673 507 C679 481 689 460 700 444 Z M729 462 L739 475 C730 511 709 548 690 579 C698 545 720 493 729 462 Z'},
+      {k:'glutes',d:'M796 561 C825 551 866 552 896 557 L896 655 C873 673 844 676 817 666 C797 659 779 649 780 632 L789 582 Z'},
+      {k:'hamstrings',d:'M780 697 L827 703 C830 750 818 797 793 839 L777 873 C770 848 767 815 767 784 C766 753 773 721 780 697 Z M831 705 L892 705 C887 758 873 811 853 857 L839 885 C831 863 819 850 808 845 C824 803 839 755 831 705 Z'},
+      {k:'calves',d:'M791 882 C808 900 811 930 803 958 C793 986 782 1010 768 1023 C751 1005 748 985 750 965 C754 937 771 902 791 882 Z M799 879 C817 884 836 901 842 928 C851 955 848 979 838 1007 C833 1025 827 1035 821 1034 C805 1025 800 1007 802 987 C811 955 816 917 799 879 Z'}
+    ]
+  }
+};
+
+let strHeatSelection = '';
+
+function strInspectMuscle(control){
+  const map = control.closest('.str-heat');
+  if(!map || map.classList.contains('locked')) return;
+  const key = control.dataset.muscle || control.value;
+  const region = map.querySelector('[data-muscle="' + key + '"]');
+  if(!region) return;
+  strHeatSelection = key;
+  map.querySelectorAll('[data-muscle]').forEach(function(el){
+    el.setAttribute('aria-pressed', String(el.dataset.muscle === key));
+  });
+  map.querySelector('.hm-picker select').value = key;
+  map.querySelector('.hm-reading').textContent = region.dataset.reading;
+}
+
+function strHeatmapHTML(r){
+  const locked = !isProHint(), byGroup = {}, paths = {};
+  r.groups.forEach(function(g){ if(!g.locked) byGroup[g.group.k] = g; });
+  Object.keys(STR_BODY).forEach(function(side){
+    const body = STR_BODY[side];
+    body.pair.forEach(function(p){
+      const shape = '<path d="' + p.d + '"/>';
+      paths[p.k] = (paths[p.k] || '') + shape +
+        '<g transform="translate(' + (body.axis * 2) + ',0) scale(-1,1)">' + shape + '</g>';
+    });
+  });
+  const selected = STR_GROUPS.some(g => g.k === strHeatSelection) ? strHeatSelection : '';
+  function reading(key){
+    const g = byGroup[key];
+    return g ? (g.score / 10).toFixed(1) + '/10 · ' + g.grade + ' · ' + gradeLabel(g.grade) : 'No data — add a lift to rank';
+  }
+  const regions = STR_GROUPS.map(function(group){
+    const g = byGroup[group.k], value = reading(group.k);
+    return '<g class="hm-muscle ' + (g ? 'grade-' + g.grade : 'hm-none') + '" ' +
+      'role="button" tabindex="' + (locked ? '-1' : '0') + '" data-muscle="' + group.k + '" ' +
+      'data-reading="' + esc(value) + '" aria-label="' + esc(group.name + ': ' + value) + '" ' +
+      'aria-pressed="' + (selected === group.k) + '" onclick="strInspectMuscle(this)" ' +
+      'onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();strInspectMuscle(this)}">' +
+      '<title>' + esc(group.name + ' — ' + value) + '</title>' + paths[group.k] + '</g>';
+  }).join('');
+  return '<section class="str-heat reslock' + (locked ? ' locked' : '') + '" aria-label="Muscle strength map">' +
+    '<div class="reslock-in"' + (locked ? ' inert aria-hidden="true"' : '') + '>' +
+      '<div class="hm-heading"><h3>Muscle map</h3><span>Strength by muscle group</span></div>' +
+      '<div class="hm-stage"><svg class="hm-anatomy" viewBox="0 0 1254 1254" role="group" aria-label="Front and back muscle map. Select a muscle to see its rank.">' +
+        '<image class="hm-art" href="/assets/strength-anatomy.png" width="1254" height="1254" aria-hidden="true"/>' +
+        regions + '</svg></div>' +
+      '<div class="hm-captions" aria-hidden="true"><span>Front</span><span>Back</span></div>' +
+      '<div class="hm-legend" aria-label="Grade colour key">' +
+        ['E','D','C','B','A','S'].map(g => '<span class="hm-key grade-' + g + '">' + g + '</span>').join('') +
+        '<span class="hm-key hm-none-key">No data</span>' +
+      '</div>' +
+      '<div class="hm-inspect"><label class="hm-picker">' +
+        '<select aria-label="Inspect muscle group" onchange="strInspectMuscle(this)">' +
+          '<option value="" disabled' + (!selected ? ' selected' : '') + '>Select a muscle</option>' +
+          STR_GROUPS.map(g => '<option value="' + g.k + '"' + (selected === g.k ? ' selected' : '') + '>' + g.name + '</option>').join('') +
+        '</select></label><div class="hm-reading" aria-live="polite" aria-atomic="true">' +
+          (selected ? esc(reading(selected)) : 'Tap the map to explore') + '</div></div>' +
+      '<div class="rank-note">Grey means no lift data. Colours reflect your logged strength, not muscle size.</div>' +
+    '</div>' + (locked ? proVeil('Unlock your body heatmap') : '') +
+  '</section>';
+}
+
+
+// ---- Profile: both ranks, and the plot that puts them against each other --
+
+function showProfile(){
+  show('screen-profile');
+  renderProfile();
+  track('profile_open', {});
+}
+
+function strRankTile(kind, r, href, missingMsg){
+  if(!r) return '<div class="pf-tile pf-tile-empty">' +
+      '<div class="pf-tile-kind">' + kind + '</div>' +
+      '<div class="pf-tile-missing">' + missingMsg + '</div>' +
+    '</div>';
+  return '<div class="pf-tile grade-' + r.grade + '">' +
+      '<div class="pf-tile-kind">' + kind + '</div>' +
+      '<div class="pf-tile-letter">' + r.grade + '</div>' +
+      '<div class="pf-tile-label">' + gradeLabel(r.grade) + '</div>' +
+      '<div class="pf-tile-scores">' +
+        '<span><b>' + fmtScale(r.scores.gym) + '</b> vs gym</span>' +
+        '<span><b>' + fmtScale(r.scores.pop) + '</b> vs all</span>' +
+      '</div>' +
+    '</div>';
+}
+
+// Strength (x) against physique (y). Deliberately the same quadrant plot as
+// mass-vs-conditioning, because it answers the same shape of question and a
+// second chart language would just make the two harder to compare.
+function buildStrengthPhysiqueHTML(phys, str){
+  if(!phys || !str) return '';
+  const py100 = Math.max(0, Math.min(100, phys.capBase != null ? phys.capBase : phys.base));
+  const sx100 = Math.max(0, Math.min(100, str.base));
+  const diff = py100 - sx100;
+  const type = diff >= 18 ? 'Looks ahead of lifts'
+             : (diff <= -18 ? 'Lifts ahead of looks' : 'Balanced');
+
+  const W = 320, H = 250, x0 = 34, x1 = 302, y0 = 16, y1 = 214;
+  const plotW = x1 - x0, plotH = y1 - y0;
+  const px = v => x0 + (v / 100) * plotW, pyf = v => y1 - (v / 100) * plotH;
+  const dvx = px(50).toFixed(1), dvy = pyf(50).toFixed(1);
+  const dotx = px(sx100).toFixed(1), doty = pyf(py100).toFixed(1);
+
+  const quad = '<text class="mcp-quad" x="' + (x0 + 7) + '" y="' + (y0 + 13) + '" font-size="7.5">Aesthetic</text>' +
+    '<text class="mcp-quad" x="' + (x1 - 7) + '" y="' + (y0 + 13) + '" text-anchor="end" font-size="7.5">Complete</text>' +
+    '<text class="mcp-quad" x="' + (x0 + 7) + '" y="' + (y1 - 7) + '" font-size="7.5">Developing</text>' +
+    '<text class="mcp-quad" x="' + (x1 - 7) + '" y="' + (y1 - 7) + '" text-anchor="end" font-size="7.5">Strong</text>';
+
+  const right = sx100 < 50;
+  const lblx = right ? (Number(dotx) + 9) : (Number(dotx) - 9);
+  const anchor = right ? 'start' : 'end';
+
+  const ax = '<text class="mcp-axtitle" x="' + ((x0 + x1) / 2).toFixed(1) + '" y="' + (y1 + 22) + '" text-anchor="middle" font-size="8">Strength</text>' +
+    '<text class="mcp-axend" x="' + x0 + '" y="' + (y1 + 13) + '" font-size="7">Untrained</text>' +
+    '<text class="mcp-axend" x="' + x1 + '" y="' + (y1 + 13) + '" text-anchor="end" font-size="7">Elite</text>' +
+    '<text class="mcp-axtitle" x="13" y="' + ((y0 + y1) / 2).toFixed(1) + '" text-anchor="middle" font-size="8" transform="rotate(-90 13 ' + ((y0 + y1) / 2).toFixed(1) + ')">Physique</text>';
+
+  return '<div class="res-mc grade-' + phys.grade + '">' +
+    '<div class="res-sec-eyebrow">Strength vs physique</div>' +
+    '<div class="mc-head"><div class="mc-stats">' +
+      '<div class="mc-stat"><b class="mc-mass">' + (py100 / 10).toFixed(1) + '</b><span>Physique</span></div>' +
+      '<div class="mc-stat"><b class="mc-cond">' + (sx100 / 10).toFixed(1) + '</b><span>Strength</span></div>' +
+    '</div><span class="rank-tag">AI estimate + your lifts</span></div>' +
+    '<div class="mc-type"><b>' + type + '</b> &mdash; graded independently, so neither one carries the other.</div>' +
+    '<svg class="mc-plot" viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true">' +
+      '<line class="mcp-div" x1="' + dvx + '" y1="' + y0 + '" x2="' + dvx + '" y2="' + y1 + '"/>' +
+      '<line class="mcp-div" x1="' + x0 + '" y1="' + dvy + '" x2="' + x1 + '" y2="' + dvy + '"/>' +
+      '<rect class="mcp-frame" x="' + x0 + '" y="' + y0 + '" width="' + plotW + '" height="' + plotH + '" rx="4"/>' +
+      quad +
+      '<circle class="mcp-ring" cx="' + dotx + '" cy="' + doty + '" r="9"/>' +
+      '<circle class="mcp-dot" cx="' + dotx + '" cy="' + doty + '" r="5"/>' +
+      '<text class="mcp-you" x="' + lblx.toFixed(1) + '" y="' + (Number(doty) + 3).toFixed(1) + '" text-anchor="' + anchor + '" font-size="7.5">You</text>' +
+      ax +
+    '</svg>' +
+    '<div class="rank-note">The photo grade cannot see what you lift and the lift table cannot see what you look like. ' +
+      'Where the two disagree is the useful part.</div>' +
+  '</div>';
+}
+
+function renderProfile(){
+  const phys = computeOverall();
+  const str = computeStrength();
+
+  document.getElementById('profileBody').innerHTML =
+    '<div class="sec-head" style="margin-bottom:22px">' +
+      '<h2>Your profile.</h2>' +
+      '<p>Two ranks, same scale. One from the photo, one from the bar.</p>' +
+    '</div>' +
+    '<div class="pf-tiles">' +
+      strRankTile('Physique', phys, null, 'No scan yet.') +
+      strRankTile('Strength', str, null, 'No lifts entered yet.') +
+    '</div>' +
+    (phys && str ? buildStrengthPhysiqueHTML(phys, str) :
+      '<div class="pf-need">' +
+        (!phys ? '<p>Scan a photo to get your physique rank.</p>' : '') +
+        (!str ? '<p>Enter your lifts to get your strength rank.</p>' : '') +
+        '<p class="pf-need-sub">The comparison chart needs both.</p>' +
+      '</div>') +
+    '<div class="pf-actions">' +
+      '<button class="btn ghost" onclick="showStrength()">' + (str ? 'Update my lifts' : 'Enter my lifts') + '</button>' +
+      '<button class="btn ghost" onclick="show(\'screen-home\')">&larr; Back</button>' +
+    '</div>';
+}
