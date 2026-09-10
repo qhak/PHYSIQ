@@ -465,30 +465,13 @@ function blendScore(mass, cond){
 //  THE 1–10 DISPLAY SCALE
 // ============================================================
 // The 0–100 number the worker grades is raw material. It still drives the S–E
-// letter and it is never shown. What people read is a 1–10 score given twice:
-// once against the general population, once against people who actually train.
-// One whole point is one standard deviation, so both numbers say directly how
-// far out you are. The gym scale is the harder climb by design — the same
-// physique scores lower on it, and its top end is open-class only.
-const SCALE_POP_MULT=1.10;   // general population
-const SCALE_GYM_MULT=1.05;   // gym-goers — harder
-// Both scales work identically: average sits dead centre at 5.0 and one whole
-// point is one standard deviation, so any score reads straight off as distance
-// from average — 7.3 is 2.3 SD out, and a perfect 10.0 is exactly 5 SD.
-// The ONLY difference between the two is the multiplier above: being measured
-// against everyone (x1.10) is a slightly easier climb than being measured
-// against people who train (x1.05), so the same physique scores a little higher
-// and ranks a little rarer on the population side.
-// Move either of these and every percentile on the site moves with it.
-const SCALE_POP_MEAN=5.0;
+// letter and it is never shown. What people read is a 1–10 score compared with
+// people who train. One whole point is one standard deviation, so the number
+// says directly how far from the gym-goer average they are.
+const SCALE_GYM_MULT=1.05;
 const SCALE_GYM_MEAN=5.0;
-// How many standard deviations one whole point is worth on each scale. The gym
-// scale is the reference: 1 point = 1 SD, so 10.0 is exactly 5 SD out. The
-// general population uses the same reference: one score point is one standard
-// deviation. That keeps the scale simple enough to explain and makes the two
-// population comparisons directly comparable.
+// One score point equals one standard deviation, so 10.0 is exactly 5 SD out.
 const SCALE_GYM_SD_PER_POINT=1.0;
-const SCALE_POP_SD_PER_POINT=1.0;
 
 // The number both display scales are built from: a flat average of mass and
 // conditioning. Deliberately NOT blendScore — the completeness bonus belongs to
@@ -504,14 +487,12 @@ function toScale(base,mult){
   if(base==null) return null;
   return Math.min(10,Math.round(base*mult)/10);
 }
-// Rounded values are what people read; the exact ones drive the percentiles, or
-// the display rounding alone shifts an average gym-goer off their own median.
+// The rounded value is what people read; the exact one drives the percentile,
+// so display rounding alone never shifts an average gym-goer off their median.
 function scaleScores(base){
   if(base==null) return null;
   return {
-    pop:toScale(base,SCALE_POP_MULT),
     gym:toScale(base,SCALE_GYM_MULT),
-    popExact:Math.min(10,base*SCALE_POP_MULT/10),
     gymExact:Math.min(10,base*SCALE_GYM_MULT/10)
   };
 }
@@ -597,7 +578,7 @@ function refreshHome(){
         cta=document.getElementById('ov-cta'),see=document.getElementById('ov-see');
   if(!o){g.textContent='—';g.className='g locked';sc.textContent='';cta.textContent='Scan an angle to start building your grade.';see.style.display='none';return;}
   g.textContent=o.grade;g.className='g';
-  sc.textContent=o.scores?(fmtScale(o.scores.gym)+'/10 gym · '+fmtScale(o.scores.pop)+'/10 overall'):'';
+  sc.textContent=o.scores?(fmtScale(o.scores.gym)+'/10 vs gym-goers'):'';
   see.style.display='inline-block';
   if(o.missing.length){
     const nm=!o.haveBack?'back':(!o.haveLegs?'legs':o.missing[0]);
@@ -1277,12 +1258,9 @@ function buildFocusHTML(data){
   ).join('')+'</div>';
 }
 
-// Both scales now print real rarity. The only ceiling is reality: once the
-// modelled figure passes the number of people alive there is nobody left to be
-// rarer than, so "1 in N" stops describing anything and we say so instead.
-const WORLD_POP=8.2e9;
-const RANK_FLOOR_GYM=100/WORLD_POP;
-const RANK_FLOOR_POP=100/WORLD_POP;
+// The gym-goer model is an estimate, so do not imply precision beyond this
+// display floor or turn a modelled percentile into a claim about a headcount.
+const RANK_FLOOR_GYM=0.01;
 // Format "top X%" — integers for the common case, decimals as the tail thins out.
 function fmtTop(pct,floor){
   const t=Math.max(floor==null?RANK_FLOOR_GYM:floor,100-pct);
@@ -1292,40 +1270,23 @@ function fmtTop(pct,floor){
   if(t>=0.01) return ''+(Math.round(t*1000)/1000);
   return ''+Number(t.toPrecision(1));
 }
-// How many people you'd have to line up to find one of you. "Top 0.0004%" means
-// nothing to most readers; "about 1 in 230,000" does.
-function oneInCount(pct,floor){
-  const t=Math.max(floor==null?RANK_FLOOR_GYM:floor,100-pct)/100;
-  return 1/t;
-}
-function fmtOneIn(pct,floor){
-  const n=oneInCount(pct,floor);
-  // Past the world's population the label already says so — don't repeat it.
-  if(n<20||n>WORLD_POP) return null;
-  if(n<1000) return 'about 1 in '+(Math.round(n/10)*10);
-  if(n<1e6) return 'about 1 in '+Math.round(n/1000).toLocaleString('en-GB')+',000';
-  if(n<1e9) return 'about 1 in '+(Math.round(n/1e5)/10)+' million';
-  return 'about 1 in '+(Math.round(n/1e8)/10)+' billion';
-}
 // Above the median → "Top X%"; below it → "Bottom X%", so a weak score never
-// reads as "Top 91%", which sounds good but means the opposite. Beyond the world
-// population a percentage is unreadable anyway ("top 0.000000000003%"), so the
-// label states the honest thing instead.
+// reads as "Top 91%", which sounds good but means the opposite.
 function rankLabel(pct,floor){
   if(pct==null) return '—';
   // Guard the exact median: floating point lands it at 49.999… and "Bottom 50%"
   // for a dead-average physique reads worse than "Top 50%" for the same thing.
   if(pct<49.995) return 'Bottom '+Math.max(1,Math.round(pct))+'%';
-  if(oneInCount(pct,floor)>WORLD_POP) return 'Rarer than 1 in 8 billion';
+  if(100-pct<(floor==null?RANK_FLOOR_GYM:floor)) return 'Top <'+(floor==null?RANK_FLOOR_GYM:floor)+'%';
   return 'Top '+fmtTop(pct,floor==null?RANK_FLOOR_GYM:floor)+'%';
 }
-// One population comparison. Score conversion, percentile maths and access
-// rules are shared with the existing app; only presentation changes here.
+// One gym-goer comparison. Score conversion, percentile maths and access rules
+// are shared with the existing app; only presentation changes here.
 function buildRankHTML(base, grade, blurred, opts){
   if(base==null) return '';
   const free=!!(opts&&opts.free), sc=scaleScores(base);
-  const pct=scalePercentile(sc.popExact,SCALE_POP_MEAN,SCALE_POP_SD_PER_POINT);
-  const label=rankLabel(pct,RANK_FLOOR_POP);
+  const pct=scalePercentile(sc.gymExact,SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT);
+  const label=rankLabel(pct,RANK_FLOOR_GYM);
   const locked=free?false:!isProHint(), gated=!free&&(!hasAccount()||blurred);
   // A taller drawing area gives the distribution enough presence without
   // changing its width or the one-score-point / one-standard-deviation scale.
@@ -1335,12 +1296,12 @@ function buildRankHTML(base, grade, blurred, opts){
   // score point is one standard deviation, so its sigma is the inverse of
   // the points-per-standard-deviation value. Dividing by the peak preserves
   // the true shape while fitting the PDF inside this SVG.
-  const sigma=1/SCALE_POP_SD_PER_POINT;
+  const sigma=1/SCALE_GYM_SD_PER_POINT;
   const gaussianPdf=v=>{
-    const z=(v-SCALE_POP_MEAN)/sigma;
+    const z=(v-SCALE_GYM_MEAN)/sigma;
     return Math.exp(-0.5*z*z)/(sigma*Math.sqrt(2*Math.PI));
   };
-  const peak=gaussianPdf(SCALE_POP_MEAN);
+  const peak=gaussianPdf(SCALE_GYM_MEAN);
   const py=v=>y1-(gaussianPdf(v)/peak)*(y1-y0);
   function points(from,to){
     const result=[];
@@ -1355,16 +1316,15 @@ function buildRankHTML(base, grade, blurred, opts){
   // Blue is the portion of the modelled population the person has passed. The
   // marker is placed from the unrounded score on a SCORE axis, not a percentile
   // axis, so the filled curve and displayed percentile always use one model.
-  const passed='M '+px(0).toFixed(2)+' '+y1+' L '+points(0,sc.popExact)+' L '+px(sc.popExact).toFixed(2)+' '+y1+' Z';
-  const mx=px(sc.popExact).toFixed(2), my=py(sc.popExact).toFixed(2);
-  const oneIn=fmtOneIn(pct,RANK_FLOOR_POP);
-  return '<section class="res-rank rank-single reslock'+(locked?' locked':'')+(gated?' blurred':'')+'" aria-label="Everyone percentile">'+
+  const passed='M '+px(0).toFixed(2)+' '+y1+' L '+points(0,sc.gymExact)+' L '+px(sc.gymExact).toFixed(2)+' '+y1+' Z';
+  const mx=px(sc.gymExact).toFixed(2), my=py(sc.gymExact).toFixed(2);
+  return '<section class="res-rank rank-single reslock'+(locked?' locked':'')+(gated?' blurred':'')+'" aria-label="Gym-goer percentile">'+
     '<div class="reslock-in"'+(locked||gated?' inert aria-hidden="true"':'')+'>'+
       '<h3>Where you rank</h3>'+
-      '<div class="rank-summary"><div><div class="rank-cohort">Everyone</div>'+
-        '<div class="rank-score">'+fmtScale(sc.pop)+' <span>/10</span></div></div>'+
-        '<div class="rank-placement">'+esc(label)+'</div></div>'+
-      '<svg class="rank-single-curve" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc('Modelled score distribution for everyone. Your score: '+fmtScale(sc.pop)+' out of 10. '+label)+ '">'+
+      '<div class="rank-summary"><div><div class="rank-cohort">Gym-goers</div>'+
+        '<div class="rank-score">'+fmtScale(sc.gym)+' <span>/10</span></div></div>'+
+      '<div class="rank-placement">'+esc(label)+'</div></div>'+
+      '<svg class="rank-single-curve" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc('Modelled score distribution for gym-goers. Your score: '+fmtScale(sc.gym)+' out of 10. '+label)+ '">'+
         '<desc>'+esc('The blue area represents '+pct.toFixed(1)+'% of the modelled population passed by this score.')+'</desc>'+
         '<path class="rank-bell-area" d="'+area+'"/><path class="rank-bell-passed" d="'+passed+'"/>'+
         '<path class="rank-bell-line" d="'+line+'"/>'+
@@ -1374,9 +1334,7 @@ function buildRankHTML(base, grade, blurred, opts){
       '</svg>'+
       '<div class="rank-axis-labels" aria-hidden="true"><span>0</span><span>Score /10 · average 5.0</span><span>10</span></div>'+
       '<div class="rank-method"><p>Modelled estimate, not a measured ranking.</p>'+
-        '<details><summary>How this is estimated</summary><p>Your score is compared with a model of the general population, centred at '+SCALE_POP_MEAN.toFixed(1)+'. Each score point represents '+SCALE_POP_SD_PER_POINT+' standard deviation'+(SCALE_POP_SD_PER_POINT===1?'':'s')+'. The curve uses the same distribution and your unrounded score; the displayed score is rounded.'+
-          (oneIn?' '+esc(oneIn.charAt(0).toUpperCase()+oneIn.slice(1))+ ' in this model.':'')+
-          ' This is an estimate, not a ranking from a measured population sample.</p></details></div>'+
+        '<details><summary>How this is estimated</summary><p>Your score is compared with a model of gym-goers, centred at '+SCALE_GYM_MEAN.toFixed(1)+'. Each score point represents '+SCALE_GYM_SD_PER_POINT+' standard deviation'+(SCALE_GYM_SD_PER_POINT===1?'':'s')+'. The curve uses the same distribution and your unrounded score; the displayed score is rounded. This is an estimate, not a ranking from a measured population sample.</p></details></div>'+
     '</div>'+(locked?proVeil('See your percentile'):'')+'</section>';
 }
 
@@ -2244,6 +2202,12 @@ function playRevealAnimation(){
 // this weight and scaled from it.
 const STR_REF_BW = 55;
 
+// Product calibration for a gym-goer comparison. Every reference threshold is
+// raised by the same amount, preserving each lift's relative ladder and the
+// continuous bodyweight adjustment. The anchor is a 120kg deadlift at 59kg:
+// it reads around Top 5% of gym-goers rather than the old Top 1–2%.
+const STR_GYMGOER_CALIBRATION = 1.10;
+
 // Absolute strength rises roughly with bodyweight^(2/3) — the surface law
 // (Lietzke), which is the standard basis for bodyweight-adjusted lifting
 // scores. So the required BODYWEIGHT MULTIPLE falls with bodyweight^(-1/3):
@@ -2404,7 +2368,7 @@ function strEpley(weight, reps){
 
 // Thresholds for one exercise at one bodyweight, as bodyweight multiples.
 function strThresholds(ex, bw){
-  const f = Math.pow(bw / STR_REF_BW, STR_SCALE_EXP);
+  const f = Math.pow(bw / STR_REF_BW, STR_SCALE_EXP) * STR_GYMGOER_CALIBRATION;
   // A pull-up or dip already carries the lifter, so the scaling has to run on
   // TOTAL load (bodyweight + added) and the ADDED weight is what falls out of
   // it. Scaling the added weight directly would wrongly let a 120kg lifter
@@ -2699,8 +2663,7 @@ function strResultHTML(r){
         '<div class="str-hero-right">' +
           '<div class="str-hero-label">' + gradeLabel(r.grade) + '</div>' +
           '<div class="str-hero-scores">' +
-            '<div class="str-hero-stat"><b>' + fmtScale(r.scores.gym) + '</b><span>vs gym-goers</span></div>' +
-            '<div class="str-hero-stat"><b>' + fmtScale(r.scores.pop) + '</b><span>vs everyone</span></div>' +
+          '<div class="str-hero-stat"><b>' + fmtScale(r.scores.gym) + '</b><span>vs gym-goers</span></div>' +
           '</div>' +
         '</div>' +
       '</div>' +
@@ -2832,8 +2795,7 @@ function strRankTile(kind, r, href, missingMsg){
       '<div class="pf-tile-letter">' + r.grade + '</div>' +
       '<div class="pf-tile-label">' + gradeLabel(r.grade) + '</div>' +
       '<div class="pf-tile-scores">' +
-        '<span><b>' + fmtScale(r.scores.gym) + '</b> vs gym</span>' +
-        '<span><b>' + fmtScale(r.scores.pop) + '</b> vs all</span>' +
+        '<span><b>' + fmtScale(r.scores.gym) + '</b> vs gym-goers</span>' +
       '</div>' +
     '</div>';
 }
