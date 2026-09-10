@@ -2328,7 +2328,31 @@ const STR_EX = [
   { k:'cablecrunch',  name:'Cable crunch',           g:'core', u:'kg',  ref:[0.35,0.55,0.72,0.90] , t:'isolation' , soft:true },
   { k:'hangingleg',   name:'Weighted hanging leg raise', g:'core', u:'add', ref:[0.05,0.12,0.20,0.30] , t:'isolation' , soft:true }
 ];
+
+// A compound lift contributes its full exercise score to every primary mover.
+// `g` remains the named/lead muscle for picking and display; this map makes
+// the strength map and group averages reflect the other main muscles involved.
+// Assistance work is deliberately excluded — a deadlift informs glutes and
+// hamstrings, for example, but it does not pretend to be a calf exercise.
+const STR_PRIMARY_MOVERS = {
+  bench:['chest','triceps','frontdelt'], inclbench:['chest','triceps','frontdelt'],
+  dbbench:['chest','triceps','frontdelt'], incldb:['chest','triceps','frontdelt'],
+  dip:['chest','triceps','frontdelt'], machpress:['chest','triceps','frontdelt'],
+  ohp:['frontdelt','triceps'], pushpress:['frontdelt','triceps','quads'],
+  dbshoulder:['frontdelt','triceps'], uprightrow:['latdelt','traps'],
+  deadlift:['back','glutes','hamstrings','quads'],
+  pullup:['back','biceps'], chinup:['back','biceps'],
+  barbellrow:['back','biceps'], pendlay:['back','biceps'], tbar:['back','biceps'],
+  pulldown:['back','biceps'], cablerow:['back','biceps'],
+  curl:['biceps','forearms'], farmers:['forearms','traps'],
+  cgbench:['triceps','chest','frontdelt'],
+  squat:['quads','glutes'], frontsquat:['quads','glutes'], hacksquat:['quads','glutes'],
+  legpress:['quads','glutes'], bulgarian:['quads','glutes'],
+  rdl:['hamstrings','glutes','back'], goodmorning:['hamstrings','glutes','back'],
+  hipthrust:['glutes','hamstrings'], sumo:['glutes','quads','hamstrings','back']
+};
 function strEx(k){ return STR_EX.find(e => e.k === k) || null; }
+function strPrimaryMovers(ex){ return STR_PRIMARY_MOVERS[ex.k] || [ex.g]; }
 
 // The four thresholds are the four grade boundaries the photo grade already
 // uses, so a level name and a letter mean the same thing on both halves of
@@ -2433,11 +2457,12 @@ function loadStrength(){
   }catch(e){}
 }
 
-// Which groups the person has actually entered anything for, in library order.
+// Which groups the person has actually trained, including every primary mover
+// of each compound lift, in library order.
 function strEnteredGroups(){
   const seen = {};
   Object.keys(strengthData.entries).forEach(function(k){
-    const ex = strEx(k); if(ex) seen[ex.g] = true;
+    const ex = strEx(k); if(ex) strPrimaryMovers(ex).forEach(g => { seen[g] = true; });
   });
   return STR_GROUPS.filter(g => seen[g.k]);
 }
@@ -2449,8 +2474,9 @@ function strGroupsAllowed(){
   return entered.slice(0, STR_FREE_GROUPS).map(g => g.k);
 }
 
-// Per-group scores. A group is the average of the exercises entered for it,
-// so adding a sixth chest lift refines chest rather than drowning out legs.
+// Per-group scores. A compound appears in every primary-mover group, while a
+// group still averages its own exercises — extra chest work refines chest
+// rather than drowning out legs.
 function computeStrengthGroups(){
   const bw = strengthData.bw;
   if(!(bw > 0)) return [];
@@ -2462,7 +2488,9 @@ function computeStrengthGroups(){
     const orm = strEpley(e.w, e.r);
     const s = strExScore(ex, bw, orm);
     if(s == null) return;
-    (byGroup[ex.g] = byGroup[ex.g] || []).push({ ex:ex, orm:orm, w:e.w, r:e.r, score:s, level:strLevelName(ex, bw, orm) });
+    strPrimaryMovers(ex).forEach(function(groupKey){
+      (byGroup[groupKey] = byGroup[groupKey] || []).push({ ex:ex, orm:orm, w:e.w, r:e.r, score:s, level:strLevelName(ex, bw, orm) });
+    });
   });
   return STR_GROUPS.filter(g => byGroup[g.k]).map(function(g){
     const rows = byGroup[g.k];
@@ -2510,15 +2538,17 @@ function strSetSearch(v){
   if(box) box.innerHTML = strPickListHTML();
 }
 
-// Search matches the exercise name OR its muscle group, so "delts" finds the
-// raises and "chest" finds the presses without anyone knowing the exact name.
+// Search matches an exercise name or any of its primary movers, so "triceps"
+// finds presses as well as isolation work.
 function strSearchHits(){
   const q = strSearchQ.trim().toLowerCase();
   const free = STR_EX.filter(e => !strengthData.entries[e.k]);
   if(!q) return free;
   return free.filter(function(e){
-    const g = strGroup(e.g);
-    return e.name.toLowerCase().indexOf(q) !== -1 || (g && g.name.toLowerCase().indexOf(q) !== -1);
+    return e.name.toLowerCase().indexOf(q) !== -1 || strPrimaryMovers(e).some(function(k){
+      const g = strGroup(k);
+      return g && g.name.toLowerCase().indexOf(q) !== -1;
+    });
   });
 }
 
@@ -2526,10 +2556,10 @@ function strPickListHTML(){
   const hits = strSearchHits();
   if(hits.length === 0) return '<div class="str-pick-none">Nothing matches that. Try a muscle group &mdash; &ldquo;chest&rdquo;, &ldquo;delts&rdquo;, &ldquo;back&rdquo;.</div>';
   return hits.slice(0, 40).map(function(e){
-    const g = strGroup(e.g);
+    const movers = strPrimaryMovers(e).map(k => strGroup(k)).filter(Boolean).map(g => g.name).join(' · ');
     return '<button type="button" class="str-pick" onclick="strAdd(\'' + e.k + '\')">' +
         '<span class="str-pick-name">' + e.name + '</span>' +
-        '<span class="str-pick-g">' + (g ? g.name : '') + '</span>' +
+        '<span class="str-pick-g">' + movers + '</span>' +
         '<span class="str-pick-add">+</span>' +
       '</button>';
   }).join('') + (hits.length > 40 ? '<div class="str-pick-none">' + (hits.length - 40) + ' more &mdash; keep typing to narrow it.</div>' : '');
@@ -2572,7 +2602,8 @@ function strRecalc(){
 }
 
 function strEntryRow(k){
-  const ex = strEx(k), e = strengthData.entries[k], g = strGroup(ex.g);
+  const ex = strEx(k), e = strengthData.entries[k];
+  const movers = strPrimaryMovers(ex).map(k => strGroup(k)).filter(Boolean).map(g => g.name).join(' · ');
   const bw = strengthData.bw;
   const orm = strEpley(e.w, e.r);
   const lvl = (bw > 0 && orm) ? strLevelName(ex, bw, orm) : null;
@@ -2583,7 +2614,7 @@ function strEntryRow(k){
         '<span class="str-e-name">' + ex.name + '</span>' +
         '<button type="button" class="str-e-x" onclick="strRemove(\'' + k + '\')" aria-label="Remove ' + ex.name + '">&times;</button>' +
       '</div>' +
-      '<div class="str-e-g">' + (g ? g.name : '') + '</div>' +
+      '<div class="str-e-g">' + movers + '</div>' +
       '<div class="str-e-in">' +
         '<label><input type="number" inputmode="decimal" step="0.5" min="0" max="700" id="strw-' + k + '" ' +
           'value="' + (e.w > 0 ? e.w : '') + '" placeholder="0" oninput="strRecalc()" aria-label="' + ex.name + ' weight"> ' +
@@ -2670,7 +2701,7 @@ function strResultHTML(r){
       '<div class="str-groups">' + r.groups.map(strGroupRowHTML).join('') + '</div>' +
       (r.held > 0 ? '<div class="str-cap-note">' + r.held + ' more muscle group' + (r.held > 1 ? 's' : '') +
         ' entered but not ranked on Free.</div>' : '') +
-      '<div class="rank-note">Each group is the average of the exercises you entered for it, and the overall rank ' +
+      '<div class="rank-note">Compound lifts count toward each primary muscle they train. Each group averages the exercises that hit it, and the overall rank ' +
         'is the average of the groups &mdash; so logging five chest lifts refines chest rather than outweighing legs. ' +
         'Thresholds are estimates, not measured fact. Anything tagged ' +
         '<b>rough standard</b> is a considered guess rather than a figure anchored in ' +
