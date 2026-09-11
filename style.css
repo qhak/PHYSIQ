@@ -2354,3 +2354,38 @@
   .signature-card .vc-grade-label{font-size:16px}.signature-main{gap:10px}
   .signature-card .vc-grade-letter{font-size:74px}.rank-summary{gap:12px}.rank-placement{font-size:23px}
 }
+
+/* Homepage — an editorial surface with one featured result, rather than a
+   stack of rounded containers. The scan choices read as one selector and the
+   reference sections use rules to carry hierarchy. */
+#screen-home #scanSection{
+  background:none;border:0;border-top:1px solid var(--line2);border-radius:0;
+  padding:46px 0 42px!important;margin-top:10px;
+}
+#screen-home .views{
+  display:grid;gap:0;margin:0 0 18px;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);
+}
+#screen-home .vtile{
+  min-height:132px;padding:20px 18px;background:transparent;border:0;border-radius:0;box-shadow:none;
+}
+#screen-home .vtile+.vtile{border-left:1px solid var(--line)}
+#screen-home .vtile:not(:first-child){padding-top:20px}
+#screen-home .vtile:hover{transform:none;background:var(--bg2);border-color:transparent}
+#screen-home #vt-front:not(.done):not(.pay-locked){background:var(--blue-wash);box-shadow:inset 0 2px 0 var(--blue)}
+#screen-home .vtile .ic{font-size:25px;margin-bottom:10px}
+#screen-home .view-recommend{margin-bottom:8px}
+#screen-home .sec.fold-sec{padding:0!important;margin:0}
+#screen-home .sec-fold{border-width:1px 0;border-radius:0;background:transparent}
+#screen-home .sec-fold>summary{padding:22px 0}
+#screen-home .sec-fold-body{padding:2px 0 28px}
+#screen-home .method-note{border:0;border-left:2px solid var(--line-strong);border-radius:0;background:none;padding:4px 0 4px 18px}
+#screen-home .affiliate-panel{border:0;border-radius:0;background:transparent;padding:28px 0 36px}
+#screen-home .prow-main{background:transparent;box-shadow:inset 2px 0 0 var(--blue)}
+#screen-home .trust-disclosure,#screen-home .affiliate-disclosure{border-left:0;border-right:0;border-radius:0}
+@media(max-width:760px){
+  #screen-home #scanSection{padding:34px 0!important}
+  #screen-home .views{grid-template-columns:1fr 1fr}
+  #screen-home .vtile{min-height:138px;padding:18px 14px}
+  #screen-home .vtile:nth-child(odd){border-left:0}
+  #screen-home .vtile:nth-child(n+3){border-top:1px solid var(--line)}
+}
