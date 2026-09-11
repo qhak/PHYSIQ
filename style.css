@@ -2008,10 +2008,10 @@
   .result-wrap{justify-content:flex-start;padding:42px 0 64px}
   #resultBody{display:flex;flex-direction:column}
   #resultBody>.result-vc{order:0}
-  #resultBody>.res-analysis{order:1}
-  #resultBody>.result-next{order:2}
-  #resultBody>.vc-breakdown-below{order:3}
-  #resultBody>.res-rank{order:4}
+  #resultBody>.res-rank{order:1}
+  #resultBody>.vc-breakdown-below,#resultBody>.vc-details-below{order:2}
+  #resultBody>.res-analysis{order:3}
+  #resultBody>.result-next{order:4}
   #resultBody>.res-mc{order:5}
   #resultBody>.res-plans-wrap{order:6;margin-top:22px}
   .result-next{padding:21px;background:var(--bg2);border:1px solid var(--line2);border-radius:var(--radius);margin:0 0 18px;text-align:left}
@@ -2304,7 +2304,7 @@
 .signature-card.result-vc .vc-badge{padding:0;border:0;background:none;font-family:inherit;font-size:13px;letter-spacing:0;font-weight:400;text-transform:none;white-space:normal;text-align:right}
 .signature-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:24px;padding:28px 42px 30px}
 .signature-card.result-vc .vc-disc-wrap{display:block;padding:0}
-.signature-card.result-vc .vc-disc{display:block;width:100%;max-width:230px;height:auto;aspect-ratio:1;object-fit:cover;object-position:center 35%;margin:0 auto;border-radius:50%;border:0;box-shadow:none;filter:grayscale(1)}
+.signature-card.result-vc .vc-disc{display:block;width:100%;max-width:230px;height:auto;aspect-ratio:1;object-fit:cover;object-position:center 35%;margin:0 auto;border-radius:50%;border:0;box-shadow:none;filter:none}
 .signature-card .vc-grade-section{text-align:center;padding:0;margin:0;min-width:0}
 .signature-label{font-size:14px;color:var(--card-dim);line-height:1.4;margin-bottom:10px}
 .signature-card .vc-grade-letter{font-family:Inter,system-ui,sans-serif;font-size:clamp(88px,13vw,130px);font-weight:650;line-height:.95;letter-spacing:-.07em;color:var(--acc);margin:0;padding:0;text-shadow:none;filter:none;background:none;-webkit-text-fill-color:currentColor;animation:none}

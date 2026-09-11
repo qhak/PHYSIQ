@@ -686,6 +686,15 @@ function renderViewResult(view,data,photoURL){
       :'<div class="vc-details-below grade-'+(viewGrade!=='—'?viewGrade:'C')+(hasAccount()?'':' blurred')+'"><div class="vc-cap" style="margin:0">This view didn\'t clearly show a gradeable region. Try better lighting or framing.</div></div>')+
     buildUpsellHTML();
 
+  // Keep the DOM, keyboard and visual reading order aligned with the result
+  // journey: verdict, rank, visible-muscle breakdown, audit, next step, then
+  // the Mass vs Conditioning detail. CSS mirrors this order for all viewports.
+  const resultBody=document.getElementById('resultBody');
+  ['.res-rank','.vc-breakdown-below, .vc-details-below','.res-analysis','.res-mc','.res-plans-wrap'].forEach(function(selector){
+    const section=resultBody.querySelector(selector);
+    if(section) resultBody.appendChild(section);
+  });
+
   const btn=document.getElementById('resPrimary');
   if(!hasAccount()){
     btn.style.display='none';
@@ -728,7 +737,9 @@ function renderResultNext(){
     (pro?'<button onclick="showImprove()">Review my training ↗</button><button onclick="showProgress()">Compare progress</button>':
       '<button onclick="goHome(\'scanSection\')">'+(paid?'Continue my audit':'Back to my scans')+' →</button>')+
     (paid?'<button onclick="showHistory()">Scan history</button>':'')+'</div>';
-  body.appendChild(next);
+  const massCard=body.querySelector(':scope > .res-mc');
+  if(massCard) body.insertBefore(next,massCard);
+  else body.appendChild(next);
 }
 
 // ============================================================
