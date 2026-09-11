@@ -2382,10 +2382,25 @@
 #screen-home .affiliate-panel{border:0;border-radius:0;background:transparent;padding:28px 0 36px}
 #screen-home .prow-main{background:transparent;box-shadow:inset 2px 0 0 var(--blue)}
 #screen-home .trust-disclosure,#screen-home .affiliate-disclosure{border-left:0;border-right:0;border-radius:0}
+#screen-home .home-signature-card{max-width:none;margin:0}
+#screen-home .home-signature-card .vc-header{padding:20px 22px 0}
+#screen-home .home-signature-card .signature-main{padding:22px 30px 25px;gap:20px}
+#screen-home .home-signature-card .vc-footer{margin:0 22px;padding:14px 0 16px}
+#screen-home .home-signature-card .signature-footnote{margin-left:0;justify-content:space-between;width:100%}
+#screen-home .home-signature-card .signature-label{font-size:13px}
+#screen-home .home-signature-card .vc-grade-letter{font-size:clamp(78px,11vw,110px)}
+#screen-home .home-signature-card .vc-grade-label{font-size:21px}
+.home-demo-disc{width:100%;max-width:190px;aspect-ratio:1;border-radius:50%;margin:0 auto;display:grid;place-items:center;position:relative;overflow:hidden;color:rgba(252,252,250,.74);background:radial-gradient(circle at 50% 35%,#363941 0 20%,#202228 21% 44%,#15161A 45% 100%);border:1px solid rgba(252,252,250,.18)}
+.home-demo-disc::before{content:'';position:absolute;width:44%;height:54%;border:1px solid rgba(252,252,250,.28);border-radius:48% 48% 38% 38%;top:23%;left:28%;box-shadow:0 -34px 0 -12px rgba(252,252,250,.15)}
+.home-demo-disc span{position:relative;z-index:1;text-align:center;text-transform:uppercase;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:500;line-height:1.55;letter-spacing:.13em}
 @media(max-width:760px){
   #screen-home #scanSection{padding:34px 0!important}
   #screen-home .views{grid-template-columns:1fr 1fr}
   #screen-home .vtile{min-height:138px;padding:18px 14px}
   #screen-home .vtile:nth-child(odd){border-left:0}
   #screen-home .vtile:nth-child(n+3){border-top:1px solid var(--line)}
+  #screen-home .home-signature-card .vc-header{padding:18px 18px 0}
+  #screen-home .home-signature-card .signature-main{padding:22px 20px;gap:14px}
+  #screen-home .home-signature-card .vc-footer{margin:0 18px}
+  .home-demo-disc{max-width:150px}
 }

@@ -31,6 +31,7 @@ const CONF_RANK={high:3,medium:2,low:1};
 
 // ---- state ----
 let profile={};
+let profileViews={}; // latest scores per view; photos are never persisted here
 let viewsDone={};
 let photos={};
 let pendingView=null;
@@ -50,6 +51,7 @@ function saveState(){
     localStorage.setItem('pq_refresh', refreshToken||'');
     localStorage.setItem('pq_token_exp', String(entitlementTokenExp||0));
     localStorage.setItem('pq_profile', JSON.stringify(profile));
+    localStorage.setItem('pq_profile_views', JSON.stringify(profileViews));
     localStorage.setItem('pq_views',   JSON.stringify(Object.keys(viewsDone)));
     localStorage.removeItem('pq_account');
     localStorage.removeItem('pq_tier');
@@ -64,6 +66,25 @@ function loadState(){
     const p=localStorage.getItem('pq_profile'); if(p) profile=JSON.parse(p);
     const v=localStorage.getItem('pq_views');   if(v) JSON.parse(v).forEach(id=>viewsDone[id]=true);
   }catch(e){}
+  try{
+    const saved=JSON.parse(localStorage.getItem('pq_profile_views')||'null');
+    profileViews={};
+    if(saved && typeof saved==='object' && !Array.isArray(saved)){
+      VIEWS.forEach(v=>{if(saved[v.id]) profileViews[v.id]=cleanProfileMuscles(saved[v.id]);});
+    }
+  }catch(e){profileViews={};}
+  // Older clients saved only the winning muscle, with its source view.
+  if(!Object.keys(profileViews).length){
+    const legacy=cleanProfileMuscles(profile);
+    MUSCLES.forEach(k=>{
+      const view=profile && profile[k] && profile[k].fromView;
+      if(legacy[k] && VIEWS.some(v=>v.id===view)){
+        if(!profileViews[view]) profileViews[view]={};
+        profileViews[view][k]=legacy[k];
+      }
+    });
+  }
+  rebuildProfile();
   loadStrength();
 }
 
@@ -418,15 +439,46 @@ function handleLocked(reason){
   showPaywall();
 }
 
-function mergeIntoProfile(view,data){
-  const m=data.muscles||{};
+function cleanProfileMuscles(m){
+  const out={};
+  if(!m || typeof m!=='object' || Array.isArray(m)) return out;
   MUSCLES.forEach(k=>{
-    const incoming=m[k];
-    if(!incoming||incoming.score==null) return;
-    const cur=profile[k];
-    const better=!cur||(CONF_RANK[incoming.confidence]||0)>(CONF_RANK[cur.confidence]||0);
-    if(better) profile[k]={score:incoming.score,confidence:incoming.confidence||'medium',fromView:view};
+    const v=m[k];
+    if(!v || typeof v.score!=='number' || !Number.isFinite(v.score)) return;
+    out[k]={score:Math.max(0,Math.min(100,Math.round(v.score))),confidence:CONF_RANK[v.confidence]?v.confidence:'low'};
   });
+  return out;
+}
+
+// Confidence wins first. Ties use an anatomical view preference, never score
+// magnitude or upload order. Keep alternative views so a rescan can fall back
+// to another supported reading when it no longer shows a muscle.
+function rebuildProfile(){
+  const preferred={
+    shoulders:['front','arms_side','back'], chest:['arms_side','front'],
+    arms:['arms_side','front','back'], abs:['front'], back:['back'],
+    traps:['back','front','arms_side'], quads:['legs','front'],
+    hamstrings:['legs','back'], glutes:['back','legs'], calves:['legs','back','front'],
+    conditioning:['front','back','legs','arms_side']
+  };
+  profile={};
+  MUSCLES.forEach(k=>{
+    preferred[k].forEach(view=>{
+      const incoming=profileViews[view] && profileViews[view][k];
+      if(!incoming) return;
+      const cur=profile[k];
+      if(!cur || CONF_RANK[incoming.confidence]>CONF_RANK[cur.confidence]){
+        profile[k]={...incoming,fromView:view};
+      }
+    });
+  });
+}
+
+function mergeIntoProfile(view,data){
+  if(!VIEWS.some(v=>v.id===view) || !data || data.refused) return;
+  // Replace the whole view, including omissions, even at equal/lower confidence.
+  profileViews[view]=cleanProfileMuscles(data.muscles);
+  rebuildProfile();
 }
 
 function show(id){

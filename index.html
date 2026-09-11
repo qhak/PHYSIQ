@@ -150,15 +150,18 @@
           <div class="hero-assurance"><span>Photos not stored by CutRank</span><span>18+ · AI visual estimate</span></div>
         </div>
         <div class="hero-preview" id="demoSection">
-          <div class="preview-caption"><span>YOUR RESULT, AT A GLANCE</span><span>EXAMPLE / 01</span></div>
-          <article class="rank-preview vc grade-C" id="sampleCard" aria-label="Example physique result, using illustrative values">
-            <div class="preview-top"><span class="preview-brand">CutRank</span><span class="preview-label">FRONT VIEW · DEMO</span></div>
-            <div class="preview-verdict"><div><span class="preview-eyebrow">YOUR GRADE</span><div class="preview-grade">C<span>Developing</span></div></div><div class="preview-score">5.5<span>/10 · VS GYM-GOERS</span></div></div>
-            <div class="preview-breakdown"><div><span>Shoulders</span><span class="preview-track"><i style="width:60%"></i></span><b>6.0</b></div><div><span>Chest</span><span class="preview-track"><i style="width:46%"></i></span><b>4.6</b></div><div><span>Conditioning</span><span class="preview-track"><i style="width:50%"></i></span><b>5.0</b></div></div>
-            <div class="preview-focus"><span class="preview-eyebrow">NEXT FOCUS</span><p>Chest development trails your shoulders.</p><span>A clear priority for your next training block.</span></div>
-            <div class="preview-bottom"><span>AI ESTIMATE</span><span>cutrank.app</span></div>
+          <div class="preview-caption"><span>YOUR RESULT CARD</span><span>EXAMPLE / 01</span></div>
+          <article class="vc result-vc signature-card home-signature-card grade-C" id="sampleCard" aria-label="Example CutRank result card. Your uploaded physique photo appears in the circle.">
+            <div class="vc-inner">
+              <div class="vc-header"><span class="vc-brand-tag">CutRank</span><span class="vc-badge">Front view</span></div>
+              <div class="signature-main">
+                <div class="home-demo-disc" aria-hidden="true"><span>Your<br>photo</span></div>
+                <div class="vc-grade-section"><div class="signature-label">Your physique</div><div class="vc-grade-letter">C</div><div class="vc-grade-label">Developing</div></div>
+              </div>
+              <div class="vc-footer"><span class="signature-footnote"><span>AI estimate</span><span class="vc-site">cutrank.app</span></span></div>
+            </div>
           </article>
-          <p class="sample-note">Illustrative values. Your scan scores what your photo shows.</p>
+          <p class="sample-note">Your uploaded photo appears in the circle. Grade and label are illustrative.</p>
         </div>
       </div>
       <div class="setup" id="setupNote" style="display:none"></div>
@@ -550,7 +553,7 @@
           <details class="faq-item"><summary class="faq-q">Can I cancel anytime?</summary><div class="faq-a">Yes. No contracts, no questions.</div></details>
           <details class="faq-item"><summary class="faq-q">How accurate is the grading?</summary><div class="faq-a">CutRank uses an AI vision model to estimate visible muscle development from the photo you upload. It is not a medical tool, a DEXA scan, or a body-composition measurement.</div></details>
           <details class="faq-item"><summary class="faq-q">Are the numbers on this page real?</summary><div class="faq-a">Yes, and they're the only numbers here. The scan and physique counts come from the grading service's own counters, rounded down and shown with a "+". There are no testimonials, star ratings, "as seen in" logos, or user quotes on this site, because there is nothing to show that wouldn't be invented.</div></details>
-          <details class="faq-item"><summary class="faq-q">Does the same photo always get the same grade?</summary><div class="faq-a">Close, but not identical. Every scan runs against the same published rubric and the model commits to a grade band before it scores individual muscles, which keeps results tight — but an AI read still varies slightly, and a different pose, light, or pump moves it more than the model does.</div></details>
+          <details class="faq-item"><summary class="faq-q">Does the same photo always get the same grade?</summary><div class="faq-a">An AI read can vary between scans. Keep the camera distance, lighting, pose and framing consistent when comparing progress. Treat small score changes as uncertainty, especially when the photos differ.</div></details>
           <details class="faq-item"><summary class="faq-q">What happens to my photo?</summary><div class="faq-a">It is sent to the AI provider for the scan and is not stored by CutRank. We do not use your photos to train CutRank. The provider may process the image under its own terms to return the result. <button class="recover-link" onclick="goHome('photoSection')">Full pipeline</button></div></details>
           <details class="faq-item"><summary class="faq-q">Does it work for women?</summary><div class="faq-a">It can assess adult physiques of any gender from photos, but results depend heavily on pose, lighting, clothing, and what is visible. Treat it as directional feedback, not a definitive ranking.</div></details>
           <details class="faq-item"><summary class="faq-q">What does a C grade actually mean?</summary><div class="faq-a">C means the photo shows a visible training base, but also obvious work left. It does not mean you're impressive from every angle — that's B and above. It's an honest baseline, not an insult.</div></details>
@@ -677,11 +680,11 @@
       <div class="modal-body">
         <ul class="guide-list">
           <li><span class="gn">01</span><span><b>Face the light.</b> Use a bright room. Avoid backlighting and heavy shadows.</span></li>
-          <li><span class="gn">02</span><span><b>Keep the whole area in frame.</b> Plain background, camera at chest height.</span></li>
+          <li><span class="gn">02</span><span><b>Keep the whole area in frame.</b> Include nearby joints. Use a plain background, a level camera at chest height and your phone’s normal lens. Step back instead of taking a close selfie.</span></li>
           <li><span class="gn">03</span><span><b>Keep shorts on.</b> No explicit photos.</span></li>
           <li><span class="gn">04</span><span><b>One adult, 18+.</b> No other people in the frame.</span></li>
         </ul>
-        <div class="guide-note">A refused photo won’t use your free scan. For progress comparisons, use the same lighting and pose each time.</div>
+        <div class="guide-note">A refused photo won’t use your free scan. For progress comparisons, keep the same camera position, distance, framing, lighting and pose each time.</div>
         <button class="btn gold-btn" id="guideContinueBtn" onclick="guideContinue()">Choose photo →</button>
         <label class="guide-skip"><input type="checkbox" id="guideDontShow" checked>Don't show this again</label>
       </div>
