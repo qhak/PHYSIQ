@@ -2404,3 +2404,40 @@
   #screen-home .home-signature-card .vc-footer{margin:0 18px}
   .home-demo-disc{max-width:150px}
 }
+
+/* Private filming studio: retain the signature card's photo and medal ladder. */
+#devAccessTab[hidden]{display:none!important}
+.dev-studio{max-width:680px;margin:40px auto;padding:0 16px}
+.dev-studio h1{font-size:36px;letter-spacing:-.04em;margin:8px 0}
+.dev-studio>p{color:var(--dim);margin:12px 0 24px}
+.dev-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.dev-controls .btn{width:auto;margin:0;cursor:pointer}
+.dev-controls select{padding:10px;background:var(--surface);color:var(--ink);border:1px solid var(--line2);border-radius:8px}
+.dev-controls button:disabled{opacity:.45;cursor:default}
+#devCard{container-type:inline-size}
+#devCard .dev-card{aspect-ratio:1;overflow:hidden;border-radius:12px;margin:0}
+#devCard .vc-inner{height:100%;display:flex;flex-direction:column}
+#devCard .vc-header{padding:4.5cqw 5cqw 0}
+#devCard .vc-brand-tag{font-size:4cqw}
+#devCard .vc-badge{font-size:2.3cqw}
+#devCard .signature-main{flex:1;padding:4cqw 6cqw 2cqw;gap:4cqw}
+#devCard .vc-disc-wrap{position:relative;overflow:hidden;border-radius:50%;aspect-ratio:1}
+#devCard .vc-disc{width:100%;height:100%;max-width:none}
+#devCard .vc-grade-letter{font-size:24cqw}
+#devCard .vc-grade-label{font-size:4cqw;margin-top:1.5cqw}
+#devCard .signature-label{font-size:2.5cqw;margin-bottom:2cqw}
+#devCard .vc-footer{margin:0 5cqw;padding:3cqw 0;font-size:2cqw}
+#devCard .signature-footnote{width:100%;justify-content:space-between;gap:4px}
+.dev-rank{display:flex;flex-direction:column;align-items:center;padding:0 5cqw 4cqw;gap:1cqw}
+.dev-rank-label{font-size:2cqw;letter-spacing:.18em;color:var(--card-dim)}
+.dev-percentile{font-size:9cqw;line-height:1.05;letter-spacing:-.05em;color:var(--acc);font-variant-numeric:tabular-nums}
+.dev-placement{font-size:2.8cqw;color:var(--card-ink)}
+.dev-sweep{position:absolute;inset:0;background:linear-gradient(transparent 42%,color-mix(in srgb,var(--acc) 22%,transparent) 49%,var(--acc) 50%,transparent 52%);transform:translateY(-100%);pointer-events:none;opacity:0}
+.dev-scanning .dev-sweep{opacity:1;animation:dev-scan 1.8s ease-in-out infinite}
+.dev-revealing .dev-sweep{opacity:1;animation:dev-scan 2s ease-in-out both}
+#devCard .dev-revealing .vc-grade-section{animation:dev-grade 850ms cubic-bezier(.15,.85,.2,1) 1900ms both}
+.dev-revealing .dev-rank{animation:dev-rank 600ms ease-out 2700ms both}
+@keyframes dev-scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+@keyframes dev-grade{0%{opacity:0;transform:scale(1.55);filter:blur(12px)}70%{opacity:1;transform:scale(.94);filter:blur(0)}100%{opacity:1;transform:scale(1)}}
+@keyframes dev-rank{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){#devCard *{animation:none!important}.dev-sweep{display:none}}

@@ -100,10 +100,12 @@ function storeEntitlement(data){
     entitlementTokenExp=Date.now()+((data.expires_in||900)*1000);
   }
   if(data.refresh_token) refreshToken=data.refresh_token;
-  if(data.tier) userTierDisplay=data.tier;
+  if(data.tier) userTierDisplay=data.tier==='dev'?null:data.tier;
+  if(typeof refreshDevAccess==='function') refreshDevAccess();
   saveState();
 }
 function clearEntitlement(){
+  if(typeof resetDevAccess==='function') resetDevAccess();
   entitlementToken=null;
   entitlementTokenExp=0;
   userTierDisplay=null;
@@ -370,7 +372,10 @@ function normaliseToJpeg(file){
   });
 }
 async function analyzeView(view,file,retriedToken){
-  const image=await normaliseToJpeg(file);
+  const prepared=window.CutRankPhotos
+    ? await window.CutRankPhotos.prepare(file)
+    : {image:await normaliseToJpeg(file),normalized_image:null};
+  const {image,normalized_image}=prepared;
   const media_type="image/jpeg";
   const status=document.getElementById('aStatus');
   if(status) status.textContent='reading image…';
@@ -383,7 +388,7 @@ async function analyzeView(view,file,retriedToken){
     ts_token=await getTurnstileToken();
     if(status) status.textContent='reading image…';
   }
-  const res=await fetch(WORKER_URL,{method:"POST",headers,body:JSON.stringify({region:view,image,media_type,email:userEmail||"",token:entitlementToken||"",ts_token})});
+  const res=await fetch(WORKER_URL,{method:"POST",headers,body:JSON.stringify({region:view,image,normalized_image,media_type,email:userEmail||"",token:entitlementToken||"",ts_token})});
   const data=await res.json().catch(()=>null);
   if(res.status===401 && (!data || data.error==='invalid_token')){
     clearEntitlement();

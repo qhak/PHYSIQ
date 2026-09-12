@@ -127,6 +127,7 @@
       <button class="navlink" onclick="goHome('howStrip')">How it works</button>
       <button class="navlink" onclick="goHome('pricingSection')">Pricing</button>
       <button class="navlink" onclick="goHome('affiliateSection')">Affiliates</button>
+      <button class="navlink" id="devAccessTab" hidden onclick="showDevAccess()">Dev Access</button>
       <button class="navlink" onclick="showStrength()">Strength</button>
       <button class="navlink navcta" onclick="goHome('scanSection')">Get ranked</button>
     </div>
@@ -598,6 +599,17 @@
   </section>
 
   <!-- RESULT -->
+  <section class="screen" id="screen-dev">
+    <div class="dev-studio">
+      <div class="section-kicker">PRIVATE STUDIO</div><h1>Dev Access</h1>
+      <p>Upload. Get ranked. Replay the reveal.</p>
+      <div class="dev-controls"><label>Photo angle <select id="devView"><option value="front">Front</option><option value="back">Back</option><option value="legs">Legs</option><option value="arms_side">Arms / Side</option></select></label>
+      <button class="btn" id="devUploadButton" onclick="document.getElementById('devUpload').click()">Upload image</button><input id="devUpload" type="file" accept="image/*" hidden>
+      <button class="btn" id="devReplay" onclick="replayDevReveal()" disabled>Replay reveal</button></div>
+      <p id="devStatus" role="status">Choose an adult physique photo to begin.</p>
+      <div id="devCard"></div>
+    </div>
+  </section>
   <section class="screen" id="screen-result">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
       <div id="resultBody"></div>
@@ -937,6 +949,8 @@
     </div>
   </footer>
 
+<script src="/photo-normalization.js"></script>
 <script src="/app.js"></script>
+<script src="/dev-access.js"></script>
 </body>
 </html>
