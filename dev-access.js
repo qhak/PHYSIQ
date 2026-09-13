@@ -38,7 +38,7 @@ function renderDevCard(grade,view,loading){
   const host=document.getElementById('devCard');
   host.innerHTML=buildSignatureCard(grade,devPhoto,view+' view',null,'dev-card'+(loading?' dev-scanning':''),'');
   const card=host.firstElementChild;
-  card.querySelector('.vc-footer').insertAdjacentHTML('beforebegin','<div class="dev-rank"><span class="dev-rank-label">GYM-GOER PERCENTILE</span><strong class="dev-percentile">—</strong><span class="dev-placement">'+(loading?'Reading your photo…':'')+'</span></div>');
+  card.querySelector('.vc-footer').insertAdjacentHTML('beforebegin','<div class="dev-rank"><span class="dev-rank-label">POPULATION PERCENTILE</span><strong class="dev-percentile">—</strong><span class="dev-placement">'+(loading?'Reading your photo…':'')+'</span></div>');
   card.querySelector('.signature-footnote').innerHTML='<span>Modelled estimate · 18+</span><span class="vc-site">cutrank.app</span>';
   card.querySelector('.vc-disc-wrap').insertAdjacentHTML('beforeend','<span class="dev-sweep" aria-hidden="true"></span>');
   if(loading){card.querySelector('.vc-grade-label').textContent='Analysing';card.querySelector('.signature-label').textContent='Your physique';}
@@ -56,7 +56,7 @@ function replayDevReveal(){
     if(!card.isConnected||!devAllowed)return;
     const elapsed=now-start, progress=duration?Math.min(1,Math.max(0,(elapsed-2800)/2400)):1;
     const pct=metrics.pct*(1-Math.pow(1-progress,3));
-    card.querySelector('.dev-percentile').textContent=progress===1&&metrics.pct>99.99?'>99.99%':pct.toFixed(2)+'%';
+    card.querySelector('.dev-percentile').textContent=progress===1&&metrics.pct>99.999?'>99.999%':pct.toFixed(3)+'%';
     card.querySelector('.dev-placement').textContent=progress===1?rankLabel(metrics.pct,RANK_FLOOR_GYM):'Finding your rank';
     if(elapsed<duration)devFrame=requestAnimationFrame(frame);
     else{card.classList.remove('dev-revealing');card.classList.add('dev-finished');document.getElementById('devStatus').textContent='Reveal ready. Replay it whenever you’re recording.';}

@@ -523,8 +523,8 @@ function blendScore(mass, cond){
 // ============================================================
 // The 0–100 number the worker grades is raw material. It still drives the S–E
 // letter and it is never shown. What people read is a 1–10 score compared with
-// people who train. One whole point is one standard deviation, so the number
-// says directly how far from the gym-goer average they are.
+// the general adult population. Physique uses 1 + base/10 (ordinary raw 40 = 5).
+// Strength retains its separate gym-goer calibration. Both are product models.
 const SCALE_GYM_MULT=1.05;
 const SCALE_GYM_MEAN=5.0;
 // One score point equals one standard deviation, so 10.0 is exactly 5 SD out.
@@ -546,11 +546,12 @@ function toScale(base,mult){
 }
 // The rounded value is what people read; the exact one drives the percentile,
 // so display rounding alone never shifts an average gym-goer off their median.
-function scaleScores(base){
+function scaleScores(base, strength=false){
   if(base==null) return null;
   return {
-    gym:toScale(base,SCALE_GYM_MULT),
-    gymExact:Math.min(10,base*SCALE_GYM_MULT/10)
+    // Legacy property names retained for saved cards and share rendering.
+    gym:Math.round(Math.min(10,strength?base*SCALE_GYM_MULT/10:1+base/10)*10)/10,
+    gymExact:Math.min(10,strength?base*SCALE_GYM_MULT/10:1+base/10)
   };
 }
 function fmtScale(v){ return v==null?'—':v.toFixed(1); }
@@ -635,7 +636,7 @@ function refreshHome(){
         cta=document.getElementById('ov-cta'),see=document.getElementById('ov-see');
   if(!o){g.textContent='—';g.className='g locked';sc.textContent='';cta.textContent='Scan an angle to start building your grade.';see.style.display='none';return;}
   g.textContent=o.grade;g.className='g';
-  sc.textContent=o.scores?(fmtScale(o.scores.gym)+'/10 vs gym-goers'):'';
+  sc.textContent=o.scores?(fmtScale(o.scores.gym)+'/10 vs general population'):'';
   see.style.display='inline-block';
   if(o.missing.length){
     const nm=!o.haveBack?'back':(!o.haveLegs?'legs':o.missing[0]);
@@ -709,9 +710,10 @@ function renderViewResult(view,data,photoURL){
       '<div class="gate-ready-pill"><div class="gate-ready-dot"></div>Result generated</div>'+
       '<h3>Your grade is ready.</h3>'+
       '<p>Enter your email to view it. It links this result and any purchase so access can be restored — that\'s the whole account.</p>'+
-      '<input class="gate-input" type="email" id="gateEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-label="Email address" onkeydown="if(event.key===\'Enter\')submitGate()">'+
-      '<label class="gate-consent"><input type="checkbox" id="gateConsent"> Also send me physique tips and product updates (optional).</label>'+
-      '<button class="btn" onclick="submitGate()">Show my grade →</button>'+
+      '<input class="gate-input" type="email" required maxlength="254" id="gateEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" enterkeyhint="go" aria-label="Email address" onkeydown="if(event.key===\'Enter\')submitGate()">'+
+      '<div class="gate-fine">Email is required to create your account.</div>'+
+      '<div id="gateStatus" class="gate-fine" role="status" aria-live="polite"></div>'+
+      '<button class="btn" id="gateSubmit" onclick="submitGate()">Show my grade →</button>'+
       // The moment a stranger is asked for an email is the moment they need the
       // limits restated — not buried in a policy they will not open.
       '<div class="gate-fine">No card · no password · unsubscribe anytime</div>'+
@@ -802,7 +804,9 @@ function renderResultNext(){
 // ============================================================
 //  GATE SUBMIT
 // ============================================================
-function submitGate(){
+let gateSubmitting=false;
+async function submitGate(){
+  if(gateSubmitting)return;
   const inp=document.getElementById('gateEmail');
   const email=(inp&&inp.value||'').trim();
   if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
@@ -810,15 +814,24 @@ function submitGate(){
     return;
   }
 
+  const btn=document.getElementById('gateSubmit'), status=document.getElementById('gateStatus');
+  gateSubmitting=true;
+  if(btn){btn.disabled=true;btn.textContent='Creating account…';}
+  if(status)status.textContent='';
+  try{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'subscribe',email:email}),signal:AbortSignal.timeout(25000)});
+    const data=await res.json();
+    if(!res.ok||!data.ok)throw new Error(res.status===429?'Too many attempts. Please try again later.':'Could not complete signup. Please try again.');
+  }catch(e){
+    if(status)status.textContent=e.name==='TimeoutError'?'Signup took too long. Please try again.':e.message==='Failed to fetch'?'Connection failed. Please try again.':e.message;
+    return;
+  }finally{
+    gateSubmitting=false;
+    if(btn){btn.disabled=false;btn.textContent='Show my grade →';}
+  }
   userEmail=email;
   saveState();
   track('gate_submit');
-  // Capture the signup as a lead (fire-and-forget — never block the reveal).
-  // The email is always stored; the checkbox only sets the marketing-consent flag.
-  try{
-    const wantsMarketing=!!(document.getElementById('gateConsent')||{}).checked;
-    fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'subscribe',email:email,consent:wantsMarketing})}).catch(()=>{});
-  }catch(e){}
   refreshEntitlementToken().then(refreshHome).catch(()=>{});
 
   // unblur the card AND the detail/breakdown panels below it
@@ -1240,7 +1253,6 @@ async function submitRecoveryEmail(){
         if(status){status.textContent=(sdata&&sdata.message)||'Could not send the code. Contact support@cutrank.app.';status.className='recovery-status err';}
         return;
       }
-      userEmail=email; saveState();
       recoveryStage='code';
       const codeInput=document.getElementById('recoveryCode');
       if(codeInput){codeInput.style.display='block';setTimeout(()=>codeInput.focus(),60);}
@@ -1255,8 +1267,6 @@ async function submitRecoveryEmail(){
     }
     track('recovery_failed');
     clearEntitlement();
-    userEmail=email;
-    saveState();
     if(status){status.textContent='No active purchase found for that email. For help, contact support@cutrank.app.';status.className='recovery-status err';}
   }catch(e){
     if(status){status.textContent='Could not check purchase status. Try again, or contact support@cutrank.app.';status.className='recovery-status err';}
@@ -1328,7 +1338,7 @@ function buildFocusHTML(data){
 
 // The gym-goer model is an estimate, so do not imply precision beyond this
 // display floor or turn a modelled percentile into a claim about a headcount.
-const RANK_FLOOR_GYM=0.01;
+const RANK_FLOOR_GYM=0.001;
 // Format "top X%" — integers for the common case, decimals as the tail thins out.
 function fmtTop(pct,floor){
   const t=Math.max(floor==null?RANK_FLOOR_GYM:floor,100-pct);
@@ -1352,9 +1362,10 @@ function rankLabel(pct,floor){
 // are shared with the existing app; only presentation changes here.
 function buildRankHTML(base, grade, blurred, opts){
   if(base==null) return '';
-  const free=!!(opts&&opts.free), sc=scaleScores(base);
+  const free=!!(opts&&opts.free), sc=scaleScores(base,free);
   const pct=scalePercentile(sc.gymExact,SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT);
   const label=rankLabel(pct,RANK_FLOOR_GYM);
+  const cohort=free?'Gym-goers':'General adult population';
   const locked=free?false:!isProHint(), gated=!free&&(!hasAccount()||blurred);
   // A taller drawing area gives the distribution enough presence without
   // changing its width or the one-score-point / one-standard-deviation scale.
@@ -1386,13 +1397,13 @@ function buildRankHTML(base, grade, blurred, opts){
   // axis, so the filled curve and displayed percentile always use one model.
   const passed='M '+px(0).toFixed(2)+' '+y1+' L '+points(0,sc.gymExact)+' L '+px(sc.gymExact).toFixed(2)+' '+y1+' Z';
   const mx=px(sc.gymExact).toFixed(2), my=py(sc.gymExact).toFixed(2);
-  return '<section class="res-rank rank-single reslock'+(locked?' locked':'')+(gated?' blurred':'')+'" aria-label="Gym-goer percentile">'+
+  return '<section class="res-rank rank-single reslock'+(locked?' locked':'')+(gated?' blurred':'')+'" aria-label="'+cohort+' percentile">'+
     '<div class="reslock-in"'+(locked||gated?' inert aria-hidden="true"':'')+'>'+
       '<h3>Where you rank</h3>'+
-      '<div class="rank-summary"><div><div class="rank-cohort">Gym-goers</div>'+
+      '<div class="rank-summary"><div><div class="rank-cohort">'+cohort+'</div>'+
         '<div class="rank-score">'+fmtScale(sc.gym)+' <span>/10</span></div></div>'+
       '<div class="rank-placement">'+esc(label)+'</div></div>'+
-      '<svg class="rank-single-curve" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc('Modelled score distribution for gym-goers. Your score: '+fmtScale(sc.gym)+' out of 10. '+label)+ '">'+
+      '<svg class="rank-single-curve" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc('Modelled score distribution for '+cohort.toLowerCase()+'. Your score: '+fmtScale(sc.gym)+' out of 10. '+label)+ '">'+
         '<desc>'+esc('The blue area represents '+pct.toFixed(1)+'% of the modelled population passed by this score.')+'</desc>'+
         '<path class="rank-bell-area" d="'+area+'"/><path class="rank-bell-passed" d="'+passed+'"/>'+
         '<path class="rank-bell-line" d="'+line+'"/>'+
@@ -1402,7 +1413,7 @@ function buildRankHTML(base, grade, blurred, opts){
       '</svg>'+
       '<div class="rank-axis-labels" aria-hidden="true"><span>0</span><span>Score /10 · average 5.0</span><span>10</span></div>'+
       '<div class="rank-method"><p>Modelled estimate, not a measured ranking.</p>'+
-        '<details><summary>How this is estimated</summary><p>Your score is compared with a model of gym-goers, centred at '+SCALE_GYM_MEAN.toFixed(1)+'. Each score point represents '+SCALE_GYM_SD_PER_POINT+' standard deviation'+(SCALE_GYM_SD_PER_POINT===1?'':'s')+'. The curve uses the same distribution and your unrounded score; the displayed score is rounded. This is an estimate, not a ranking from a measured population sample.</p></details></div>'+
+        '<details><summary>How this is estimated</summary><p>Your score is compared with a model of '+cohort.toLowerCase()+', centred at '+SCALE_GYM_MEAN.toFixed(1)+'. Each score point represents '+SCALE_GYM_SD_PER_POINT+' standard deviation'+(SCALE_GYM_SD_PER_POINT===1?'':'s')+'. The curve uses the same distribution and your unrounded score; the displayed score is rounded. This is an estimate, not a ranking from a measured population sample.</p></details></div>'+
     '</div>'+(locked?proVeil('See your percentile'):'')+'</section>';
 }
 
@@ -2581,7 +2592,7 @@ function computeStrength(){
   const base = open.reduce((a, g) => a + g.score, 0) / open.length;
   return {
     base: base,
-    scores: scaleScores(base),
+    scores: scaleScores(base,true),
     grade: scoreToGrade(base),
     groups: groups,
     ranked: open.length,
@@ -2894,7 +2905,7 @@ function strRankTile(kind, r, href, missingMsg){
       '<div class="pf-tile-letter">' + r.grade + '</div>' +
       '<div class="pf-tile-label">' + gradeLabel(r.grade) + '</div>' +
       '<div class="pf-tile-scores">' +
-        '<span><b>' + fmtScale(r.scores.gym) + '</b> vs gym-goers</span>' +
+        '<span><b>' + fmtScale(r.scores.gym) + '</b> vs ' + (kind==='Physique'?'general population':'gym-goers') + '</span>' +
       '</div>' +
     '</div>';
 }
@@ -2959,7 +2970,7 @@ function renderProfile(){
   document.getElementById('profileBody').innerHTML =
     '<div class="sec-head" style="margin-bottom:22px">' +
       '<h2>Your profile.</h2>' +
-      '<p>Two ranks, same scale. One from the photo, one from the bar.</p>' +
+      '<p>Physique against the general population. Strength against gym-goers.</p>' +
     '</div>' +
     '<div class="pf-tiles">' +
       strRankTile('Physique', phys, null, 'No scan yet.') +

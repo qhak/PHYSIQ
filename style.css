@@ -2320,7 +2320,7 @@
 .signature-breakdown>div{margin-top:18px}
 .rank-single.res-rank{padding:24px 28px 20px;border-radius:12px;background:var(--surface-raised);margin:0 0 20px}
 .rank-single h3{font-size:22px;line-height:1.25;letter-spacing:-.04em;font-weight:650;margin:0 0 22px;color:var(--ink)}
-.rank-summary{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px}
+.rank-summary{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:16px}
 .rank-cohort{color:var(--soft);font-size:14px;line-height:1.4;font-weight:500;margin-bottom:5px}
 .rank-score{font-size:40px;font-weight:600;line-height:1.1;letter-spacing:-.05em;color:var(--ink);font-variant-numeric:tabular-nums}
 .rank-score span{font-size:18px;letter-spacing:-.01em;font-weight:400;color:var(--dim)}
