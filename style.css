@@ -2415,7 +2415,19 @@
 .dev-controls select{padding:10px;background:var(--surface);color:var(--ink);border:1px solid var(--line2);border-radius:8px}
 .dev-controls button:disabled{opacity:.45;cursor:default}
 #devCard{container-type:inline-size}
-#devCard .dev-card{aspect-ratio:1;overflow:hidden;border-radius:12px;margin:0}
+#devCard .dev-card{
+  --card-bg:#181918;--card-ink:#F0EFE9;--card-dim:#B1B2AA;--card-line:#363831;
+  --dev-gold:#C8BE9D;--dev-brass:#BAAB88;--dev-silver:#C0C5C3;
+  --dev-copper:#BC9F87;--dev-slate:#ADB3B1;--dev-stone:#989D99;
+  aspect-ratio:1;overflow:hidden;border-radius:12px;margin:0;
+  background:var(--card-bg);box-shadow:none;border:1px solid var(--card-line)
+}
+#devCard .grade-S{--acc:var(--dev-gold)}
+#devCard .grade-A{--acc:var(--dev-brass)}
+#devCard .grade-B{--acc:var(--dev-silver)}
+#devCard .grade-C{--acc:var(--dev-copper)}
+#devCard .grade-D{--acc:var(--dev-slate)}
+#devCard .grade-E{--acc:var(--dev-stone)}
 #devCard .vc-inner{height:100%;display:flex;flex-direction:column}
 #devCard .vc-header{padding:4.5cqw 5cqw 0}
 #devCard .vc-brand-tag{font-size:4cqw}
@@ -2429,15 +2441,20 @@
 #devCard .vc-footer{margin:0 5cqw;padding:3cqw 0;font-size:2cqw}
 #devCard .signature-footnote{width:100%;justify-content:space-between;gap:4px}
 .dev-rank{display:flex;flex-direction:column;align-items:center;padding:0 5cqw 4cqw;gap:1cqw}
-.dev-rank-label{font-size:2cqw;letter-spacing:.18em;color:var(--card-dim)}
-.dev-percentile{font-size:9cqw;line-height:1.05;letter-spacing:-.05em;color:var(--acc);font-variant-numeric:tabular-nums}
-.dev-placement{font-size:2.8cqw;color:var(--card-ink)}
-.dev-sweep{position:absolute;inset:0;background:linear-gradient(transparent 42%,color-mix(in srgb,var(--acc) 22%,transparent) 49%,var(--acc) 50%,transparent 52%);transform:translateY(-100%);pointer-events:none;opacity:0}
-.dev-scanning .dev-sweep{opacity:1;animation:dev-scan 1.8s ease-in-out infinite}
-.dev-revealing .dev-sweep{opacity:1;animation:dev-scan 2s ease-in-out both}
-#devCard .dev-revealing .vc-grade-section{animation:dev-grade 850ms cubic-bezier(.15,.85,.2,1) 1900ms both}
-.dev-revealing .dev-rank{animation:dev-rank 600ms ease-out 2700ms both}
-@keyframes dev-scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
-@keyframes dev-grade{0%{opacity:0;transform:scale(1.55);filter:blur(12px)}70%{opacity:1;transform:scale(.94);filter:blur(0)}100%{opacity:1;transform:scale(1)}}
-@keyframes dev-rank{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.dev-rank-label{font-size:2cqw;letter-spacing:.12em;color:var(--card-dim)}
+.dev-score{font-size:9cqw;font-weight:500;line-height:1.05;letter-spacing:-.05em;color:var(--card-ink);font-variant-numeric:tabular-nums}
+.dev-score-total{font-size:4cqw;font-weight:400;letter-spacing:-.02em;color:var(--card-dim)}
+.dev-placement{font-size:2.8cqw;color:var(--card-dim);min-height:1.4em}
+.dev-sweep{position:absolute;inset:0;background:linear-gradient(transparent calc(50% - 1px),var(--card-ink) 50%,transparent calc(50% + 1px));transform:translateY(-100%);pointer-events:none;opacity:0}
+.dev-scanning .dev-sweep{animation:dev-scan 2.4s ease-in-out infinite}
+#devCard .dev-revealing .vc-disc-wrap{animation:dev-photo-entrance 1000ms cubic-bezier(.22,1,.36,1) both}
+#devCard .dev-revealing .vc-disc{animation:dev-photo 1500ms cubic-bezier(.22,1,.36,1) both}
+#devCard .dev-revealing .vc-grade-section{animation:dev-grade 650ms cubic-bezier(.22,1,.36,1) 350ms both}
+.dev-revealing .dev-rank{animation:dev-rank 650ms cubic-bezier(.22,1,.36,1) 850ms both}
+.dev-revealing .dev-placement{animation:dev-rank 450ms ease-out 2400ms both}
+@keyframes dev-scan{0%{transform:translateY(-80%);opacity:0}20%,70%{opacity:.25}100%{transform:translateY(80%);opacity:0}}
+@keyframes dev-photo-entrance{from{opacity:0;transform:translateY(12px) scale(.94);clip-path:circle(38% at 50% 50%)}to{opacity:1;transform:translateY(0) scale(1);clip-path:circle(50% at 50% 50%)}}
+@keyframes dev-photo{from{transform:scale(1.12)}to{transform:scale(1)}}
+@keyframes dev-grade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dev-rank{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){#devCard *{animation:none!important}.dev-sweep{display:none}}

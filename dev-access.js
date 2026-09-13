@@ -32,13 +32,13 @@ function devMetrics(data){
   const score=blendScore(mass,cond), base=rawBase(mass,cond);
   if(score==null||base==null)throw new Error('No readable physique. Try a clearer photo.');
   const scaled=scaleScores(base);
-  return {grade:scoreToGrade(score),pct:scalePercentile(scaled.gymExact,SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT)};
+  return {grade:scoreToGrade(score),displayScore:scaled.gym,pct:scalePercentile(scaled.gymExact,SCALE_GYM_MEAN,SCALE_GYM_SD_PER_POINT)};
 }
 function renderDevCard(grade,view,loading){
   const host=document.getElementById('devCard');
   host.innerHTML=buildSignatureCard(grade,devPhoto,view+' view',null,'dev-card'+(loading?' dev-scanning':''),'');
   const card=host.firstElementChild;
-  card.querySelector('.vc-footer').insertAdjacentHTML('beforebegin','<div class="dev-rank"><span class="dev-rank-label">POPULATION PERCENTILE</span><strong class="dev-percentile">—</strong><span class="dev-placement">'+(loading?'Reading your photo…':'')+'</span></div>');
+  card.querySelector('.vc-footer').insertAdjacentHTML('beforebegin','<div class="dev-rank"><span class="dev-rank-label">PHYSIQUE SCORE</span><strong class="dev-score"><span class="dev-score-number">—</span><span class="dev-score-total"> / 10</span></strong><span class="dev-placement">'+(loading?'Reading your photo…':'')+'</span></div>');
   card.querySelector('.signature-footnote').innerHTML='<span>Modelled estimate · 18+</span><span class="vc-site">cutrank.app</span>';
   card.querySelector('.vc-disc-wrap').insertAdjacentHTML('beforeend','<span class="dev-sweep" aria-hidden="true"></span>');
   if(loading){card.querySelector('.vc-grade-label').textContent='Analysing';card.querySelector('.signature-label').textContent='Your physique';}
@@ -50,14 +50,15 @@ function replayDevReveal(){
   cancelAnimationFrame(devFrame);
   const {metrics,view}=devResult, card=renderDevCard(metrics.grade,view,false);
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const duration=reduced?0:5200, start=performance.now();
+  // One continuous reveal: photo, grade, then the same /10 score used by the app.
+  const duration=reduced?0:2800, start=performance.now();
   card.classList.add(reduced?'dev-finished':'dev-revealing');
   function frame(now){
     if(!card.isConnected||!devAllowed)return;
-    const elapsed=now-start, progress=duration?Math.min(1,Math.max(0,(elapsed-2800)/2400)):1;
-    const pct=metrics.pct*(1-Math.pow(1-progress,3));
-    card.querySelector('.dev-percentile').textContent=progress===1&&metrics.pct>99.999?'>99.999%':pct.toFixed(3)+'%';
-    card.querySelector('.dev-placement').textContent=progress===1?rankLabel(metrics.pct,RANK_FLOOR_GYM):'Finding your rank';
+    const elapsed=now-start, progress=duration?Math.min(1,Math.max(0,(elapsed-1100)/1700)):1;
+    const displayScore=metrics.displayScore*(1-Math.pow(1-progress,3));
+    card.querySelector('.dev-score-number').textContent=displayScore.toFixed(1);
+    card.querySelector('.dev-placement').textContent=rankLabel(metrics.pct,RANK_FLOOR_GYM);
     if(elapsed<duration)devFrame=requestAnimationFrame(frame);
     else{card.classList.remove('dev-revealing');card.classList.add('dev-finished');document.getElementById('devStatus').textContent='Reveal ready. Replay it whenever you’re recording.';}
   }
