@@ -241,7 +241,7 @@
           <div class="tw-item">
             <div class="tw-k">02 · It says no</div>
             <h3>Bad photos get refused, not flattered</h3>
-            <p>Under-18, explicit, multi-person, blurry, dark, or badly cropped photos are rejected instead of guessed at — and a refused scan doesn't spend your free scan. A tool that grades everything you feed it isn't reading anything.</p>
+            <p>Age is verified from the date of birth you enter — never guessed from your face or body. Explicit, multi-person, blurry, dark, or badly cropped photos are rejected, and a refused scan doesn't spend your free scan.</p>
             <p style="margin-top:10px">It also can't see what a photo can't show: training history, substances, injuries, or health. Those limits are stated on the result, not buried.</p>
           </div>
 
@@ -492,7 +492,7 @@
           </div>
         </div>
         <div class="method-note">
-          Under-18, explicit, multi-person, and unreadable photos are refused, not graded. Full details in the <button class="recover-link" onclick="openModal('privacyModal')">privacy policy</button>.
+          You must be 18 or over and enter your date of birth. Explicit, multi-person, and unreadable photos are refused, not graded. Full details in the <button class="recover-link" onclick="openModal('privacyModal')">privacy policy</button>.
         </div>
                 </div>
         </details>
@@ -563,7 +563,7 @@
           <details class="faq-item"><summary class="faq-q">Who processes my photo?</summary><div class="faq-a">The image goes to Anthropic's AI model for grading, under its own terms. Stripe handles payments. Nobody else touches it.</div></details>
           <details class="faq-item"><summary class="faq-q">Is this medical advice?</summary><div class="faq-a">No. It's a visual read of one photo — not a diagnosis, a body-composition scan, or a health tool.</div></details>
           <details class="faq-item"><summary class="faq-q">What if the AI is wrong?</summary><div class="faq-a">It can be. Lighting, pose, and photo quality change the result. Treat it as directional feedback, not a verdict on you.</div></details>
-          <details class="faq-item"><summary class="faq-q">Can minors use it?</summary><div class="faq-a">No. CutRank is 18+ only — scans refuse when the subject isn't clearly an adult.</div></details>
+          <details class="faq-item"><summary class="faq-q">Can minors use it?</summary><div class="faq-a">No. CutRank is 18+ only. Your date of birth is validated before a scan and is not stored; the AI does not guess your age from the photo.</div></details>
         </div>
       </section>
       <!-- FINAL CTA -->
@@ -677,6 +677,27 @@
     </div></div></div>
   </section>
 
+  <!-- AGE GATE — required once per page session before a photo can be chosen -->
+  <div class="modal-overlay" id="ageModal" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+    <div class="modal age-modal">
+      <div class="modal-head">
+        <div>
+          <div class="modal-eyebrow">Adults only</div>
+          <div class="modal-title" id="ageTitle">You must be 18 or over.</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('ageModal')" aria-label="Close">
+          <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Enter your date of birth to continue. CutRank uses it only to confirm eligibility for this scan and does not store it. The AI will not estimate your age from your photo.</p>
+        <label class="age-field" for="ageDob"><span>Date of birth</span><input class="age-input" id="ageDob" type="date" autocomplete="bday" required></label>
+        <div class="age-error" id="ageDobError" role="alert" aria-live="polite"></div>
+        <button class="btn gold-btn" onclick="ageGateContinue()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
   <!-- UPLOAD GUIDE MODAL — shown once before the first photo pick -->
   <div class="modal-overlay" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
     <div class="modal">
@@ -748,7 +769,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <p class="last-updated">Last updated: 11 June 2026</p>
+        <p class="last-updated">Last updated: 20 September 2026</p>
 
         <p>CutRank ("we", "us", "our") is operated from the United Kingdom and complies with the UK GDPR and the Data Protection Act 2018. This policy explains what we collect, why, and what you can do about it.</p>
 
@@ -758,6 +779,7 @@
         <h3>2. What we collect</h3>
         <ul>
           <li><strong>Your email address</strong> — submitted at the result-reveal gate and used to identify your account.</li>
+          <li><strong>Your date of birth</strong> — submitted before a scan, used only to confirm you are 18 or over, and not stored.</li>
           <li><strong>Photos you upload</strong> — processed in real time to generate a grade, then discarded (see below).</li>
           <li><strong>Payment information</strong> — handled entirely by Stripe. We never see or store your card details.</li>
           <li><strong>Technical data</strong> — IP address and basic request metadata, used to operate the service and prevent abuse. Logs are retained for up to 30 days.</li>
@@ -791,6 +813,7 @@
         <h3>7. How long we keep data</h3>
         <ul>
           <li><strong>Photos:</strong> not retained.</li>
+          <li><strong>Date of birth:</strong> not retained after the eligibility check.</li>
           <li><strong>Email and account data:</strong> retained until you request deletion or for as long as your account is active.</li>
           <li><strong>Payment records:</strong> retained for 6 years to comply with UK tax law.</li>
           <li><strong>Technical logs:</strong> up to 30 days.</li>
@@ -813,7 +836,7 @@
         <p>CutRank does not use tracking or advertising cookies, and does not track you across other sites. Browser localStorage holds your email, a short-lived access token, and display-only result history — this is strictly necessary to run the app and is never the source of truth for paid access. For traffic insight we use privacy-friendly, cookieless analytics (Cloudflare Web Analytics and Plausible Analytics) that measure aggregate visits — page views, referrers, approximate location, and device type — without cookies or data that identifies you personally. Because no tracking cookies are set, no cookie-consent banner is required.</p>
 
         <h3>10. Children</h3>
-        <p>CutRank is for adults only. The grading engine is instructed to refuse any photo where the subject is not clearly 18 or over. We do not knowingly collect data from anyone under 18.</p>
+        <p>CutRank is for adults only. Before a scan, you must enter a date of birth that confirms you are 18 or over. We use it only for that eligibility check and do not store it. The grading AI is instructed not to infer or comment on age from appearance. We do not knowingly collect data from anyone under 18.</p>
 
         <h3>11. Security</h3>
         <p>All traffic to and from CutRank is encrypted in transit (HTTPS/TLS). Payment processing is PCI-DSS compliant via Stripe. We follow industry-standard security practices but cannot guarantee absolute security; no online service can.</p>
@@ -842,7 +865,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <p class="last-updated">Last updated: 11 June 2026</p>
+        <p class="last-updated">Last updated: 20 September 2026</p>
 
         <p>By using CutRank you agree to these terms. If you don't agree, don't use the service.</p>
 
@@ -850,12 +873,12 @@
         <p>CutRank is an entertainment and self-assessment tool that uses AI vision to grade visible physique development from user-submitted photos. <strong>CutRank is not medical advice, a diagnostic tool, a body composition scan, or a substitute for guidance from a qualified professional.</strong></p>
 
         <h3>2. Eligibility</h3>
-        <p>You must be 18 or older to use CutRank. The grading engine will refuse to assess any photo where the subject is not clearly an adult. By using the service you confirm you are 18+.</p>
+        <p>You must be 18 or older to use CutRank. You must enter an accurate date of birth, which is validated before a scan and is not stored. The grading AI does not determine eligibility from your appearance.</p>
 
         <h3>3. Photos you upload</h3>
         <ul>
           <li>Only upload photos of <strong>yourself</strong>. Do not upload photos of other people without their explicit consent.</li>
-          <li>The subject must be clearly 18 or older.</li>
+          <li>The date of birth you enter must be accurate and belong to you.</li>
           <li>No explicit or sexualised content. Shorts only.</li>
           <li>You grant CutRank a limited, non-exclusive licence to process the photo for the sole purpose of returning a grade. Photos are not stored or reused.</li>
           <li>You remain the owner of your photos.</li>

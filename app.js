@@ -35,6 +35,7 @@ let profileViews={}; // latest scores per view; photos are never persisted here
 let viewsDone={};
 let photos={};
 let pendingView=null;
+let dateOfBirth=null; // kept in memory for this page session; never persisted
 
 // ---- account / payment state ----
 let userEmail  = null;
@@ -203,10 +204,57 @@ function pick(viewId){
 
   pendingView=viewId;
   track('scan_pick',{view:viewId});
+  if(!dateOfBirth){openAgeGate();return;}
+  continuePhotoPick();
+}
+
+function continuePhotoPick(){
   let guideSeen=false;
   try{guideSeen=localStorage.getItem('pq_guide_ok')==='1';}catch(e){}
   if(!guideSeen){openGuide(false);return;}
   document.getElementById('filein').click();
+}
+
+// ---- adult eligibility (DOB is validated again by the worker) ----
+function adultCutoff(){
+  const d=new Date();
+  const y=d.getFullYear()-18;
+  return String(y)+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function dobAge(value){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(value||'')) return null;
+  const p=value.split('-').map(Number), born=new Date(p[0],p[1]-1,p[2]);
+  if(born.getFullYear()!==p[0]||born.getMonth()!==p[1]-1||born.getDate()!==p[2]) return null;
+  const now=new Date();
+  if(born>now) return null;
+  let age=now.getFullYear()-p[0];
+  if(now.getMonth()+1<p[1]||(now.getMonth()+1===p[1]&&now.getDate()<p[2])) age--;
+  return age;
+}
+function openAgeGate(){
+  const input=document.getElementById('ageDob');
+  const error=document.getElementById('ageDobError');
+  if(input){input.max=adultCutoff();input.value='';input.classList.remove('err');}
+  if(error) error.textContent='';
+  track('age_gate_shown');
+  openModal('ageModal');
+  setTimeout(()=>{if(input)input.focus();},50);
+}
+function ageGateContinue(){
+  const input=document.getElementById('ageDob');
+  const error=document.getElementById('ageDobError');
+  const value=input?input.value.trim():'';
+  const age=dobAge(value);
+  if(age===null||age<18){
+    if(input) input.classList.add('err');
+    if(error) error.textContent=age!==null&&age<18?'CutRank is only available to adults aged 18 or over.':'Enter a valid date of birth.';
+    track('age_gate_failed',{reason:age!==null&&age<18?'underage':'invalid_dob'});
+    return;
+  }
+  dateOfBirth=value;
+  closeModal('ageModal');
+  track('age_gate_passed');
+  if(pendingView) continuePhotoPick();
 }
 
 // ---- upload guide (shown once before first pick, reopenable) ----
@@ -332,6 +380,7 @@ document.getElementById('filein').addEventListener('change',async e=>{
     if(err && err.code==='invalid_token'){renderAccessRecovery();show('screen-result');return;}
     if(err && err.code==='rate_limited'){renderRateLimited(err.retryAfter);show('screen-result');return;}
     if(err && err.code==='bot_check'){renderError('We couldn\'t verify you\'re human. Refresh the page and try the scan again.');show('screen-result');return;}
+    if(err && err.code==='age_requirement'){renderError(err.message);show('screen-result');return;}
     if(err && err.code==='bad_image'){renderBadImage();show('screen-result');return;}
     if(err && err.message==='image_processing_failed'){renderBadImage();show('screen-result');return;}
     renderError(String(err));show('screen-result');
@@ -388,7 +437,7 @@ async function analyzeView(view,file,retriedToken){
     ts_token=await getTurnstileToken();
     if(status) status.textContent='reading image…';
   }
-  const res=await fetch(WORKER_URL,{method:"POST",headers,body:JSON.stringify({region:view,image,normalized_image,media_type,email:userEmail||"",token:entitlementToken||"",ts_token})});
+  const res=await fetch(WORKER_URL,{method:"POST",headers,body:JSON.stringify({region:view,image,normalized_image,media_type,email:userEmail||"",token:entitlementToken||"",ts_token,dob:dateOfBirth||""})});
   const data=await res.json().catch(()=>null);
   if(res.status===401 && (!data || data.error==='invalid_token')){
     clearEntitlement();
@@ -420,6 +469,13 @@ async function analyzeView(view,file,retriedToken){
   if(res.status===403 && data && data.error==='bot_check_failed'){
     const e=new Error('bot_check_failed');
     e.code='bot_check';
+    throw e;
+  }
+  if((res.status===400||res.status===403) && data && data.error==='age_requirement_failed'){
+    dateOfBirth=null;
+    const e=new Error(data.reason==='underage'?'CutRank is only available to adults aged 18 or over.':'Your date of birth could not be verified. Please choose the scan again and re-enter it.');
+    e.code='age_requirement';
+    e.reason=data.reason;
     throw e;
   }
   if(res.status===400 && data && (data.reason==='bad_image'||data.reason==='body_too_large'||data.reason==='bad_media_type')){
@@ -1146,11 +1202,9 @@ function renderPaymentRecovery(){
 
 function renderRefusal(reason){
   track('scan_refused',{reason:reason||''});
-  const msg=reason==='age'
-    ?{h:"We can't grade this one",p:"CutRank is adults only, and we can only assess photos where the subject is clearly 18 or over."}
-    :reason==='unclear_subject'
+  const msg=reason==='unclear_subject'
     ?{h:"Couldn't tell who to grade",p:"There seem to be multiple people. Use a photo where one person is clearly the subject."}
-    :{h:"Couldn't read this view",p:"Need a clear, well-lit photo of an adult — shorts only, full region in frame, plain background."};
+    :{h:"Couldn't read this view",p:"Need a clear, well-lit photo — shorts only, full region in frame, plain background."};
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse"><div class="big"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg></div>'+
     '<h2>'+msg.h+'</h2><p>'+msg.p+'</p></div>';
