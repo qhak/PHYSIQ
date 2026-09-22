@@ -33,6 +33,7 @@ const CONF_RANK={high:3,medium:2,low:1};
 let profile={};
 let profileViews={}; // latest scores per view; photos are never persisted here
 let viewsDone={};
+let profileScoringVersion=null;
 let photos={};
 let pendingView=null;
 let dateOfBirth=null; // kept in memory for this page session; never persisted
@@ -53,6 +54,7 @@ function saveState(){
     localStorage.setItem('pq_token_exp', String(entitlementTokenExp||0));
     localStorage.setItem('pq_profile', JSON.stringify(profile));
     localStorage.setItem('pq_profile_views', JSON.stringify(profileViews));
+    if(profileScoringVersion) localStorage.setItem('pq_scoring_version',profileScoringVersion);
     localStorage.setItem('pq_views',   JSON.stringify(Object.keys(viewsDone)));
     localStorage.removeItem('pq_account');
     localStorage.removeItem('pq_tier');
@@ -65,6 +67,7 @@ function loadState(){
     refreshToken = localStorage.getItem('pq_refresh')||null;
     entitlementTokenExp = parseInt(localStorage.getItem('pq_token_exp')||'0',10)||0;
     const p=localStorage.getItem('pq_profile'); if(p) profile=JSON.parse(p);
+    profileScoringVersion=localStorage.getItem('pq_scoring_version')||null;
     const v=localStorage.getItem('pq_views');   if(v) JSON.parse(v).forEach(id=>viewsDone[id]=true);
   }catch(e){}
   try{
@@ -367,8 +370,8 @@ document.getElementById('filein').addEventListener('change',async e=>{
     const data=await analyzeView(view,file);
     if(data.refused){renderRefusal(data.reason);show('screen-result');return;}
     if(data.entitlement && data.entitlement.tier) userTierDisplay=data.entitlement.tier;
-    photos[view]=photoURL;
-    mergeIntoProfile(view,data);
+    if(mergeIntoProfile(view,data)) photos[view]=photoURL;
+    else showToast('This scan uses a different scoring version. Refresh CutRank before adding it to your profile.');
     viewsDone[view]=true;
     saveState();
     renderViewResult(view,data,photoURL);
@@ -536,10 +539,21 @@ function rebuildProfile(){
 }
 
 function mergeIntoProfile(view,data){
-  if(!VIEWS.some(v=>v.id===view) || !data || data.refused) return;
+  if(!VIEWS.some(v=>v.id===view) || !data || data.refused) return false;
+  if(!data.scoring_version) return false;
+  const hasSavedScores=Object.keys(profileViews).length>0 || Object.keys(profile).length>0;
+  if((profileScoringVersion && profileScoringVersion!==data.scoring_version) || (!profileScoringVersion && hasSavedScores)){
+    try{
+      localStorage.setItem('pq_profile_archive_'+Date.now(),JSON.stringify({scoring_version:profileScoringVersion||'legacy-unknown',profile,profile_views:profileViews}));
+    }catch(e){return false;}
+    profileViews={};
+    profile={};
+  }
+  profileScoringVersion=data.scoring_version;
   // Replace the whole view, including omissions, even at equal/lower confidence.
   profileViews[view]=cleanProfileMuscles(data.muscles);
   rebuildProfile();
+  return true;
 }
 
 function show(id){
@@ -1678,8 +1692,10 @@ async function showProgress(){
     });
     const data=await res.json().catch(()=>null);
     if(!res.ok || !data || !Array.isArray(data.history)) throw new Error('history_failed');
+    const newest=data.history.slice().sort((a,b)=>(a.ts||0)-(b.ts||0)).at(-1);
+    const activeVersion=newest?.scoring_version||'legacy-unknown';
     progHist={};
-    data.history.forEach(h=>{
+    data.history.filter(h=>(h.scoring_version||'legacy-unknown')===activeVersion).forEach(h=>{
       if(!h||!h.region) return;
       (progHist[h.region]=progHist[h.region]||[]).push(h);
     });
