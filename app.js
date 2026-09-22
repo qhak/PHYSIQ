@@ -370,8 +370,11 @@ document.getElementById('filein').addEventListener('change',async e=>{
     const data=await analyzeView(view,file);
     if(data.refused){renderRefusal(data.reason);show('screen-result');return;}
     if(data.entitlement && data.entitlement.tier) userTierDisplay=data.entitlement.tier;
-    if(mergeIntoProfile(view,data)) photos[view]=photoURL;
-    else showToast('This scan uses a different scoring version. Refresh CutRank before adding it to your profile.');
+    const previousScoringVersion=profileScoringVersion;
+    if(mergeIntoProfile(view,data)){
+      photos[view]=photoURL;
+      if(previousScoringVersion && previousScoringVersion!==data.scoring_version) showToast('Scoring updated. Your previous profile was archived; rescan angles to rebuild it.');
+    }else showToast('This scan uses a different scoring version. Refresh CutRank before adding it to your profile.');
     viewsDone[view]=true;
     saveState();
     renderViewResult(view,data,photoURL);
