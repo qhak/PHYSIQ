@@ -14,14 +14,14 @@
 <!-- Lucid Analytics (self-hosted, cookieless) -->
 <script defer data-domain="cutrank.app" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
 
-<title>Golden Ratio Physique: The 1.618 Standard | CutRank</title>
+<title>Golden Ratio Physique: Meaning &amp; Calculator | CutRank</title>
 <meta name="description" content="The golden ratio physique means a shoulder-to-waist ratio near 1.618. Work out yours with the free calculator, and see what the number does and doesn't mean.">
 <link rel="canonical" href="https://cutrank.app/golden-ratio-physique.html">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
 <meta property="og:title" content="The Golden Ratio Physique — What 1.618 Actually Means">
-<meta property="og:description" content="Shoulder-to-waist near 1.618 is the classic aesthetic standard. Calculate yours free, and read an honest account of where the number came from.">
+<meta property="og:description" content="Calculate a shoulder-to-waist circumference ratio and learn what the 1.618 reference can and cannot tell you.">
 <meta property="og:url" content="https://cutrank.app/golden-ratio-physique.html">
 <meta property="og:site_name" content="CutRank">
 <meta property="og:image" content="https://cutrank.app/og-image.png">
@@ -63,9 +63,9 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type":"Question","name":"What is the golden ratio physique?","acceptedAnswer":{"@type":"Answer","text":"It refers to a shoulder-to-waist ratio of roughly 1.618 to 1 — measuring the circumference of your shoulders at their widest and dividing by your waist circumference at its narrowest. It is also called the Adonis index. The idea is that this proportion reads as the most visually balanced, producing the V-taper associated with an athletic build."}},
+    {"@type":"Question","name":"What is the golden ratio physique?","acceptedAnswer":{"@type":"Answer","text":"It refers to a shoulder-to-waist circumference ratio of roughly 1.618 to 1, sometimes called the Adonis index. It is an aesthetic convention rather than a scientifically established ideal."}},
     {"@type":"Question","name":"How do I calculate my shoulder to waist ratio?","acceptedAnswer":{"@type":"Answer","text":"Measure the circumference around the widest point of your shoulders, then measure your waist circumference at its narrowest point, usually just above the navel. Divide the shoulder measurement by the waist measurement. Because it is a ratio, the units cancel out, so centimetres and inches give the same answer."}},
-    {"@type":"Question","name":"Is 1.618 realistic to achieve?","acceptedAnswer":{"@type":"Answer","text":"It is achievable but uncommon, and it typically requires both well-developed deltoids and a lean waist at the same time. Most trained lifters sit somewhere between 1.4 and 1.55. Frame width and hip structure also set limits that training cannot change, so the figure is better treated as a direction than a target everyone can reach."}},
+    {"@type":"Question","name":"Is 1.618 realistic to achieve?","acceptedAnswer":{"@type":"Answer","text":"Some people may measure near 1.618, but there is no validated target for everyone. Frame, muscle development and measurement method affect the result. Use it as an optional reference, not a requirement."}},
     {"@type":"Question","name":"Is the golden ratio physique scientifically proven?","acceptedAnswer":{"@type":"Answer","text":"No. It is an aesthetic convention rather than a biological law. The golden ratio appears widely in art and design, and it was applied to the body afterwards as a way of describing proportions people already found attractive. The underlying observation — that broad shoulders relative to a narrow waist read as athletic — is consistent, but the specific figure of 1.618 is a convention, not a measured optimum."}}
   ]
 }
@@ -197,7 +197,7 @@
   <header class="hero">
     <div class="eyebrow">Proportion, measured</div>
     <h1>The <em>golden ratio</em> physique</h1>
-    <div class="answer">A <strong>shoulder-to-waist ratio of about 1.618 to 1</strong> — shoulder circumference at its widest, divided by waist circumference at its narrowest. Also called the Adonis index. It's the proportion behind what people mean by a V-taper, and it's the reason two people at the same weight can look completely different.</div>
+    <div class="answer">The “golden ratio physique” usually means a <strong>shoulder-to-waist circumference ratio near 1.618 to 1</strong>. Divide a measurement around your shoulders by one around your waist to calculate it. The number is an aesthetic convention, not a scientifically established ideal or a score of your health.</div>
     <div class="cta-row">
       <a class="bigcta" href="#calc">Calculate your ratio</a>
       <span class="cta-sub">Takes about ten seconds.</span>
@@ -206,7 +206,7 @@
 
   <section class="block" id="calc">
     <h2>Work out <em>your</em> ratio</h2>
-    <p class="body">Measure the circumference around the widest part of your shoulders, then your waist at its narrowest — usually just above the navel, standing relaxed rather than braced or sucked in.</p>
+    <p class="body">Use a flexible tape around the widest part of your shoulders and upper arms, then around your waist at a point you can find again. Keep the tape level, stand relaxed, breathe normally and record where you measured. Shoulder circumference is different from shoulder width in a photo; the two methods should not be compared as if they were interchangeable.</p>
 
     <div class="calc">
       <div class="lbl">Shoulder-to-waist ratio</div>
@@ -219,7 +219,7 @@
         <div class="f">
           <label for="wa">Waist circumference</label>
           <input id="wa" type="number" inputmode="decimal" step="0.1" min="1" placeholder="e.g. 78">
-          <div class="hint">Narrowest point, relaxed</div>
+          <div class="hint">Same point each time, relaxed</div>
         </div>
       </div>
       <div class="unitnote"><strong>Units don't matter.</strong> A ratio divides them out, so centimetres and inches give exactly the same answer — just use the same one for both.</div>
@@ -227,7 +227,8 @@
         <button class="bigcta" id="calcBtn" type="button">Calculate</button>
       </div>
 
-      <div id="result">
+      <p class="hint" id="calcError" role="alert" style="margin-top:12px"></p>
+      <div id="result" aria-live="polite">
         <div class="rlabel">Your ratio</div>
         <div class="rnum" id="ratioVal">—</div>
         <div class="rtag" id="ratioTag"></div>
@@ -237,15 +238,14 @@
   </section>
 
   <section class="block">
-    <h2>What the number <em>means</em></h2>
-    <div class="ladder">
-      <div class="rung"><span class="g">under 1.30</span><span class="gt"><b>Little taper</b> — <span>shoulders and waist read as close to the same width. Usually a deltoid development issue rather than a waist one.</span></span></div>
-      <div class="rung"><span class="g">1.30–1.40</span><span class="gt"><b>Slight taper</b> — <span>visible in a fitted shirt, not dramatic. Common for untrained or early-training frames.</span></span></div>
-      <div class="rung"><span class="g">1.40–1.50</span><span class="gt"><b>Athletic</b> — <span>where a lot of consistently trained lifters land. Clearly built.</span></span></div>
-      <div class="rung top"><span class="g">1.50–1.60</span><span class="gt"><b>Strong V-taper</b> — <span>obvious, and it reads instantly even in clothes.</span></span></div>
-      <div class="rung top"><span class="g">1.60+</span><span class="gt"><b>At or beyond the classic standard</b> — <span>uncommon. Requires well-developed shoulders and a genuinely lean waist at the same time.</span></span></div>
-    </div>
-    <div class="note" style="margin-top:20px">These are descriptive bands, not medical categories, and they assume a relaxed measurement. Frame width, clavicle length and hip structure all set limits that no amount of training changes — two people can train identically and land a full band apart.</div>
+    <h2>How to <em>read</em> your result</h2>
+    <p class="body">For example, 120 cm around the shoulders divided by 80 cm around the waist is <strong>1.50</strong>. A later reading of 122 cm and 80 cm would be <strong>1.53</strong>. That is a change in the tape measurements, not proof that a particular muscle grew or that your appearance changed.</p>
+    <ul class="checks">
+      <li><b>Use the same method each time.</b> Measure at the same points, with the same posture and similar tape tension. Small differences can be measurement noise.</li>
+      <li><b>Keep both measurements.</b> A ratio alone cannot tell whether its change came from the shoulder number, the waist number or both.</li>
+      <li><b>Compare photos separately.</b> Pose, camera height and lighting alter a visible <a href="/v-taper-physique.html" style="color:var(--blue);font-weight:600">V-taper</a> without changing a tape measurement.</li>
+    </ul>
+    <div class="note" style="margin-top:20px">There are no validated “little taper,” “athletic” or “ideal” clinical bands for this calculator. Treat 1.618 as a reference point in an aesthetic conversation, not a target your body must reach.</div>
   </section>
 
   <section class="block">
@@ -257,19 +257,18 @@
 
   <section class="block">
     <h2>How to actually <em>move</em> it</h2>
-    <p class="body">Only two things change the ratio, and most people pick the wrong one first.</p>
+    <p class="body">The arithmetic changes when the shoulder measurement, waist measurement or both change. It does not tell you why they changed or what you should do next.</p>
     <ul class="checks">
-      <li><b>Build the shoulders</b> — specifically the side delts, which set visible width. This is the lever most people under-use, and it's the one with no ceiling on how good it can look.</li>
-      <li><b>Reduce waist size</b> — mostly by lowering body fat. Note the limit: past a certain point your waist is structural, and getting leaner stops helping.</li>
+      <li><b>Review upper-body development.</b> Deltoids and upper-back muscles influence the visible outline, though a tape measure cannot isolate one muscle.</li>
+      <li><b>Interpret waist changes in context.</b> Body composition, posture, measurement point and normal day-to-day variation all affect the reading. A ratio alone is not a reason to lose weight.</li>
     </ul>
-    <p class="body" style="margin-top:18px">What <em>doesn't</em> work is direct oblique training with heavy loads, which can thicken the waist slightly — the opposite of the goal. And no amount of ab work narrows a waist; that's a body fat and structure question.</p>
-    <p class="body">If you're not sure which lever applies to you, that's exactly what a per-muscle-group breakdown answers — whether your shoulders are lagging or your midsection is carrying fat. A <a href="/body-fat-percentage-for-abs.html" style="color:var(--blue);font-weight:600">body fat estimate</a> settles the second half.</p>
+    <p class="body" style="margin-top:18px">If your goal is the visual shape, compare repeatable <a href="/physique-progress-photos.html" style="color:var(--blue);font-weight:600">progress photos</a> alongside training and measurements. A photo-based grade can give another perspective on visible muscle groups, but it cannot diagnose why your waist measurement changed or prescribe a body-fat target. Read more about <a href="/body-fat-percentage-for-abs.html" style="color:var(--blue);font-weight:600">body fat estimates and visible abs</a>.</p>
   </section>
 
   <section class="block">
     <h2>Ratio isn't the whole picture</h2>
     <p class="body">A good ratio with little muscle underneath still reads as small — you can have a 1.6 taper at a very low bodyweight and simply look narrow rather than impressive. Proportion tells you how the pieces relate; it says nothing about how much there is.</p>
-    <p class="body">Which is why CutRank grades on both: an overall <a href="/s-tier-physique.html" style="color:var(--blue);font-weight:600">S-to-E tier</a> for development, plus a score for each muscle group so you can see whether the shape or the size is the limiting factor.</p>
+    <p class="body">CutRank provides an overall <a href="/s-tier-physique.html" style="color:var(--blue);font-weight:600">S-to-E tier</a> and feedback on visible muscle groups. Use that opinion alongside measurements and repeatable photos; it cannot determine a single cause of your appearance.</p>
     <div class="cta-row">
       <a class="bigcta" href="https://cutrank.app/#scanSection" onclick="plausible('seo_cta_click')">Get graded — free</a>
       <span class="cta-sub">One photo. No card.</span>
@@ -285,11 +284,11 @@
 
   <section class="block">
     <h2>Questions</h2>
-    <details class="faq"><summary>What is the golden ratio physique?</summary><div class="a">A shoulder-to-waist ratio of roughly 1.618 to 1 — shoulder circumference at the widest point divided by waist circumference at the narrowest. Also called the Adonis index. The idea is that this proportion reads as the most visually balanced, producing the V-taper associated with an athletic build.</div></details>
+    <details class="faq"><summary>What is the golden ratio physique?</summary><div class="a">A shoulder-to-waist circumference ratio of roughly 1.618 to 1, sometimes called the Adonis index. It is an aesthetic convention rather than a scientifically established ideal.</div></details>
     <details class="faq"><summary>How do I calculate my shoulder to waist ratio?</summary><div class="a">Measure around the widest point of your shoulders, then your waist at its narrowest, usually just above the navel. Divide shoulders by waist. Because it's a ratio, the units cancel — centimetres and inches give the same answer, as long as you use one or the other for both.</div></details>
-    <details class="faq"><summary>Is 1.618 realistic to achieve?</summary><div class="a">Achievable but uncommon, and it usually requires well-developed deltoids and a lean waist simultaneously. Most trained lifters sit between about 1.4 and 1.55. Frame width and hip structure also set limits training can't change, so treat it as a direction rather than a target everyone can reach.</div></details>
+    <details class="faq"><summary>Is 1.618 realistic to achieve?</summary><div class="a">Some people may measure near 1.618, but there is no validated target for everyone. Frame, muscle development and measurement method affect the result. Use it as an optional reference, not a requirement.</div></details>
     <details class="faq"><summary>Is the golden ratio physique scientifically proven?</summary><div class="a">No — it's an aesthetic convention, not a biological law. The ratio appears in art and design, and was applied to the body afterwards to describe proportions people already found attractive. The underlying observation, that broad shoulders over a narrow waist read as athletic, holds up. The specific figure doesn't come from measurement.</div></details>
-    <details class="faq"><summary>Does the ratio work the same for women?</summary><div class="a">The measurement works the same way, but the convention was built around the male V-taper and hip structure differs, so the same number carries different meaning. Treat the bands above as oriented toward male proportions, and the general principle — shoulder width relative to waist — as the transferable part.</div></details>
+    <details class="faq"><summary>Does the ratio work the same for women?</summary><div class="a">The arithmetic works the same way for any body, but 1.618 is not a validated ideal for women or men. Body structure and personal goals change how useful the comparison is.</div></details>
   </section>
 
   <section class="final">
@@ -325,32 +324,17 @@
   btn.addEventListener('click', function(){
     var sh = parseFloat(document.getElementById('sh').value);
     var wa = parseFloat(document.getElementById('wa').value);
-    if(!sh || !wa || sh <= 0 || wa <= 0){
-      alert('Enter both measurements, using the same units for each.');
+    var error = document.getElementById('calcError');
+    if(!Number.isFinite(sh) || !Number.isFinite(wa) || sh <= 0 || wa <= 0){
+      error.textContent = 'Enter two positive measurements in the same units.';
+      document.getElementById('result').classList.remove('show');
       return;
     }
+    error.textContent = '';
     var r = sh / wa;
     document.getElementById('ratioVal').textContent = r.toFixed(3);
-
-    var tag, why;
-    if(r < 1.30){
-      tag = 'Little taper';
-      why = 'Shoulders and waist read as close to the same width. Almost always a side-delt development gap rather than a waist problem — width is the lever with the most room in it.';
-    } else if(r < 1.40){
-      tag = 'Slight taper';
-      why = 'Visible in a fitted shirt but not dramatic. Both levers are still open: more shoulder width, and lower body fat around the midsection.';
-    } else if(r < 1.50){
-      tag = 'Athletic';
-      why = 'Where a lot of consistently trained lifters land. From here, gains usually come from shoulder width rather than further waist reduction.';
-    } else if(r < 1.60){
-      tag = 'Strong V-taper';
-      why = 'Obvious, and it reads even in clothes. You are close to the classic standard — the remaining distance is mostly conditioning.';
-    } else {
-      tag = 'At or beyond the classic 1.618 standard';
-      why = 'Uncommon. At this point proportion is not your limiting factor, and the more useful question is which individual muscle groups are lagging.';
-    }
-    document.getElementById('ratioTag').innerHTML = '<b>' + tag + '</b> — target for the classic standard is 1.618.';
-    document.getElementById('ratioWhy').textContent = why;
+    document.getElementById('ratioTag').textContent = 'Shoulder circumference ÷ waist circumference';
+    document.getElementById('ratioWhy').textContent = 'For comparison, 1.618 is the commonly cited aesthetic reference. This result is a measurement ratio, not a physique grade or a recommendation to change your weight.';
     document.getElementById('result').classList.add('show');
     if(window.plausible) plausible('golden_ratio_calculated');
   });
