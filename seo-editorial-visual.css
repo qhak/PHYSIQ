@@ -21,6 +21,21 @@
   line-height: 1.5;
 }
 
+.editorial-visual--torso img {
+  height: min(34vw, 270px);
+  aspect-ratio: auto;
+  object-position: center 46%;
+}
+
+.editorial-visual--inset {
+  max-width: 480px;
+  margin: 24px auto;
+}
+
+.editorial-visual--inset img {
+  aspect-ratio: auto;
+}
+
 @media (max-width: 640px) {
   .editorial-visual { margin: 0 0 28px; }
 }
