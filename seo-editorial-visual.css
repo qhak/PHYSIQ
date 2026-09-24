@@ -1,0 +1,26 @@
+.editorial-visual {
+  margin: -8px 0 40px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.editorial-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.editorial-visual figcaption {
+  padding: 12px 16px;
+  color: var(--dim);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .editorial-visual { margin: 0 0 28px; }
+}
