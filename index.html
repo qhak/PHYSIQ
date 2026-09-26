@@ -112,6 +112,7 @@
 
 <link rel="stylesheet" href="/style.css">
 <link rel="stylesheet" href="/ui-refresh.css">
+<link rel="stylesheet" href="/dashboard.css">
 
 <!-- Cloudflare Turnstile. Required: the worker enforces TURNSTILE_SECRET, so
      without this script getTurnstileToken() waits 10s for window.turnstile,
@@ -129,10 +130,25 @@
       <button class="navlink" onclick="goHome('pricingSection')">Pricing</button>
       <button class="navlink" onclick="goHome('affiliateSection')">Affiliates</button>
       <button class="navlink" id="devAccessTab" hidden onclick="showDevAccess()">Dev Access</button>
+      <button class="navlink nav-dashboard" onclick="showDashboard()" aria-label="Open dashboard">Dashboard</button>
       <button class="navlink" onclick="showStrength()">Strength</button>
       <button class="navlink navcta" onclick="goHome('scanSection')">Get ranked</button>
     </div>
   </nav>
+
+  <nav class="workspace-nav" id="workspaceNav" aria-label="CutRank workspace">
+    <button class="workspace-brand" onclick="showDashboard()" aria-label="CutRank dashboard"><span class="workspace-mark">C</span><span>CutRank <small>WORKSPACE</small></span></button>
+    <div class="workspace-nav-group" aria-label="Your tools">
+      <button data-workspace-screen="screen-dashboard" onclick="showDashboard()"><span aria-hidden="true">◫</span>Overview</button>
+      <button data-workspace-screen="screen-history" onclick="showHistory()"><span aria-hidden="true">▤</span>History</button>
+      <button data-workspace-screen="screen-progress" onclick="showProgress()"><span aria-hidden="true">↗</span>Progress</button>
+      <button data-workspace-screen="screen-improve" onclick="showImprove()"><span aria-hidden="true">✦</span>Improve</button>
+      <button data-workspace-screen="screen-strength" onclick="showStrength()"><span aria-hidden="true">▥</span>Strength</button>
+      <button data-workspace-screen="screen-profile" onclick="showProfile()"><span aria-hidden="true">◎</span>Profile</button>
+    </div>
+    <div class="workspace-nav-bottom"><button onclick="goHome('scanSection')">＋ New scan</button><button onclick="show('screen-home')">← Back to site</button></div>
+  </nav>
+  <div class="workspace-mobile-top"><button onclick="showDashboard()"><span>C</span>CutRank</button><div><button onclick="show('screen-home')">Site</button><button onclick="goHome('scanSection')">＋ Scan</button></div></div>
 
   <!-- HOME -->
   <section class="screen active" id="screen-home">
@@ -192,7 +208,7 @@
           <button class="recover-link" id="histLink" style="display:none;margin-top:16px" onclick="showHistory()">Scan history →</button>
           <button class="recover-link" id="progLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showProgress()">Progress →</button>
           <button class="recover-link" id="impLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showImprove()">Improve →</button>
-          <button class="recover-link" style="margin-top:16px;margin-left:16px" onclick="showProfile()">Profile &rarr;</button>
+          <button class="recover-link" style="margin-top:16px;margin-left:16px" onclick="showDashboard()">Open dashboard &rarr;</button>
         </div>
       </section>
 
@@ -644,45 +660,50 @@
       <p class="confirm-sub">Scan your remaining angles. Get the full ranking.</p>
       <div class="confirm-angles" id="confirmAngles"></div>
       <button class="btn ghost" style="margin-top:4px" onclick="showHistory()">Scan history</button>
-      <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back to home</button>
+      <button class="btn ghost" style="margin-top:8px" onclick="showDashboard()">Open dashboard →</button>
     </div></div></div>
   </section>
 
+  <!-- WORKSPACE OVERVIEW — live account state and entry points to the tools below -->
+  <section class="screen workspace-screen" id="screen-dashboard">
+    <div class="wrap"><div id="dashboardBody"></div></div>
+  </section>
+
   <!-- PROGRESS — scan comparison (Pro); body rendered by showProgress() -->
-  <section class="screen" id="screen-progress">
+  <section class="screen workspace-screen" id="screen-progress">
     <div class="wrap"><div id="progressBody"></div></div>
   </section>
 
   <!-- IMPROVE — training + diet audit (Pro); body rendered by showImprove() -->
-  <section class="screen" id="screen-improve">
+  <section class="screen workspace-screen" id="screen-improve">
     <div class="wrap"><div id="improveBody"></div></div>
   </section>
 
   <!-- STRENGTH — lift ranking, client-side only; body rendered by renderStrength() -->
-  <section class="screen" id="screen-strength">
+  <section class="screen workspace-screen" id="screen-strength">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
       <div id="strengthBody"></div>
-      <button class="btn ghost" style="margin-top:10px" onclick="show('screen-home')">&larr; Back</button>
+      <button class="btn ghost" style="margin-top:10px" onclick="showDashboard()">&larr; Dashboard</button>
     </div></div></div>
   </section>
 
   <!-- PROFILE — physique rank + strength rank; body rendered by renderProfile() -->
-  <section class="screen" id="screen-profile">
+  <section class="screen workspace-screen" id="screen-profile">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
       <div id="profileBody"></div>
     </div></div></div>
   </section>
 
   <!-- SCAN HISTORY -->
-  <section class="screen" id="screen-history">
+  <section class="screen workspace-screen" id="screen-history">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
       <div class="sec-head" style="margin-bottom:24px">
         <h2>Scan history.</h2>
-        <p>Every graded scan saved to this account — restored on any device with your email.</p>
+        <p>Saved paid scans, ready when you return on another device with your account.</p>
       </div>
       <div id="histBody"></div>
       <button class="btn ghost" style="margin-top:10px" onclick="showProgress()">Compare two scans →</button>
-      <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
+      <button class="btn ghost" style="margin-top:8px" onclick="showDashboard()">← Dashboard</button>
     </div></div></div>
   </section>
 
@@ -983,6 +1004,7 @@
 
 <script src="/photo-normalization.js"></script>
 <script src="/app.js"></script>
+<script src="/dashboard.js"></script>
 <script src="/dev-access.js"></script>
 </body>
 </html>

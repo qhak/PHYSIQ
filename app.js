@@ -563,6 +563,11 @@ function mergeIntoProfile(view,data){
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  document.body.classList.toggle('workspace-open',document.getElementById(id).classList.contains('workspace-screen'));
+  document.querySelectorAll('[data-workspace-screen]').forEach(button=>{
+    if(button.dataset.workspaceScreen===id) button.setAttribute('aria-current','page');
+    else button.removeAttribute('aria-current');
+  });
   window.scrollTo(0,0);
   if(typeof updateMobCta==='function') updateMobCta();
 }
@@ -851,8 +856,8 @@ function configurePrimaryBtn(o){
     btn.textContent='See your full grade →';
     btn.onclick=showOverall;
   } else {
-    btn.textContent='← Back to scans';
-    btn.onclick=()=>goHome('scanSection');
+    btn.textContent='Open my dashboard →';
+    btn.onclick=showDashboard;
   }
 }
 
@@ -869,7 +874,8 @@ function renderResultNext(){
     '<div class="result-next-actions">'+
     (pro?'<button onclick="showImprove()">Review my training ↗</button><button onclick="showProgress()">Compare progress</button>':
       '<button onclick="goHome(\'scanSection\')">'+(paid?'Continue my audit':'Back to my scans')+' →</button>')+
-    (paid?'<button onclick="showHistory()">Scan history</button>':'')+'</div>';
+    (paid?'<button onclick="showHistory()">Scan history</button>':'')+
+    '<button onclick="showDashboard()">Open dashboard</button></div>';
   const massCard=body.querySelector(':scope > .res-mc');
   if(massCard) body.insertBefore(next,massCard);
   else body.appendChild(next);
@@ -1620,6 +1626,38 @@ function tierDisplayLabel(tier){
 // ============================================================
 //  SCAN HISTORY
 // ============================================================
+let historyEntries=[];
+let historyRegion='all';
+function historySetRegion(region){
+  historyRegion=VIEWS.some(v=>v.id===region)?region:'all';
+  renderHistoryList();
+}
+function renderHistoryList(){
+  const body=document.getElementById('histBody');
+  const names={front:'Front',back:'Back',legs:'Legs',arms_side:'Arms / Side'};
+  const matching=historyEntries.filter(h=>historyRegion==='all'||h.region===historyRegion)
+    .sort((a,b)=>(Number(b.ts)||0)-(Number(a.ts)||0));
+  const select='<label class="history-filter">Angle <select aria-label="Filter scan history by angle" onchange="historySetRegion(this.value)">'+
+    '<option value="all"'+(historyRegion==='all'?' selected':'')+'>All angles</option>'+
+    VIEWS.map(v=>'<option value="'+v.id+'"'+(historyRegion===v.id?' selected':'')+'>'+esc(v.t)+'</option>').join('')+'</select></label>';
+  const versions=new Set(historyEntries.map(h=>h.scoring_version||'legacy-unknown'));
+  body.innerHTML='<div class="history-toolbar"><div><strong>'+historyEntries.length+'</strong> saved scan'+(historyEntries.length===1?'':'s')+'<span> · newest first</span></div>'+select+'</div>'+
+    (versions.size>1?'<p class="history-version-note">Scoring has changed since some of these scans. Progress compares results from the current scoring version.</p>':'')+
+    (matching.length?matching.map(h=>{
+      const score=h.score==null?null:Number(h.score);
+      const grade=Number.isFinite(score)?scoreToGrade(score):'—';
+      const date=new Date(Number(h.ts)*1000);
+      const dateText=Number.isFinite(date.getTime())?date.toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'Date unavailable';
+      const quote=h.verdict?String(h.verdict).trim():'';
+      return '<article class="hist-row">'+
+        '<div class="hist-grade">'+grade+'</div>'+
+        '<div><div class="hist-name">'+esc(names[h.region]||'Scan')+' view</div>'+
+          '<div class="hist-date">'+esc(dateText)+'</div>'+
+          (quote?'<p class="hist-verdict">“'+esc(quote.length>145?quote.slice(0,145)+'…':quote)+'”</p>':'')+
+        '</div><div class="hist-score">'+(Number.isFinite(score)?(Math.max(0,Math.min(100,score))/10).toFixed(1)+'/10':'—')+'</div>'+
+      '</article>';
+    }).join(''):'<p class="hist-empty">No saved '+(historyRegion==='all'?'':' '+esc(names[historyRegion]||'')+' view')+' scans yet.</p>');
+}
 async function showHistory(){
   track('history_viewed');
   const body=document.getElementById('histBody');
@@ -1627,9 +1665,10 @@ async function showHistory(){
   show('screen-history');
   if(!hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
   if(!hasFreshEntitlementToken()){
-    body.innerHTML='<p class="hist-empty">Scan history is part of paid access. '+
-      '<button class="recover-link" onclick="openRecoveryModal()">Restore access</button> if you\'ve already paid, '+
-      'or unlock the <button class="recover-link" onclick="handlePurchase(\'scan\')">Full Body Audit</button>.</p>';
+    body.innerHTML='<div class="workspace-empty"><span class="db-kicker">YOUR SCAN RECORD</span><h3>Keep every scan in one place.</h3>'+
+      '<p>Saved scan history is included with the Full Body Audit. Return later with the same email to review your paid results.</p>'+
+      '<div class="workspace-empty-actions"><button class="db-primary" onclick="handlePurchase(\'scan\')">Unlock the audit →</button>'+
+      '<button class="db-text-link" onclick="openRecoveryModal()">Already paid? Restore access</button></div></div>';
     return;
   }
   try{
@@ -1641,28 +1680,17 @@ async function showHistory(){
     const data=await res.json().catch(()=>null);
     if(!res.ok || !data || !Array.isArray(data.history)) throw new Error('history_failed');
     if(!data.history.length){
-      body.innerHTML='<p class="hist-empty">No scans saved yet. Paid scans are stored here automatically from now on — scan an angle to start your record.</p>';
+      body.innerHTML='<div class="workspace-empty"><span class="db-kicker">NO SAVED SCANS</span><h3>Your history starts with a scan.</h3>'+
+        '<p>Paid scans will appear here after you complete an angle. Start with a well-lit photo and use a consistent setup when you come back.</p>'+
+        '<button class="db-primary" onclick="goHome(\'scanSection\')">Scan an angle →</button></div>';
       return;
     }
-    const viewNames={front:'Front',back:'Back',legs:'Legs',arms_side:'Arms / Side'};
-    body.innerHTML=data.history.slice().reverse().map(h=>{
-      const g=(h.score!=null)?scoreToGrade(h.score):'—';
-      const d=new Date((h.ts||0)*1000);
-      const date=d.toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
-      let quote='';
-      if(h.verdict){
-        const v=String(h.verdict);
-        quote=' · “'+esc(v.length>80?v.slice(0,80)+'…':v)+'”';
-      }
-      return '<div class="hist-row">'+
-        '<div class="hist-grade">'+g+'</div>'+
-        '<div><div class="hist-name">'+esc(viewNames[h.region]||h.region||'Scan')+'</div>'+
-        '<div class="hist-date">'+esc(date)+quote+'</div></div>'+
-        '<div class="hist-score">'+(h.score!=null?(h.score/10).toFixed(1)+'/10':'—')+'</div>'+
-      '</div>';
-    }).join('');
+    historyEntries=data.history;
+    historyRegion='all';
+    renderHistoryList();
   }catch(e){
-    body.innerHTML='<p class="hist-empty">Could not load history right now. Try again in a moment.</p>';
+    body.innerHTML='<div class="workspace-empty"><span class="db-kicker">TEMPORARILY UNAVAILABLE</span><h3>We could not load your history.</h3>'+
+      '<p>Your saved scans are still tied to your account. Try the request again.</p><button class="db-primary" onclick="showHistory()">Try again →</button></div>';
   }
 }
 
@@ -1677,7 +1705,7 @@ function progShell(inner){
       '<h2>Progress.</h2>'+
       '<p>Two scans of the same angle, side by side — which muscles actually moved.</p>'+
     '</div>'+inner+
-    '<button class="btn ghost" style="margin-top:18px" onclick="show(\'screen-home\')">← Back</button>'+
+    '<button class="btn ghost" style="margin-top:18px" onclick="showDashboard()">← Dashboard</button>'+
   '</div></div>';
 }
 
@@ -1753,7 +1781,7 @@ function renderProgressLocked(){
         '<li>Scan history tied to your email, on any device</li>'+
       '</ul>'+
       '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CutRank Pro →</button>'+
-      '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">← Back</button>'+
+      '<button class="btn ghost" style="margin-top:8px" onclick="showDashboard()">← Dashboard</button>'+
       '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
     '</div></div>';
 }
@@ -1855,7 +1883,7 @@ function impShell(inner){
       '<h2>Improve.</h2>'+
       '<p>Your split and your diet, audited against what the scan actually shows.</p>'+
     '</div>'+inner+
-    '<button class="btn ghost" style="margin-top:18px" onclick="show(\'screen-home\')">← Back</button>'+
+    '<button class="btn ghost" style="margin-top:18px" onclick="showDashboard()">← Dashboard</button>'+
   '</div></div>';
 }
 
@@ -1897,7 +1925,7 @@ function renderImproveLocked(){
         '<li>Rescan after — Progress shows whether it worked</li>'+
       '</ul>'+
       '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CutRank Pro →</button>'+
-      '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">← Back</button>'+
+      '<button class="btn ghost" style="margin-top:8px" onclick="showDashboard()">← Dashboard</button>'+
       '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
     '</div></div>';
 }
@@ -3058,6 +3086,6 @@ function renderProfile(){
       '</div>') +
     '<div class="pf-actions">' +
       '<button class="btn ghost" onclick="showStrength()">' + (str ? 'Update my lifts' : 'Enter my lifts') + '</button>' +
-      '<button class="btn ghost" onclick="show(\'screen-home\')">&larr; Back</button>' +
+      '<button class="btn ghost" onclick="showDashboard()">&larr; Dashboard</button>' +
     '</div>';
 }
