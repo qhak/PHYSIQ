@@ -48,7 +48,7 @@ function dashboardCoverage(){
 }
 
 function dashboardHistoryHTML(){
-  if(!hasFreshEntitlementToken()) return '<div class="db-empty"><strong>Your scan record starts here.</strong><p>Saved scan history comes with the Full Body Audit. Restore access if you have already purchased it.</p><div class="db-inline-actions"><button onclick="showHistory()">See history access →</button><button onclick="openRecoveryModal()">Restore access</button></div></div>';
+  if(!hasEntitlementHint()) return '<div class="db-empty"><strong>Your scan record starts here.</strong><p>Saved scan history comes with the Full Body Audit. Restore access if you have already purchased it.</p><div class="db-inline-actions"><button onclick="showHistory()">See history access →</button><button onclick="openRecoveryModal()">Restore access</button></div></div>';
   if(dashboardHistoryError) return '<div class="db-empty"><strong>History is unavailable right now.</strong><p>Your saved scans could not be loaded. Try again from History.</p><button onclick="showHistory()">Try History →</button></div>';
   if(dashboardHistory===null) return '<div class="db-empty"><strong>Loading your scans…</strong></div>';
   if(!dashboardHistory.length) return '<div class="db-empty"><strong>No saved scans yet.</strong><p>Paid scans will appear here after you complete an angle.</p><button onclick="goHome(\'scanSection\')">Scan an angle →</button></div>';
@@ -87,7 +87,7 @@ function renderDashboard(){
   const overall=computeOverall();
   const done=VIEWS.filter(v=>viewsDone[v.id]);
   const action=dashboardScanAction();
-  const tier=hasFreshEntitlementToken()?tierDisplayLabel(userTierDisplay):hasAccount()?'Free account':'Guest';
+  const tier=tierDisplayLabel(userTierDisplay);
   const muscles=MUSCLES.filter(k=>k!=='conditioning' && profile[k] && Number.isFinite(Number(profile[k].score)))
     .sort((a,b)=>Number(profile[a].score)-Number(profile[b].score));
   const lowest=muscles[0];
@@ -122,6 +122,7 @@ function renderDashboard(){
 }
 
 async function showDashboard(){
+  if(!await requireWorkspaceAccess('screen-dashboard')) return;
   dashboardHistory=null;
   dashboardHistoryError=false;
   show('screen-dashboard');
@@ -130,7 +131,7 @@ async function showDashboard(){
   if(userEmail && !hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
   if(!document.getElementById('screen-dashboard').classList.contains('active')) return;
   renderDashboard();
-  if(!hasFreshEntitlementToken()) return;
+  if(!hasEntitlementHint()) return;
   try{
     const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+entitlementToken},body:JSON.stringify({action:'get_history'})});
     const data=await res.json().catch(()=>null);

@@ -44,6 +44,8 @@ let entitlementToken = null;
 let entitlementTokenExp = 0;
 let refreshToken = null;    // long-lived device token from checkout / email code
 let userTierDisplay = null; // display hint from the worker only; never authority
+let accountVerified = false; // set only after checkout, code redemption, or refresh-token verification
+let workspaceDestination = 'screen-dashboard';
 
 // ---- localStorage: convenience only, never authority ----
 function saveState(){
@@ -94,16 +96,18 @@ function loadState(){
 
 function hasAccount(){ return !!userEmail; }
 function hasFreshEntitlementToken(){ return !!entitlementToken && entitlementTokenExp > Date.now() + 30000; }
-function hasEntitlementHint(){ return hasFreshEntitlementToken() && !!userTierDisplay; }
+function hasVerifiedAccount(){ return accountVerified && !!refreshToken && hasFreshEntitlementToken(); }
+function hasEntitlementHint(){ return hasFreshEntitlementToken() && ['scan','pro','lifetime'].includes(userTierDisplay); }
 function isProHint(){ return hasFreshEntitlementToken() && (userTierDisplay === "pro" || userTierDisplay === "lifetime"); }
 function storeEntitlement(data){
   if(!data) return;
+  if(data.email && userEmail && data.email.toLowerCase()!==userEmail.toLowerCase() && typeof clearCachedAccountProfile==='function') clearCachedAccountProfile();
   if(data.email) userEmail=data.email;
   if(data.token){
     entitlementToken=data.token;
     entitlementTokenExp=Date.now()+((data.expires_in||900)*1000);
   }
-  if(data.refresh_token) refreshToken=data.refresh_token;
+  if(data.refresh_token){ refreshToken=data.refresh_token; accountVerified=true; }
   if(data.tier) userTierDisplay=data.tier==='dev'?null:data.tier;
   if(typeof refreshDevAccess==='function') refreshDevAccess();
   saveState();
@@ -113,6 +117,7 @@ function clearEntitlement(){
   entitlementToken=null;
   entitlementTokenExp=0;
   userTierDisplay=null;
+  accountVerified=false;
   saveState();
 }
 
@@ -288,8 +293,8 @@ async function refreshEntitlementToken(){
         body:JSON.stringify({action:'refresh_token'})
       });
       const data=await res.json().catch(()=>null);
-      if(res.ok && data && data.active && data.token){ storeEntitlement(data); return true; }
-      if(res.status===401){ refreshToken=null; saveState(); }
+      if(res.ok && data && data.active && data.token){ storeEntitlement(data); accountVerified=true; return true; }
+      if(res.status===401){ refreshToken=null; accountVerified=false; saveState(); }
       else if(res.ok && data && data.active===false){ clearEntitlement(); return false; }
     }catch(err){ return false; }
   }
@@ -437,14 +442,14 @@ async function analyzeView(view,file,retriedToken){
   if(status) status.textContent='reading image…';
   if(userEmail && !hasFreshEntitlementToken()) await refreshEntitlementToken();
   const headers={"Content-Type":"application/json"};
-  if(hasFreshEntitlementToken()) headers.Authorization="Bearer "+entitlementToken;
+  if(hasEntitlementHint()) headers.Authorization="Bearer "+entitlementToken;
   let ts_token='';
-  if(!hasFreshEntitlementToken() && TURNSTILE_SITE_KEY){
+  if(!hasEntitlementHint() && TURNSTILE_SITE_KEY){
     if(status) status.textContent='quick human check…';
     ts_token=await getTurnstileToken();
     if(status) status.textContent='reading image…';
   }
-  const res=await fetch(WORKER_URL,{method:"POST",headers,body:JSON.stringify({region:view,image,normalized_image,media_type,email:userEmail||"",token:entitlementToken||"",ts_token,dob:dateOfBirth||""})});
+  const res=await fetch(WORKER_URL,{method:"POST",headers,body:JSON.stringify({region:view,image,normalized_image,media_type,email:userEmail||"",token:hasEntitlementHint()?entitlementToken:"",ts_token,dob:dateOfBirth||""})});
   const data=await res.json().catch(()=>null);
   if(res.status===401 && (!data || data.error==='invalid_token')){
     clearEntitlement();
@@ -561,15 +566,39 @@ function mergeIntoProfile(view,data){
 }
 
 function show(id){
+  if(document.getElementById(id)?.classList.contains('workspace-screen') && !hasVerifiedAccount()){
+    workspaceDestination=id;
+    id='screen-login';
+  }
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.body.classList.toggle('workspace-open',document.getElementById(id).classList.contains('workspace-screen'));
+  if(id==='screen-login' && typeof prepareLoginScreen==='function') prepareLoginScreen();
   document.querySelectorAll('[data-workspace-screen]').forEach(button=>{
     if(button.dataset.workspaceScreen===id) button.setAttribute('aria-current','page');
     else button.removeAttribute('aria-current');
   });
   window.scrollTo(0,0);
   if(typeof updateMobCta==='function') updateMobCta();
+}
+async function requireWorkspaceAccess(id){
+  if(hasVerifiedAccount()) return true;
+  workspaceDestination=id;
+  show('screen-login');
+  if(refreshToken){
+    await refreshEntitlementToken().catch(()=>{});
+    refreshHome();
+  }
+  return hasVerifiedAccount();
+}
+function openWorkspaceDestination(){
+  const id=workspaceDestination;
+  if(id==='screen-history') return showHistory();
+  if(id==='screen-progress') return showProgress();
+  if(id==='screen-improve') return showImprove();
+  if(id==='screen-strength') return showStrength();
+  if(id==='screen-profile') return showProfile();
+  return showDashboard();
 }
 function goHome(id){
   show('screen-home');
@@ -1260,15 +1289,14 @@ function handleAuthLink(){
     const rc=(qs.get('rc')||'').trim(), re=(qs.get('re')||'').trim();
     if(!/^\d{6}$/.test(rc)||!re) return;
     history.replaceState(null,'',location.pathname);
-    openRecoveryModal();
-    const e=document.getElementById('recoveryEmail');
-    const c=document.getElementById('recoveryCode');
-    const btn=document.getElementById('recoverySubmit');
+    workspaceDestination='screen-dashboard';
+    show('screen-login');
+    const e=document.getElementById('loginEmail');
+    const c=document.getElementById('loginCode');
     if(e) e.value=re;
-    recoveryStage='code';
-    if(c){c.style.display='block';c.value=rc;}
-    if(btn) btn.textContent='Verify code';
-    submitRecoveryCode();
+    if(c) c.value=rc;
+    if(typeof showLoginCodeStep==='function') showLoginCodeStep();
+    if(typeof submitLoginCode==='function') submitLoginCode();
   }catch(err){}
 }
 window.addEventListener('DOMContentLoaded',handleAuthLink);
@@ -1307,7 +1335,7 @@ async function submitRecoveryEmail(){
       body:JSON.stringify({action:'issue_token',email})
     });
     const data=await res.json().catch(()=>null);
-    if(res.ok && data && data.active && data.token){
+    if(res.ok && data && data.active && data.token && data.tier!=='free'){
       storeEntitlement(data);
       refreshHome();
       track('recovery_success',{tier:data.tier||''});
@@ -1372,7 +1400,7 @@ async function submitRecoveryCode(){
       body:JSON.stringify({action:'redeem_code',email,code})
     });
     const data=await res.json().catch(()=>null);
-    if(res.ok && data && data.active && data.token){
+    if(res.ok && data && data.active && data.token && data.tier!=='free'){
       storeEntitlement(data);
       refreshHome();
       track('recovery_success',{tier:data.tier||'',method:'code'});
@@ -1381,8 +1409,8 @@ async function submitRecoveryCode(){
       setTimeout(()=>{closeModal('recoveryModal');showConfirmScreen();},450);
       return;
     }
-    if(res.ok && data && data.active===false){
-      if(status){status.textContent='No active purchase found for that email.';status.className='recovery-status err';}
+    if(res.ok && data && (data.active===false || data.tier==='free')){
+      if(status){status.textContent='No active purchase found for that email. You can still sign in to your free dashboard.';status.className='recovery-status err';}
       return;
     }
     if(status){status.textContent='Code invalid or expired. Re-enter your email to get a new one.';status.className='recovery-status err';}
@@ -1620,7 +1648,7 @@ function buildUpsellHTML(){
 }
 
 function tierDisplayLabel(tier){
-  return {scan:'Full Body Audit',pro:'CutRank Pro',lifetime:'Lifetime'}[tier]||'Paid access';
+  return {free:'Free account',scan:'Full Body Audit',pro:'CutRank Pro',lifetime:'Lifetime'}[tier]||'Account';
 }
 
 // ============================================================
@@ -1659,12 +1687,13 @@ function renderHistoryList(){
     }).join(''):'<p class="hist-empty">No saved '+(historyRegion==='all'?'':' '+esc(names[historyRegion]||'')+' view')+' scans yet.</p>');
 }
 async function showHistory(){
+  if(!await requireWorkspaceAccess('screen-history')) return;
   track('history_viewed');
   const body=document.getElementById('histBody');
   body.innerHTML='<p class="hist-empty">Loading…</p>';
   show('screen-history');
   if(!hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
-  if(!hasFreshEntitlementToken()){
+  if(!hasEntitlementHint()){
     body.innerHTML='<div class="workspace-empty"><span class="db-kicker">YOUR SCAN RECORD</span><h3>Keep every scan in one place.</h3>'+
       '<p>Saved scan history is included with the Full Body Audit. Return later with the same email to review your paid results.</p>'+
       '<div class="workspace-empty-actions"><button class="db-primary" onclick="handlePurchase(\'scan\')">Unlock the audit →</button>'+
@@ -1710,6 +1739,7 @@ function progShell(inner){
 }
 
 async function showProgress(){
+  if(!await requireWorkspaceAccess('screen-progress')) return;
   track('progress_viewed');
   const body=document.getElementById('progressBody');
   body.innerHTML=progShell('<p class="hist-empty">Loading…</p>');
@@ -1888,6 +1918,7 @@ function impShell(inner){
 }
 
 async function showImprove(){
+  if(!await requireWorkspaceAccess('screen-improve')) return;
   track('improve_viewed');
   const body=document.getElementById('improveBody');
   body.innerHTML=impShell('<p class="hist-empty">Loading…</p>');
@@ -2707,7 +2738,8 @@ function computeStrength(){
 
 let strSearchQ = '';
 
-function showStrength(){
+async function showStrength(){
+  if(!await requireWorkspaceAccess('screen-strength')) return;
   show('screen-strength');
   renderStrength();
   track('strength_open', {});
@@ -2991,7 +3023,8 @@ function strHeatmapHTML(r){
 
 // ---- Profile: both ranks, and the plot that puts them against each other --
 
-function showProfile(){
+async function showProfile(){
+  if(!await requireWorkspaceAccess('screen-profile')) return;
   show('screen-profile');
   renderProfile();
   track('profile_open', {});

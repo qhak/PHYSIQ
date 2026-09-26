@@ -115,6 +115,27 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
 .hist-verdict{font-size:12px;line-height:1.55;color:#586b82;margin:8px 0 0;max-width:65ch}
 .workspace-screen .progress-wrap{min-height:70vh;padding:45px 0}
 
+/* The public site stays visible until an inbox code verifies the account. */
+#screen-login{min-height:calc(100vh - 80px);background:#f4f7fb}
+.login-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);align-items:center;gap:clamp(35px,7vw,100px);max-width:1100px;margin:auto;padding:clamp(65px,10vw,135px) 30px}
+.login-intro h1{font:400 clamp(48px,6vw,78px)/1.04 Georgia,'Times New Roman',serif;letter-spacing:-.065em;color:#142438;margin:14px 0 20px}
+.login-intro p{max-width:52ch;color:#61728a;font-size:15px;line-height:1.75}
+.login-benefits{display:grid;gap:13px;margin-top:35px;padding-top:24px;border-top:1px solid #dce5ef;color:#354e6b;font:600 12px 'JetBrains Mono',monospace}
+.login-card{padding:38px;background:#fff;border:1px solid #dce5ef;border-radius:20px;box-shadow:0 24px 65px rgba(18,51,93,.09)}
+.login-card-mark{display:grid;place-items:center;width:44px;height:44px;border-radius:11px;background:#246bc9;color:#fff;font-size:25px;font-weight:800}
+.login-card h2{font:400 37px Georgia,'Times New Roman',serif;letter-spacing:-.05em;color:#182a40;margin:25px 0 9px}
+.login-card>p{font-size:13px;line-height:1.6;color:#6b7b90;margin:0 0 25px}
+.login-card label{display:block;margin:17px 0 7px;color:#283d56;font-size:12px;font-weight:700}
+.login-card input{display:block;width:100%;height:47px;padding:0 13px;border:1px solid #cddae8;border-radius:9px;background:#fbfdff;color:#192d44;font:500 14px Inter,system-ui,sans-serif}
+.login-card input:focus{outline:2px solid #6ba7ee;outline-offset:1px}
+.login-card .db-primary{width:100%;margin-top:6px;text-align:center}
+.login-status{min-height:19px;margin:13px 0 1px!important;font-size:12px!important;color:#42618b!important}
+.login-status.error{color:#a34343!important}
+.login-card #loginResend{display:block;margin:13px auto 0;text-align:center}
+.login-card #loginResend[hidden],#loginCodeStep[hidden]{display:none}
+.login-back{display:block;margin:25px auto 0;padding:3px;border:0;background:none;color:#76869a;font:600 11px Inter,system-ui,sans-serif;cursor:pointer}
+.login-back:hover{text-decoration:underline}
+
 @media(max-width:1100px){
   .db-layout{grid-template-columns:minmax(0,1.5fr) minmax(240px,.9fr)}
   .workspace-screen>.wrap{padding:34px 28px 70px}
@@ -123,6 +144,9 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
   .db-grade{min-height:150px}.db-grade strong{font-size:78px}
 }
 @media(max-width:850px){
+  .login-layout{grid-template-columns:1fr;max-width:650px;padding:60px 25px;gap:28px}
+  .login-intro h1{font-size:55px}
+  .login-benefits{display:none}
   .db-layout{grid-template-columns:1fr}
   .db-side{grid-template-columns:repeat(2,minmax(0,1fr))}
   .db-side .db-next{grid-row:span 2}
@@ -137,6 +161,8 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
   .workspace-mobile-top div{display:flex;align-items:center;gap:11px}
   .workspace-mobile-top div button{font-size:11px;color:#58708c}
   .workspace-mobile-top div button:last-child{padding:8px 10px;border-radius:8px;background:#256bc9;color:#fff}
+  .workspace-mobile-top div button:last-child{padding:0;background:none;color:#58708c}
+  .workspace-mobile-top div button:nth-child(2){padding:8px 10px;border-radius:8px;background:#256bc9;color:#fff}
   body.workspace-open .workspace-nav{inset:auto 0 0;width:100%;height:72px;padding:5px 6px max(5px,env(safe-area-inset-bottom));box-shadow:0 -7px 24px rgba(13,30,53,.16)}
   .workspace-brand,.workspace-nav-bottom{display:none}
   .workspace-nav-group{display:flex;align-items:stretch;justify-content:space-around;gap:0;width:100%;height:100%}
@@ -155,6 +181,9 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
   .workspace-empty{padding:25px}
 }
 @media(max-width:460px){
+  .login-layout{padding:45px 15px}
+  .login-intro h1{font-size:46px}
+  .login-card{padding:25px}
   .workspace-screen>.wrap{padding-left:15px;padding-right:15px}
   .db-card{padding:18px}
   .db-card h2{font-size:26px}

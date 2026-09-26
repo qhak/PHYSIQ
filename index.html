@@ -146,9 +146,9 @@
       <button data-workspace-screen="screen-strength" onclick="showStrength()"><span aria-hidden="true">▥</span>Strength</button>
       <button data-workspace-screen="screen-profile" onclick="showProfile()"><span aria-hidden="true">◎</span>Profile</button>
     </div>
-    <div class="workspace-nav-bottom"><button onclick="goHome('scanSection')">＋ New scan</button><button onclick="show('screen-home')">← Back to site</button></div>
+    <div class="workspace-nav-bottom"><button onclick="goHome('scanSection')">＋ New scan</button><button onclick="show('screen-home')">← Back to site</button><button onclick="signOutWorkspace()">Sign out</button></div>
   </nav>
-  <div class="workspace-mobile-top"><button onclick="showDashboard()"><span>C</span>CutRank</button><div><button onclick="show('screen-home')">Site</button><button onclick="goHome('scanSection')">＋ Scan</button></div></div>
+  <div class="workspace-mobile-top"><button onclick="showDashboard()"><span>C</span>CutRank</button><div><button onclick="show('screen-home')">Site</button><button onclick="goHome('scanSection')">＋ Scan</button><button onclick="signOutWorkspace()">Sign out</button></div></div>
 
   <!-- HOME -->
   <section class="screen active" id="screen-home">
@@ -574,7 +574,7 @@
         </div>
         <div class="faq">
           <details class="faq-item"><summary class="faq-q">Is the free scan really free?</summary><div class="faq-a">Yes. One angle, fully graded, no card required. Just an email to reveal the result.</div></details>
-          <details class="faq-item"><summary class="faq-q">Why do you need my email?</summary><div class="faq-a">It links your result and any purchase, so paid access can be restored on any device. An email address is required for every signup and saved in our MailerLite contact list.</div></details>
+          <details class="faq-item"><summary class="faq-q">Why do you need my email?</summary><div class="faq-a">It reveals your free result, lets us send a sign-in code, and connects any purchase to your account. Emails submitted at result reveal are saved in our MailerLite contact list; marketing requires consent.</div></details>
           <details class="faq-item"><summary class="faq-q">What photo works best?</summary><div class="faq-a">Good light, plain background, shorts, full region in frame. A phone camera is fine. Bad photos get refused — they don't get graded generously.</div></details>
           <details class="faq-item"><summary class="faq-q">Can I cancel anytime?</summary><div class="faq-a">Yes. No contracts, no questions.</div></details>
           <details class="faq-item"><summary class="faq-q">How accurate is the grading?</summary><div class="faq-a">CutRank uses an AI vision model to estimate visible muscle development from the photo you upload. It is not a medical tool, a DEXA scan, or a body-composition measurement.</div></details>
@@ -662,6 +662,16 @@
       <button class="btn ghost" style="margin-top:4px" onclick="showHistory()">Scan history</button>
       <button class="btn ghost" style="margin-top:8px" onclick="showDashboard()">Open dashboard →</button>
     </div></div></div>
+  </section>
+
+  <!-- ACCOUNT SIGN-IN — required before entering the workspace -->
+  <section class="screen" id="screen-login">
+    <div class="login-layout"><div class="login-intro"><span class="db-kicker">YOUR CUTRANK ACCOUNT</span><h1>Sign in to see your progress.</h1><p>Get a one-time code by email to open your dashboard. Free accounts can sign in; saved history and Improve follow your plan.</p><div class="login-benefits"><span>01&nbsp; Review your physique</span><span>02&nbsp; See your scan coverage</span><span>03&nbsp; Return after a training block</span></div></div>
+      <div class="login-card"><div class="login-card-mark">C</div><h2>Welcome back.</h2><p id="loginIntro">Enter your email and we’ll send a six-digit sign-in code.</p>
+        <label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" onkeydown="if(event.key==='Enter')requestLoginCode()">
+        <div id="loginCodeStep" hidden><label for="loginCode">Six-digit code</label><input id="loginCode" type="text" autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="[0-9]*" placeholder="000000" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,6)" onkeydown="if(event.key==='Enter')submitLoginCode()"></div>
+        <p class="login-status" id="loginStatus" role="status" aria-live="polite"></p><button class="db-primary" id="loginSubmit" onclick="requestLoginCode()">Email me a code →</button><button class="db-text-link" id="loginResend" hidden onclick="requestLoginCode()">Send a new code</button><button class="login-back" onclick="show('screen-home')">← Back to the site</button>
+      </div></div>
   </section>
 
   <!-- WORKSPACE OVERVIEW — live account state and entry points to the tools below -->
@@ -808,7 +818,7 @@
 
         <h3>2. What we collect</h3>
         <ul>
-          <li><strong>Your email address</strong> — submitted at the result-reveal gate and used to identify your account.</li>
+          <li><strong>Your email address</strong> — submitted at result reveal or sign-in and used to identify your account and send a one-time sign-in code.</li>
           <li><strong>Your date of birth</strong> — submitted before a scan, used only to confirm you are 18 or over, and not stored.</li>
           <li><strong>Photos you upload</strong> — processed in real time to generate a grade, then discarded (see below).</li>
           <li><strong>Payment information</strong> — handled entirely by Stripe. We never see or store your card details.</li>
@@ -1004,6 +1014,7 @@
 
 <script src="/photo-normalization.js"></script>
 <script src="/app.js"></script>
+<script src="/login.js"></script>
 <script src="/dashboard.js"></script>
 <script src="/dev-access.js"></script>
 </body>
