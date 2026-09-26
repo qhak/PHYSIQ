@@ -92,6 +92,22 @@ body{background:var(--bg)}
 .sample-insight p{margin-top:15px;font-size:12px;line-height:1.6;color:var(--soft)}
 #screen-home .hero-preview .sample-note{font-size:10px;line-height:1.55;max-width:430px;margin:14px auto 0}
 
+/* Generated physique examples explain angle and visibility, not outcomes. */
+.physique-examples{padding:0 0 76px}
+.examples-intro{display:flex;align-items:end;justify-content:space-between;gap:36px;margin-bottom:27px}
+.examples-intro .section-kicker{margin-bottom:14px}
+.examples-intro h2{font:400 clamp(39px,4.2vw,57px)/1.08 Georgia,'Times New Roman',serif;letter-spacing:-.055em;color:var(--ink)}
+.examples-intro h2 em{font-style:italic;color:var(--blue)}
+.examples-intro>p{max-width:36ch;color:var(--dim);font-size:14px;line-height:1.65;padding-bottom:3px}
+.examples-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.example-card{overflow:hidden;background:var(--surface);border:1px solid var(--line2);border-radius:18px;box-shadow:0 12px 30px rgba(27,62,103,.05)}
+.example-card img{display:block;width:100%;height:clamp(290px,33vw,410px);object-fit:cover;object-position:center 25%;background:#eae6de}
+.example-card figcaption{display:flex;flex-direction:column;gap:7px;padding:19px 21px 22px}
+.example-card figcaption span{font:600 9px/1.4 'JetBrains Mono',monospace;letter-spacing:.14em;color:var(--blue-deep)}
+.example-card figcaption strong{font-size:18px;font-weight:700;letter-spacing:-.035em;color:var(--ink)}
+.example-card figcaption small{font-size:12px;line-height:1.55;color:var(--dim)}
+.examples-note{font-size:11px;color:var(--faint);line-height:1.5;margin-top:14px}
+
 /* Shared editorial hierarchy and lighter product surfaces. */
 .sec-head h2,#screen-home .final-cta h2,#screen-home .verdict-section h2{
   font-family:Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-.055em;
@@ -152,6 +168,12 @@ body{background:var(--bg)}
   #screen-home .hero-l h1{font-size:clamp(53px,10.7vw,76px)}
   #screen-home .hero-l p.sub{font-size:16px;line-height:1.6}
   #screen-home .hero-preview{justify-self:center;width:100%;max-width:480px}
+  .examples-intro{display:block}
+  .examples-intro>p{margin-top:16px;max-width:52ch}
+  .examples-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .example-card:last-child{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+  .example-card:last-child img{height:100%;min-height:240px}
+  .example-card:last-child figcaption{justify-content:center}
   #screen-home .hero-secondary{display:inline-flex}
   #screen-home #scanSection{padding:50px 0 55px!important}
   #screen-home .journey{grid-template-columns:1fr;gap:12px;padding:40px 0 58px}
@@ -176,6 +198,16 @@ body{background:var(--bg)}
   #screen-home .hero-assurance{margin-top:25px;padding-top:16px;gap:10px 15px}
   #screen-home .preview-caption{font-size:8px}
   #screen-home .hero-preview:before{inset:20px -7px 32px 20px}
+  .physique-examples{padding-bottom:54px}
+  .examples-intro h2{font-size:clamp(35px,9.2vw,46px)}
+  .examples-intro>p{font-size:13px}
+  .examples-grid{grid-template-columns:1fr;gap:12px}
+  .example-card,.example-card:last-child{display:grid;grid-template-columns:42% 1fr;min-height:176px}
+  .example-card:last-child{grid-column:auto}
+  .example-card img,.example-card:last-child img{height:100%;min-height:176px;max-height:225px;object-position:center 20%}
+  .example-card figcaption{justify-content:center;padding:15px 16px}
+  .example-card figcaption strong{font-size:16px}
+  .example-card figcaption small{font-size:11px}
   #screen-home .home-signature-card .vc-header{padding:18px 19px 0}
   #screen-home .home-signature-card .signature-main{padding:23px 17px 26px}
   #screen-home .home-signature-card .vc-footer{margin:0 19px;padding:14px 0 16px}
