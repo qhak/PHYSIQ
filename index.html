@@ -111,6 +111,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
 
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/ui-refresh.css">
 
 <!-- Cloudflare Turnstile. Required: the worker enforces TURNSTILE_SECRET, so
      without this script getTurnstileToken() waits 10s for window.turnstile,
@@ -140,18 +141,18 @@
       <!-- First impression: a clear promise, an honest example, then the scan. -->
       <div class="hero">
         <div class="hero-l">
-          <span class="section-kicker">PHYSIQUE FEEDBACK. NO FLATTERY.</span>
-          <h1>Know your rank.<br>Find your<br><em>next focus.</em></h1>
-          <p class="sub">One photo. An S–E grade, a score for each visible muscle group, and a clear read on what needs work.</p>
+          <span class="section-kicker hero-kicker"><span class="kicker-dot" aria-hidden="true"></span> THE PHYSIQUE INTELLIGENCE SYSTEM</span>
+          <h1>Your physique.<br><em>Understood.</em><br>Improved.</h1>
+          <p class="sub">Get a direct read of what this photo shows: your grade, visible-muscle scores, proportion insights, and the next area to train.</p>
           <div class="hero-actions">
             <button class="bigcta" onclick="track('hero_cta_click');goHome('scanSection')">Get my free grade <span aria-hidden="true">↗</span></button>
-            <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">Explore the example ↓</button>
+            <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">Explore a sample result <span aria-hidden="true">↗</span></button>
           </div>
           <span class="hero-note">First scan free. Email to reveal. No card or password.</span>
-          <div class="hero-assurance"><span>Photos not stored by CutRank</span><span>18+ · AI visual estimate</span></div>
+          <div class="hero-assurance"><span><b aria-hidden="true">✓</b> Visible areas only</span><span><b aria-hidden="true">✓</b> Photos not stored by CutRank</span><span>18+ · AI visual estimate</span></div>
         </div>
         <div class="hero-preview" id="demoSection">
-          <div class="preview-caption"><span>YOUR RESULT CARD</span><span>EXAMPLE / 01</span></div>
+          <div class="preview-caption"><span>INSIDE THE ANALYSIS</span><span>ILLUSTRATIVE EXAMPLE / 01</span></div>
           <article class="vc result-vc signature-card home-signature-card grade-C" id="sampleCard" aria-label="Example CutRank result card. Your uploaded physique photo appears in the circle.">
             <div class="vc-inner">
               <div class="vc-header"><span class="vc-brand-tag">CutRank</span><span class="vc-badge">Front view</span></div>
@@ -162,14 +163,22 @@
               <div class="vc-footer"><span class="signature-footnote"><span>AI estimate</span><span class="vc-site">cutrank.app</span></span></div>
             </div>
           </article>
-          <p class="sample-note">Your uploaded photo appears in the circle. Grade and label are illustrative.</p>
+          <div class="sample-insight" aria-label="Illustrative example of CutRank feedback">
+            <div class="sample-insight-head"><span>THE READ</span><span>FRONT VIEW</span></div>
+            <div class="sample-insight-grid">
+              <div><span class="sample-insight-label">VISIBLE STRENGTH</span><strong>Shoulders</strong></div>
+              <div><span class="sample-insight-label">NEXT FOCUS</span><strong>Chest</strong></div>
+            </div>
+            <p>“Shoulders carry this photo. Chest is less visible from this angle, so the torso read is cautious. The gap is the work.”</p>
+          </div>
+          <p class="sample-note">Illustrative grade and feedback, not a real user result. Your photo appears on your own card.</p>
         </div>
       </div>
       <div class="setup" id="setupNote" style="display:none"></div>
       <section class="sec" id="scanSection">
-        <div class="sec-head"><span class="section-kicker">01 / THE SCAN</span>
-          <h2>Your first scan starts here.</h2>
-          <p>Start with a front photo for chest, shoulders and arms. Or choose the angle you want feedback on.</p>
+        <div class="sec-head"><span class="section-kicker">01 / START YOUR ANALYSIS</span>
+          <h2>Start with one angle.</h2>
+          <p>Choose what you want assessed. Front gives you a starting read of your chest, shoulders, arms and abs.</p>
         </div>
         <p class="scan-terms">One angle free · Email to reveal · No card required</p>
         <div class="views" id="viewGrid"></div>
