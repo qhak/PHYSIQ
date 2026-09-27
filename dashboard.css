@@ -7,11 +7,11 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
 .workspace-nav button{font:inherit;cursor:pointer}
 .workspace-brand{display:flex;align-items:center;gap:12px;width:100%;padding:2px 13px 29px;color:#fff;background:none;border:0;text-align:left;font-size:20px;font-weight:750;letter-spacing:-.05em}
 .workspace-brand small{display:block;margin-top:2px;font:600 8px/1.4 'JetBrains Mono',monospace;letter-spacing:.19em;color:#a8bed6}
-.workspace-mark{display:grid;place-items:center;width:36px;height:36px;flex:none;border-radius:10px;background:#1b2d45;color:white}
-.workspace-mark svg{width:29px;height:29px}
+.workspace-mark{display:grid;place-items:center;width:42px;height:42px;flex:none}
+.workspace-mark img{display:block;width:42px;height:42px;border-radius:8px}
 .brand-wordmark{white-space:nowrap;letter-spacing:-.065em}
 .brand-rank{color:#2874ec}
-.nav .brand .brand-mark{width:33px;height:33px;color:#101823}
+.nav .brand .brand-mark{width:42px;height:42px}
 .workspace-nav-group{display:grid;gap:4px}
 .workspace-nav-group button,.workspace-nav-bottom button{display:flex;align-items:center;gap:13px;width:100%;min-height:44px;padding:10px 13px;border:0;border-radius:10px;background:transparent;color:#b4c4d8;text-align:left;font-size:13px;font-weight:600;transition:background .18s,color .18s}
 .workspace-nav-group button span{display:grid;place-items:center;width:21px;flex:none;font-size:18px;line-height:1;font-weight:400;color:#92aac8}
@@ -141,8 +141,8 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
 .login-intro p{max-width:52ch;color:#61728a;font-size:15px;line-height:1.75}
 .login-benefits{display:grid;gap:13px;margin-top:35px;padding-top:24px;border-top:1px solid #dce5ef;color:#354e6b;font:600 12px 'JetBrains Mono',monospace}
 .login-card{padding:38px;background:#fff;border:1px solid #dce5ef;border-radius:20px;box-shadow:0 24px 65px rgba(18,51,93,.09)}
-.login-card-mark{display:grid;place-items:center;width:46px;height:46px;border-radius:11px;background:#101823;color:#fff}
-.login-card-mark svg{width:34px;height:34px}
+.login-card-mark{display:grid;place-items:center;width:58px;height:58px}
+.login-card-mark img{display:block;width:58px;height:58px;border-radius:11px}
 .login-card h2{font:400 37px Georgia,'Times New Roman',serif;letter-spacing:-.05em;color:#182a40;margin:25px 0 9px}
 .login-card>p{font-size:13px;line-height:1.6;color:#6b7b90;margin:0 0 25px}
 .login-card label{display:block;margin:17px 0 7px;color:#283d56;font-size:12px;font-weight:700}
@@ -176,8 +176,8 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
   .nav .links .nav-dashboard::before{content:'◫';font-size:21px;line-height:1;color:#1e64ba}
   body.workspace-open .workspace-mobile-top{display:flex;position:fixed;inset:0 0 auto;z-index:90;height:58px;align-items:center;justify-content:space-between;padding:0 17px;background:rgba(255,255,255,.96);border-bottom:1px solid #dbe5f0;backdrop-filter:blur(12px)}
   .workspace-mobile-top button{display:inline-flex;align-items:center;gap:7px;border:0;background:none;color:#192b41;font:700 14px Inter,system-ui,sans-serif;cursor:pointer}
-  .workspace-mobile-top button>span:first-child{display:grid;place-items:center;width:27px;height:27px;border-radius:7px;background:#101823;color:#fff}
-  .workspace-mobile-top button>span:first-child svg{width:22px;height:22px}
+  .workspace-mobile-top button>span:first-child{display:grid;place-items:center;width:32px;height:32px}
+  .workspace-mobile-top button>span:first-child img{display:block;width:32px;height:32px;border-radius:6px}
   .workspace-mobile-top div{display:flex;align-items:center;gap:11px}
   .workspace-mobile-top div button{font-size:11px;color:#58708c}
   .workspace-mobile-top div button:last-child{padding:8px 10px;border-radius:8px;background:#256bc9;color:#fff}

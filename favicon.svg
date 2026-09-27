@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
-  <title id="title">CutRank favicon</title>
-  <desc id="desc">Angular white C with a blue rising corner on a dark rounded square.</desc>
-  <rect x="2" y="2" width="60" height="60" rx="14" fill="#101823"/>
-  <path d="M51 12H27L13 26V40L27 52H51" fill="none" stroke="#f7f9fc" stroke-width="8" stroke-linecap="square" stroke-linejoin="bevel"/>
-  <path d="M13 26L27 12H36" fill="none" stroke="#2874ec" stroke-width="8" stroke-linecap="square" stroke-linejoin="bevel"/>
-</svg>
