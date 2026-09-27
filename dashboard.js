@@ -2,6 +2,7 @@
 // not create scores or store photos. Paid history still comes from the worker.
 let dashboardHistory=null;
 let dashboardHistoryError=false;
+let dashboardImprove=null;
 
 function dashboardDate(ts){
   const date=new Date(Number(ts)*1000);
@@ -81,6 +82,32 @@ function dashboardProgressHTML(){
     '<p>'+esc(name)+' view since '+esc(dashboardDate(comparable.list[1].ts))+'. Compare matched scans before reading a small change as progress.</p>';
 }
 
+function dashboardPlanHTML(lowest,done){
+  const report=isProHint()&&dashboardImprove?.report;
+  const firstChange=report?.training?.changes?.find(change=>change?.action);
+  const focus=report?.focus;
+  const weeks=Number(report?.recheck_weeks);
+  const created=Number(dashboardImprove?.created);
+  const recheck=Number.isFinite(weeks)&&weeks>0&&weeks<=52&&Number.isFinite(created)&&created>0
+    ?dashboardDate(created+weeks*7*86400):null;
+  const observation=lowest
+    ?'<div class="db-focus"><span>LOWEST VISIBLE MUSCLE SCORE</span><strong>'+esc(cap(lowest))+'</strong><small>'+dashboardScore(profile[lowest].score)+'/10 from your current profile · a visual observation, not a training diagnosis</small></div>'
+    :'<p>Your first scan will give you a starting point.</p>';
+  return '<section class="db-card db-next" aria-labelledby="dbPlanTitle">'+
+    '<span class="db-kicker">YOUR NEXT BLOCK</span><h2 id="dbPlanTitle">From scan to progress.</h2>'+
+    (focus?'<div class="db-plan-report"><span>YOUR IMPROVE FOCUS</span><strong>'+esc(focus)+'</strong>'+
+      (firstChange?'<p><b>'+esc(firstChange.area||'Training')+':</b> '+esc(firstChange.action)+'</p>':'')+'</div>':observation)+
+    '<ol class="db-plan-steps">'+
+      '<li class="'+(done.length?'complete':'')+'"><span>01</span><div><strong>Get a baseline</strong><small>'+(done.length?done.length+' of 4 angles scanned':'Start with a front view')+'</small></div></li>'+
+      '<li class="'+(focus?'complete':'')+'"><span>02</span><div><strong>Choose your focus</strong><small>'+(focus?'Your Improve report is ready':isProHint()?'Review your training in Improve':'Add your training details in Improve with Pro')+'</small></div></li>'+
+      '<li><span>03</span><div><strong>Rescan the same angle</strong><small>'+(recheck?'Report suggests a recheck around '+esc(recheck):'Keep pose, distance and lighting similar')+'</small></div></li>'+
+    '</ol>'+
+    '<div class="db-plan-actions"><button class="db-plan-primary" onclick="'+(done.length?'showImprove()':"goHome('scanSection')")+'">'+(done.length?'Open Improve':'Start a scan')+' →</button>'+
+      (done.length?'<button class="db-text-link" onclick="showProgress()">View progress →</button>':'')+'</div>'+
+    (!isProHint()?'<span class="db-feature-tag">IMPROVE REQUIRES PRO</span>':'')+
+  '</section>';
+}
+
 function renderDashboard(){
   const body=document.getElementById('dashboardBody');
   if(!body) return;
@@ -110,10 +137,7 @@ function renderDashboard(){
       '<section class="db-card" aria-labelledby="dbHistoryTitle"><div class="db-card-heading"><div><span class="db-kicker">03 / YOUR RECORD</span><h2 id="dbHistoryTitle">Recent scans</h2></div><button class="db-text-link" onclick="showHistory()">View all →</button></div>'+
         dashboardHistoryHTML()+'</section>'+
     '</main><aside class="db-side" aria-label="Your next steps">'+
-      '<section class="db-card db-next"><span class="db-kicker">NEXT TRAINING BLOCK</span><h2>Know what to work on.</h2>'+
-        (lowest?'<div class="db-focus"><span>LOWEST VISIBLE MUSCLE SCORE</span><strong>'+esc(cap(lowest))+'</strong><small>'+dashboardScore(profile[lowest].score)+'/10 from your current profile</small></div>':'<p>Your visible scores will appear here after your first scan.</p>')+
-        '<p>Improve reviews your weekly sets and diet against your latest scan.</p><button class="db-text-link" onclick="showImprove()">Open Improve →</button>'+
-        (!isProHint()?'<span class="db-feature-tag">PRO FEATURE</span>':'')+'</section>'+
+      dashboardPlanHTML(lowest,done)+
       '<section class="db-card db-progress"><span class="db-kicker">TRACK THE CHANGE</span><h2>Progress</h2>'+dashboardProgressHTML()+
         '<button class="db-text-link" onclick="showProgress()">Compare scans →</button></section>'+
       '<section class="db-card db-small"><span class="db-kicker">BEYOND THE PHOTO</span><h2>Strength profile</h2><p>Enter your lifts to see how your strength rank compares with your physique read.</p><button class="db-text-link" onclick="showStrength()">Open Strength →</button></section>'+
@@ -125,6 +149,7 @@ async function showDashboard(){
   if(!await requireWorkspaceAccess('screen-dashboard')) return;
   dashboardHistory=null;
   dashboardHistoryError=false;
+  dashboardImprove=null;
   show('screen-dashboard');
   renderDashboard();
   track('dashboard_viewed');
@@ -132,11 +157,17 @@ async function showDashboard(){
   if(!document.getElementById('screen-dashboard').classList.contains('active')) return;
   renderDashboard();
   if(!hasEntitlementHint()) return;
-  try{
-    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+entitlementToken},body:JSON.stringify({action:'get_history'})});
-    const data=await res.json().catch(()=>null);
-    if(!res.ok || !data || !Array.isArray(data.history)) throw new Error('history_failed');
-    dashboardHistory=data.history;
-  }catch(e){dashboardHistoryError=true;}
+  const request=async action=>{
+    const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+entitlementToken},body:JSON.stringify({action})});
+    if(!res.ok) throw new Error(action+'_failed');
+    return res.json();
+  };
+  const [history,improve]=await Promise.allSettled([
+    request('get_history'),
+    isProHint()?request('get_improve'):Promise.resolve(null)
+  ]);
+  if(history.status==='fulfilled'&&Array.isArray(history.value?.history)) dashboardHistory=history.value.history;
+  else dashboardHistoryError=true;
+  if(improve.status==='fulfilled'&&improve.value?.record?.report) dashboardImprove=improve.value.record;
   if(document.getElementById('screen-dashboard').classList.contains('active')) renderDashboard();
 }

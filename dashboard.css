@@ -87,6 +87,21 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
 .db-focus span{font:600 9px/1.4 'JetBrains Mono',monospace;letter-spacing:.12em;color:#95b8e6}
 .db-focus strong{font-size:21px;letter-spacing:-.03em}
 .db-focus small{font-size:11px;color:#b4c5d9}
+.db-plan-report{padding:15px 0;margin:10px 0 3px;border-top:1px solid #354b63}
+.db-plan-report>span{display:block;margin-bottom:7px;font:600 9px/1.4 'JetBrains Mono',monospace;letter-spacing:.12em;color:#95b8e6}
+.db-plan-report>strong{display:block;font-size:17px;line-height:1.45;color:#fff}
+.db-plan-report p{margin:9px 0 0!important;color:#c8d8e9!important}
+.db-plan-report b{color:#fff}
+.db-plan-steps{list-style:none;padding:0;margin:17px 0 18px;border-top:1px solid #354b63}
+.db-plan-steps li{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #354b63}
+.db-plan-steps li>span{display:grid;place-items:center;width:27px;height:27px;flex:none;border:1px solid #55708c;border-radius:50%;color:#b8cbe0;font:700 10px 'JetBrains Mono',monospace}
+.db-plan-steps li.complete>span{border-color:#65abdc;background:#255581;color:#fff}
+.db-plan-steps li>div{display:grid;gap:3px}
+.db-plan-steps strong{font-size:12px;color:#fff}
+.db-plan-steps small{font-size:11px;line-height:1.45;color:#b4c5d9}
+.db-plan-actions{display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin-bottom:11px}
+.db-plan-primary{min-height:36px;padding:9px 13px;border:0;border-radius:8px;background:#edf5ff;color:#174e91;font:700 11px Inter,system-ui,sans-serif;cursor:pointer}
+.db-plan-primary:hover{background:#fff}
 .db-feature-tag{display:inline-block;margin-left:10px;padding:4px 7px;border:1px solid currentColor;border-radius:4px;font:600 8px/1 'JetBrains Mono',monospace;letter-spacing:.11em;color:#90b7e8;vertical-align:middle}
 .db-progress .db-feature-tag{margin:0 0 15px;color:#7f93ad}
 .db-progress-delta{font-size:38px;font-weight:650;letter-spacing:-.06em;color:#2168c4;margin:-2px 0 7px}
@@ -148,8 +163,7 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
   .login-intro h1{font-size:55px}
   .login-benefits{display:none}
   .db-layout{grid-template-columns:1fr}
-  .db-side{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .db-side .db-next{grid-row:span 2}
+  .db-side{grid-template-columns:1fr}
 }
 @media(max-width:700px){
   .nav .links{gap:9px}
