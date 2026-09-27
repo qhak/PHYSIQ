@@ -120,11 +120,12 @@
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="cutrank-symbol" viewBox="0 0 64 64"><path d="M53 10H27L11 26V42L27 54H53" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="square" stroke-linejoin="bevel"/><path d="M11 26L27 10H38" fill="none" stroke="#2874ec" stroke-width="9" stroke-linecap="square" stroke-linejoin="bevel"/></symbol></svg>
   <input type="file" id="filein" accept="image/*" style="display:none">
   <div class="toast" id="toast"></div>
 
   <nav class="nav">
-    <div class="brand"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 4 H26 Q29 4 29 7 V20 Q29 23 26 23 H14 L8 29 V23 H6 Q3 23 3 20 V7 Q3 4 6 4 Z" fill="var(--blue)"/><rect x="14.6" y="8" width="2.8" height="7.5" rx="1.4" fill="var(--bg)"/><circle cx="16" cy="19" r="1.7" fill="var(--bg)"/></svg>CutRank</div>
+    <div class="brand"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><use href="#cutrank-symbol"/></svg><span class="brand-wordmark">Cut<span class="brand-rank">Rank</span></span></div>
     <div class="links">
       <button class="navlink" onclick="goHome('howStrip')">How it works</button>
       <button class="navlink" onclick="goHome('pricingSection')">Pricing</button>
@@ -137,7 +138,7 @@
   </nav>
 
   <nav class="workspace-nav" id="workspaceNav" aria-label="CutRank workspace">
-    <button class="workspace-brand" onclick="showDashboard()" aria-label="CutRank dashboard"><span class="workspace-mark">C</span><span>CutRank <small>WORKSPACE</small></span></button>
+    <button class="workspace-brand" onclick="showDashboard()" aria-label="CutRank dashboard"><span class="workspace-mark"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#cutrank-symbol"/></svg></span><span><span class="brand-wordmark">Cut<span class="brand-rank">Rank</span></span><small>WORKSPACE</small></span></button>
     <div class="workspace-nav-group" aria-label="Your tools">
       <button data-workspace-screen="screen-dashboard" onclick="showDashboard()"><span aria-hidden="true">◫</span>Overview</button>
       <button data-workspace-screen="screen-history" onclick="showHistory()"><span aria-hidden="true">▤</span>History</button>
@@ -148,7 +149,7 @@
     </div>
     <div class="workspace-nav-bottom"><button onclick="goHome('scanSection')">＋ New scan</button><button onclick="show('screen-home')">← Back to site</button><button onclick="signOutWorkspace()">Sign out on this device</button></div>
   </nav>
-  <div class="workspace-mobile-top"><button onclick="showDashboard()"><span>C</span>CutRank</button><div><button onclick="show('screen-home')">Site</button><button onclick="goHome('scanSection')">＋ Scan</button><button onclick="signOutWorkspace()" aria-label="Sign out on this device">Sign out</button></div></div>
+  <div class="workspace-mobile-top"><button onclick="showDashboard()"><span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#cutrank-symbol"/></svg></span><span class="brand-wordmark">Cut<span class="brand-rank">Rank</span></span></button><div><button onclick="show('screen-home')">Site</button><button onclick="goHome('scanSection')">＋ Scan</button><button onclick="signOutWorkspace()" aria-label="Sign out on this device">Sign out</button></div></div>
 
   <!-- HOME -->
   <section class="screen active" id="screen-home">
@@ -667,7 +668,7 @@
   <!-- ACCOUNT SIGN-IN — required before entering the workspace -->
   <section class="screen" id="screen-login">
     <div class="login-layout"><div class="login-intro"><span class="db-kicker">YOUR CUTRANK ACCOUNT</span><h1>Sign in to see your progress.</h1><p>Get a one-time code by email to open your dashboard. Free accounts can sign in; saved history and Improve follow your plan.</p><div class="login-benefits"><span>01&nbsp; Review your physique</span><span>02&nbsp; See your scan coverage</span><span>03&nbsp; Return after a training block</span></div></div>
-      <div class="login-card"><div class="login-card-mark">C</div><h2>Welcome back.</h2><p id="loginIntro">Enter your email and we’ll send a six-digit sign-in code.</p>
+      <div class="login-card"><div class="login-card-mark"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#cutrank-symbol"/></svg></div><h2>Welcome back.</h2><p id="loginIntro">Enter your email and we’ll send a six-digit sign-in code.</p>
         <label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" onkeydown="if(event.key==='Enter')requestLoginCode()">
         <div id="loginCodeStep" hidden><label for="loginCode">Six-digit code</label><input id="loginCode" type="text" autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="[0-9]*" placeholder="000000" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,6)" onkeydown="if(event.key==='Enter')submitLoginCode()"></div>
         <p class="login-status" id="loginStatus" role="status" aria-live="polite"></p><button class="db-primary" id="loginSubmit" onclick="requestLoginCode()">Email me a code →</button><button class="db-text-link" id="loginResend" hidden onclick="requestLoginCode()">Send a new code</button><button class="login-back" onclick="show('screen-home')">← Back to the site</button>

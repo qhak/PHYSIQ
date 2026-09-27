@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">CutRank mark</title>
+  <desc id="desc">Angular C with a blue rising corner.</desc>
+  <path d="M53 10H27L11 26V42L27 54H53" fill="none" stroke="#101823" stroke-width="9" stroke-linecap="square" stroke-linejoin="bevel"/>
+  <path d="M11 26L27 10H38" fill="none" stroke="#2874ec" stroke-width="9" stroke-linecap="square" stroke-linejoin="bevel"/>
+</svg>
