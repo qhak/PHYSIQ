@@ -8,3 +8,8 @@ dev.html
 # Netlify publishes from the repo root, so anything committed here is live on the site.
 CLAUDE.md
 .claude/
+
+# Cloudflare build output and local tooling
+dist/
+node_modules/
+.wrangler/
