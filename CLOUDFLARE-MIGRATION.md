@@ -7,8 +7,10 @@ The static site is deployed as a Cloudflare Worker with static assets at
 
 ## Current state (2026-09-29)
 
-- The production site `cutrank.app` still uses Namecheap nameservers and points
-  to Netlify. The preview is separate from production.
+- The production site `cutrank.app` still points to Netlify. Namecheap was
+  updated to Cloudflare nameservers `hunts.ns.cloudflare.com` and
+  `liberty.ns.cloudflare.com` on 2026-09-29. Cloudflare zone activation is
+  pending propagation. The preview is separate from production.
 - All 29 sitemap URLs returned HTTP 200 on the preview. The existing `.html`
   paths are served directly. Extensionless versions redirect to `.html`.
 - `/t1`–`/t15`, `/i1`–`/i15`, `/10`, and `/100` retain their existing redirects.
@@ -18,15 +20,15 @@ The static site is deployed as a Cloudflare Worker with static assets at
 
 ## Production switch
 
-1. Add `cutrank.app` to the same Cloudflare account as `cutrank-site`.
-   Review the imported DNS records before changing nameservers. The currently
-   observed records include an apex A record (`75.2.60.5`), a `www` CNAME to
+1. `cutrank.app` has been added to the same Cloudflare account as `cutrank-site`
+   on the Free plan. The five automatically imported records match the observed
+   public records: an apex A record (`75.2.60.5`), a `www` CNAME to
    `tiny-stroopwafel-7f56a2.netlify.app`, MX records for
    `mx1.improvmx.com` (priority 10) and `mx2.improvmx.com` (priority 20), and
    apex SPF TXT `v=spf1 include:spf.improvmx.com ~all`. Check the registrar and
    Cloudflare dashboards for any additional records, especially email records.
-2. In Namecheap, replace the current registrar nameservers with the two nameservers
-   assigned to **this exact Cloudflare zone**. Wait until the zone is Active.
+2. Namecheap now has the two nameservers assigned to **this exact Cloudflare
+   zone**. Wait until the zone is Active.
    Keep the imported Netlify DNS records in place until the Worker custom domains
    are ready, so the site can continue to serve during the DNS change.
 3. Add `cutrank.app` and `www.cutrank.app` as Custom Domains on `cutrank-site`.
