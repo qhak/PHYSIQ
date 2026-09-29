@@ -1,0 +1,4 @@
+# Keep rendered links aligned with the .html URLs in our sitemap and canonicals.
+# Netlify's default Pretty URLs processing strips .html from links in HTML.
+[build.processing.html]
+pretty_urls = false
