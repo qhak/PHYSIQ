@@ -5,42 +5,41 @@ The static site is deployed as a Cloudflare Worker with static assets at
 `X-Robots-Tag: noindex, nofollow`; its HTML canonicals still point to
 `https://cutrank.app/`.
 
-## Current state (2026-09-29)
+## Current state (2026-09-29, 21:45 BST)
 
-- The production site `cutrank.app` still points to Netlify. Namecheap was
-  updated to Cloudflare nameservers `hunts.ns.cloudflare.com` and
-  `liberty.ns.cloudflare.com` on 2026-09-29. Cloudflare zone activation is
-  pending propagation. The preview is separate from production.
+- The Cloudflare zone is Active. Namecheap uses
+  `hunts.ns.cloudflare.com` and `liberty.ns.cloudflare.com`.
+- `cutrank.app` and `www.cutrank.app` are Worker custom domains. The old Netlify
+  A/CNAME records were replaced. The preview remains separate.
 - All 29 sitemap URLs returned HTTP 200 on the preview. The existing `.html`
   paths are served directly. Extensionless versions redirect to `.html`.
+- All 29 sitemap URLs also returned HTTP 200 on the production Worker when
+  pinned to a Cloudflare edge IP. No production response had a noindex header.
+  Extensionless pages, campaign shortlinks, `www` to apex, and 404s passed.
+- Cloudflare authoritative DNS retained the two Improvmx MX records with
+  priorities 10/20 and the SPF TXT record. The existing AI API's CORS preflight
+  still allows `https://cutrank.app`.
+- Public DNS caches may temporarily disagree during nameserver propagation.
+  At this check, 1.1.1.1 returned Cloudflare nameservers while 8.8.8.8 and the
+  local resolver still cached the old Netlify path.
 - `/t1`–`/t15`, `/i1`–`/i15`, `/10`, and `/100` retain their existing redirects.
 - `callout-ai.com` is still served by Netlify and redirects to `cutrank.app`.
   The Worker has equivalent old-domain routing for a later move.
 - The existing AI/payment API stays on its separate Worker.
 
-## Production switch
+## Changes made
 
-1. `cutrank.app` has been added to the same Cloudflare account as `cutrank-site`
-   on the Free plan. The five automatically imported records match the observed
-   public records: an apex A record (`75.2.60.5`), a `www` CNAME to
-   `tiny-stroopwafel-7f56a2.netlify.app`, MX records for
-   `mx1.improvmx.com` (priority 10) and `mx2.improvmx.com` (priority 20), and
-   apex SPF TXT `v=spf1 include:spf.improvmx.com ~all`. Check the registrar and
-   Cloudflare dashboards for any additional records, especially email records.
-2. Namecheap now has the two nameservers assigned to **this exact Cloudflare
-   zone**. Wait until the zone is Active.
-   Keep the imported Netlify DNS records in place until the Worker custom domains
-   are ready, so the site can continue to serve during the DNS change.
-3. Add `cutrank.app` and `www.cutrank.app` as Custom Domains on `cutrank-site`.
-   Cloudflare creates the Worker DNS records and certificates. Remove the old
-   Netlify A/CNAME records for these hostnames when the dashboard asks or before
-   attaching the matching hostname.
-4. Check `/`, every sitemap URL, `/sitemap.xml`, `/robots.txt`, the shortlinks,
-   `www` to apex redirect, and one normal AI flow on the production domain.
-   Confirm production responses have **no** `X-Robots-Tag: noindex` header.
-5. Leave `callout-ai.com` on Netlify until its own Cloudflare zone and verification
-   exception are migrated. Its current redirects will continue pointing to the
-   new `cutrank.app` host.
+1. Added `cutrank.app` to the Cloudflare account on the Free plan; reviewed
+   its imported DNS records and MX priorities.
+2. Updated the domain's nameservers at Namecheap and activated the zone.
+3. Attached both production hostnames to the Worker through Wrangler custom
+   domain routes, replacing the old Netlify web DNS records.
+4. Checked the 29 SEO pages, redirects, sitemap, email DNS, and API CORS.
+
+A complete paid scan or checkout flow was not exercised during the migration.
+Those still call the existing backend and Stripe endpoints without code changes.
+The old `callout-ai.com` domain remains on Netlify so its redirect and Search
+Console verification exception continue working.
 
 Build and deploy updates with `npm ci && npm run deploy`. The build copies only
 tracked public file types to `dist/`; it does not upload `_redirects`, Git files,
