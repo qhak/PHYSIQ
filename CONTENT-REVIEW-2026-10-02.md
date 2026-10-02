@@ -1,6 +1,8 @@
 # CutRank content revision — 2 October 2026
 
-Prepared locally; not committed, pushed, deployed or submitted in Search Console.
+Committed and pushed as 4aeb4b6 on codex/migrate-cutrank-cloudflare, then deployed to Cloudflare on 2 October 2026. Production version: a1ad6347-940f-4acc-881a-1248b1cabd50. No Search Console indexing requests submitted for this release yet.
+
+Production verification: all six revised guides return 200 and match the release, with self-referencing canonicals. Retired peptides URL variants return 410. The sitemap contains 28 URLs and excludes peptides. The live FFMI calculator returns 22.2 raw and 22.5 normalized for 175 cm, 80 kg and 15% body fat. Evidence: ../outputs/cutrank-release-verification-2026-10-02.json and ../outputs/cutrank-live-content-2026-10-02.png.
 
 ## Changes
 
@@ -16,7 +18,7 @@ Distinct abs/theory pages and the already improved muscle-loss page remain avail
 
 ## Local review
 
-Run npm run dev to start the local Worker. The current preview session uses port 8003:
+Run npm run dev to start the local Worker. The reviewed preview used port 8003; that session was stopped before the production build:
 
 - http://127.0.0.1:8003/ffmi-calculator.html
 - http://127.0.0.1:8003/should-i-bulk-or-cut.html
