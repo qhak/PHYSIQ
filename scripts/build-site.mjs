@@ -9,6 +9,9 @@ const publicExtensions = new Set([
 const files = execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' })
   .split('\0')
   .filter(Boolean)
+  // git ls-files also includes pending deletions. Retired pages must never
+  // be copied back into the public build.
+  .filter((file) => file !== 'what-are-peptides.html')
   .filter((file) => publicExtensions.has(extname(file).toLowerCase()))
   .filter((file) => !file.startsWith('worker/') && !file.startsWith('scripts/'));
 

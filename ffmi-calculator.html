@@ -14,20 +14,20 @@
 <!-- Lucid Analytics (self-hosted, cookieless) -->
 <script defer data-domain="cutrank.app" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
 
-<title>FFMI Calculator — Free Fat-Free Mass Index | CutRank</title>
-<meta name="description" content="Free FFMI calculator. Enter height, weight and body fat % for your Fat-Free Mass Index and normalized FFMI — the reference for natural muscle limits.">
+<title>Free FFMI Calculator: Formula and Input Limits | CutRank</title>
+<meta name="description" content="Calculate raw and normalized FFMI from height, weight and body-fat input. See the formula, a worked example and why fat-free mass is not muscle mass.">
 <link rel="canonical" href="https://cutrank.app/ffmi-calculator.html">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
-<meta property="og:title" content="FFMI Calculator — Free Fat-Free Mass Index Tool">
-<meta property="og:description" content="Enter height, weight and body fat % for your FFMI and normalized FFMI — the standard reference point for natural muscular development. Free, no signup.">
+<meta property="og:title" content="Free FFMI Calculator: Formula and Input Limits">
+<meta property="og:description" content="Calculate raw and normalized FFMI from height, weight and body-fat input. See the formula, a worked example and why fat-free mass is not muscle mass.">
 <meta property="og:url" content="https://cutrank.app/ffmi-calculator.html">
 <meta property="og:site_name" content="CutRank">
 <meta property="og:image" content="https://cutrank.app/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="FFMI Calculator — CutRank">
-<meta name="twitter:description" content="Free Fat-Free Mass Index calculator. Height, weight, body fat % in — your FFMI out.">
+<meta name="twitter:title" content="Free FFMI Calculator: Formula and Input Limits">
+<meta name="twitter:description" content="Calculate raw and normalized FFMI from height, weight and body-fat input. See the formula, a worked example and why fat-free mass is not muscle mass.">
 <meta name="twitter:image" content="https://cutrank.app/og-image.png">
 
 <!-- Structured data -->
@@ -35,8 +35,8 @@
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "FFMI Calculator — Fat-Free Mass Index Explained",
-  "description": "Free FFMI calculator with normalized FFMI, plus what the number actually means for natural muscular development.",
+  "headline": "Free FFMI Calculator: Formula and Input Limits",
+  "description": "Calculate raw and normalized FFMI from height, weight and body-fat input. See the formula, a worked example and why fat-free mass is not muscle mass.",
   "image": "https://cutrank.app/og-image.png",
   "url": "https://cutrank.app/ffmi-calculator.html",
   "publisher": {
@@ -63,10 +63,46 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type":"Question","name":"What is FFMI?","acceptedAnswer":{"@type":"Answer","text":"FFMI stands for Fat-Free Mass Index. It measures how much muscle mass you carry relative to your height, similar to how BMI relates weight to height — except FFMI strips out body fat first, so it actually reflects muscle rather than being thrown off by it."}},
-    {"@type":"Question","name":"What is a good FFMI?","acceptedAnswer":{"@type":"Answer","text":"Roughly: under 18 is untrained, 18-20 is average, 20-22 is visibly muscular from consistent training, 22-23 is advanced, and 23-25 is excellent. Around 25 is the figure most commonly cited in lifting communities as a rough natural ceiling, though genetics vary a lot and this is a reference point, not a hard rule."}},
-    {"@type":"Question","name":"Is 25 FFMI actually the natural limit?","acceptedAnswer":{"@type":"Answer","text":"No single number is a hard limit — it depends heavily on individual genetics, frame, and training history. 25 is simply the figure most often cited as an approximate upper range for drug-free lifters based on older research and decades of anecdotal data, not a scientifically proven ceiling every natural lifter will hit."}},
-    {"@type":"Question","name":"Why does FFMI need body fat percentage?","acceptedAnswer":{"@type":"Answer","text":"FFMI is calculated from fat-free mass, so it needs to know how much of your weight is fat versus everything else. Without a body fat estimate, the calculator can't separate muscle mass from total weight."}}
+    {
+      "@type": "Question",
+      "name": "What is FFMI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "FFMI is fat-free mass in kilograms divided by height in metres squared. Fat-free mass includes muscle, water, bone and organs; it is not a direct measurement of skeletal muscle."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a good FFMI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no universal target or validated training grade here. Interpretation depends on the input method and the population being compared. This calculator reports an index, not health, strength or training history."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is 25 FFMI the natural limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The often-quoted value comes from a particular male-athlete study and is not a universal biological ceiling. FFMI cannot establish whether an individual has used steroids."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does FFMI need body fat percentage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The calculator uses body-fat percentage to estimate how much total weight is fat-free mass. An uncertain body-fat input produces an uncertain FFMI output."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does CutRank use 6.1 for normalized FFMI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This calculator retains CutRank's existing 6.1 height-correction convention. The original Kouri study abstract reports 6.3. Record the coefficient when comparing results; normalization does not correct body-fat measurement error."
+      }
+    }
   ]
 }
 </script>
@@ -230,7 +266,7 @@
   <header class="hero">
     <div class="eyebrow">Free tool</div>
     <h1>FFMI <em>calculator</em></h1>
-    <p class="lede">Fat-Free Mass Index — the standard reference for how much muscle you're actually carrying relative to your height. Enter your numbers below, no signup, nothing sent anywhere.</p>
+    <p class="lede">Estimate fat-free mass relative to height from your weight and body-fat input. Includes raw and normalized FFMI; no signup needed. The calculation runs in your browser.</p>
 
     <div class="calc" id="calc">
       <div class="calc-row">
@@ -261,7 +297,7 @@
       </div>
       <div class="cta-row" style="margin-top:16px">
         <button class="bigcta" id="calcBtn" type="button">Calculate FFMI</button>
-        <span class="cta-sub">Don't know your body fat %? <a href="https://cutrank.app/#scanSection" onclick="plausible('seo_cta_click')" style="color:var(--blue)">Get an AI estimate from a photo</a></span>
+        <span class="cta-sub">Don't know your body fat %? <a href="/body-fat-measurement-accuracy.html" style="color:var(--blue)">Read about body-fat measurement limits</a></span>
       </div>
       <div class="calc-result" id="result">
         <div class="result-grid">
@@ -292,15 +328,10 @@
     </div>
   </header>
 
-  <section class="block">
-    <h2>What FFMI actually is</h2>
-    <p class="body">FFMI is like BMI's more honest cousin. BMI just divides your weight by your height — it can't tell a bodybuilder from someone carrying extra fat, because it doesn't know what the weight <em>is</em>. <strong>FFMI strips out body fat first</strong>, so what's left is a number that actually tracks muscle mass relative to your height.</p>
-    <p class="body">It comes from a 1995 study (Kouri et al.) that measured drug-free and steroid-using bodybuilders and found a rough ceiling in the natural group's FFMI scores — which is where the "25 is about the natural limit" figure you'll see everywhere originally came from.</p>
-  </section>
-
-  <section class="block">
+<section class="block"><h2>What FFMI measures</h2><p class="body"><strong>Fat-free mass is everything in body weight other than fat mass.</strong> It includes skeletal muscle, water, bone and organs. FFMI expresses that estimated mass relative to height; it cannot isolate how many kilograms of muscle you carry.</p><p class="body">A change in FFMI can reflect a change in weight or the body-fat input. It does not, by itself, establish muscle gain, muscle loss, health or substance use.</p></section>
+<section class="block">
     <h2>The <em>formula</em></h2>
-    <p class="body">Two steps: take the fat out of your weight, then divide by height squared. Same shape as BMI — it just runs on the lean part only.</p>
+    <p class="body">Two steps: take the fat out of your weight, then divide by height squared. BMI uses total weight divided by height squared; FFMI uses estimated fat-free mass instead.</p>
     <div class="formula">
       <div class="lbl">Fat-free mass</div>
       <div class="fx">weight (kg) <em>×</em> (1 <em>−</em> body fat % <em>÷</em> 100)</div>
@@ -312,42 +343,13 @@
         <b>Worked example.</b> 80&nbsp;kg at 15% body fat, 1.75&nbsp;m tall. Fat-free mass is 80 × 0.85 = <b>68&nbsp;kg</b>. FFMI is 68 ÷ (1.75 × 1.75) = <b>22.2</b>. Then normalized: 22.2 + 6.1 × (1.8 − 1.75) = <b>22.5</b>.
       </div>
     </div>
-    <div class="note" style="margin-top:20px"><strong>Why normalize at all?</strong> Lean mass scales faster than height squared, so dividing by height² under-corrects and quietly flatters taller lifters. The normalization adds a small amount back for anyone under 1.8&nbsp;m, which is why it&rsquo;s the normalized figure the bands below refer to — and the one this calculator grades you on.</div>
+    <div class="note" style="margin-top:20px"><strong>Our height convention:</strong> CutRank retains 6.1 × (1.80 − height in metres). Kouri and colleagues' original abstract reports 6.3. The correction changes the index, not your actual body composition. At 1.80 m it is zero. <a href="/normalized-ffmi.html">Compare the conventions</a>.</div>
   </section>
-
-  <section class="block">
-    <h2>What the <em>number</em> means</h2>
-    <div class="ladder">
-      <div class="rung"><span class="g">&lt;18</span><span class="gt"><b>Below average</b> — <span>little visible muscular development yet.</span></span></div>
-      <div class="rung"><span class="g">18–20</span><span class="gt"><b>Average</b> — <span>typical for someone with little to no training history.</span></span></div>
-      <div class="rung"><span class="g">20–22</span><span class="gt"><b>Muscular</b> — <span>visible, consistent training shows here.</span></span></div>
-      <div class="rung"><span class="g">22–23</span><span class="gt"><b>Advanced</b> — <span>clearly built, years of serious training.</span></span></div>
-      <div class="rung top"><span class="g">23–25</span><span class="gt"><b>Excellent</b> — <span>near the upper range most often cited for natural training.</span></span></div>
-      <div class="rung top"><span class="g">25+</span><span class="gt"><b>Exceptional</b> — <span>rare. The figure most commonly referenced as an approximate natural ceiling — not a hard rule.</span></span></div>
-    </div>
-    <div class="note" style="margin-top:20px">These bands (and the "25" figure especially) are commonly cited reference points from older research and decades of anecdotal data — not a scientifically proven hard limit. Genetics, frame size, limb length, and training history all move where any individual actually lands. Treat FFMI as a rough compass, not a verdict.</div>
-  </section>
-
-  <section class="block">
-    <h2>Why it needs your <em>body fat %</em></h2>
-    <p class="body">FFMI can't work off weight alone — it needs to know how much of that weight is actually muscle versus fat. If you don't know your body fat percentage precisely, a rough estimate is fine for this calculator; the number moves slowly with small errors in body fat.</p>
-    <p class="body">If you want a more accurate starting point than guessing in a mirror, an AI photo grade will give you a body fat range along with a full muscle-by-muscle breakdown — worth running once so future FFMI checks are working off a real number instead of a guess.</p>
-  </section>
-
-  <section class="block">
-    <h2>Questions</h2>
-    <details class="faq"><summary>What is FFMI?</summary><div class="a">FFMI stands for Fat-Free Mass Index. It measures how much muscle mass you carry relative to your height, similar to how BMI relates weight to height — except FFMI strips out body fat first, so it actually reflects muscle rather than being thrown off by it.</div></details>
-    <details class="faq"><summary>What is a good FFMI?</summary><div class="a">Roughly: under 18 is untrained, 18-20 is average, 20-22 is visibly muscular from consistent training, 22-23 is advanced, and 23-25 is excellent. Around 25 is the figure most commonly cited in lifting communities as a rough natural ceiling, though genetics vary a lot and this is a reference point, not a hard rule.</div></details>
-    <details class="faq"><summary>Is 25 FFMI actually the natural limit?</summary><div class="a">No single number is a hard limit — it depends heavily on individual genetics, frame, and training history. 25 is simply the figure most often cited as an approximate upper range for drug-free lifters based on older research and decades of anecdotal data, not a scientifically proven ceiling every natural lifter will hit.</div></details>
-    <details class="faq"><summary>Why does FFMI need body fat percentage?</summary><div class="a">FFMI is calculated from fat-free mass, so it needs to know how much of your weight is fat versus everything else. Without a body fat estimate, the calculator can't separate muscle mass from total weight.</div></details>
-  </section>
-
-  <section class="final">
-    <h2>Want the <em>full</em> picture?</h2>
-    <p>FFMI is one number. A real grade breaks down every muscle group.</p>
-    <a class="bigcta" href="https://cutrank.app/#scanSection" onclick="plausible('seo_cta_click')">Get your full grade — free</a>
-  </section>
-
+<section class="block"><h2>Interpret the result without a training grade</h2><p class="body">The result is an index in kg/m², not a percentile or a rating of your physique. A single value cannot establish how long someone has trained, how strong they are, or whether their diet should change.</p><p class="body">The often-quoted normalized FFMI of 25 comes from Kouri and colleagues' 1995 sample of male athletes. It is not a universal natural ceiling or a doping test, and the study is not a reference scale for everyone. <a href="https://pubmed.ncbi.nlm.nih.gov/7496846/">Read the original study</a>.</p></section>
+<section class="block"><h2>How much does an uncertain input matter?</h2><p class="body">For the 80 kg, 1.75 m example, entering 15% body fat gives raw FFMI 22.2. Entering 10% gives 23.5; entering 20% gives 20.9. That spread comes entirely from the input, with no change in measured weight or height.</p><p class="body">Try plausible inputs on either side of your estimate to see the sensitivity. This is a scenario comparison, not a confidence interval. Record your input method and use comparable conditions for later checks.</p><p class="body">A CutRank photo result is a visual interpretation. Any body-fat range offered in a paid report remains an estimate; it does not supply a clinically measured input for this calculator. <a href="/body-fat-measurement-accuracy.html">Understand body-fat measurement limits</a>.</p></section>
+<section class="block"><h2>Method and source</h2><p class="body"><a href="https://pubmed.ncbi.nlm.nih.gov/7496846/">Kouri et al. (1995), Fat-free mass index in users and nonusers of anabolic-androgenic steroids</a>. Used here to explain the historical comparison and height correction, not to validate CutRank's AI. The worked examples are arithmetic illustrations.</p><p class="body">General educational tool for adults. No clinical interpretation or individual diet prescription is provided.</p></section>
+<section class="block"><h2>Questions</h2><details class="faq"><summary>What is FFMI?</summary><div class="a">FFMI is fat-free mass in kilograms divided by height in metres squared. Fat-free mass includes muscle, water, bone and organs; it is not a direct measurement of skeletal muscle.</div></details><details class="faq"><summary>What is a good FFMI?</summary><div class="a">There is no universal target or validated training grade here. Interpretation depends on the input method and the population being compared. This calculator reports an index, not health, strength or training history.</div></details><details class="faq"><summary>Is 25 FFMI the natural limit?</summary><div class="a">No. The often-quoted value comes from a particular male-athlete study and is not a universal biological ceiling. FFMI cannot establish whether an individual has used steroids.</div></details><details class="faq"><summary>Why does FFMI need body fat percentage?</summary><div class="a">The calculator uses body-fat percentage to estimate how much total weight is fat-free mass. An uncertain body-fat input produces an uncertain FFMI output.</div></details><details class="faq"><summary>Why does CutRank use 6.1 for normalized FFMI?</summary><div class="a">This calculator retains CutRank's existing 6.1 height-correction convention. The original Kouri study abstract reports 6.3. Record the coefficient when comparing results; normalization does not correct body-fat measurement error.</div></details></section>
+<section class="final"><h2>Want feedback on <em>visible development?</em></h2><p>FFMI and a photo grade answer different questions. CutRank can offer a visual interpretation of the muscles your photo shows.</p><a class="bigcta" href="https://cutrank.app/#scanSection" onclick="plausible('seo_cta_click')">Get your free first-angle grade</a><p class="cta-sub">Adults 18+ · Email to reveal · No card required</p></section>
 <!-- RELATED SEO GUIDES START -->
 <section class="block" aria-label="Related guides"><h2>Explore this further</h2><ul class="checks"><li><a href="/ffmi-vs-bmi.html" style="color:var(--blue-deep);text-underline-offset:3px">FFMI vs BMI: the difference is what you count</a></li><li><a href="/normalized-ffmi.html" style="color:var(--blue-deep);text-underline-offset:3px">Normalized FFMI: what the height correction changes</a></li><li><a href="/body-fat-measurement-accuracy.html" style="color:var(--blue-deep);text-underline-offset:3px">How accurate is your body-fat measurement?</a></li></ul></section>
 <!-- RELATED SEO GUIDES END -->
@@ -406,8 +408,8 @@
     var wRaw = parseFloat(document.getElementById('weight').value);
     var bf = parseFloat(document.getElementById('bf').value);
 
-    if(!hRaw || !wRaw || bf===undefined || isNaN(bf) || bf<0 || bf>=70){
-      alert('Enter a valid height, weight and body fat % (0-70).');
+    if(!Number.isFinite(hRaw) || !Number.isFinite(wRaw) || hRaw<=0 || wRaw<=0 || !Number.isFinite(bf) || bf<0 || bf>=70){
+      alert('Enter a valid height, weight and body fat % (0 to less than 70).');
       return;
     }
 
@@ -421,30 +423,9 @@
     document.getElementById('ffmiVal').textContent = ffmi.toFixed(1);
     document.getElementById('nffmiVal').textContent = nFfmi.toFixed(1);
 
-    var tag;
-    if(nFfmi < 18) tag = 'Below average';
-    else if(nFfmi < 20) tag = 'Average';
-    else if(nFfmi < 22) tag = 'Muscular';
-    else if(nFfmi < 23) tag = 'Advanced';
-    else if(nFfmi < 25) tag = 'Excellent';
-    else tag = 'Exceptional — at or beyond the range most often cited as a natural reference ceiling';
-
-    document.getElementById('resultTag').innerHTML = 'Normalized FFMI of <b>' + nFfmi.toFixed(1) + '</b> — <b>' + tag + '</b>.';
+    document.getElementById('resultTag').textContent = 'Estimated index from your inputs — not a muscle measurement or training grade.';
     document.getElementById('result').classList.add('show');
-    (function(){
-      var why, txt, href, ev;
-      if(nFfmi < 20){
-        why = 'A low FFMI is a lean-mass problem, not a training-intensity problem. The lever that moves it is eating enough protein and calories, consistently, for months.';
-        txt = 'Work out your calorie and protein targets'; href = '/macro-calculator.html'; ev = 'ffmi_next_macros';
-      } else if(nFfmi < 23){
-        why = 'This number is only as good as the body fat % you typed in. Be wrong by five points and your FFMI moves by roughly a full point — which is the difference between two of the bands above.';
-        txt = 'Get a body fat estimate from a photo'; href = 'https://cutrank.app/#scanSection'; ev = 'seo_cta_click';
-      } else {
-        why = 'You are at or above the range most often cited as a natural ceiling. Past this point the number stops being the useful question — <b>which muscle groups are lagging</b> is.';
-        txt = 'See what separates the tiers'; href = '/s-tier-physique.html'; ev = 'ffmi_next_stier';
-      }
-      nextStep(why, txt, href, ev);
-    })();
+    nextStep('Body-fat input uncertainty carries through to both numbers. Try a plausible alternative input before interpreting a small difference.', 'Understand body-fat measurement limits', '/body-fat-measurement-accuracy.html', 'ffmi_next_measurement_limits');
     if(window.plausible) plausible('ffmi_calculated');
   });
 })();

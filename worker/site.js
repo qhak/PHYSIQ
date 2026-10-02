@@ -37,6 +37,19 @@ export default {
       return redirect(url, 301, preview);
     }
 
+    // This guide was intentionally retired. Cover its former URL variants
+    // before asset lookup so an extensionless visit cannot revive it.
+    if (/^\/what-are-peptides(?:\.html)?\/?$/.test(pathname)) {
+      const response = new Response(request.method === 'HEAD' ? null : 'This guide has been retired.', {
+        status: 410,
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'X-Robots-Tag': 'noindex',
+        },
+      });
+      return preview ? withPreviewNoindex(response) : response;
+    }
+
     const campaign = /^\/(t|i)([1-9]|1[0-5])$/.exec(pathname);
     if (campaign) {
       url.pathname = '/';
