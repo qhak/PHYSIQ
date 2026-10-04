@@ -15,13 +15,13 @@
 <!-- Lucid Analytics (self-hosted, cookieless) -->
 <script defer data-domain="cutrank.app" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
 <title>CutRank — AI physique feedback from photos. No flattery.</title>
-<meta name="description" content="CutRank gives direct AI feedback on visible physique development from photos. First scan free. Full Body Audit is £5.99 one-time.">
+<meta name="description" content="CutRank gives direct AI feedback on visible physique development from photos. First scan free. Full Body Audit is $6.99 one-time.">
 <link rel="canonical" href="https://cutrank.app/">
 
 <!-- Open Graph / social sharing -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="CutRank — AI physique feedback">
-<meta property="og:description" content="Direct AI feedback on visible physique development. First scan free. Full Body Audit £5.99.">
+<meta property="og:description" content="Direct AI feedback on visible physique development. First scan free. Full Body Audit $6.99.">
 <meta property="og:url" content="https://cutrank.app">
 <meta property="og:site_name" content="CutRank">
 <meta property="og:image" content="https://cutrank.app/og-image.png">
@@ -50,25 +50,25 @@
       "@type": "Offer",
       "name": "First scan",
       "price": "0",
-      "priceCurrency": "GBP"
+      "priceCurrency": "USD"
     },
     {
       "@type": "Offer",
       "name": "Full Body Audit",
-      "price": "5.99",
-      "priceCurrency": "GBP"
+      "price": "6.99",
+      "priceCurrency": "USD"
     },
     {
       "@type": "Offer",
       "name": "Pro subscription",
-      "price": "9.99",
-      "priceCurrency": "GBP"
+      "price": "14.99",
+      "priceCurrency": "USD"
     },
     {
       "@type": "Offer",
-      "name": "Lifetime",
-      "price": "29.99",
-      "priceCurrency": "GBP"
+      "name": "Pro yearly subscription",
+      "price": "59.99",
+      "priceCurrency": "USD"
     }
   ]
 }
@@ -101,8 +101,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CutRank">
 
-<!-- Favicons — crawlable CutRank rank-R mark -->
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<!-- Favicons — detailed CutRank physique emblem -->
 <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 
@@ -111,27 +110,46 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap">
 
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/ui-refresh.css">
+<link rel="stylesheet" href="/dashboard.css">
+<link rel="stylesheet" href="/brand-lockup.css">
 
 <!-- Cloudflare Turnstile. Required: the worker enforces TURNSTILE_SECRET, so
      without this script getTurnstileToken() waits 10s for window.turnstile,
      gives up, sends an empty ts_token, and every free scan fails 403. -->
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<link rel="stylesheet" href="/pricing-local.css">
 </head>
 <body>
   <input type="file" id="filein" accept="image/*" style="display:none">
   <div class="toast" id="toast"></div>
 
   <nav class="nav">
-    <div class="brand"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 4 H26 Q29 4 29 7 V20 Q29 23 26 23 H14 L8 29 V23 H6 Q3 23 3 20 V7 Q3 4 6 4 Z" fill="var(--blue)"/><rect x="14.6" y="8" width="2.8" height="7.5" rx="1.4" fill="var(--bg)"/><circle cx="16" cy="19" r="1.7" fill="var(--bg)"/></svg>CutRank</div>
+    <div class="brand brand-logo"><img class="brand-mark" src="/assets/cutrank-emblem.webp" alt="" width="42" height="42"><span class="brand-wordmark">CUT<span class="brand-rank">RANK</span></span></div>
     <div class="links">
       <button class="navlink" onclick="goHome('howStrip')">How it works</button>
       <button class="navlink" onclick="goHome('pricingSection')">Pricing</button>
       <button class="navlink" onclick="goHome('affiliateSection')">Affiliates</button>
       <button class="navlink" id="devAccessTab" hidden onclick="showDevAccess()">Dev Access</button>
+      <button class="navlink nav-dashboard" onclick="showDashboard()" aria-label="Open dashboard">Dashboard</button>
       <button class="navlink" onclick="showStrength()">Strength</button>
       <button class="navlink navcta" onclick="goHome('scanSection')">Get ranked</button>
     </div>
   </nav>
+
+  <nav class="workspace-nav" id="workspaceNav" aria-label="CutRank workspace">
+    <button class="workspace-brand" onclick="showDashboard()" aria-label="CutRank dashboard"><span class="workspace-mark"><img src="/assets/cutrank-emblem.webp" alt="" width="42" height="42"></span><span><span class="brand-wordmark">CUT<span class="brand-rank">RANK</span></span><small>WORKSPACE</small></span></button>
+    <div class="workspace-nav-group" aria-label="Your tools">
+      <button data-workspace-screen="screen-dashboard" onclick="showDashboard()"><span aria-hidden="true">◫</span>Overview</button>
+      <button data-workspace-screen="screen-history" onclick="showHistory()"><span aria-hidden="true">▤</span>History</button>
+      <button data-workspace-screen="screen-progress" onclick="showProgress()"><span aria-hidden="true">↗</span>Progress</button>
+      <button data-workspace-screen="screen-improve" onclick="showImprove()"><span aria-hidden="true">✦</span>Improve</button>
+      <button data-workspace-screen="screen-strength" onclick="showStrength()"><span aria-hidden="true">▥</span>Strength</button>
+      <button data-workspace-screen="screen-profile" onclick="showProfile()"><span aria-hidden="true">◎</span>Profile</button>
+    </div>
+    <div class="workspace-nav-bottom"><button onclick="goHome('scanSection')">＋ New scan</button><button onclick="show('screen-home')">← Back to site</button><button onclick="signOutWorkspace()">Sign out on this device</button></div>
+  </nav>
+  <div class="workspace-mobile-top"><button onclick="showDashboard()"><span><img src="/assets/cutrank-emblem.webp" alt="" width="32" height="32"></span><span class="brand-wordmark">CUT<span class="brand-rank">RANK</span></span></button><div><button onclick="show('screen-home')">Site</button><button onclick="goHome('scanSection')">＋ Scan</button><button onclick="signOutWorkspace()" aria-label="Sign out on this device">Sign out</button></div></div>
 
   <!-- HOME -->
   <section class="screen active" id="screen-home">
@@ -140,36 +158,44 @@
       <!-- First impression: a clear promise, an honest example, then the scan. -->
       <div class="hero">
         <div class="hero-l">
-          <span class="section-kicker">PHYSIQUE FEEDBACK. NO FLATTERY.</span>
-          <h1>Know your rank.<br>Find your<br><em>next focus.</em></h1>
-          <p class="sub">One photo. An S–E grade, a score for each visible muscle group, and a clear read on what needs work.</p>
+          <span class="section-kicker hero-kicker"><span class="kicker-dot" aria-hidden="true"></span> THE PHYSIQUE INTELLIGENCE SYSTEM</span>
+          <h1>Your physique.<br><em>Understood.</em><br>Improved.</h1>
+          <p class="sub">Get a direct read of what this photo shows: your grade, visible-muscle scores, proportion insights, and the next area to train.</p>
           <div class="hero-actions">
             <button class="bigcta" onclick="track('hero_cta_click');goHome('scanSection')">Get my free grade <span aria-hidden="true">↗</span></button>
-            <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">Explore the example ↓</button>
+            <button class="hero-secondary" onclick="document.getElementById('sampleCard').scrollIntoView({behavior:'smooth',block:'center'})">Explore a sample result <span aria-hidden="true">↗</span></button>
           </div>
           <span class="hero-note">First scan free. Email to reveal. No card or password.</span>
-          <div class="hero-assurance"><span>Photos not stored by CutRank</span><span>18+ · AI visual estimate</span></div>
+          <div class="hero-assurance"><span><b aria-hidden="true">✓</b> Visible areas only</span><span><b aria-hidden="true">✓</b> Photos not stored by CutRank</span><span>18+ · AI visual estimate</span></div>
         </div>
         <div class="hero-preview" id="demoSection">
-          <div class="preview-caption"><span>YOUR RESULT CARD</span><span>EXAMPLE / 01</span></div>
-          <article class="vc result-vc signature-card home-signature-card grade-C" id="sampleCard" aria-label="Example CutRank result card. Your uploaded physique photo appears in the circle.">
+          <div class="preview-caption"><span>FRONT VIEW / REAL CUTRANK SCAN</span><span>REAL BODYBUILDER</span></div>
+          <article class="vc result-vc signature-card home-signature-card grade-S" id="sampleCard" aria-label="CutRank sample front-view scan of a real adult bodybuilder, graded S, Elite.">
             <div class="vc-inner">
               <div class="vc-header"><span class="vc-brand-tag">CutRank</span><span class="vc-badge">Front view</span></div>
               <div class="signature-main">
-                <div class="home-demo-disc" aria-hidden="true"><span>Your<br>photo</span></div>
-                <div class="vc-grade-section"><div class="signature-label">Your physique</div><div class="vc-grade-letter">C</div><div class="vc-grade-label">Developing</div></div>
+                <div class="home-result-photo" role="img" aria-label="Real adult bodybuilder posing on stage, cropped from the supplied CutRank scan screenshot"><img src="/assets/example-real-bodybuilder-scan.png" alt="" width="650" height="415" fetchpriority="high" decoding="async"></div>
+                <div class="vc-grade-section"><div class="signature-label">Sample grade</div><div class="vc-grade-letter">S</div><div class="vc-grade-label">Elite</div></div>
               </div>
               <div class="vc-footer"><span class="signature-footnote"><span>AI estimate</span><span class="vc-site">cutrank.app</span></span></div>
             </div>
           </article>
-          <p class="sample-note">Your uploaded photo appears in the circle. Grade and label are illustrative.</p>
+          <div class="sample-insight" aria-label="Modelled percentile from this CutRank scan">
+            <div class="sample-insight-head"><span>WHERE YOU RANK</span><span>PRO RESULT</span></div>
+            <div class="sample-rank">
+              <div><span class="sample-rank-label">GENERAL ADULT POPULATION</span><strong>Top &lt;0.001%</strong></div>
+              <span class="sample-rank-score">10.0 <small>/ 10</small></span>
+            </div>
+            <p>Modelled estimate, not a measured ranking.</p>
+          </div>
+          <p class="sample-note">Demonstration scan using the supplied photo of a real bodybuilder. AI visual estimate; no endorsement implied.</p>
         </div>
       </div>
       <div class="setup" id="setupNote" style="display:none"></div>
       <section class="sec" id="scanSection">
-        <div class="sec-head"><span class="section-kicker">01 / THE SCAN</span>
-          <h2>Your first scan starts here.</h2>
-          <p>Start with a front photo for chest, shoulders and arms. Or choose the angle you want feedback on.</p>
+        <div class="sec-head"><span class="section-kicker">01 / START YOUR ANALYSIS</span>
+          <h2>Start with one angle.</h2>
+          <p>Choose what you want assessed. Front gives you a starting read of your chest, shoulders, arms and abs.</p>
         </div>
         <p class="scan-terms">One angle free · Email to reveal · No card required</p>
         <div class="views" id="viewGrid"></div>
@@ -183,7 +209,7 @@
           <button class="recover-link" id="histLink" style="display:none;margin-top:16px" onclick="showHistory()">Scan history →</button>
           <button class="recover-link" id="progLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showProgress()">Progress →</button>
           <button class="recover-link" id="impLink" style="display:none;margin-top:16px;margin-left:16px" onclick="showImprove()">Improve →</button>
-          <button class="recover-link" style="margin-top:16px;margin-left:16px" onclick="showProfile()">Profile &rarr;</button>
+          <button class="recover-link" style="margin-top:16px;margin-left:16px" onclick="showDashboard()">Open dashboard &rarr;</button>
         </div>
       </section>
 
@@ -227,9 +253,8 @@
               <p>Every scan is judged against these bands — the same ones written into the grading instructions. Nothing is tuned per user, and nobody gets a softer scale for paying.</p>
               <p style="margin-top:10px">The model commits to a band before it writes a single number, so the letter on your card and the scores behind it can't drift apart.</p>
               <p style="margin-top:10px">Your card shows a 1–10 score instead, given twice: once against everyone, once against people who actually train. One point is one standard deviation, and the gym scale is the harder of the two by design.</p>
-              <p style="margin-top:10px">S–E is CutRank's own visual grading convention, not an industry-wide physiological standard or a clinical assessment. Band labels do not verify training history.</p>
             </div>
-            <div class="rubric">
+            <p>S–E is CutRank's own visual grading convention, not an industry-wide physiological standard or a clinical assessment. Band labels do not verify training history.</p><div class="rubric">
               <div class="rub-row"><span class="rub-g">S</span><span class="rub-s">90–100</span><span>Elite — mass far beyond a typical trained lifter</span></div>
               <div class="rub-row"><span class="rub-g">A</span><span class="rub-s">75–89</span><span>Advanced — years of obvious hard training</span></div>
               <div class="rub-row"><span class="rub-g">B</span><span class="rub-s">61–74</span><span>Experienced — solid base, real weak points</span></div>
@@ -270,7 +295,7 @@
       <section class="sec" id="pricingSection">
         <div class="sec-head">
           <h2>What it costs.</h2>
-          <p>First scan's free. £5.99 once unlocks the full audit.</p>
+          <p>First scan's free. $6.99 once unlocks the full audit.</p>
         </div>
 
         <div class="plist">
@@ -288,7 +313,7 @@
               <div class="prow-name">Full Body Audit</div>
               <div class="prow-desc">All four angles, full muscle-by-muscle breakdown, written verdict, uncapped overall grade. Yours to keep.</div>
             </div>
-            <div class="prow-price">£5.99<small>one-time</small></div>
+            <div class="prow-price">$6.99<small>one-time</small></div>
             <button class="prow-cta" onclick="handlePurchase('scan')">Unlock the audit</button>
           </div>
 
@@ -297,17 +322,15 @@
               <div class="prow-name">CutRank Pro</div>
               <div class="prow-desc">Rescan any angle after every cut, bulk, or PR — fair use: 20 scans a day, all four angles five times over. Scan history, progress comparisons, and Improve: training analysis + diet audit built from your actual scan.</div>
             </div>
-            <div class="prow-price">£9.99<small>per month</small></div>
+            <div class="prow-price">$14.99<small>per month</small></div>
             <button class="prow-cta" onclick="handlePurchase('pro')">Go Pro</button>
           </div>
 
-          <div class="prow">
-            <div class="prow-info">
-              <div class="prow-name">Lifetime</div>
-              <div class="prow-desc">Everything Pro includes as it ships, forever. Early-access price while the product is young.</div>
-            </div>
-            <div class="prow-price">£29.99<small>one-time</small></div>
-            <button class="prow-cta" onclick="handlePurchase('lifetime')">Get lifetime</button>
+          <div class="prow prow-annual">
+            <div class="prow-info"><div class="prow-name">CutRank Pro — Yearly</div>
+              <div class="prow-desc">Same Pro features. About $5/month, billed as $59.99 annually. Renews yearly until cancelled.</div></div>
+            <div class="prow-price">$59.99<small>per year · USD</small></div>
+            <button class="prow-cta" onclick="handlePurchase('yearly')">Choose yearly</button>
           </div>
         </div>
 
@@ -320,7 +343,7 @@
           <span class="trust-sep">·</span>
           <span class="trust-item">One-time purchases stay yours</span>
         </div>
-        <p class="pricing-notes">Payments run on Stripe. Pro renews monthly and can be cancelled anytime from the Stripe portal. <button class="recover-link" onclick="openRecoveryModal()">Already paid?</button></p>
+        <p class="pricing-notes">Payments run on Stripe. Prices are in USD. Pro renews monthly or yearly and can be cancelled anytime from the Stripe portal. <button class="recover-link" onclick="openRecoveryModal()">Already paid?</button></p>
       </section>
       <!-- SAMPLE VERDICTS -->
       <section class="sec" id="verdictSection" style="padding-top:0">
@@ -399,14 +422,14 @@
             <span class="walk-num">5</span>
             <div class="walk-body">
               <h3>The Full Body Audit unlocks all four angles</h3>
-              <p>£5.99 once — written verdict, weak points, body-fat estimate, uncapped overall grade.</p>
+              <p>$6.99 once — written verdict, weak points, body-fat estimate, uncapped overall grade.</p>
             </div>
           </li>
           <li class="walk-step">
             <span class="walk-num">6</span>
             <div class="walk-body">
               <h3>Pro is for rescans</h3>
-              <p>£9.99/month to re-grade after a cut, bulk, or PR. Cancel anytime.</p>
+              <p>$14.99/month to re-grade after a cut, bulk, or PR. Cancel anytime.</p>
             </div>
           </li>
         </ol>
@@ -508,7 +531,7 @@
             <div class="method-item">
               <div class="method-k">01 · Your cut</div>
               <h3>50% of every one-off</h3>
-              <p>Half of every one-off sale through your link — £3.00 on the £5.99 audit, £15.00 on the £29.99 lifetime. £9.99 Pro pays <b>30% every month</b> instead, for as long as that person stays subscribed.</p>
+              <p>50% of each $6.99 one-time audit sold through your referral link. Existing lifetime referral terms remain unchanged. $14.99 Pro pays <b>30% every month</b> instead, for as long as that person stays subscribed.</p>
             </div>
             <div class="method-item">
               <div class="method-k">02 · Minimum</div>
@@ -529,7 +552,7 @@
           <div class="affiliate-rules">
             <h3>The rules</h3>
             <ul>
-              <li>You earn <b>50% commission</b> on every one-off sale made through your referral link — the £5.99 audit and the £29.99 lifetime.</li>
+              <li>You earn <b>50% commission</b> on each $6.99 one-time audit made through your referral link. Existing lifetime referral terms remain unchanged.</li>
               <li>Pro referrals pay out <b>30% every month</b> for as long as that person stays subscribed — recurring, so one referral keeps paying.</li>
               <li>Payouts run <b>monthly</b>. You need at least <b>£20</b> in cleared earnings to get paid; anything under rolls over to the next month.</li>
               <li>Earnings are capped at <b>£1,000 per month</b> per affiliate.</li>
@@ -550,7 +573,7 @@
         </div>
         <div class="faq">
           <details class="faq-item"><summary class="faq-q">Is the free scan really free?</summary><div class="faq-a">Yes. One angle, fully graded, no card required. Just an email to reveal the result.</div></details>
-          <details class="faq-item"><summary class="faq-q">Why do you need my email?</summary><div class="faq-a">It links your result and any purchase, so paid access can be restored on any device. An email address is required for every signup and saved in our MailerLite contact list.</div></details>
+          <details class="faq-item"><summary class="faq-q">Why do you need my email?</summary><div class="faq-a">It reveals your free result, lets us send a sign-in code, and connects any purchase to your account. Emails submitted at result reveal are saved in our MailerLite contact list; marketing requires consent.</div></details>
           <details class="faq-item"><summary class="faq-q">What photo works best?</summary><div class="faq-a">Good light, plain background, shorts, full region in frame. A phone camera is fine. Bad photos get refused — they don't get graded generously.</div></details>
           <details class="faq-item"><summary class="faq-q">Can I cancel anytime?</summary><div class="faq-a">Yes. No contracts, no questions.</div></details>
           <details class="faq-item"><summary class="faq-q">How accurate is the grading?</summary><div class="faq-a">CutRank uses an AI vision model to estimate visible muscle development from the photo you upload. It is not a medical tool, a DEXA scan, or a body-composition measurement.</div></details>
@@ -636,45 +659,60 @@
       <p class="confirm-sub">Scan your remaining angles. Get the full ranking.</p>
       <div class="confirm-angles" id="confirmAngles"></div>
       <button class="btn ghost" style="margin-top:4px" onclick="showHistory()">Scan history</button>
-      <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back to home</button>
+      <button class="btn ghost" style="margin-top:8px" onclick="showDashboard()">Open dashboard →</button>
     </div></div></div>
   </section>
 
+  <!-- ACCOUNT SIGN-IN — required before entering the workspace -->
+  <section class="screen" id="screen-login">
+    <div class="login-layout"><div class="login-intro"><span class="db-kicker">YOUR CUTRANK ACCOUNT</span><h1>Sign in to see your progress.</h1><p>Get a one-time code by email to open your dashboard. Free accounts can sign in; saved history and Improve follow your plan.</p><div class="login-benefits"><span>01&nbsp; Review your physique</span><span>02&nbsp; See your scan coverage</span><span>03&nbsp; Return after a training block</span></div></div>
+      <div class="login-card"><div class="login-card-mark"><img src="/assets/cutrank-emblem.webp" alt="" width="58" height="58"></div><h2>Welcome back.</h2><p id="loginIntro">Enter your email and we’ll send a six-digit sign-in code.</p>
+        <label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" onkeydown="if(event.key==='Enter')requestLoginCode()">
+        <div id="loginCodeStep" hidden><label for="loginCode">Six-digit code</label><input id="loginCode" type="text" autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="[0-9]*" placeholder="000000" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,6)" onkeydown="if(event.key==='Enter')submitLoginCode()"></div>
+        <p class="login-status" id="loginStatus" role="status" aria-live="polite"></p><button class="db-primary" id="loginSubmit" onclick="requestLoginCode()">Email me a code →</button><button class="db-text-link" id="loginResend" hidden onclick="requestLoginCode()">Send a new code</button><button class="login-back" onclick="show('screen-home')">← Back to the site</button>
+      </div></div>
+  </section>
+
+  <!-- WORKSPACE OVERVIEW — live account state and entry points to the tools below -->
+  <section class="screen workspace-screen" id="screen-dashboard">
+    <div class="wrap"><div id="dashboardBody"></div></div>
+  </section>
+
   <!-- PROGRESS — scan comparison (Pro); body rendered by showProgress() -->
-  <section class="screen" id="screen-progress">
+  <section class="screen workspace-screen" id="screen-progress">
     <div class="wrap"><div id="progressBody"></div></div>
   </section>
 
   <!-- IMPROVE — training + diet audit (Pro); body rendered by showImprove() -->
-  <section class="screen" id="screen-improve">
+  <section class="screen workspace-screen" id="screen-improve">
     <div class="wrap"><div id="improveBody"></div></div>
   </section>
 
   <!-- STRENGTH — lift ranking, client-side only; body rendered by renderStrength() -->
-  <section class="screen" id="screen-strength">
+  <section class="screen workspace-screen" id="screen-strength">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
       <div id="strengthBody"></div>
-      <button class="btn ghost" style="margin-top:10px" onclick="show('screen-home')">&larr; Back</button>
+      <button class="btn ghost" style="margin-top:10px" onclick="showDashboard()">&larr; Dashboard</button>
     </div></div></div>
   </section>
 
   <!-- PROFILE — physique rank + strength rank; body rendered by renderProfile() -->
-  <section class="screen" id="screen-profile">
+  <section class="screen workspace-screen" id="screen-profile">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
       <div id="profileBody"></div>
     </div></div></div>
   </section>
 
   <!-- SCAN HISTORY -->
-  <section class="screen" id="screen-history">
+  <section class="screen workspace-screen" id="screen-history">
     <div class="wrap"><div class="result-wrap"><div class="card-area">
       <div class="sec-head" style="margin-bottom:24px">
         <h2>Scan history.</h2>
-        <p>Every graded scan saved to this account — restored on any device with your email.</p>
+        <p>Saved paid scans, ready when you return on another device with your account.</p>
       </div>
       <div id="histBody"></div>
       <button class="btn ghost" style="margin-top:10px" onclick="showProgress()">Compare two scans →</button>
-      <button class="btn ghost" style="margin-top:8px" onclick="show('screen-home')">← Back</button>
+      <button class="btn ghost" style="margin-top:8px" onclick="showDashboard()">← Dashboard</button>
     </div></div></div>
   </section>
 
@@ -779,7 +817,7 @@
 
         <h3>2. What we collect</h3>
         <ul>
-          <li><strong>Your email address</strong> — submitted at the result-reveal gate and used to identify your account.</li>
+          <li><strong>Your email address</strong> — submitted at result reveal or sign-in and used to identify your account and send a one-time sign-in code.</li>
           <li><strong>Your date of birth</strong> — submitted before a scan, used only to confirm you are 18 or over, and not stored.</li>
           <li><strong>Photos you upload</strong> — processed in real time to generate a grade, then discarded (see below).</li>
           <li><strong>Payment information</strong> — handled entirely by Stripe. We never see or store your card details.</li>
@@ -888,13 +926,13 @@
         <h3>4. Free scan and paid tiers</h3>
         <ul>
           <li><strong>Free scan:</strong> one angle, no card required. Email needed to reveal the result.</li>
-          <li><strong>Full Body Audit (£5.99):</strong> one-time payment, unlocks all 4 angles permanently for this profile.</li>
-          <li><strong>CutRank Pro (£9.99/month):</strong> recurring subscription. Rescans of every angle, with a fair-use cap of 20 scans per day. Includes Improve reports (up to 6 per day) — general training and nutrition guidance generated from your inputs and scan results; not medical, dietetic, or coaching advice. Renews automatically each month until cancelled.</li>
-          <li><strong>Lifetime (£29.99):</strong> early-access one-time payment for lifetime CutRank access while available.</li>
+          <li><strong>Full Body Audit ($6.99):</strong> one-time payment, unlocks all 4 angles permanently for this profile.</li>
+          <li><strong>CutRank Pro ($14.99/month):</strong> recurring subscription. Rescans of every angle, with a fair-use cap of 20 scans per day. Includes Improve reports (up to 6 per day) — general training and nutrition guidance generated from your inputs and scan results; not medical, dietetic, or coaching advice. Renews automatically each month until cancelled.</li>
+          <li><strong>CutRank Pro ($59.99/year):</strong> annual subscription with the same Pro features and limits, billed upfront and automatically renewed until cancelled. Existing lifetime purchases retain their access.</li>
         </ul>
 
         <h3>5. Billing and cancellation</h3>
-        <p>Payments are processed by Stripe. Pro renews monthly and you can cancel at any time from your Stripe customer portal — cancellation takes effect at the end of your current billing period. One-time purchases (Full Body Audit, Lifetime) are charged once.</p>
+        <p>Payments are processed by Stripe. Pro renews at your selected monthly or yearly interval and you can cancel at any time from your Stripe customer portal — cancellation takes effect at the end of your current billing period. One-time purchases (Full Body Audit, Lifetime) are charged once.</p>
 
         <h3>6. Refunds</h3>
         <p>Because CutRank is a digital service delivered immediately on payment, you expressly consent to immediate performance and waive your right to a 14-day cooling-off period for the parts of the service you have used. We will consider refund requests on a case-by-case basis where the service has not been used or where there has been a genuine technical failure. Email <a href="mailto:support@cutrank.app">support@cutrank.app</a>.</p>
@@ -937,7 +975,7 @@
   </div>
 
   <footer>
-    <div class="foot-brand">CutRank</div>
+    <div class="foot-brand brand-logo"><img src="/assets/cutrank-emblem.webp" alt="" width="36" height="36"><span class="brand-wordmark">CUT<span class="brand-rank">RANK</span></span></div>
     <div>© 2026 CutRank · AI physique grading, not medical advice · Adults only</div>
     <div class="foot-links" style="margin-top:8px">
       <button class="footlink" onclick="goHome('howStrip')">How it works</button>·
@@ -974,6 +1012,8 @@
 
 <script src="/photo-normalization.js"></script>
 <script src="/app.js"></script>
+<script src="/login.js"></script>
+<script src="/dashboard.js"></script>
 <script src="/dev-access.js"></script>
 </body>
 </html>

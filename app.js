@@ -3,10 +3,11 @@
 // ============================================================
 const WORKER_URL   = "https://calloutapp.callout-ai.workers.dev";
 const EMAIL_ENDPOINT = WORKER_URL;
-const PAYMENT_LINK_SCAN     = "https://buy.stripe.com/dRmcN78Moge72QZ9hnb3q01"; // £5.99 one-time
-const PAYMENT_LINK_PRO      = "https://buy.stripe.com/fZu5kF8MobXRfDL9hnb3q02"; // £9.99/month
+const PAYMENT_LINK_SCAN     = "https://buy.stripe.com/dRmaEZ7Ik7HB1MV1OVb3q04"; // $6.99 one-time
+const PAYMENT_LINK_PRO      = "https://buy.stripe.com/7sY7sN5AcbXRcrz1OVb3q05"; // $14.99/month
 const PAYMENT_LINK_LIFETIME = "https://buy.stripe.com/aFa3cx9Qsfa34Z7517b3q03"; // £29.99 lifetime
-const UNLOCK_PRICE   = "£5.99";
+const PAYMENT_LINK_YEARLY = "https://buy.stripe.com/6oU00l7Ike5ZbnvgJPb3q06";
+const UNLOCK_PRICE   = "$6.99";
 // Cloudflare Turnstile sitekey (dashboard → Turnstile → your widget).
 // Leave empty to skip the bot check client-side; the worker only enforces
 // it when TURNSTILE_SECRET is set, so configure both together.
@@ -44,6 +45,8 @@ let entitlementToken = null;
 let entitlementTokenExp = 0;
 let refreshToken = null;    // long-lived device token from checkout / email code
 let userTierDisplay = null; // display hint from the worker only; never authority
+let accountVerified = false; // set only after checkout, code redemption, or refresh-token verification
+let workspaceDestination = 'screen-dashboard';
 
 // ---- localStorage: convenience only, never authority ----
 function saveState(){
@@ -94,16 +97,18 @@ function loadState(){
 
 function hasAccount(){ return !!userEmail; }
 function hasFreshEntitlementToken(){ return !!entitlementToken && entitlementTokenExp > Date.now() + 30000; }
-function hasEntitlementHint(){ return hasFreshEntitlementToken() && !!userTierDisplay; }
+function hasVerifiedAccount(){ return accountVerified && !!refreshToken && hasFreshEntitlementToken(); }
+function hasEntitlementHint(){ return hasFreshEntitlementToken() && ['scan','pro','lifetime'].includes(userTierDisplay); }
 function isProHint(){ return hasFreshEntitlementToken() && (userTierDisplay === "pro" || userTierDisplay === "lifetime"); }
 function storeEntitlement(data){
   if(!data) return;
+  if(data.email && userEmail && data.email.toLowerCase()!==userEmail.toLowerCase() && typeof clearCachedAccountProfile==='function') clearCachedAccountProfile();
   if(data.email) userEmail=data.email;
   if(data.token){
     entitlementToken=data.token;
     entitlementTokenExp=Date.now()+((data.expires_in||900)*1000);
   }
-  if(data.refresh_token) refreshToken=data.refresh_token;
+  if(data.refresh_token){ refreshToken=data.refresh_token; accountVerified=true; }
   if(data.tier) userTierDisplay=data.tier==='dev'?null:data.tier;
   if(typeof refreshDevAccess==='function') refreshDevAccess();
   saveState();
@@ -113,6 +118,7 @@ function clearEntitlement(){
   entitlementToken=null;
   entitlementTokenExp=0;
   userTierDisplay=null;
+  accountVerified=false;
   saveState();
 }
 
@@ -288,8 +294,8 @@ async function refreshEntitlementToken(){
         body:JSON.stringify({action:'refresh_token'})
       });
       const data=await res.json().catch(()=>null);
-      if(res.ok && data && data.active && data.token){ storeEntitlement(data); return true; }
-      if(res.status===401){ refreshToken=null; saveState(); }
+      if(res.ok && data && data.active && data.token){ storeEntitlement(data); accountVerified=true; return true; }
+      if(res.status===401){ refreshToken=null; accountVerified=false; saveState(); }
       else if(res.ok && data && data.active===false){ clearEntitlement(); return false; }
     }catch(err){ return false; }
   }
@@ -437,14 +443,14 @@ async function analyzeView(view,file,retriedToken){
   if(status) status.textContent='reading image…';
   if(userEmail && !hasFreshEntitlementToken()) await refreshEntitlementToken();
   const headers={"Content-Type":"application/json"};
-  if(hasFreshEntitlementToken()) headers.Authorization="Bearer "+entitlementToken;
+  if(hasEntitlementHint()) headers.Authorization="Bearer "+entitlementToken;
   let ts_token='';
-  if(!hasFreshEntitlementToken() && TURNSTILE_SITE_KEY){
+  if(!hasEntitlementHint() && TURNSTILE_SITE_KEY){
     if(status) status.textContent='quick human check…';
     ts_token=await getTurnstileToken();
     if(status) status.textContent='reading image…';
   }
-  const res=await fetch(WORKER_URL,{method:"POST",headers,body:JSON.stringify({region:view,image,normalized_image,media_type,email:userEmail||"",token:entitlementToken||"",ts_token,dob:dateOfBirth||""})});
+  const res=await fetch(WORKER_URL,{method:"POST",headers,body:JSON.stringify({region:view,image,normalized_image,media_type,email:userEmail||"",token:hasEntitlementHint()?entitlementToken:"",ts_token,dob:dateOfBirth||""})});
   const data=await res.json().catch(()=>null);
   if(res.status===401 && (!data || data.error==='invalid_token')){
     clearEntitlement();
@@ -561,10 +567,39 @@ function mergeIntoProfile(view,data){
 }
 
 function show(id){
+  if(document.getElementById(id)?.classList.contains('workspace-screen') && !hasVerifiedAccount()){
+    workspaceDestination=id;
+    id='screen-login';
+  }
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  document.body.classList.toggle('workspace-open',document.getElementById(id).classList.contains('workspace-screen'));
+  if(id==='screen-login' && typeof prepareLoginScreen==='function') prepareLoginScreen();
+  document.querySelectorAll('[data-workspace-screen]').forEach(button=>{
+    if(button.dataset.workspaceScreen===id) button.setAttribute('aria-current','page');
+    else button.removeAttribute('aria-current');
+  });
   window.scrollTo(0,0);
   if(typeof updateMobCta==='function') updateMobCta();
+}
+async function requireWorkspaceAccess(id){
+  if(hasVerifiedAccount()) return true;
+  workspaceDestination=id;
+  show('screen-login');
+  if(refreshToken){
+    await refreshEntitlementToken().catch(()=>{});
+    refreshHome();
+  }
+  return hasVerifiedAccount();
+}
+function openWorkspaceDestination(){
+  const id=workspaceDestination;
+  if(id==='screen-history') return showHistory();
+  if(id==='screen-progress') return showProgress();
+  if(id==='screen-improve') return showImprove();
+  if(id==='screen-strength') return showStrength();
+  if(id==='screen-profile') return showProfile();
+  return showDashboard();
 }
 function goHome(id){
   show('screen-home');
@@ -823,7 +858,7 @@ function renderViewResult(view,data,photoURL){
   // journey: verdict, rank, visible-muscle breakdown, audit, next step, then
   // the Mass vs Conditioning detail. CSS mirrors this order for all viewports.
   const resultBody=document.getElementById('resultBody');
-  ['.res-rank','.vc-breakdown-below, .vc-details-below','.res-analysis','.res-mc','.res-plans-wrap'].forEach(function(selector){
+  ['.res-plans-wrap','.res-rank','.vc-breakdown-below, .vc-details-below','.res-analysis','.res-mc'].forEach(function(selector){
     const section=resultBody.querySelector(selector);
     if(section) resultBody.appendChild(section);
   });
@@ -851,8 +886,8 @@ function configurePrimaryBtn(o){
     btn.textContent='See your full grade →';
     btn.onclick=showOverall;
   } else {
-    btn.textContent='← Back to scans';
-    btn.onclick=()=>goHome('scanSection');
+    btn.textContent='Open my dashboard →';
+    btn.onclick=showDashboard;
   }
 }
 
@@ -869,7 +904,8 @@ function renderResultNext(){
     '<div class="result-next-actions">'+
     (pro?'<button onclick="showImprove()">Review my training ↗</button><button onclick="showProgress()">Compare progress</button>':
       '<button onclick="goHome(\'scanSection\')">'+(paid?'Continue my audit':'Back to my scans')+' →</button>')+
-    (paid?'<button onclick="showHistory()">Scan history</button>':'')+'</div>';
+    (paid?'<button onclick="showHistory()">Scan history</button>':'')+
+    '<button onclick="showDashboard()">Open dashboard</button></div>';
   const massCard=body.querySelector(':scope > .res-mc');
   if(massCard) body.insertBefore(next,massCard);
   else body.appendChild(next);
@@ -944,19 +980,7 @@ function showScanUpsell(){
   const btn=document.getElementById('resPrimary');
   btn.style.display='none';
   const old=document.getElementById('upsellPanel'); if(old) old.remove();
-  const div=document.createElement('div');
-  div.id='upsellPanel';
-  div.className='upsell';
-  div.innerHTML=
-    '<div class="us-eye">Scan complete</div>'+
-    '<h3>Rescan any angle, any time.</h3>'+
-    '<p class="us-p">After the cut, the bulk, the PR — rescan, compare side by side, and let Improve audit your training and diet against the result.</p>'+
-    '<div class="upsell-price">£9.99</div>'+
-    '<div class="upsell-price-sub">PER MONTH · CANCEL ANYTIME</div>'+
-    '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Go Pro →</button>'+
-    '<span style="font-size:13px;color:rgba(255,255,255,0.35);cursor:pointer;display:block;text-align:center;margin-top:12px;text-decoration:underline" onclick="show(\'screen-home\')">Not now</span>';
-  const ref=document.getElementById('resPrimary');
-  if(ref) ref.parentNode.insertBefore(div,ref);
+  document.getElementById('resultBody').insertAdjacentHTML('beforeend',buildUpsellHTML());
   show('screen-result');
 }
 
@@ -968,7 +992,7 @@ function showPaywall(){
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse" style="padding:20px 0 12px">'+
       '<h2 style="margin-bottom:8px">One angle is free.</h2>'+
-      '<p>That was the free one. The other three angles are £5.99, once.</p>'+
+      '<p>That was the free one. The other three angles are $6.99, once.</p>'+
     '</div>';
   const btn=document.getElementById('resPrimary');
   btn.style.display='none';
@@ -1004,44 +1028,21 @@ function injectShareMoment(grade, score){
 function injectUpsell(paywallMode){
   const old=document.getElementById('upsellPanel'); if(old) old.remove();
   track('upsell_shown',{mode:paywallMode?'paywall':'post_result'});
-
-  const title  = paywallMode
-    ? 'Free scan used. Your real grade needs all four angles.'
-    : 'One angle isn\'t the full picture.';
-  const sub    = paywallMode
-    ? 'Back and legs are where most people drop — and where most people avoid the camera. That\'s the point. £5.99. One time. No subscription.'
-    : 'One good angle can lie. Back and legs usually tell the part of the story people avoid.';
-
-  const div=document.createElement('div');
-  div.id='upsellPanel';
-  div.className='upsell';
-  div.innerHTML=
-    '<div class="us-eye">One angle isn\'t the full picture</div>'+
-    '<h3>'+title+'</h3>'+
-    '<p class="us-p">'+sub+'</p>'+
-    '<ul class="upsell-feats">'+
-      '<li>All 4 views graded: Front, Back, Legs, Arms</li>'+
-      '<li>Uncapped overall grade</li>'+
-      '<li>Full muscle-by-muscle breakdown</li>'+
-      '<li>Conditioning notes and broad body-fat estimate where visible</li>'+
-    '</ul>'+
-    '<div class="upsell-price">'+UNLOCK_PRICE+'</div>'+
-    '<div class="upsell-price-sub">ONE-TIME · YOURS FOREVER</div>'+
-    '<button class="btn gold-btn" onclick="handlePurchase(\'scan\')">See my real grade →</button>'+
-    '<button class="recover-link" style="display:block;margin:12px auto 0" onclick="openRecoveryModal()">Already paid?</button>'+
-    '<span style="font-size:13px;color:rgba(255,255,255,0.35);cursor:pointer;display:block;text-align:center;margin-top:12px;text-decoration:underline" onclick="show(\'screen-home\')">Not now</span>';
-
-  const ref=document.getElementById('resPrimary');
-  if(ref) ref.parentNode.insertBefore(div,ref);
+  document.getElementById('resultBody').insertAdjacentHTML('beforeend',buildUpsellHTML());
 }
 
 // ============================================================
 //  PURCHASE HANDLER
 // ============================================================
 function handlePurchase(tier){
+  if(['localhost','127.0.0.1','[::1]'].includes(location.hostname)){
+    showToast('Local preview only — checkout opens after payment access is verified.');
+    return;
+  }
   const links={
     scan:     PAYMENT_LINK_SCAN,
     pro:      PAYMENT_LINK_PRO,
+    yearly:   PAYMENT_LINK_YEARLY,
     lifetime: PAYMENT_LINK_LIFETIME
   };
   const url=links[tier]||PAYMENT_LINK_SCAN;
@@ -1254,15 +1255,14 @@ function handleAuthLink(){
     const rc=(qs.get('rc')||'').trim(), re=(qs.get('re')||'').trim();
     if(!/^\d{6}$/.test(rc)||!re) return;
     history.replaceState(null,'',location.pathname);
-    openRecoveryModal();
-    const e=document.getElementById('recoveryEmail');
-    const c=document.getElementById('recoveryCode');
-    const btn=document.getElementById('recoverySubmit');
+    workspaceDestination='screen-dashboard';
+    show('screen-login');
+    const e=document.getElementById('loginEmail');
+    const c=document.getElementById('loginCode');
     if(e) e.value=re;
-    recoveryStage='code';
-    if(c){c.style.display='block';c.value=rc;}
-    if(btn) btn.textContent='Verify code';
-    submitRecoveryCode();
+    if(c) c.value=rc;
+    if(typeof showLoginCodeStep==='function') showLoginCodeStep();
+    if(typeof submitLoginCode==='function') submitLoginCode();
   }catch(err){}
 }
 window.addEventListener('DOMContentLoaded',handleAuthLink);
@@ -1301,7 +1301,7 @@ async function submitRecoveryEmail(){
       body:JSON.stringify({action:'issue_token',email})
     });
     const data=await res.json().catch(()=>null);
-    if(res.ok && data && data.active && data.token){
+    if(res.ok && data && data.active && data.token && data.tier!=='free'){
       storeEntitlement(data);
       refreshHome();
       track('recovery_success',{tier:data.tier||''});
@@ -1366,7 +1366,7 @@ async function submitRecoveryCode(){
       body:JSON.stringify({action:'redeem_code',email,code})
     });
     const data=await res.json().catch(()=>null);
-    if(res.ok && data && data.active && data.token){
+    if(res.ok && data && data.active && data.token && data.tier!=='free'){
       storeEntitlement(data);
       refreshHome();
       track('recovery_success',{tier:data.tier||'',method:'code'});
@@ -1375,8 +1375,8 @@ async function submitRecoveryCode(){
       setTimeout(()=>{closeModal('recoveryModal');showConfirmScreen();},450);
       return;
     }
-    if(res.ok && data && data.active===false){
-      if(status){status.textContent='No active purchase found for that email.';status.className='recovery-status err';}
+    if(res.ok && data && (data.active===false || data.tier==='free')){
+      if(status){status.textContent='No active purchase found for that email. You can still sign in to your free dashboard.';status.className='recovery-status err';}
       return;
     }
     if(status){status.textContent='Code invalid or expired. Re-enter your email to get a new one.';status.className='recovery-status err';}
@@ -1570,66 +1570,99 @@ function buildMassCondHTML(m, seen, grade, bodyfat){
 // ongoing Pro, Pro highlighted); Audit owners see just the Pro upgrade; Pro users see nothing.
 function buildUpsellHTML(){
   if(isProHint()) return '';
-  const pro='<div class="res-plan rp-featured">'+
-      '<div class="rp-tag">Best value</div>'+
-      '<div class="rp-name">CutRank Pro</div>'+
-      '<div class="rp-price">£9.99<small>/mo</small></div>'+
-      '<div class="rp-desc">Everything in the Audit — plus track and improve over time.</div>'+
-      '<ul class="rp-list">'+
-        '<li>Every angle graded</li>'+
-        '<li>Rescan any time — 20/day</li>'+
-        '<li>Progress — compare two scans</li>'+
-        '<li>Improve — training + diet audit</li>'+
-        '<li>Full scan history</li>'+
-      '</ul>'+
-      '<button class="btn gold-btn rp-btn" onclick="handlePurchase(\'pro\')">Get Pro →</button>'+
-    '</div>';
-  if(hasEntitlementHint()){
-    // already owns the Audit — offer the upgrade only
-    return '<div class="res-plans-wrap">'+
-      '<div class="res-plans-head"><div class="res-pro-eye">Go further</div>'+
-      '<div class="res-plans-title">Keep scanning as you grow.</div></div>'+
-      '<div class="res-plans">'+pro+'</div>'+
-      '<div class="res-plans-foot">Cancel anytime from the Stripe portal.</div>'+
-    '</div>';
+  const paid=hasEntitlementHint();
+  function plan(name,price,period,description,features,tier,cta,featured){
+    return '<article class="res-plan'+(featured?' rp-featured':'')+'">'+
+      (featured?'<div class="rp-tag">Best annual value</div>':'')+
+      '<h3 class="rp-name">'+name+'</h3><div class="rp-price">'+price+'<small>'+period+'</small></div>'+
+      '<p class="rp-desc">'+description+'</p><ul class="rp-list">'+features.map(f=>'<li>'+f+'</li>').join('')+'</ul>'+
+      '<button class="btn '+(featured?'gold-btn':'ghost')+' rp-btn" onclick="handlePurchase(\''+tier+'\')">'+cta+'</button></article>';
   }
-  const audit='<div class="res-plan">'+
-      '<div class="rp-name">Full Body Audit</div>'+
-      '<div class="rp-price">£5.99<small>once</small></div>'+
-      '<div class="rp-desc">Just this scan, unlocked in full.</div>'+
-      '<ul class="rp-list">'+
-        '<li>All four angles graded</li>'+
-        '<li>Full muscle breakdown</li>'+
-        '<li>Body-fat read</li>'+
-        '<li>Yours forever</li>'+
-      '</ul>'+
-      '<button class="btn ghost rp-btn" onclick="handlePurchase(\'scan\')">Unlock — £5.99</button>'+
-    '</div>';
-  return '<div class="res-plans-wrap">'+
-    '<div class="res-plans-head"><div class="res-pro-eye">Unlock everything</div>'+
-    '<div class="res-plans-title">You\'ve seen the grade. Now see everything.</div></div>'+
-    '<div class="res-plans">'+audit+pro+'</div>'+
-    '<div class="res-plans-foot">One-time unlock, or go Pro and keep scanning. Cancel Pro anytime.</div>'+
-  '</div>';
+  const audit=paid?'':plan('Full Body Audit','$6.99','one-time','Complete the picture. No subscription.',
+    ['All four angles','Overall physique grade','Muscle-by-muscle breakdown','Estimated body-fat range','Keep this audit'], 'scan','Unlock my audit',false);
+  const proFeatures=['Everything in the full audit','Rescans · up to 20 per day','Scan history & comparisons','Improve reports · up to 6 per day'];
+  const pro='<article class="res-plan rp-featured">'+
+    '<div class="rp-tag">For ongoing progress</div><h3 class="rp-name">CutRank Pro</h3>'+
+    '<div class="rp-billing" role="group" aria-label="Pro billing interval">'+
+      '<button type="button" aria-pressed="true" onclick="selectProBilling(this,\'monthly\')">Monthly</button>'+
+      '<button type="button" aria-pressed="false" onclick="selectProBilling(this,\'yearly\')">Yearly <span>Save 67%</span></button></div>'+
+    '<div class="rp-pro-summary" aria-live="polite"><div class="rp-price">$14.99<small>/ month</small></div>'+
+    '<p class="rp-billing-note">$14.99 billed monthly. Renews monthly until cancelled.</p></div>'+
+    '<p class="rp-desc">Track your progress, one training block at a time.</p>'+
+    '<ul class="rp-list">'+proFeatures.map(f=>'<li>'+f+'</li>').join('')+'</ul>'+
+    '<button class="btn gold-btn rp-btn" data-pro-checkout onclick="handlePurchase(\'pro\')">Get Pro — monthly</button></article>';
+  return '<section class="res-plans-wrap" aria-label="Upgrade options">'+
+    '<div class="res-plans-head"><span class="res-pro-eye">'+(paid?'YOUR NEXT CHAPTER':'YOUR FREE RESULT IS YOURS')+'</span>'+
+    '<h2 class="res-plans-title">'+(paid?'Keep track of what changes.':'Your grade is the starting point.')+'</h2>'+
+    '<p class="res-plans-intro">'+(paid?'Choose how you want to rescan and compare progress.':'Unlock the other angles for a full audit, or go Pro to follow your progress over time.')+'</p></div>'+
+    '<div class="res-plans'+(paid?' res-plans-single':'')+'">'+audit+pro+'</div>'+
+    '<div class="res-plans-foot">Prices in USD · Secure Stripe checkout<br>One-time audit has no renewal. Pro renews at the selected interval until cancelled.</div>'+
+    '<button class="rp-later" onclick="goHome(\'scanSection\')">Keep my free result — decide later</button></section>';
+}
+
+function selectProBilling(button,interval){
+  const card=button.closest('.res-plan');
+  const yearly=interval==='yearly';
+  card.querySelectorAll('.rp-billing button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+  card.querySelector('.rp-pro-summary').innerHTML=yearly?
+    '<div class="rp-price">$59.99<small>/ year · about $5/month</small></div><p class="rp-billing-note">$59.99 billed upfront annually. Renews yearly until cancelled.</p>':
+    '<div class="rp-price">$14.99<small>/ month</small></div><p class="rp-billing-note">$14.99 billed monthly. Renews monthly until cancelled.</p>';
+  const checkout=card.querySelector('[data-pro-checkout]');
+  checkout.textContent=yearly?'Get Pro — yearly':'Get Pro — monthly';
+  checkout.setAttribute('onclick',yearly?"handlePurchase('yearly')":"handlePurchase('pro')");
 }
 
 function tierDisplayLabel(tier){
-  return {scan:'Full Body Audit',pro:'CutRank Pro',lifetime:'Lifetime'}[tier]||'Paid access';
+  return {free:'Free account',scan:'Full Body Audit',pro:'CutRank Pro',yearly:'CutRank Pro — Yearly',lifetime:'Lifetime'}[tier]||'Account';
 }
 
 // ============================================================
 //  SCAN HISTORY
 // ============================================================
+let historyEntries=[];
+let historyRegion='all';
+function historySetRegion(region){
+  historyRegion=VIEWS.some(v=>v.id===region)?region:'all';
+  renderHistoryList();
+}
+function renderHistoryList(){
+  const body=document.getElementById('histBody');
+  const names={front:'Front',back:'Back',legs:'Legs',arms_side:'Arms / Side'};
+  const matching=historyEntries.filter(h=>historyRegion==='all'||h.region===historyRegion)
+    .sort((a,b)=>(Number(b.ts)||0)-(Number(a.ts)||0));
+  const select='<label class="history-filter">Angle <select aria-label="Filter scan history by angle" onchange="historySetRegion(this.value)">'+
+    '<option value="all"'+(historyRegion==='all'?' selected':'')+'>All angles</option>'+
+    VIEWS.map(v=>'<option value="'+v.id+'"'+(historyRegion===v.id?' selected':'')+'>'+esc(v.t)+'</option>').join('')+'</select></label>';
+  const versions=new Set(historyEntries.map(h=>h.scoring_version||'legacy-unknown'));
+  body.innerHTML='<div class="history-toolbar"><div><strong>'+historyEntries.length+'</strong> saved scan'+(historyEntries.length===1?'':'s')+'<span> · newest first</span></div>'+select+'</div>'+
+    (versions.size>1?'<p class="history-version-note">Scoring has changed since some of these scans. Progress compares results from the current scoring version.</p>':'')+
+    (matching.length?matching.map(h=>{
+      const score=h.score==null?null:Number(h.score);
+      const grade=Number.isFinite(score)?scoreToGrade(score):'—';
+      const date=new Date(Number(h.ts)*1000);
+      const dateText=Number.isFinite(date.getTime())?date.toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'Date unavailable';
+      const quote=h.verdict?String(h.verdict).trim():'';
+      return '<article class="hist-row">'+
+        '<div class="hist-grade">'+grade+'</div>'+
+        '<div><div class="hist-name">'+esc(names[h.region]||'Scan')+' view</div>'+
+          '<div class="hist-date">'+esc(dateText)+'</div>'+
+          (quote?'<p class="hist-verdict">“'+esc(quote.length>145?quote.slice(0,145)+'…':quote)+'”</p>':'')+
+        '</div><div class="hist-score">'+(Number.isFinite(score)?(Math.max(0,Math.min(100,score))/10).toFixed(1)+'/10':'—')+'</div>'+
+      '</article>';
+    }).join(''):'<p class="hist-empty">No saved '+(historyRegion==='all'?'':' '+esc(names[historyRegion]||'')+' view')+' scans yet.</p>');
+}
 async function showHistory(){
+  if(!await requireWorkspaceAccess('screen-history')) return;
   track('history_viewed');
   const body=document.getElementById('histBody');
   body.innerHTML='<p class="hist-empty">Loading…</p>';
   show('screen-history');
   if(!hasFreshEntitlementToken()) await refreshEntitlementToken().catch(()=>{});
-  if(!hasFreshEntitlementToken()){
-    body.innerHTML='<p class="hist-empty">Scan history is part of paid access. '+
-      '<button class="recover-link" onclick="openRecoveryModal()">Restore access</button> if you\'ve already paid, '+
-      'or unlock the <button class="recover-link" onclick="handlePurchase(\'scan\')">Full Body Audit</button>.</p>';
+  if(!hasEntitlementHint()){
+    body.innerHTML='<div class="workspace-empty"><span class="db-kicker">YOUR SCAN RECORD</span><h3>Keep every scan in one place.</h3>'+
+      '<p>Saved scan history is included with the Full Body Audit. Return later with the same email to review your paid results.</p>'+
+      '<div class="workspace-empty-actions"><button class="db-primary" onclick="handlePurchase(\'scan\')">Unlock the audit →</button>'+
+      '<button class="db-text-link" onclick="openRecoveryModal()">Already paid? Restore access</button></div></div>';
     return;
   }
   try{
@@ -1641,28 +1674,17 @@ async function showHistory(){
     const data=await res.json().catch(()=>null);
     if(!res.ok || !data || !Array.isArray(data.history)) throw new Error('history_failed');
     if(!data.history.length){
-      body.innerHTML='<p class="hist-empty">No scans saved yet. Paid scans are stored here automatically from now on — scan an angle to start your record.</p>';
+      body.innerHTML='<div class="workspace-empty"><span class="db-kicker">NO SAVED SCANS</span><h3>Your history starts with a scan.</h3>'+
+        '<p>Paid scans will appear here after you complete an angle. Start with a well-lit photo and use a consistent setup when you come back.</p>'+
+        '<button class="db-primary" onclick="goHome(\'scanSection\')">Scan an angle →</button></div>';
       return;
     }
-    const viewNames={front:'Front',back:'Back',legs:'Legs',arms_side:'Arms / Side'};
-    body.innerHTML=data.history.slice().reverse().map(h=>{
-      const g=(h.score!=null)?scoreToGrade(h.score):'—';
-      const d=new Date((h.ts||0)*1000);
-      const date=d.toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
-      let quote='';
-      if(h.verdict){
-        const v=String(h.verdict);
-        quote=' · “'+esc(v.length>80?v.slice(0,80)+'…':v)+'”';
-      }
-      return '<div class="hist-row">'+
-        '<div class="hist-grade">'+g+'</div>'+
-        '<div><div class="hist-name">'+esc(viewNames[h.region]||h.region||'Scan')+'</div>'+
-        '<div class="hist-date">'+esc(date)+quote+'</div></div>'+
-        '<div class="hist-score">'+(h.score!=null?(h.score/10).toFixed(1)+'/10':'—')+'</div>'+
-      '</div>';
-    }).join('');
+    historyEntries=data.history;
+    historyRegion='all';
+    renderHistoryList();
   }catch(e){
-    body.innerHTML='<p class="hist-empty">Could not load history right now. Try again in a moment.</p>';
+    body.innerHTML='<div class="workspace-empty"><span class="db-kicker">TEMPORARILY UNAVAILABLE</span><h3>We could not load your history.</h3>'+
+      '<p>Your saved scans are still tied to your account. Try the request again.</p><button class="db-primary" onclick="showHistory()">Try again →</button></div>';
   }
 }
 
@@ -1677,11 +1699,12 @@ function progShell(inner){
       '<h2>Progress.</h2>'+
       '<p>Two scans of the same angle, side by side — which muscles actually moved.</p>'+
     '</div>'+inner+
-    '<button class="btn ghost" style="margin-top:18px" onclick="show(\'screen-home\')">← Back</button>'+
+    '<button class="btn ghost" style="margin-top:18px" onclick="showDashboard()">← Dashboard</button>'+
   '</div></div>';
 }
 
 async function showProgress(){
+  if(!await requireWorkspaceAccess('screen-progress')) return;
   track('progress_viewed');
   const body=document.getElementById('progressBody');
   body.innerHTML=progShell('<p class="hist-empty">Loading…</p>');
@@ -1753,7 +1776,7 @@ function renderProgressLocked(){
         '<li>Scan history tied to your email, on any device</li>'+
       '</ul>'+
       '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CutRank Pro →</button>'+
-      '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">← Back</button>'+
+      '<button class="btn ghost" style="margin-top:8px" onclick="showDashboard()">← Dashboard</button>'+
       '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
     '</div></div>';
 }
@@ -1855,11 +1878,12 @@ function impShell(inner){
       '<h2>Improve.</h2>'+
       '<p>Your split and your diet, audited against what the scan actually shows.</p>'+
     '</div>'+inner+
-    '<button class="btn ghost" style="margin-top:18px" onclick="show(\'screen-home\')">← Back</button>'+
+    '<button class="btn ghost" style="margin-top:18px" onclick="showDashboard()">← Dashboard</button>'+
   '</div></div>';
 }
 
 async function showImprove(){
+  if(!await requireWorkspaceAccess('screen-improve')) return;
   track('improve_viewed');
   const body=document.getElementById('improveBody');
   body.innerHTML=impShell('<p class="hist-empty">Loading…</p>');
@@ -1897,7 +1921,7 @@ function renderImproveLocked(){
         '<li>Rescan after — Progress shows whether it worked</li>'+
       '</ul>'+
       '<button class="btn gold-btn" onclick="handlePurchase(\'pro\')">Get CutRank Pro →</button>'+
-      '<button class="btn ghost" style="margin-top:8px" onclick="show(\'screen-home\')">← Back</button>'+
+      '<button class="btn ghost" style="margin-top:8px" onclick="showDashboard()">← Dashboard</button>'+
       '<p class="recover-inline">Already Pro? <button class="recover-link" onclick="openRecoveryModal()">Restore access</button></p>'+
     '</div></div>';
 }
@@ -2679,7 +2703,8 @@ function computeStrength(){
 
 let strSearchQ = '';
 
-function showStrength(){
+async function showStrength(){
+  if(!await requireWorkspaceAccess('screen-strength')) return;
   show('screen-strength');
   renderStrength();
   track('strength_open', {});
@@ -2963,7 +2988,8 @@ function strHeatmapHTML(r){
 
 // ---- Profile: both ranks, and the plot that puts them against each other --
 
-function showProfile(){
+async function showProfile(){
+  if(!await requireWorkspaceAccess('screen-profile')) return;
   show('screen-profile');
   renderProfile();
   track('profile_open', {});
@@ -3058,6 +3084,6 @@ function renderProfile(){
       '</div>') +
     '<div class="pf-actions">' +
       '<button class="btn ghost" onclick="showStrength()">' + (str ? 'Update my lifts' : 'Enter my lifts') + '</button>' +
-      '<button class="btn ghost" onclick="show(\'screen-home\')">&larr; Back</button>' +
+      '<button class="btn ghost" onclick="showDashboard()">&larr; Dashboard</button>' +
     '</div>';
 }
