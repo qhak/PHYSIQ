@@ -78,7 +78,7 @@ body{background:var(--bg)}
 #screen-home .home-signature-card .vc-footer{margin:0 26px;padding:17px 0 20px}
 #screen-home .home-signature-card .vc-grade-letter{font-size:clamp(90px,10vw,126px)}
 .home-result-photo{--photo-size:210px;display:block;position:relative;flex:none;width:var(--photo-size);height:var(--photo-size);overflow:hidden;border-radius:50%;background:#322216;margin:0 auto}
-.home-result-photo img{display:block;position:absolute;max-width:none;width:calc(var(--photo-size) * 2.876);height:auto;left:calc(var(--photo-size) * -.34);top:calc(var(--photo-size) * -.4)}
+.home-result-photo img{display:block;position:absolute;max-width:none;width:calc(var(--photo-size) * 2.9511);height:auto;left:calc(var(--photo-size) * -.337);top:calc(var(--photo-size) * -.386)}
 .sample-insight{
   background:var(--surface);border:1px solid var(--line2);border-radius:18px;
   margin:-2px 22px 0;padding:20px 23px 21px;
