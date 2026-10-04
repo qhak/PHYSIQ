@@ -134,7 +134,7 @@ body{background:var(--bg)}
 #screen-home .prow-desc{font-size:13px;line-height:1.6;max-width:50ch}
 #screen-home .prow-price{font-size:23px;letter-spacing:-.04em}
 #screen-home .prow-cta{grid-column:1/-1;align-self:end;margin:0}
-.result-wrap,.analyse-wrap{max-width:1000px}
+.result-wrap,.analyse-wrap{max-width:1000px;margin-inline:auto}
 .result-wrap h1,.result-wrap h2,.analyse-wrap h1{letter-spacing:-.045em}
 .signature-card.result-vc{border-radius:18px}
 .signature-breakdown,.rank-single.res-rank,.res-mc,.res-plan,.hist-row,.str-form,.str-groups,.pf-tile{border-radius:16px;box-shadow:0 8px 26px rgba(27,62,103,.04)}
