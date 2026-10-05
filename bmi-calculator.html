@@ -15,7 +15,7 @@
 <script defer data-domain="cutrank.app" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
 
 <title>BMI Calculator — Free, Instant, Honest | CutRank</title>
-<meta name="description" content="Free BMI calculator — instant result plus an honest explanation of what BMI actually measures and where it breaks down for anyone who lifts.">
+<meta name="description" content="Free BMI calculator with an explanation of what BMI measures, its limits for individual body composition, and how it differs from FFMI.">
 <link rel="canonical" href="https://cutrank.app/bmi-calculator.html">
 
 <!-- Open Graph -->
@@ -66,7 +66,7 @@
     {"@type":"Question","name":"What is BMI?","acceptedAnswer":{"@type":"Answer","text":"BMI (Body Mass Index) is your weight divided by your height squared. It's a quick, population-level screening number used by health organizations, but it doesn't distinguish between muscle and fat — it only knows total weight."}},
     {"@type":"Question","name":"Is BMI accurate for muscular people?","acceptedAnswer":{"@type":"Answer","text":"No. BMI can't tell the difference between muscle and fat, so a heavily muscled, lean person can score as 'overweight' or 'obese' on BMI despite having very little body fat. It was designed as a population-level statistical tool, not an individual body-composition measurement."}},
     {"@type":"Question","name":"What is a normal BMI range?","acceptedAnswer":{"@type":"Answer","text":"The standard WHO reference ranges are: under 18.5 is classified underweight, 18.5-24.9 normal, 25-29.9 overweight, and 30+ obese. These are population screening categories, not individual health verdicts."}},
-    {"@type":"Question","name":"What should I use instead of BMI if I lift weights?","acceptedAnswer":{"@type":"Answer","text":"FFMI (Fat-Free Mass Index) accounts for body fat and reflects actual muscle mass, making it far more useful for anyone training seriously. A photo-based body composition grade goes further, breaking results down by individual muscle group."}}
+    {"@type":"Question","name":"What should I use instead of BMI if I lift weights?","acceptedAnswer":{"@type":"Answer","text":"FFMI uses estimated fat-free mass rather than total body weight, but fat-free mass includes more than skeletal muscle and depends on a body-fat estimate. It can help answer a different question from BMI; neither measures physique or health on its own. A photo-based grade is a visual estimate, not a body-composition measurement."}}
   ]
 }
 </script>
@@ -275,17 +275,17 @@
 
   <section class="block">
     <h2>What BMI actually measures</h2>
-    <p class="body">BMI is your weight divided by your height squared. That's it — <strong>it has no idea what your weight is made of.</strong> It was designed in the 1830s as a population-level statistical tool, not a way to assess any one individual's body composition.</p>
-    <p class="body">For most people who don't lift, it's a rough, usable screening number. For anyone with meaningful muscle mass, it starts breaking down fast.</p>
+    <p class="body">BMI is weight in kilograms divided by height in metres squared. It is a screening measure of weight relative to height; it does not directly measure body fat or distinguish fat, muscle and bone. <a href="https://www.cdc.gov/bmi/about/index.html" rel="noopener">The CDC recommends interpreting BMI for an individual alongside other information.</a></p>
+    <p class="body">A person with more muscle can have a higher BMI without that number showing what their body weight is made of. BMI remains useful as a screening and population measure, but it cannot answer an individual body-composition question by itself.</p>
   </section>
 
   <section class="block">
-    <h2>Where it <em>falls apart</em></h2>
-    <p class="body">A 100kg powerlifter at 12% body fat and a 100kg out-of-shape person at 35% body fat get the <strong>exact same BMI</strong>. Same formula, same number, completely different bodies. BMI can't see the difference because it was never built to.</p>
+    <h2>Where it has <em>limits</em></h2>
+    <p class="body">Two people with the same height and weight have the same BMI, even if their body composition differs. The formula has no input for fat mass, muscle mass or where fat is distributed. <a href="https://www.cdc.gov/bmi/faq/index.html" rel="noopener">The CDC notes that BMI cannot distinguish fat, muscle and bone mass.</a></p>
     <ul class="checks">
       <li><b>No muscle vs. fat distinction</b> — the single biggest blind spot, and the one that matters most if you train.</li>
       <li><b>No frame or distribution awareness</b> — where the weight sits on you isn't part of the equation.</li>
-      <li><b>Built for population averages</b> — genuinely useful for public health statistics across millions of people, much less useful for judging one specific person.</li>
+      <li><b>A screening measure</b> — useful in population health and as one piece of individual screening, but not a standalone assessment of one person's body composition or health.</li>
     </ul>
   </section>
 
@@ -297,12 +297,12 @@
       <div class="rung"><span class="g">25–29.9</span><span class="gt"><b>Overweight</b> — <span>WHO reference category.</span></span></div>
       <div class="rung"><span class="g">30+</span><span class="gt"><b>Obese</b> — <span>WHO reference category.</span></span></div>
     </div>
-    <div class="note" style="margin-top:20px">These are population screening categories from the World Health Organization — not an individual medical verdict, and not adjusted for muscle mass, frame, or anything else about your specific body. Not medical advice.</div>
+    <div class="note" style="margin-top:20px">These adult reference categories are published by the <a href="https://www.who.int/europe/news-room/fact-sheets/item/nutrition---maintaining-a-healthy-lifestyle" rel="noopener">World Health Organization</a>. They are population screening ranges, not an individual diagnosis, and do not account for muscle mass or frame.</div>
   </section>
 
   <section class="block">
     <h2>What to use <em>instead</em>, if you lift</h2>
-    <p class="body">If BMI is telling you something that clearly doesn't match the mirror, it's not lying — it's just the wrong tool. <a href="/ffmi-calculator.html" style="color:var(--blue)"><strong>FFMI</strong></a> accounts for body fat and actually reflects muscle mass. And for the full picture — muscle-by-muscle, not one blended number — a photo-based grade breaks it down properly.</p>
+    <p class="body">If BMI does not answer the question you have, the <a href="/ffmi-calculator.html" style="color:var(--blue)"><strong>FFMI calculator</strong></a> uses estimated fat-free mass instead of total body weight. Fat-free mass includes more than skeletal muscle, and its estimate depends on body-fat input. A photo-based grade offers a separate visual read of visible areas; it does not measure body composition.</p>
     <div class="cta-row">
       <a class="bigcta" href="https://cutrank.app/#scanSection" onclick="plausible('seo_cta_click')">Get a real breakdown — free</a>
       <span class="cta-sub">One photo, graded S to E. No card.</span>
@@ -313,8 +313,8 @@
     <h2>Questions</h2>
     <details class="faq"><summary>What is BMI?</summary><div class="a">BMI (Body Mass Index) is your weight divided by your height squared. It's a quick, population-level screening number used by health organizations, but it doesn't distinguish between muscle and fat — it only knows total weight.</div></details>
     <details class="faq"><summary>Is BMI accurate for muscular people?</summary><div class="a">No. BMI can't tell the difference between muscle and fat, so a heavily muscled, lean person can score as "overweight" or "obese" on BMI despite having very little body fat. It was designed as a population-level statistical tool, not an individual body-composition measurement.</div></details>
-    <details class="faq"><summary>What is a normal BMI range?</summary><div class="a">The standard WHO reference ranges are: under 18.5 is classified underweight, 18.5-24.9 normal, 25-29.9 overweight, and 30+ obese. These are population screening categories, not individual health verdicts.</div></details>
-    <details class="faq"><summary>What should I use instead of BMI if I lift weights?</summary><div class="a">FFMI (Fat-Free Mass Index) accounts for body fat and reflects actual muscle mass, making it far more useful for anyone training seriously. A photo-based body composition grade goes further, breaking results down by individual muscle group.</div></details>
+    <details class="faq"><summary>What is a normal BMI range?</summary><div class="a">The <a href="https://www.who.int/europe/news-room/fact-sheets/item/nutrition---maintaining-a-healthy-lifestyle" rel="noopener">WHO adult reference ranges</a> classify under 18.5 as underweight, 18.5–24.9 as normal weight, 25–29.9 as overweight, and 30 or higher as obesity. They are screening categories, not individual health verdicts.</div></details>
+    <details class="faq"><summary>What should I use instead of BMI if I lift weights?</summary><div class="a">FFMI uses estimated fat-free mass rather than total body weight, but fat-free mass includes more than skeletal muscle and depends on a body-fat estimate. It can help answer a different question from BMI; neither measures physique or health on its own. A photo-based grade is a visual estimate, not a body-composition measurement.</div></details>
   </section>
 
   <section class="final">
@@ -400,13 +400,13 @@
     (function(){
       var why, txt, href, ev = 'bmi_next_ffmi';
       if(bmi >= 25){
-        why = 'BMI counts muscle as excess weight. If you lift, landing in the <b>overweight</b> band often just means you carry more lean mass than a height-and-weight formula expects.';
+        why = 'BMI uses height and total weight, so it cannot show how much of your weight is fat, muscle or bone. If you lift, consider other information before interpreting the category.';
       } else if(bmi < 18.5){
         why = 'A low BMI says you are light for your height. It says nothing about how much of that weight is muscle — those are different problems with different fixes.';
       } else {
-        why = 'A normal BMI is not the same as a good body composition. Two people at this exact number can look completely different depending on what the weight is made of.';
+        why = 'A BMI in this reference range does not describe body composition. People with the same BMI can have different amounts of fat-free mass.';
       }
-      why += ' FFMI strips body fat out first, so what is left actually tracks muscle.';
+      why += ' FFMI is based on estimated fat-free mass, which includes more than skeletal muscle. It answers a different question and is not a direct muscle measurement.';
       nextStep(why, 'Check your FFMI instead', '/ffmi-calculator.html', ev);
     })();
     if(window.plausible) plausible('bmi_calculated');

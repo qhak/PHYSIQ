@@ -64,9 +64,9 @@
   "@type": "FAQPage",
   "mainEntity": [
     {"@type":"Question","name":"What is lean body mass?","acceptedAnswer":{"@type":"Answer","text":"Lean body mass (LBM) is everything your body weighs that isn't fat — muscle, bone, organs, water, and connective tissue. It's the same core idea FFMI is built on."}},
-    {"@type":"Question","name":"Can I calculate lean body mass without knowing my body fat %?","acceptedAnswer":{"@type":"Answer","text":"Yes, using formulas like the Boer formula, which estimates LBM from height, weight, and sex alone. It's less precise than using a real body fat percentage, but useful when you don't have one."}},
+    {"@type":"Question","name":"Can I calculate lean body mass without knowing my body fat %?","acceptedAnswer":{"@type":"Answer","text":"Yes. The Boer formula estimates lean body mass from height and weight using sex-specific equations. It is a population-derived estimate and cannot distinguish people with the same height and weight but different body composition."}},
     {"@type":"Question","name":"What's the difference between lean body mass and FFMI?","acceptedAnswer":{"@type":"Answer","text":"Lean body mass is a raw weight figure (e.g. 68kg of lean mass). FFMI takes that number and adjusts it for height, so it can be compared meaningfully across people of different heights."}},
-    {"@type":"Question","name":"How accurate is the Boer formula?","acceptedAnswer":{"@type":"Answer","text":"It's a population-level estimate, not a direct measurement — actual body composition testing (DEXA, for example) will always be more accurate for an individual. Treat it as a reasonable starting estimate, not a precise figure."}}
+    {"@type":"Question","name":"How accurate is the Boer formula?","acceptedAnswer":{"@type":"Answer","text":"It is a prediction equation, not a direct measurement. Its result may differ from an individual's body composition; use it as an estimate and retain the method when comparing values."}}
   ]
 }
 </script>
@@ -277,7 +277,7 @@
 
       <div class="cta-row" style="margin-top:16px">
         <button class="bigcta" id="calcBtn" type="button">Calculate LBM</button>
-        <span class="cta-sub">Want a real body fat estimate instead of guessing? <a href="https://cutrank.app/#scanSection" onclick="plausible('seo_cta_click')" style="color:var(--blue)">Get one from a photo</a></span>
+        <span class="cta-sub">Need a body-fat estimate? <a href="https://cutrank.app/#pricingSection" onclick="plausible('seo_cta_click')" style="color:var(--blue)">See paid report options</a> · <a href="/body-fat-measurement-accuracy.html" style="color:var(--blue)">Compare methods</a></span>
       </div>
       <div class="calc-result" id="result">
         <div class="result-card">
@@ -307,28 +307,28 @@
     <p class="body">Lean body mass (LBM) is everything you weigh that isn't fat — muscle, bone, organs, water, connective tissue. It's the raw number underneath FFMI, before height gets factored in.</p>
     <ul class="checks">
       <li><b>With a body fat % you know</b> — LBM = weight × (1 − body fat %). Simple, direct.</li>
-      <li><b>Without one</b> — the <strong>Boer formula</strong> estimates LBM from height, weight, and sex alone, using population-level regression data. Less precise than a real body fat number, but useful as a starting point.</li>
+      <li><b>Without one</b> — the <strong>Boer formula</strong> estimates LBM from height and weight using sex-specific equations. It was developed as an estimate for normalizing body-fluid volumes, not to measure an individual's physique. <a href="https://pubmed.ncbi.nlm.nih.gov/6496691/" rel="noopener">Boer (1984)</a>.</li>
     </ul>
   </section>
 
   <section class="block">
     <h2>LBM vs <em>FFMI</em></h2>
     <p class="body">Lean body mass is a raw weight — 68kg of lean mass means something different on a 160cm frame than a 190cm one. <a href="/ffmi-calculator.html" style="color:var(--blue)"><strong>FFMI</strong></a> takes your LBM and adjusts it for height, so it's the number to use when comparing muscularity across different heights rather than just tracking your own raw mass over time.</p>
-    <div class="note">Neither of these is a medical measurement. The Boer formula especially is a population-level estimate — actual scanning methods (DEXA, for example) will always be more accurate for any one individual.</div>
+    <div class="note">Neither result is a direct measurement. Different methods estimate body compartments differently; a scan also has method-specific limits. Keep the method and inputs with any result you compare over time.</div>
   </section>
 
   <section class="block">
     <h2>Questions</h2>
     <details class="faq"><summary>What is lean body mass?</summary><div class="a">Lean body mass (LBM) is everything your body weighs that isn't fat — muscle, bone, organs, water, and connective tissue. It's the same core idea FFMI is built on.</div></details>
-    <details class="faq"><summary>Can I calculate lean body mass without knowing my body fat %?</summary><div class="a">Yes, using formulas like the Boer formula, which estimates LBM from height, weight, and sex alone. It's less precise than using a real body fat percentage, but useful when you don't have one.</div></details>
+    <details class="faq"><summary>Can I calculate lean body mass without knowing my body fat %?</summary><div class="a">Yes. The Boer formula estimates lean body mass from height and weight using sex-specific equations. It is a population-derived estimate and cannot distinguish people with the same height and weight but different body composition.</div></details>
     <details class="faq"><summary>What's the difference between lean body mass and FFMI?</summary><div class="a">Lean body mass is a raw weight figure (e.g. 68kg of lean mass). FFMI takes that number and adjusts it for height, so it can be compared meaningfully across people of different heights.</div></details>
-    <details class="faq"><summary>How accurate is the Boer formula?</summary><div class="a">It's a population-level estimate, not a direct measurement — actual body composition testing (DEXA, for example) will always be more accurate for an individual. Treat it as a reasonable starting estimate, not a precise figure.</div></details>
+    <details class="faq"><summary>How accurate is the Boer formula?</summary><div class="a">It is a prediction equation, not a direct measurement. Its result may differ from an individual's body composition; use it as an estimate and retain the method when comparing values.</div></details>
   </section>
 
   <section class="final">
-    <h2>Guessing your <em>body fat</em>?</h2>
-    <p>Skip the estimate. Get a real read from one photo.</p>
-    <a class="bigcta" href="https://cutrank.app/#scanSection" onclick="plausible('seo_cta_click')">Get your grade — free</a>
+    <h2>Need more context on <em>body fat</em>?</h2>
+    <p>Compare measurement methods and understand what an image-based estimate can tell you.</p>
+    <a class="bigcta" href="/body-fat-measurement-accuracy.html">Read the measurement guide</a>
   </section>
 
 <!-- RELATED SEO GUIDES START -->
@@ -437,8 +437,8 @@
     (function(){
       var why, txt, href, ev;
       if(tag.indexOf('Boer') !== -1){
-        why = 'That came from a formula using only your height and weight — it has no idea how much muscle you actually carry, so two people with identical measurements get identical answers. A real body fat reading replaces the guess.';
-        txt = 'Get a body fat estimate from a photo'; href = 'https://cutrank.app/#scanSection'; ev = 'seo_cta_click';
+        why = 'That came from a formula using only your height and weight — it cannot distinguish muscle, bone, organs, water or other fat-free tissue. A body-fat input gives a different estimate, but it is still only as reliable as that input.';
+        txt = 'See paid body-fat estimate options'; href = 'https://cutrank.app/#pricingSection'; ev = 'seo_cta_click';
       } else {
         why = 'Lean body mass on its own does not tell you whether that is a lot. <b>A lot for whom?</b> FFMI puts the same number against your height, which is what makes it comparable.';
         txt = 'See your FFMI'; href = '/ffmi-calculator.html'; ev = 'lbm_next_ffmi';

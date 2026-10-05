@@ -63,8 +63,8 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type":"Question","name":"How are these macros calculated?","acceptedAnswer":{"@type":"Answer","text":"Calories come from the Mifflin-St Jeor equation for resting metabolic rate, multiplied by an activity factor, then adjusted up or down for your goal. Protein is set within the evidence-based range for resistance-trained people (1.6-2.2g per kg bodyweight), fat is set at 25% of total calories, and carbs fill the remainder."}},
-    {"@type":"Question","name":"How much protein do I actually need?","acceptedAnswer":{"@type":"Answer","text":"Research on resistance-trained individuals generally supports 1.6 to 2.2 grams of protein per kilogram of bodyweight per day. This calculator defaults to roughly the middle of that range."}},
+    {"@type":"Question","name":"How are these macros calculated?","acceptedAnswer":{"@type":"Answer","text":"The calculator estimates resting energy with Mifflin-St Jeor, applies an activity multiplier, then uses fixed goal adjustments of minus 500 calories for a cut or plus 300 for a bulk. Protein is set to 1.8 grams per kilogram, fat to 25% of estimated calories, and carbohydrates fill the remainder. These are calculator defaults, not personalized requirements."}},
+    {"@type":"Question","name":"How much protein do I actually need?","acceptedAnswer":{"@type":"Answer","text":"Protein needs vary with the person and goal. A review of off-season bodybuilding recommendations describes 1.6 to 2.2 grams per kilogram per day for novice and intermediate bodybuilders. This calculator uses 1.8 grams per kilogram as a general starting estimate, not an individual prescription."}},
     {"@type":"Question","name":"Should I eat exactly these numbers every day?","acceptedAnswer":{"@type":"Answer","text":"Treat them as a starting point, not a rule. Individual metabolism varies from formula estimates by a meaningful margin — track your weight trend over 2-3 weeks and adjust calories up or down based on what's actually happening, not just the initial number."}},
     {"@type":"Question","name":"Is this medical or dietary advice?","acceptedAnswer":{"@type":"Answer","text":"No. This is a general estimation tool based on population-level formulas, not personalized medical, dietetic, or coaching advice. Consult a professional for individual guidance, especially with any existing health condition."}}
   ]
@@ -313,10 +313,10 @@
 
   <section class="block">
     <h2>How this is <em>calculated</em></h2>
-    <p class="body">Resting calorie burn comes from the <strong>Mifflin-St Jeor equation</strong>, widely considered one of the more accurate formulas for estimating resting metabolic rate. That's multiplied by an activity factor to get your total daily burn, then adjusted for your goal — roughly -500 calories for a cut, +300 for a lean bulk, unchanged for maintenance.</p>
+    <p class="body">The calculator estimates resting energy with the <a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" rel="noopener"><strong>Mifflin-St Jeor equation</strong></a>, applies an activity multiplier, then uses fixed goal adjustments: −500 calories for a cut, +300 for a bulk, or no adjustment for maintenance. The equation is a population-based estimate, not a measurement of your metabolism.</p>
     <ul class="checks">
-      <li><b>Protein</b> is set within the evidence-based range for people who train — 1.6 to 2.2g per kg of bodyweight — rather than a generic percentage.</li>
-      <li><b>Fat</b> is set at 25% of total calories, a reasonable baseline that leaves room for hormone function.</li>
+      <li><b>Protein</b> is set to 1.8g per kg of bodyweight. A review of off-season bodybuilding recommendations describes 1.6–2.2g/kg/day for novice and intermediate bodybuilders; needs still vary by person and goal. <a href="https://pubmed.ncbi.nlm.nih.gov/31247944/" rel="noopener">Read the review</a>.</li>
+      <li><b>Fat</b> is set to 25% of estimated calories as this calculator's design default. It is not a personalized minimum or universal target.</li>
       <li><b>Carbs</b> fill whatever calories remain — they're the flexible macro, not an afterthought, just the one with the most room to move based on preference.</li>
     </ul>
   </section>
@@ -329,8 +329,8 @@
 
   <section class="block">
     <h2>Questions</h2>
-    <details class="faq"><summary>How are these macros calculated?</summary><div class="a">Calories come from the Mifflin-St Jeor equation for resting metabolic rate, multiplied by an activity factor, then adjusted up or down for your goal. Protein is set within the evidence-based range for resistance-trained people (1.6-2.2g per kg bodyweight), fat is set at 25% of total calories, and carbs fill the remainder.</div></details>
-    <details class="faq"><summary>How much protein do I actually need?</summary><div class="a">Research on resistance-trained individuals generally supports 1.6 to 2.2 grams of protein per kilogram of bodyweight per day. This calculator defaults to roughly the middle of that range.</div></details>
+    <details class="faq"><summary>How are these macros calculated?</summary><div class="a">The calculator estimates resting energy with Mifflin-St Jeor, applies an activity multiplier, then uses fixed goal adjustments of −500 calories for a cut or +300 for a bulk. Protein is set to 1.8 grams per kilogram, fat to 25% of estimated calories, and carbohydrates fill the remainder. These are calculator defaults, not personalized requirements.</div></details>
+    <details class="faq"><summary>How much protein do I actually need?</summary><div class="a">Protein needs vary with the person and goal. A <a href="https://pubmed.ncbi.nlm.nih.gov/31247944/" rel="noopener">review of off-season bodybuilding recommendations</a> describes 1.6 to 2.2 grams per kilogram per day for novice and intermediate bodybuilders. This calculator uses 1.8 grams per kilogram as a general starting estimate, not an individual prescription.</div></details>
     <details class="faq"><summary>Should I eat exactly these numbers every day?</summary><div class="a">Treat them as a starting point, not a rule. Individual metabolism varies from formula estimates by a meaningful margin — track your weight trend over 2-3 weeks and adjust calories up or down based on what's actually happening, not just the initial number.</div></details>
     <details class="faq"><summary>Is this medical or dietary advice?</summary><div class="a">No. This is a general estimation tool based on population-level formulas, not personalized medical, dietetic, or coaching advice. Consult a professional for individual guidance, especially with any existing health condition.</div></details>
   </section>
