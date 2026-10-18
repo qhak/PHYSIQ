@@ -12,6 +12,9 @@ Charts show rounded axis ticks, latest values and period changes. Hover, tap or
 focus a session to inspect its exact numbers; use arrow keys to move between
 sessions. The lift table expands below the graph. Body-weight charts use a
 minimum 2 kg domain so small changes stay visually small.
+Progress has 4-week, 3-month and 6-month views, with clearly labelled illustrative
+earlier history added for review. Saved mock workouts remain intact. Longer
+charts reduce visible date labels and reveal session markers on inspection.
 
 Coach replies are scripted and visibly labelled. No AI provider, account,
 payment, live API, email or real user history is connected. Example calorie

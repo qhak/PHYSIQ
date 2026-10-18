@@ -12,13 +12,19 @@ function seed(){
 }
 let state=seed();
 try{const saved=JSON.parse(localStorage.getItem(STORAGE)||'null');if(saved?.version===1&&saved.history&&saved.drafts&&Array.isArray(saved.messages))state={...state,...saved};}catch{}
-let currentTab='today',metric='load',routine='upper',toastTimer;
+let currentTab='today',metric='load',routine='upper',period=90,toastTimer;
 const $=selector=>document.querySelector(selector);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function persist(){try{localStorage.setItem(STORAGE,JSON.stringify(state));}catch{toast('Browser storage is unavailable. Changes will last for this visit.');}}
 function toast(message){$('#toast').textContent=message;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),3500);}
 function dateLabel(date){return new Date(date+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',timeZone:'UTC'});}
 function e1rm(set){return Math.round(set.load*(1+set.reps/30)*10)/10;}
+function exampleTrend(id){
+  const earlier={bench:[60,60,62.5,62.5,65,65,65,67.5,67.5,65,67.5,70,70,70,72.5,72.5,70,72.5,75,75],squat:[70,72.5,72.5,75,75,77.5,77.5,80,80,77.5,80,82.5,82.5,85,85,85,82.5,85,87.5,90],row:[40,40,42.5,42.5,45,45,45,47.5,47.5,45,47.5,50,50,50,52.5,52.5,50,52.5,55,55]};
+  return earlier[id].map((load,index)=>({date:new Date(Date.parse('2026-09-27T12:00:00Z')-(20-index)*7*86400000).toISOString().slice(0,10),load,reps:id==='row'?10:8,rir:2})).concat(state.history[id]||[]);
+}
+function periodEntries(entries){const cutoff=Date.parse(TODAY+'T00:00:00Z')-period*86400000;return entries.filter(entry=>Date.parse(entry.date+'T12:00:00Z')>=cutoff).sort((a,b)=>a.date.localeCompare(b.date));}
+function periodName(){return period===28?'4 weeks':period===90?'3 months':'6 months';}
 function weekWeights(){const values=[80.0,80.1,80.1,80.1];if(state.checkin?.weight)values[3]=Math.round(((80.1*6+state.checkin.weight)/7)*10)/10;return values;}
 function calorieReview(){
   const weights=weekWeights(),change=+(weights[3]-weights[0]).toFixed(1),flat=Math.abs(change)<0.3;
@@ -28,13 +34,14 @@ function calorieReview(){
   return {title:gaining?'Time to review your calorie target?':'Your calorie target needs a check-in.',text:'The example weight trend has stayed around 80.1 kg across four weekly averages. Before '+(gaining?'increasing':'reducing')+' calories, check that your intake logging and activity have been consistent.',evidence:['4 weekly averages','Goal: '+(gaining?'build muscle':'lose fat')],adjustment:gaining?150:-150};
 }
 let chartSequence=0;
-function svgChart(values,labels,{unit='kg',color='#3978d6',label='Progress chart',width=600,minSpan=10,details=[]}={}){
+function svgChart(values,labels,{unit='kg',color='#3978d6',label='Progress chart',width=600,minSpan=10,details=[],dates=[]}={}){
   const id='trend-'+(++chartSequence),height=width<400?220:246,left=42,right=18,top=27,bottom=35;
   const span=Math.max(Math.max(...values)-Math.min(...values),minSpan),mid=(Math.max(...values)+Math.min(...values))/2;
   const roughStep=span/3,power=10**Math.floor(Math.log10(roughStep));
   const step=([1,2,2.5,5,10].find(n=>n*power>=roughStep)||10)*power;
   const min=Math.max(0,Math.floor((mid-span*.55)/step)*step),max=Math.ceil((mid+span*.55)/step)*step;
-  const x=i=>left+(width-left-right)*(values.length===1?.5:i/(values.length-1));
+  const time=dates.map(date=>Date.parse(date+'T12:00:00Z'));
+  const x=i=>left+(width-left-right)*(values.length===1?.5:time.length===values.length&&time.at(-1)!==time[0]?(time[i]-time[0])/(time.at(-1)-time[0]):i/(values.length-1));
   const y=value=>top+(height-top-bottom)*(1-(value-min)/(max-min));
   const points=values.map((value,i)=>x(i)+','+y(value)).join(' '),base=height-bottom;
   let grid='';
@@ -46,9 +53,11 @@ function svgChart(values,labels,{unit='kg',color='#3978d6',label='Progress chart
     const start=i===0?left:(x(i-1)+x(i))/2,end=i===values.length-1?width-right:(x(i)+x(i+1))/2;
     return `<g class="chart-point ${i===values.length-1?'latest':''}" data-point="${i}" data-x="${x(i)}" data-y="${y(value)}" tabindex="0" role="button" aria-label="${esc(labels[i]+': '+value+' '+unit+(details[i]?', '+details[i]:''))}" aria-describedby="${id}-tip"><rect x="${start}" y="${top}" width="${end-start}" height="${base-top}" fill="transparent"/><circle class="point-halo" cx="${x(i)}" cy="${y(value)}" r="9" fill="${color}"/><circle class="point-dot" cx="${x(i)}" cy="${y(value)}" r="${i===values.length-1?4.5:3}" fill="white" stroke="${color}" stroke-width="2"/></g>`;
   }).join('');
-  const dates=labels.map((date,i)=>`<text x="${x(i)}" y="${height-8}" text-anchor="${i===0?'start':i===values.length-1?'end':'middle'}">${esc(date)}</text>`).join('');
+  const labelCount=width<400?3:5;
+  const labelIndexes=new Set(Array.from({length:Math.min(labelCount,values.length)},(_,i)=>Math.round(i*(values.length-1)/(Math.min(labelCount,values.length)-1||1))));
+  const axisDates=labels.map((date,i)=>labelIndexes.has(i)?`<text x="${x(i)}" y="${height-8}" text-anchor="${i===0?'start':i===values.length-1?'end':'middle'}">${esc(date)}</text>`:'').join('');
   const series=esc(JSON.stringify({values,labels,unit,details}));
-  return `<div class="chart-canvas" data-series="${series}"><svg viewBox="0 0 ${width} ${height}" role="group" aria-label="${esc(label)}"><defs><linearGradient id="${id}-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity=".09"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><text class="axis-unit" x="${left-12}" y="11" text-anchor="end">${esc(unit)}</text>${grid}<polygon points="${x(0)},${base} ${points} ${x(values.length-1)},${base}" fill="url(#${id}-fill)"/><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line class="chart-guide" x1="0" x2="0" y1="${top}" y2="${base}"/>${dates}${dots}</svg><div class="chart-tooltip" id="${id}-tip" role="tooltip" hidden></div></div>`;
+  return `<div class="chart-canvas ${values.length>8?'dense':''}" data-series="${series}"><svg viewBox="0 0 ${width} ${height}" role="group" aria-label="${esc(label)}"><defs><linearGradient id="${id}-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity=".09"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><text class="axis-unit" x="${left-12}" y="11" text-anchor="end">${esc(unit)}</text>${grid}<polygon points="${x(0)},${base} ${points} ${x(values.length-1)},${base}" fill="url(#${id}-fill)"/><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line class="chart-guide" x1="0" x2="0" y1="${top}" y2="${base}"/>${axisDates}${dots}</svg><div class="chart-tooltip" id="${id}-tip" role="tooltip" hidden></div></div>`;
 }
 function chartWidth(id){return Math.max(250,$(id).clientWidth||560);}
 function drawOverviewChart(){
@@ -83,14 +92,16 @@ function finishWorkout(){
   state.sessions.push({date:TODAY,routine,exercises:JSON.parse(JSON.stringify(draft)),sets:logged.length});delete state.drafts[routine];persist();renderAll();openTab('today');toast('Workout saved · '+logged.length+' working sets logged.');
 }
 function renderProgress(){
-  const id=$('#chartExercise').value,sets=(state.history[id]||[]).slice(-4),label=$('#chartExercise').selectedOptions[0].textContent;
+  const id=$('#chartExercise').value,sets=periodEntries(exampleTrend(id)),label=$('#chartExercise').selectedOptions[0].textContent;
   const values=sets.map(set=>metric==='load'?set.load:metric==='reps'?set.reps:e1rm(set));
   const unit=metric==='reps'?'reps':'kg',latest=values.at(-1),difference=+(latest-values[0]).toFixed(1),pct=values[0]?Math.abs(difference/values[0]*100).toFixed(1):null;
   $('#progressSummary').innerHTML=`<div><strong>${latest}<small>${unit}</small></strong><span>${metric==='strength'?'Latest estimated 1RM':metric==='reps'?'Reps in latest set':'Latest working weight'}</span></div><div class="trend-change ${difference<=0?'steady':''}"><b>${difference===0?'No change':(difference>0?'+':'−')+Math.abs(difference)+' '+unit}</b><span>${difference===0?'Across '+sets.length+' sessions':(pct?pct+'% '+(difference>0?'increase':'decrease')+' · ':'')+sets.length+' sessions'}</span></div>`;
-  $('#progressChart').innerHTML=svgChart(values,sets.map(set=>dateLabel(set.date)),{width:chartWidth('#progressChart'),unit,minSpan:metric==='reps'?4:10,label:label+' '+(metric==='strength'?'estimated one rep max':metric),details:sets.map(set=>set.load+' kg × '+set.reps+' · '+set.rir+' RIR')});
+  $('#progressChart').innerHTML=svgChart(values,sets.map(set=>dateLabel(set.date)),{width:chartWidth('#progressChart'),unit,minSpan:metric==='reps'?4:10,label:label+' '+(metric==='strength'?'estimated one rep max':metric)+' over '+periodName(),dates:sets.map(set=>set.date),details:sets.map(set=>set.load+' kg × '+set.reps+' · '+set.rir+' RIR')});
   const rirs=[...new Set(sets.map(set=>set.rir))];$('#chartContext').textContent=rirs.length===1?'Comparing sets at '+rirs[0]+' RIR.':'RIR differs across these sets. Check the table before comparing.';
   $('#liftHistory').innerHTML=sets.slice().reverse().map(set=>`<tr><td>${dateLabel(set.date)}</td><td>${set.load} kg</td><td>${set.reps}</td><td>${set.rir}</td><td>${e1rm(set)} kg</td></tr>`).join('');
-  const weights=weekWeights();$('#weightChart').innerHTML=svgChart(weights,['Week 1','Week 2','Week 3','Week 4'],{width:chartWidth('#weightChart'),minSpan:2,label:'Weekly average body weight',color:'#5a8e85',details:weights.map(()=> 'Average of 7 weigh-ins · example data')});$('#weightAverage').textContent=weights[3].toFixed(1);$('#weightChange').textContent=Math.abs(weights[3]-weights[0])<.3?'Holding steady':((weights[3]-weights[0])>0?'+':'')+(weights[3]-weights[0]).toFixed(1)+' kg';
+  const weightHistory=[78.8,78.9,78.8,79.0,79.1,79.0,79.2,79.3,79.2,79.4,79.4,79.5,79.6,79.5,79.7,79.8,79.7,79.9,79.9,80.0,...weekWeights()].map((weight,index)=>({date:new Date(Date.parse('2026-10-18T12:00:00Z')-(23-index)*7*86400000).toISOString().slice(0,10),weight}));
+  const weightEntries=periodEntries(weightHistory),weights=weightEntries.map(entry=>entry.weight),weightDelta=+(weights.at(-1)-weights[0]).toFixed(1);
+  $('#weightChart').innerHTML=svgChart(weights,weightEntries.map(entry=>dateLabel(entry.date)),{width:chartWidth('#weightChart'),minSpan:2,label:'Weekly average body weight over '+periodName(),color:'#5a8e85',dates:weightEntries.map(entry=>entry.date),details:weights.map(()=> 'Average of 7 weigh-ins · example data')});$('#weightAverage').textContent=weights.at(-1).toFixed(1);$('#weightChange').textContent=Math.abs(weightDelta)<.3?'Holding steady':(weightDelta>0?'+':'')+weightDelta+' kg';$('#weightPeriod').textContent='Over '+periodName();
 }
 function renderContext(){
   const last=state.history.bench.at(-1);
@@ -148,6 +159,7 @@ document.addEventListener('click',event=>{
   if(button.dataset.tab)openTab(button.dataset.tab);
   if(button.dataset.open)openTab(button.dataset.open);
   if(button.dataset.metric){metric=button.dataset.metric;document.querySelectorAll('[data-metric]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));renderProgress();}
+  if(button.dataset.period){period=Number(button.dataset.period);document.querySelectorAll('[data-period]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));renderProgress();}
   if(button.dataset.complete){const [e,s]=button.dataset.complete.split(':').map(Number),set=getDraft()[e].sets[s];if(!set.done&&!validSet(set)){toast('Check weight, reps and RIR. RIR must be a whole number from 0 to 5.');return;}set.done=!set.done;persist();renderLogger();}
   if(button.dataset.addSet){const exercise=getDraft()[Number(button.dataset.addSet)];if(exercise.sets.length>=10){toast('This demo supports up to 10 sets per exercise.');return;}const previous=exercise.sets.at(-1);exercise.sets.push({...previous,done:false});persist();renderLogger();}
   if(button.dataset.prompt)sendMessage(button.dataset.prompt);
