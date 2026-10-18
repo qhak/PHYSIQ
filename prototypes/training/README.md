@@ -29,6 +29,10 @@ the banner's Edit your setup control after completion. Reset example data also
 resets onboarding. Goal and provided targets update the example workspace;
 schedule, equipment and preferences appear in the coach context. Personalised
 routine generation is still a future feature, clearly stated in the review.
+Training days and starting numbers use native sliders with live readouts.
+Optional weight/calorie/protein answers stay unset until selected, support
+clearing, and retain exact numeric entry. The days slider defaults to 3 and is
+confirmed when continuing; existing saved answers and resume behaviour remain.
 
 The production build excludes `prototypes/`. This branch can be pushed for
 review without adding a live feature to cutrank.app.
