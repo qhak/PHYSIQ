@@ -27,23 +27,43 @@ function calorieReview(){
   const gaining=state.goal==='gain';
   return {title:gaining?'Time to review your calorie target?':'Your calorie target needs a check-in.',text:'The example weight trend has stayed around 80.1 kg across four weekly averages. Before '+(gaining?'increasing':'reducing')+' calories, check that your intake logging and activity have been consistent.',evidence:['4 weekly averages','Goal: '+(gaining?'build muscle':'lose fat')],adjustment:gaining?150:-150};
 }
-function svgChart(values,labels,{unit='kg',color='#3978d6',label='Progress chart',suffix=''}={}){
-  const width=510,height=205,left=38,right=25,top=28,bottom=35;
-  const span=Math.max(...values)-Math.min(...values),padding=Math.max(span*.5,unit==='reps'?1:.4);
-  const min=Math.min(...values)-padding,max=Math.max(...values)+padding;
+let chartSequence=0;
+function svgChart(values,labels,{unit='kg',color='#3978d6',label='Progress chart',width=600,minSpan=10,details=[]}={}){
+  const id='trend-'+(++chartSequence),height=width<400?220:246,left=42,right=18,top=27,bottom=35;
+  const span=Math.max(Math.max(...values)-Math.min(...values),minSpan),mid=(Math.max(...values)+Math.min(...values))/2;
+  const roughStep=span/3,power=10**Math.floor(Math.log10(roughStep));
+  const step=([1,2,2.5,5,10].find(n=>n*power>=roughStep)||10)*power;
+  const min=Math.max(0,Math.floor((mid-span*.55)/step)*step),max=Math.ceil((mid+span*.55)/step)*step;
   const x=i=>left+(width-left-right)*(values.length===1?.5:i/(values.length-1));
-  const y=v=>top+(height-top-bottom)*(1-(v-min)/(max-min));
+  const y=value=>top+(height-top-bottom)*(1-(value-min)/(max-min));
   const points=values.map((value,i)=>x(i)+','+y(value)).join(' '),base=height-bottom;
-  const grid=[0,.5,1].map(t=>{const v=min+(max-min)*t,py=y(v);return `<line x1="${left}" y1="${py}" x2="${width-right}" y2="${py}" stroke="#edf0f5" stroke-dasharray="3 4"/><text x="${left-9}" y="${py+3}" text-anchor="end">${Number.isInteger(v)?v:v.toFixed(1)}</text>`;}).join('');
-  const dots=values.map((v,i)=>`<g><circle cx="${x(i)}" cy="${y(v)}" r="5" fill="white" stroke="${color}" stroke-width="2"><title>${esc(labels[i])}: ${v} ${esc(unit)}</title></circle><text class="chart-value" x="${x(i)}" y="${y(v)-14}" text-anchor="middle">${v}${esc(suffix)}</text><text x="${x(i)}" y="${height-10}" text-anchor="middle">${esc(labels[i])}</text></g>`).join('');
-  return `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(label+': '+values.map((v,i)=>labels[i]+' '+v+' '+unit).join(', '))}">${grid}<polygon points="${x(0)},${base} ${points} ${x(values.length-1)},${base}" fill="${color}" fill-opacity=".045"/><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>${dots}</svg>`;
+  let grid='';
+  for(let tick=min;tick<=max+step*.01;tick+=step){
+    const value=Number(tick.toFixed(2)),py=y(value);
+    grid+=`<line x1="${left}" y1="${py}" x2="${width-right}" y2="${py}" class="chart-grid"/><text x="${left-12}" y="${py+4}" text-anchor="end">${value}</text>`;
+  }
+  const dots=values.map((value,i)=>{
+    const start=i===0?left:(x(i-1)+x(i))/2,end=i===values.length-1?width-right:(x(i)+x(i+1))/2;
+    return `<g class="chart-point ${i===values.length-1?'latest':''}" data-point="${i}" data-x="${x(i)}" data-y="${y(value)}" tabindex="0" role="button" aria-label="${esc(labels[i]+': '+value+' '+unit+(details[i]?', '+details[i]:''))}" aria-describedby="${id}-tip"><rect x="${start}" y="${top}" width="${end-start}" height="${base-top}" fill="transparent"/><circle class="point-halo" cx="${x(i)}" cy="${y(value)}" r="9" fill="${color}"/><circle class="point-dot" cx="${x(i)}" cy="${y(value)}" r="${i===values.length-1?4.5:3}" fill="white" stroke="${color}" stroke-width="2"/></g>`;
+  }).join('');
+  const dates=labels.map((date,i)=>`<text x="${x(i)}" y="${height-8}" text-anchor="${i===0?'start':i===values.length-1?'end':'middle'}">${esc(date)}</text>`).join('');
+  const series=esc(JSON.stringify({values,labels,unit,details}));
+  return `<div class="chart-canvas" data-series="${series}"><svg viewBox="0 0 ${width} ${height}" role="group" aria-label="${esc(label)}"><defs><linearGradient id="${id}-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity=".09"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs><text class="axis-unit" x="${left-12}" y="11" text-anchor="end">${esc(unit)}</text>${grid}<polygon points="${x(0)},${base} ${points} ${x(values.length-1)},${base}" fill="url(#${id}-fill)"/><polyline points="${points}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><line class="chart-guide" x1="0" x2="0" y1="${top}" y2="${base}"/>${dates}${dots}</svg><div class="chart-tooltip" id="${id}-tip" role="tooltip" hidden></div></div>`;
+}
+function chartWidth(id){return Math.max(250,$(id).clientWidth||560);}
+function drawOverviewChart(){
+  const sets=state.history.bench.filter(set=>set.rir===2).slice(-4),latest=sets.at(-1),change=latest.load-sets[0].load;
+  $('#overviewTrend').innerHTML=`<div><strong>${latest.load}<small>kg</small></strong><span>Latest working set</span></div><p><b>${change===0?'No change':(change>0?'+':'−')+Math.abs(Number(change.toFixed(1)))+' kg'}</b> over ${sets.length} sessions</p>`;
+  $('#overviewChart').innerHTML=svgChart(sets.map(set=>set.load),sets.map(set=>dateLabel(set.date)),{width:chartWidth('#overviewChart'),label:'Bench working weight at 2 RIR',details:sets.map(set=>set.reps+' reps · '+set.rir+' RIR')});
 }
 function renderOverview(){
   const bench=state.history.bench,last=bench.at(-1),first=bench[0],gain=((last.load-first.load)/first.load*100).toFixed(1),completed=state.sessions.length;
-  $('#summary').innerHTML=[['SESSIONS THIS WEEK',3+completed,'/ 4',completed?'Session saved in your log':'Your next session is ready'],['BENCH PRESS',last.load,'kg × '+last.reps,last.rir===first.rir?'+'+gain+'% at a comparable RIR':'Logged at '+last.rir+' RIR · effort differs'],['WEEKLY AVG. WEIGHT',weekWeights()[3].toFixed(1),'kg','4 weekly averages'],['CALORIE TARGET',state.calorieTarget.toLocaleString('en-GB'),'kcal','Protein target · '+state.proteinTarget+' g']].map((s,i)=>`<div class="summary-stat"><span>${s[0]}</span><div><b>${s[1]}</b><small>${s[2]}</small></div><p class="${i===1?'positive':''}">${s[3]}</p></div>`).join('');
+  $('#summary').innerHTML=[['SESSIONS THIS WEEK',3+completed,'/ 4',completed?'Session saved in your log':'Your next session is ready'],['BENCH PRESS',last.load,'kg × '+last.reps,last.rir===first.rir?(gain>0?'+':'')+gain+'% at a comparable RIR':'Logged at '+last.rir+' RIR · effort differs'],['WEEKLY AVG. WEIGHT',weekWeights()[3].toFixed(1),'kg','4 weekly averages'],['CALORIE TARGET',state.calorieTarget.toLocaleString('en-GB'),'kcal','Protein target · '+state.proteinTarget+' g']].map((s,i)=>`<div class="summary-stat"><span>${s[0]}</span><div><b>${s[1]}</b><small>${s[2]}</small></div><p class="${i===1&&gain>0?'positive':''}">${s[3]}</p></div>`).join('');
   const comparable=bench.filter(set=>set.rir===2).slice(-4);
-  $('.trend-tag').textContent='↗ +'+((comparable.at(-1).load-comparable[0].load)/comparable[0].load*100).toFixed(1)+'%';
-  $('#overviewChart').innerHTML=svgChart(comparable.map(set=>set.load),comparable.map(set=>dateLabel(set.date)),{label:'Bench working weight at 2 RIR'});
+  const trendPercent=comparable[0].load?(comparable.at(-1).load-comparable[0].load)/comparable[0].load*100:null;
+  $('.trend-tag').textContent=trendPercent===null?'New baseline':(trendPercent>0?'+':'')+trendPercent.toFixed(1)+'%';
+  $('.trend-tag').classList.toggle('neutral',trendPercent===null||trendPercent<=0);
+  drawOverviewChart();
   const insight=calorieReview();$('#insightTitle').textContent=insight.title;$('#insightText').textContent=insight.text;$('#insightEvidence').innerHTML=insight.evidence.map(text=>'<span>'+esc(text)+'</span>').join('');
   $('#weekDays').innerHTML=['M','T','W','T','F','S','S'].map((day,i)=>`<div class="week-day ${[0,2,4].includes(i)?'done':''} ${i===6?'today':''}"><span>${day}</span><b>${[0,2,4].includes(i)?'✓':i===6&&completed?'✓':12+i}</b></div>`).join('');
   if(state.checkin){for(const name of ['calories','protein','weight'])$('#checkinForm [name="'+name+'"]').value=state.checkin[name]??'';$('#checkinStatus').textContent='Saved for 18 October · edit any time';}
@@ -65,10 +85,12 @@ function finishWorkout(){
 function renderProgress(){
   const id=$('#chartExercise').value,sets=(state.history[id]||[]).slice(-4),label=$('#chartExercise').selectedOptions[0].textContent;
   const values=sets.map(set=>metric==='load'?set.load:metric==='reps'?set.reps:e1rm(set));
-  $('#progressChart').innerHTML=svgChart(values,sets.map(set=>dateLabel(set.date)),{unit:metric==='reps'?'reps':'kg',label:label+' '+(metric==='strength'?'estimated one rep max':metric)});
+  const unit=metric==='reps'?'reps':'kg',latest=values.at(-1),difference=+(latest-values[0]).toFixed(1),pct=values[0]?Math.abs(difference/values[0]*100).toFixed(1):null;
+  $('#progressSummary').innerHTML=`<div><strong>${latest}<small>${unit}</small></strong><span>${metric==='strength'?'Latest estimated 1RM':metric==='reps'?'Reps in latest set':'Latest working weight'}</span></div><div class="trend-change ${difference<=0?'steady':''}"><b>${difference===0?'No change':(difference>0?'+':'−')+Math.abs(difference)+' '+unit}</b><span>${difference===0?'Across '+sets.length+' sessions':(pct?pct+'% '+(difference>0?'increase':'decrease')+' · ':'')+sets.length+' sessions'}</span></div>`;
+  $('#progressChart').innerHTML=svgChart(values,sets.map(set=>dateLabel(set.date)),{width:chartWidth('#progressChart'),unit,minSpan:metric==='reps'?4:10,label:label+' '+(metric==='strength'?'estimated one rep max':metric),details:sets.map(set=>set.load+' kg × '+set.reps+' · '+set.rir+' RIR')});
   const rirs=[...new Set(sets.map(set=>set.rir))];$('#chartContext').textContent=rirs.length===1?'Comparing sets at '+rirs[0]+' RIR.':'RIR differs across these sets. Check the table before comparing.';
   $('#liftHistory').innerHTML=sets.slice().reverse().map(set=>`<tr><td>${dateLabel(set.date)}</td><td>${set.load} kg</td><td>${set.reps}</td><td>${set.rir}</td><td>${e1rm(set)} kg</td></tr>`).join('');
-  const weights=weekWeights();$('#weightChart').innerHTML=svgChart(weights,['Week 1','Week 2','Week 3','Week 4'],{label:'Weekly average body weight',color:'#5a8e85'});$('#weightAverage').textContent=weights[3].toFixed(1);$('#weightChange').textContent=Math.abs(weights[3]-weights[0])<.3?'Holding steady':((weights[3]-weights[0])>0?'+':'')+(weights[3]-weights[0]).toFixed(1)+' kg';
+  const weights=weekWeights();$('#weightChart').innerHTML=svgChart(weights,['Week 1','Week 2','Week 3','Week 4'],{width:chartWidth('#weightChart'),minSpan:2,label:'Weekly average body weight',color:'#5a8e85',details:weights.map(()=> 'Average of 7 weigh-ins · example data')});$('#weightAverage').textContent=weights[3].toFixed(1);$('#weightChange').textContent=Math.abs(weights[3]-weights[0])<.3?'Holding steady':((weights[3]-weights[0])>0?'+':'')+(weights[3]-weights[0]).toFixed(1)+' kg';
 }
 function renderContext(){
   const last=state.history.bench.at(-1);
@@ -102,6 +124,25 @@ function openTab(tab){
   history.replaceState(null,'','#'+tab);window.scrollTo({top:0,behavior:'instant'});
 }
 function renderAll(){$('#goal').value=state.goal;renderOverview();renderProgress();renderContext();}
+function inspectChart(point){
+  const canvas=point.closest('.chart-canvas'),series=JSON.parse(canvas.dataset.series),index=Number(point.dataset.point),tooltip=canvas.querySelector('.chart-tooltip');
+  canvas.querySelectorAll('.chart-point').forEach(item=>item.classList.toggle('inspected',item===point));
+  const guide=canvas.querySelector('.chart-guide');guide.setAttribute('x1',point.dataset.x);guide.setAttribute('x2',point.dataset.x);guide.classList.add('visible');
+  tooltip.innerHTML=`<span>${esc(series.labels[index])}</span><strong>${esc(series.values[index])}<small>${esc(series.unit)}</small></strong>${series.details[index]?'<p>'+esc(series.details[index])+'</p>':''}`;
+  tooltip.hidden=false;
+  const svg=canvas.querySelector('svg'),box=svg.viewBox.baseVal;
+  tooltip.style.left=Math.max(0,Math.min(canvas.clientWidth-tooltip.offsetWidth,Number(point.dataset.x)/box.width*canvas.clientWidth-tooltip.offsetWidth/2))+'px';
+  tooltip.style.top=Math.max(0,Number(point.dataset.y)/box.height*svg.clientHeight-tooltip.offsetHeight-13)+'px';
+}
+function clearChart(canvas){if(!canvas)return;canvas.querySelector('.chart-tooltip').hidden=true;canvas.querySelector('.chart-guide').classList.remove('visible');canvas.querySelectorAll('.inspected').forEach(point=>point.classList.remove('inspected'));}
+document.addEventListener('pointerover',event=>{const point=event.target.closest('[data-point]');if(point)inspectChart(point);});
+document.addEventListener('focusin',event=>{const point=event.target.closest('[data-point]');if(point)inspectChart(point);});
+document.addEventListener('pointerout',event=>{const canvas=event.target.closest('.chart-canvas');if(canvas&&!canvas.contains(event.relatedTarget)&&!canvas.contains(document.activeElement))clearChart(canvas);});
+document.addEventListener('focusout',event=>{const canvas=event.target.closest('.chart-canvas');if(canvas&&!canvas.contains(event.relatedTarget))clearChart(canvas);});
+document.addEventListener('keydown',event=>{const point=event.target.closest('[data-point]');if(!point)return;const points=[...point.closest('.chart-canvas').querySelectorAll('[data-point]')],index=points.indexOf(point);let next;if(event.key==='ArrowRight')next=Math.min(points.length-1,index+1);if(event.key==='ArrowLeft')next=Math.max(0,index-1);if(event.key==='Home')next=0;if(event.key==='End')next=points.length-1;if(next!==undefined){event.preventDefault();points[next].focus();}if(event.key==='Escape')clearChart(point.closest('.chart-canvas'));});
+document.addEventListener('click',event=>{const point=event.target.closest('[data-point]');if(point)inspectChart(point);else document.querySelectorAll('.chart-canvas').forEach(clearChart);});
+let chartResizeTimer;
+window.addEventListener('resize',()=>{clearTimeout(chartResizeTimer);chartResizeTimer=setTimeout(()=>{drawOverviewChart();renderProgress();},100);});
 document.addEventListener('click',event=>{
   const button=event.target.closest('button');if(!button)return;
   if(button.dataset.tab)openTab(button.dataset.tab);

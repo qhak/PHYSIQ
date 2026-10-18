@@ -8,6 +8,11 @@ trend; optional calorie/protein/weight check-ins; and a simulated coach chat.
 Example data and edits are saved in browser localStorage under
 `cutrank_training_prototype_v1`. The example week is 12–18 October 2026.
 
+Charts show rounded axis ticks, latest values and period changes. Hover, tap or
+focus a session to inspect its exact numbers; use arrow keys to move between
+sessions. The lift table expands below the graph. Body-weight charts use a
+minimum 2 kg domain so small changes stay visually small.
+
 Coach replies are scripted and visibly labelled. No AI provider, account,
 payment, live API, email or real user history is connected. Example calorie
 target changes require explicit acceptance. The mockup is a design and
