@@ -243,6 +243,12 @@ body.workspace-open .workspace-nav{display:flex;position:fixed;inset:0 auto 0 0;
 .affiliate-share-line{display:flex;gap:10px}
 .affiliate-share-line input{flex:1;min-width:0;padding:12px;border:1px solid var(--line,#ddd);border-radius:8px;background:transparent;color:inherit}
 .affiliate-share>p{line-height:1.5;margin:12px 0}
+.affiliate-code-list{margin:18px 0;border:1px solid var(--line);border-radius:10px;padding:14px}
+.affiliate-code-list summary{cursor:pointer;font-weight:700}
+.affiliate-code-list ul{list-style:none;padding:0;margin:12px 0 0}
+.affiliate-code-list li{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--line);font-size:13px}
+.affiliate-code-list li strong{min-width:24px}.affiliate-code-list li a{overflow-wrap:anywhere}
+.affiliate-code-list li .btn{width:auto;margin:0 0 0 auto;padding:8px 12px;min-height:36px}
 .affiliate-table-wrap{overflow-x:auto}
 .affiliate-activity table{width:100%;border-collapse:collapse;white-space:nowrap;text-align:left}
 .affiliate-activity th,.affiliate-activity td{padding:13px 16px 13px 0;border-bottom:1px solid var(--line,#ddd)}

@@ -50,10 +50,24 @@ export default {
       return preview ? withPreviewNoindex(response) : response;
     }
 
+    const referral = /^\/r\/([a-z0-9][a-z0-9_-]{2,39})\/?$/.exec(pathname);
+    if (referral) {
+      url.pathname = '/';
+      url.searchParams.set('ref', referral[1]);
+      return redirect(url, 302, preview);
+    }
+
     const campaign = /^\/(t|i)([1-9]|1[0-5])$/.exec(pathname);
     if (campaign) {
       url.pathname = '/';
       url.searchParams.set('utm_source', `${campaign[1] === 't' ? 'tiktok' : 'instagram'}${campaign[2]}`);
+      try {
+        const response = await fetch('https://calloutapp.callout-ai.workers.dev/affiliate-link/' + campaign[0].slice(1));
+        if (response.ok) {
+          const partner = await response.json();
+          if (/^[a-z0-9][a-z0-9_-]{2,39}$/.test(partner.affiliate_id || '')) url.searchParams.set('ref', partner.affiliate_id);
+        }
+      } catch {}
       return redirect(url, 302, preview);
     }
 
