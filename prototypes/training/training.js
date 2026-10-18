@@ -106,6 +106,8 @@ function renderProgress(){
 function renderContext(){
   const last=state.history.bench.at(-1);
   $('#coachContext').innerHTML=[['GOAL',goalNames[state.goal]],['TRAINING',3+state.sessions.length+' sessions this week'],['LATEST BENCH',last.load+' kg × '+last.reps+' · '+last.rir+' RIR'],['WEIGHT TREND','80.0 → '+weekWeights()[3].toFixed(1)+' kg · 4 weeks'],['DAILY TARGET',state.calorieTarget.toLocaleString('en-GB')+' kcal · '+state.proteinTarget+' g protein'],['RECENT INTAKE','Example history: 19 of 21 days logged']].map(([label,value])=>`<div class="context-item"><small>${esc(label)}</small><b>${esc(value)}</b></div>`).join('');
+  const profile=state.onboardingProfile;
+  if(profile){const equipment={gym:'Full gym',home:'Dumbbells at home',bodyweight:'Body weight'};$('#coachContext').insertAdjacentHTML('beforeend',[['SETUP SCHEDULE',profile.days+' days per week'],['AVAILABLE EQUIPMENT',equipment[profile.equipment]],['YOUR PRIORITIES',profile.priorities?.join(', ')||'Explore as you go'],...(profile.notes?[['YOUR NOTES',profile.notes]]:[])].map(([label,value])=>`<div class="context-item"><small>${esc(label)}</small><b>${esc(value)}</b></div>`).join(''));}
 }
 function renderMessages(){
   if(!state.messages.length)state.messages.push({role:'coach',text:'I can help you explore this example training log. Ask about your next session, the weight trend, or a plateau.\n\nThese are simulated responses for the mockup. A live coach would review your full log and ask for missing context.'});
@@ -131,7 +133,7 @@ function openTab(tab){
   document.querySelectorAll('[data-tab]').forEach(button=>{if(button.dataset.tab===tab)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');});
   const headings={today:['Make your next move.','A clear view of the work you’re putting in.'],workout:['Show up. Log the work.','Your last session is the starting point for your next one.'],progress:['See what’s changing.','Compare your lifts, effort and weight trend over time.'],coach:['A little context goes a long way.','Connect the dots between your training and daily check-ins.']};
   $('#pageTitle').textContent=headings[tab][0];$('#pageSubtitle').textContent=headings[tab][1];
-  if(tab==='workout')renderLogger();if(tab==='progress')renderProgress();if(tab==='coach'){renderContext();renderMessages();}
+  if(tab==='today')drawOverviewChart();if(tab==='workout')renderLogger();if(tab==='progress')renderProgress();if(tab==='coach'){renderContext();renderMessages();}
   history.replaceState(null,'','#'+tab);window.scrollTo({top:0,behavior:'instant'});
 }
 function renderAll(){$('#goal').value=state.goal;renderOverview();renderProgress();renderContext();}

@@ -4,6 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow"><title>CutRank · Training prototype</title>
   <link rel="stylesheet" href="training.css">
+  <link rel="stylesheet" href="onboarding.css">
 </head>
 <body>
   <aside class="sidebar">
@@ -20,7 +21,7 @@
     <div class="avatar"><span>JD</span><div>Jamie Davis<small>Example profile · 18+</small></div><b>PRO</b></div>
   </aside>
   <main>
-    <div class="prototype-banner"><span><i></i> LOCAL PROTOTYPE</span><span>Example data · saved in this browser · coach replies simulated</span></div>
+    <div class="prototype-banner"><span><i></i> LOCAL PROTOTYPE</span><span>Example data · saved in this browser · coach replies simulated <button id="setupDemo" class="setup-trigger">Try Pro onboarding ↗</button></span></div>
     <header class="page-header"><div><div class="eyebrow">SUNDAY, 18 OCTOBER <span> / </span> WEEK 04</div><h1 id="pageTitle">Make your next move.</h1><p id="pageSubtitle">A clear view of the work you’re putting in.</p></div><label class="goal-select"><span>YOUR GOAL</span><select id="goal"><option value="gain">Build muscle</option><option value="lose">Lose fat</option><option value="maintain">Maintain</option></select></label></header>
 
     <section id="tab-today" class="tab active" aria-label="Today overview">
@@ -53,6 +54,8 @@
     <footer class="prototype-footer">CUTRANK TRAINING <span> / </span> PROTOTYPE 01 <span>·</span> No account or purchase required</footer>
   </main>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <section id="onboarding" class="onboarding" aria-labelledby="onboardingTitle" hidden></section>
   <script src="training.js"></script>
+  <script src="onboarding.js"></script>
 </body>
 </html>

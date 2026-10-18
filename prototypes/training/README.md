@@ -21,6 +21,15 @@ payment, live API, email or real user history is connected. Example calorie
 target changes require explicit acceptance. The mockup is a design and
 interaction review, not a production Pro entitlement or nutrition service.
 
+First-time visits open the Pro onboarding demo: introduction, goal, experience,
+training days, equipment, optional starting numbers, and optional priorities and
+notes. Drafts and completion persist under `cutrank_training_onboarding_v1`.
+Finish later and resume, edit individual answers from the review screen, or use
+the banner's Edit your setup control after completion. Reset example data also
+resets onboarding. Goal and provided targets update the example workspace;
+schedule, equipment and preferences appear in the coach context. Personalised
+routine generation is still a future feature, clearly stated in the review.
+
 The production build excludes `prototypes/`. This branch can be pushed for
 review without adding a live feature to cutrank.app.
 
