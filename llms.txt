@@ -5,8 +5,9 @@
 ## Product
 
 - Free tier: one scan, one angle, email-gated.
-- Full Body Audit (£5.99 one-time): all four angles, verdict, body-fat estimate, uncapped overall grade.
-- Pro (£9.99/mo) and Lifetime (£29.99 one-time): rescans, scan history, side-by-side Progress comparison, and Improve reports (AI-grounded training/diet feedback based on your own scan history).
+- Full Body Audit ($7.99 USD one-time): all four angles, verdict, body-fat estimate, uncapped overall grade.
+- Pro ($16.99 USD/month or $66.99 USD/year): rescans, scan history, side-by-side Progress comparison, and Improve reports (AI-grounded training/diet feedback based on your own scan history).
+- Lifetime is no longer sold; existing lifetime purchases retain their access.
 - Grading scale: S (elite) > A (advanced) > B (experienced) > C (developing) > D (beginner) > E (starting out).
 
 ## Pages
