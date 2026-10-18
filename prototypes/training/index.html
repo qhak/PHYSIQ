@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>CutRank · Training prototype</title>
+  <link rel="stylesheet" href="training.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#today"><img src="../../assets/cutrank-emblem.webp" alt="" width="42" height="42"><span>CUT<span>RANK</span><small>YOUR TRAINING WORKSPACE</small></span></a>
+    <div class="nav-label">THE NEXT REP STARTS HERE</div>
+    <nav aria-label="Training workspace">
+      <button data-tab="today" aria-current="page"><span>◫</span>Today</button>
+      <button data-tab="workout"><span>▥</span>Workouts</button>
+      <button data-tab="progress"><span>↗</span>Progress</button>
+      <button data-tab="coach"><span>✦</span>Coach <i>AI</i></button>
+    </nav>
+    <div class="side-note"><span class="pro-pill">CUTRANK PRO</span><p>Your training, nutrition and progress. In one place.</p></div>
+    <button class="reset" id="resetDemo">↺ Reset example data</button>
+    <div class="avatar"><span>JD</span><div>Jamie Davis<small>Example profile · 18+</small></div><b>PRO</b></div>
+  </aside>
+  <main>
+    <div class="prototype-banner"><span><i></i> LOCAL PROTOTYPE</span><span>Example data · saved in this browser · coach replies simulated</span></div>
+    <header class="page-header"><div><div class="eyebrow">SUNDAY, 18 OCTOBER <span> / </span> WEEK 04</div><h1 id="pageTitle">Make your next move.</h1><p id="pageSubtitle">A clear view of the work you’re putting in.</p></div><label class="goal-select"><span>YOUR GOAL</span><select id="goal"><option value="gain">Build muscle</option><option value="lose">Lose fat</option><option value="maintain">Maintain</option></select></label></header>
+
+    <section id="tab-today" class="tab active" aria-label="Today overview">
+      <div class="summary-grid" id="summary"></div>
+      <div class="overview-grid">
+        <article class="card session-card"><div class="card-top"><span class="eyebrow">UP NEXT</span><span class="subtle-pill">YOUR ROUTINE</span></div><h2>Upper body A<span>.</span></h2><p>Chest, back & shoulders. Pick up where you left off.</p><div class="session-facts"><span><b>4</b> exercises</span><span><b>12</b> working sets</span><span><b>~50</b> minutes</span></div><div class="exercise-preview"><span>01 <b>Barbell bench press</b><small>3 × 6–10</small></span><span>02 <b>Chest-supported row</b><small>3 × 8–12</small></span><span>03 <b>Seated dumbbell press</b><small>3 × 8–12</small></span></div><button class="primary full" data-open="workout">Start workout <span>↗</span></button><small class="card-foot">Last trained 14 October · aim for 2 RIR</small></article>
+        <article class="card trend-card"><div class="card-top"><div><span class="eyebrow">PROGRESSIVE OVERLOAD</span><h2>Your effort is adding up.</h2></div><span class="trend-tag">↗ +6.7%</span></div><p>Bench press · best set at 2 RIR</p><div id="overviewChart" class="chart"></div><div class="chart-foot"><span><i class="legend-dot"></i> Working weight</span><button class="text-button" data-open="progress">Explore progress →</button></div></article>
+        <article class="card checkin-card"><div class="card-top"><div><span class="eyebrow">DAILY CHECK-IN</span><h2>A few numbers. More context.</h2></div><span class="subtle-pill">OPTIONAL</span></div><p>Log your totals from today. Everything stays alongside your training.</p><form id="checkinForm"><div class="checkin-fields"><label>Calories<div class="unit-input"><input name="calories" type="number" min="0" max="20000" step="1" placeholder="2,700"><span>kcal</span></div></label><label>Protein<div class="unit-input"><input name="protein" type="number" min="0" max="1000" step="1" placeholder="160"><span>g</span></div></label><label>Body weight<div class="unit-input"><input name="weight" type="number" min="20" max="400" step="0.1" placeholder="80.1"><span>kg</span></div></label></div><div class="checkin-bottom"><span id="checkinStatus">Only log what you know.</span><button class="secondary" type="submit">Save check-in</button></div></form></article>
+        <article class="card coach-insight"><div class="card-top"><span class="eyebrow">✦ COACH’S NOTE</span><span class="subtle-pill">DEMO INSIGHT</span></div><h2 id="insightTitle"></h2><p id="insightText"></p><div class="insight-evidence" id="insightEvidence"></div><button class="text-button" id="discussInsight">Talk this through →</button></article>
+      </div>
+      <div class="week-strip"><span class="eyebrow">THIS WEEK</span><div id="weekDays"></div><span class="week-caption">One session at a time.</span></div>
+    </section>
+
+    <section id="tab-workout" class="tab" aria-label="Workout logger" hidden>
+      <div class="workout-toolbar"><label>YOUR SESSION<select id="routine"><option value="upper">Upper body A</option><option value="lower">Lower body A</option></select></label><div><span class="live-dot"></span><span id="sessionStatus">Ready when you are</span></div></div>
+      <div class="logger-intro"><p>Log each working set. The previous session is here to guide your next one.</p><details><summary>What is RIR?</summary><p>Reps in reserve: your estimate of how many more clean reps you could have completed. 0 means none left; 2 means about two more.</p></details></div>
+      <div id="exerciseLogger"></div>
+      <div class="finish-bar"><div><b id="completedCount">0 / 12 sets logged</b><span>Completed sets count toward your session.</span></div><button class="primary" id="finishWorkout">Finish workout <span>✓</span></button></div>
+    </section>
+
+    <section id="tab-progress" class="tab" aria-label="Training progress" hidden>
+      <div class="progress-grid"><article class="card lift-progress"><div class="card-top"><div><span class="eyebrow">THE BIGGER PICTURE</span><h2>Progress, rep by rep.</h2></div><label class="sr-only" for="chartExercise">Chart exercise</label><select id="chartExercise"><option value="bench">Bench press</option><option value="squat">Back squat</option><option value="row">Chest-supported row</option></select></div><div class="segmented" aria-label="Chart metric"><button data-metric="load" aria-pressed="true">Weight</button><button data-metric="reps" aria-pressed="false">Reps</button><button data-metric="strength" aria-pressed="false">Estimated 1RM</button></div><div id="progressChart" class="chart large"></div><div class="chart-foot"><span id="chartContext">Comparing sets at 2 RIR.</span><span>LAST 4 SESSIONS</span></div><div class="table-wrap"><table><thead><tr><th>Session</th><th>Weight</th><th>Reps</th><th>RIR</th><th>Est. 1RM</th></tr></thead><tbody id="liftHistory"></tbody></table></div><p class="footnote">Estimated 1RM is a formula-based trend, not a tested maximum. Changes in effort, form and exercise setup affect comparisons.</p></article>
+      <article class="card weight-progress"><span class="eyebrow">BODY WEIGHT</span><h2>Watch the trend.</h2><div class="big-stat"><span id="weightAverage">80.1</span><small>kg weekly average</small></div><div id="weightChart" class="chart"></div><div class="weight-context"><span>4 weekly averages</span><b id="weightChange">Holding steady</b></div><p>Daily weight fluctuates. Your coach looks at the longer trend before suggesting a target change.</p><button class="text-button" id="askWeight">Ask about my calories →</button></article></div>
+    </section>
+
+    <section id="tab-coach" class="tab" aria-label="AI coach prototype" hidden>
+      <div class="coach-layout"><article class="card chat-card"><div class="chat-heading"><div class="coach-mark">✦</div><div><h2>Your next step, explained.</h2><p>Ask about the example training log and check-ins.</p></div><span class="subtle-pill">SIMULATED AI</span></div><div id="chatMessages" class="chat-messages" role="log" aria-live="polite"></div><div class="chat-suggestions"><button data-prompt="What should I aim for on bench next session?">Next bench session</button><button data-prompt="Should I change my calories?">Review my calories</button><button data-prompt="Why have my lifts stalled?">Help with a plateau</button></div><form id="chatForm"><label class="sr-only" for="chatInput">Message the demo coach</label><input id="chatInput" maxlength="1000" placeholder="Ask about your training…" autocomplete="off"><button type="submit" class="primary" aria-label="Send message">↑</button></form><p class="chat-disclosure">Demo responses use the sample log. A connected AI coach is planned.</p></article><aside class="card coach-context"><span class="eyebrow">WHAT YOUR COACH CAN SEE</span><h2>Built around your log.</h2><div id="coachContext"></div><p>Suggestions should explain the evidence and let you decide what to change.</p></aside></div>
+    </section>
+    <footer class="prototype-footer">CUTRANK TRAINING <span> / </span> PROTOTYPE 01 <span>·</span> No account or purchase required</footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="training.js"></script>
+</body>
+</html>
