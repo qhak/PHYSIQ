@@ -13,3 +13,9 @@ CLAUDE.md
 dist/
 node_modules/
 .wrangler/
+
+# Local secrets (retained from bot configuration)
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
