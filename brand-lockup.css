@@ -1,0 +1,11 @@
+/* Shared CutRank emblem and wordmark across the app, tools and guides. */
+.brand-logo{display:inline-flex;align-items:center;gap:9px;letter-spacing:-.06em!important;text-decoration:none}
+.brand-logo img{display:block;width:42px;height:42px;flex:none;object-fit:cover;border-radius:8px}
+.brand-logo .brand-wordmark{font-family:Inter,system-ui,sans-serif;font-weight:900;line-height:1;white-space:nowrap;letter-spacing:-.065em;color:inherit}
+.brand-logo .brand-rank,.brand-rank{color:#2874ec}
+.nav a.brand-logo{font-size:19px!important}
+.foot-brand.brand-logo{font-size:18px!important}
+.foot-brand.brand-logo img{width:36px;height:36px;border-radius:7px}
+.signature-card .vc-brand-tag{display:inline-flex;align-items:center;gap:8px}
+.signature-card .vc-brand-tag::before{content:"";display:block;width:23px;height:23px;flex:none;border-radius:4px;background:url('/assets/cutrank-emblem.webp') center/cover no-repeat}
+@media(max-width:640px){.nav a.brand-logo{font-size:16px!important}.brand-logo img{width:34px;height:34px}.foot-brand.brand-logo img{width:34px;height:34px}}
