@@ -13,7 +13,7 @@ const files = execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' })
   // be copied back into the public build.
   .filter((file) => file !== 'what-are-peptides.html')
   .filter((file) => publicExtensions.has(extname(file).toLowerCase()))
-  .filter((file) => !file.startsWith('worker/') && !file.startsWith('scripts/'));
+  .filter((file) => !file.startsWith('worker/') && !file.startsWith('scripts/') && !file.startsWith('prototypes/'));
 
 await mkdir('dist', { recursive: true });
 // A running Windows preview can hold the directory itself open.
