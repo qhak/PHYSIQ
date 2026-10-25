@@ -14,14 +14,14 @@
 </script>
 <!-- Lucid Analytics (self-hosted, cookieless) -->
 <script defer data-domain="cutrank.app" src="https://lucid-analytics.nicholasdrew62.workers.dev/tracker.js"></script>
-<title>CutRank — AI physique feedback from photos. No flattery.</title>
-<meta name="description" content="CutRank gives direct AI feedback on visible physique development from photos. First scan free. Full Body Audit is $6.99 one-time.">
+<title>CutRank — AI physique feedback from photos</title>
+<meta name="description" content="CutRank gives an AI estimate of visible physique development from photos, with an S–E grade and scores for visible muscle groups. First scan free.">
 <link rel="canonical" href="https://cutrank.app/">
 
 <!-- Open Graph / social sharing -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="CutRank — AI physique feedback">
-<meta property="og:description" content="Direct AI feedback on visible physique development. First scan free. Full Body Audit $6.99.">
+<meta property="og:description" content="AI estimates of visible physique development from photos, with an S–E grade and scores for visible muscle groups. Results vary with photo conditions.">
 <meta property="og:url" content="https://cutrank.app">
 <meta property="og:site_name" content="CutRank">
 <meta property="og:image" content="https://cutrank.app/og-image.png">
@@ -31,7 +31,7 @@
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CutRank — AI Physique Feedback">
-<meta name="twitter:description" content="Get a direct photo-based physique read. Free first scan.">
+<meta name="twitter:description" content="Get an AI estimate of visible physique development from a photo. Free first scan.">
 <meta name="twitter:image" content="https://cutrank.app/og-image.png">
 
 <!-- Structured data -->
@@ -41,7 +41,7 @@
   "@type": "SoftwareApplication",
   "name": "CutRank",
   "url": "https://cutrank.app",
-  "description": "Direct AI feedback on visible physique development from photos — no flattery, an S–E grade, per-muscle scores, and weak points.",
+  "description": "AI estimates of visible physique development from photos, with an S–E grade and scores for visible muscle groups. Results vary with photo conditions.",
   "applicationCategory": "HealthApplication",
   "operatingSystem": "Web",
   "image": "https://cutrank.app/og-image.png",
@@ -55,19 +55,19 @@
     {
       "@type": "Offer",
       "name": "Full Body Audit",
-      "price": "6.99",
+      "price": "7.99",
       "priceCurrency": "USD"
     },
     {
       "@type": "Offer",
       "name": "Pro subscription",
-      "price": "14.99",
+      "price": "16.99",
       "priceCurrency": "USD"
     },
     {
       "@type": "Offer",
       "name": "Pro yearly subscription",
-      "price": "59.99",
+      "price": "66.99",
       "priceCurrency": "USD"
     }
   ]
@@ -113,6 +113,7 @@
 <link rel="stylesheet" href="/ui-refresh.css">
 <link rel="stylesheet" href="/dashboard.css">
 <link rel="stylesheet" href="/brand-lockup.css">
+<link rel="stylesheet" href="/scan-animation.css">
 
 <!-- Cloudflare Turnstile. Required: the worker enforces TURNSTILE_SECRET, so
      without this script getTurnstileToken() waits 10s for window.turnstile,
@@ -131,6 +132,7 @@
       <button class="navlink" onclick="goHome('pricingSection')">Pricing</button>
       <button class="navlink" onclick="goHome('affiliateSection')">Affiliates</button>
       <button class="navlink" id="devAccessTab" hidden onclick="showDevAccess()">Dev Access</button>
+      <button class="navlink" id="affiliateTab" hidden onclick="showAffiliateDashboard()">Affiliate dashboard</button>
       <button class="navlink nav-dashboard" onclick="showDashboard()" aria-label="Open dashboard">Dashboard</button>
       <button class="navlink" onclick="showStrength()">Strength</button>
       <button class="navlink navcta" onclick="goHome('scanSection')">Get ranked</button>
@@ -146,6 +148,7 @@
       <button data-workspace-screen="screen-improve" onclick="showImprove()"><span aria-hidden="true">✦</span>Improve</button>
       <button data-workspace-screen="screen-strength" onclick="showStrength()"><span aria-hidden="true">▥</span>Strength</button>
       <button data-workspace-screen="screen-profile" onclick="showProfile()"><span aria-hidden="true">◎</span>Profile</button>
+      <button data-workspace-screen="screen-affiliate" id="affiliateWorkspaceTab" hidden onclick="showAffiliateDashboard()"><span aria-hidden="true">◇</span>Affiliate</button>
     </div>
     <div class="workspace-nav-bottom"><button onclick="goHome('scanSection')">＋ New scan</button><button onclick="show('screen-home')">← Back to site</button><button onclick="signOutWorkspace()">Sign out on this device</button></div>
   </nav>
@@ -183,10 +186,10 @@
           <div class="sample-insight" aria-label="Modelled percentile from this CutRank scan">
             <div class="sample-insight-head"><span>WHERE YOU RANK</span><span>PRO RESULT</span></div>
             <div class="sample-rank">
-              <div><span class="sample-rank-label">GENERAL ADULT POPULATION</span><strong>Top 0.013%</strong></div>
+              <div><span class="sample-rank-label">MODELLED COMPARISON</span><strong>Top 0.013%</strong></div>
               <span class="sample-rank-score">8.7 <small>/ 10</small></span>
             </div>
-            <p>Modelled estimate, not a measured ranking.</p>
+            <p>Modelled estimate, not a measured or audited population ranking.</p>
           </div>
           <p class="sample-note">Demonstration scan using the supplied physique photo. AI visual estimate; no endorsement implied.</p>
         </div>
@@ -249,12 +252,12 @@
           <div class="tw-item tw-lead">
             <div>
               <div class="tw-k">01 · Published rubric</div>
-              <h3>CutRank's own grading scale</h3>
+              <h3>The scale isn't a secret</h3>
               <p>Every scan is judged against these bands — the same ones written into the grading instructions. Nothing is tuned per user, and nobody gets a softer scale for paying.</p>
               <p style="margin-top:10px">The model commits to a band before it writes a single number, so the letter on your card and the scores behind it can't drift apart.</p>
               <p style="margin-top:10px">Your card shows a 1–10 score instead, given twice: once against everyone, once against people who actually train. One point is one standard deviation, and the gym scale is the harder of the two by design.</p>
             </div>
-            <p>S–E is CutRank's own visual grading convention, not an industry-wide physiological standard or a clinical assessment. Band labels do not verify training history.</p><div class="rubric">
+            <div class="rubric">
               <div class="rub-row"><span class="rub-g">S</span><span class="rub-s">90–100</span><span>Elite — mass far beyond a typical trained lifter</span></div>
               <div class="rub-row"><span class="rub-g">A</span><span class="rub-s">75–89</span><span>Advanced — years of obvious hard training</span></div>
               <div class="rub-row"><span class="rub-g">B</span><span class="rub-s">61–74</span><span>Experienced — solid base, real weak points</span></div>
@@ -295,7 +298,7 @@
       <section class="sec" id="pricingSection">
         <div class="sec-head">
           <h2>What it costs.</h2>
-          <p>First scan's free. $6.99 once unlocks the full audit.</p>
+          <p>First scan's free. $7.99 once unlocks the full audit.</p>
         </div>
 
         <div class="plist">
@@ -313,7 +316,7 @@
               <div class="prow-name">Full Body Audit</div>
               <div class="prow-desc">All four angles, full muscle-by-muscle breakdown, written verdict, uncapped overall grade. Yours to keep.</div>
             </div>
-            <div class="prow-price">$6.99<small>one-time</small></div>
+            <div class="prow-price">$7.99<small>one-time</small></div>
             <button class="prow-cta" onclick="handlePurchase('scan')">Unlock the audit</button>
           </div>
 
@@ -322,14 +325,14 @@
               <div class="prow-name">CutRank Pro</div>
               <div class="prow-desc">Rescan any angle after every cut, bulk, or PR — fair use: 20 scans a day, all four angles five times over. Scan history, progress comparisons, and Improve: training analysis + diet audit built from your actual scan.</div>
             </div>
-            <div class="prow-price">$14.99<small>per month</small></div>
+            <div class="prow-price">$16.99<small>per month</small></div>
             <button class="prow-cta" onclick="handlePurchase('pro')">Go Pro</button>
           </div>
 
           <div class="prow prow-annual">
             <div class="prow-info"><div class="prow-name">CutRank Pro — Yearly</div>
-              <div class="prow-desc">Same Pro features. About $5/month, billed as $59.99 annually. Renews yearly until cancelled.</div></div>
-            <div class="prow-price">$59.99<small>per year · USD</small></div>
+              <div class="prow-desc">Same Pro features. About $5.58/month, billed as $66.99 annually. Renews yearly until cancelled.</div></div>
+            <div class="prow-price">$66.99<small>per year · USD</small></div>
             <button class="prow-cta" onclick="handlePurchase('yearly')">Choose yearly</button>
           </div>
         </div>
@@ -422,14 +425,14 @@
             <span class="walk-num">5</span>
             <div class="walk-body">
               <h3>The Full Body Audit unlocks all four angles</h3>
-              <p>$6.99 once — written verdict, weak points, body-fat estimate, uncapped overall grade.</p>
+              <p>$7.99 once — written verdict, weak points, body-fat estimate, uncapped overall grade.</p>
             </div>
           </li>
           <li class="walk-step">
             <span class="walk-num">6</span>
             <div class="walk-body">
               <h3>Pro is for rescans</h3>
-              <p>$14.99/month to re-grade after a cut, bulk, or PR. Cancel anytime.</p>
+              <p>$16.99/month to re-grade after a cut, bulk, or PR. Cancel anytime.</p>
             </div>
           </li>
         </ol>
@@ -441,14 +444,14 @@
         <details class="sec-fold">
           <summary><h2>What the grades actually mean.</h2></summary>
           <div class="sec-fold-body">
-          <p class="fold-intro">Example distribution — not user stats. Lighting, pump, pose, and body fat all move the result.</p>
+          <p class="fold-intro">Illustrative breakdown of the grading scale — not a user sample or population estimate. Photo conditions affect results.</p>
         <div class="dist">
-          <div class="distrow"><span class="dg">S</span><div class="dbar"><span style="width:3%"></span></div><span class="dp">3% sample · exceptional visual development</span></div>
-          <div class="distrow"><span class="dg">A</span><div class="dbar"><span style="width:8%"></span></div><span class="dp">8% sample · advanced visual development</span></div>
-          <div class="distrow"><span class="dg">B</span><div class="dbar"><span style="width:20%"></span></div><span class="dp">20% sample · strong visible base</span></div>
-          <div class="distrow"><span class="dg">C</span><div class="dbar"><span style="width:38%"></span></div><span class="dp">38% sample · developing and trainable</span></div>
-          <div class="distrow"><span class="dg">D</span><div class="dbar"><span style="width:21%"></span></div><span class="dp">21% sample · early stage</span></div>
-          <div class="distrow"><span class="dg">E</span><div class="dbar"><span style="width:10%"></span></div><span class="dp">10% sample · just starting</span></div>
+          <div class="distrow"><span class="dg">S</span><div class="dbar"><span style="width:3%"></span></div><span class="dp">3% illustrative share · exceptional visible development</span></div>
+          <div class="distrow"><span class="dg">A</span><div class="dbar"><span style="width:8%"></span></div><span class="dp">8% illustrative share · advanced visible development</span></div>
+          <div class="distrow"><span class="dg">B</span><div class="dbar"><span style="width:20%"></span></div><span class="dp">20% illustrative share · established visible base</span></div>
+          <div class="distrow"><span class="dg">C</span><div class="dbar"><span style="width:38%"></span></div><span class="dp">38% illustrative share · developing visible base</span></div>
+          <div class="distrow"><span class="dg">D</span><div class="dbar"><span style="width:21%"></span></div><span class="dp">21% illustrative share · some visible development</span></div>
+          <div class="distrow"><span class="dg">E</span><div class="dbar"><span style="width:10%"></span></div><span class="dp">10% illustrative share · limited visible development</span></div>
         </div>
                 </div>
         </details>
@@ -522,16 +525,16 @@
         </details>
 </section>
       <!-- AFFILIATES -->
-      <section class="sec affiliate-disclosure" id="affiliateSection"><details><summary><span><span class="section-kicker">FOR CREATORS</span><span class="disclosure-title">Share CutRank. Earn 50%.</span></span><span class="disclosure-toggle" aria-hidden="true">+</span></summary><div class="disclosure-body">
+      <section class="sec affiliate-disclosure" id="affiliateSection"><details><summary><span><span class="section-kicker">FOR CREATORS</span><span class="disclosure-title">Share CutRank. Earn 35%.</span></span><span class="disclosure-toggle" aria-hidden="true">+</span></summary><div class="disclosure-body">
         <div class="affiliate-panel">
           <div class="res-sec-eyebrow">Affiliate program</div>
-          <h2 class="affiliate-h">Refer CutRank. <em>Earn 50%.</em></h2>
-          <p class="affiliate-lead">Got an audience that lifts? Send people to CutRank and earn <b>50% of every one-off sale</b> you bring in — half the price, straight to you. Pro subscriptions pay 30% every month for as long as they stay subscribed.</p>
+          <h2 class="affiliate-h">Refer CutRank. <em>Earn 35%.</em></h2>
+          <p class="affiliate-lead">Got an audience that lifts? Send people to CutRank and earn <b>35% commission on every paid product</b> you refer, including each Pro subscription payment for as long as the customer stays subscribed.</p>
           <div class="method-grid">
             <div class="method-item">
               <div class="method-k">01 · Your cut</div>
-              <h3>50% of every one-off</h3>
-              <p>50% of each $6.99 one-time audit sold through your referral link. Existing lifetime referral terms remain unchanged. $14.99 Pro pays <b>30% every month</b> instead, for as long as that person stays subscribed.</p>
+              <h3>35% on every product</h3>
+              <p>Earn 35% on every paid CutRank product: the $7.99 Full Body Audit, $16.99 monthly Pro, and $66.99 yearly Pro. Pro renewals also pay 35% while the customer stays subscribed.</p>
             </div>
             <div class="method-item">
               <div class="method-k">02 · Minimum</div>
@@ -552,8 +555,11 @@
           <div class="affiliate-rules">
             <h3>The rules</h3>
             <ul>
-              <li>You earn <b>50% commission</b> on each $6.99 one-time audit made through your referral link. Existing lifetime referral terms remain unchanged.</li>
-              <li>Pro referrals pay out <b>30% every month</b> for as long as that person stays subscribed — recurring, so one referral keeps paying.</li>
+              <li>You earn <b>35% commission on every paid CutRank product</b> purchased through your referral link or promo code, including the Full Body Audit and Pro.</li>
+              <li>Pro referrals pay <b>35% on each successful subscription payment</b> for as long as that customer stays subscribed.</li>
+              <li>Your code gives customers <b>20% off</b>. Commission is calculated from the listed price before that discount and adjusted for refunds.</li>
+              <li>Approved affiliates get <b>Pro access and the private studio</b>, sharing a 20-scan daily allowance. Sign in with your approved email to open your affiliate dashboard.</li>
+              <li>Referral links are remembered for <b>30 days</b> on the same browser. The most recent link applies; a code entered at checkout takes priority.</li>
               <li>Payouts run <b>monthly</b>. You need at least <b>£20</b> in cleared earnings to get paid; anything under rolls over to the next month.</li>
               <li>Earnings are capped at <b>£1,000 per month</b> per affiliate.</li>
               <li>Self-referrals, fake sign-ups, spam, and misleading claims about CutRank void your earnings.</li>
@@ -615,6 +621,17 @@
   <section class="screen" id="screen-analyse">
     <div class="wrap"><div class="analyse-wrap">
       <div class="scanner"><div class="ring"></div><div class="ring spin"></div><div class="core"><span id="scanLetter">F</span></div></div>
+      <div class="photo-scan" id="photoScan" hidden>
+        <div class="scan-photo-heading"><span id="scanViewLabel">FRONT VIEW</span><strong>ANALYSING</strong></div>
+        <div class="scan-photo-frame" id="scanPhotoFrame">
+          <img id="scanPhoto" alt="Your uploaded photo being analysed">
+          <svg id="scanRegions" aria-hidden="true" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="scan-photo-sweep" aria-hidden="true"></div>
+        </div>
+        <div class="scan-region-caption"><span id="scanRegionName">Reading your photo</span><small id="scanRegionCounter" aria-hidden="true"></small></div>
+        <div class="scan-region-steps" id="scanRegionSteps" aria-hidden="true" hidden></div>
+        <p class="scan-animation-note">Visual scan animation · Your result appears when analysis finishes.</p>
+      </div>
       <div class="analyse-status" id="aStatus" role="status" aria-live="polite">reading image…</div>
       <div class="analyse-sub" id="aSub">grading</div>
       <p class="analyse-help">Keep this page open while we read your photo.<br>Your result will appear here.</p>
@@ -628,6 +645,7 @@
       <div class="section-kicker">PRIVATE STUDIO</div><h1>Dev Access</h1>
       <p>Upload. Get ranked. Replay the reveal.</p>
       <div class="dev-controls"><label>Photo angle <select id="devView"><option value="front">Front</option><option value="back">Back</option><option value="legs">Legs</option><option value="arms_side">Arms / Side</option></select></label>
+      <label id="devDobField" hidden>Date of birth <input id="devDob" type="date" autocomplete="bday"></label>
       <button class="btn" id="devUploadButton" onclick="document.getElementById('devUpload').click()">Upload image</button><input id="devUpload" type="file" accept="image/*" hidden>
       <button class="btn" id="devReplay" onclick="replayDevReveal()" disabled>Replay reveal</button></div>
       <p id="devStatus" role="status">Choose an adult physique photo to begin.</p>
@@ -676,6 +694,15 @@
   <!-- WORKSPACE OVERVIEW — live account state and entry points to the tools below -->
   <section class="screen workspace-screen" id="screen-dashboard">
     <div class="wrap"><div id="dashboardBody"></div></div>
+  </section>
+
+  <section class="screen workspace-screen" id="screen-affiliate">
+    <div class="wrap affiliate-wrap">
+      <div class="db-kicker">PARTNER WORKSPACE</div>
+      <h1>Affiliate dashboard.</h1>
+      <p>Share your link or code. Sales and estimated commission update after Stripe confirms a payment.</p>
+      <div id="affiliateBody" role="status" aria-live="polite">Loading your affiliate activity…</div>
+    </div>
   </section>
 
   <!-- PROGRESS — scan comparison (Pro); body rendered by showProgress() -->
@@ -926,13 +953,13 @@
         <h3>4. Free scan and paid tiers</h3>
         <ul>
           <li><strong>Free scan:</strong> one angle, no card required. Email needed to reveal the result.</li>
-          <li><strong>Full Body Audit ($6.99):</strong> one-time payment, unlocks all 4 angles permanently for this profile.</li>
-          <li><strong>CutRank Pro ($14.99/month):</strong> recurring subscription. Rescans of every angle, with a fair-use cap of 20 scans per day. Includes Improve reports (up to 6 per day) — general training and nutrition guidance generated from your inputs and scan results; not medical, dietetic, or coaching advice. Renews automatically each month until cancelled.</li>
-          <li><strong>CutRank Pro ($59.99/year):</strong> annual subscription with the same Pro features and limits, billed upfront and automatically renewed until cancelled. Existing lifetime purchases retain their access.</li>
+          <li><strong>Full Body Audit ($7.99):</strong> one-time payment, unlocks all 4 angles permanently for this profile.</li>
+          <li><strong>CutRank Pro ($16.99/month):</strong> recurring subscription. Rescans of every angle, with a fair-use cap of 20 scans per day. Includes Improve reports (up to 6 per day) — general training and nutrition guidance generated from your inputs and scan results; not medical, dietetic, or coaching advice. Renews automatically each month until cancelled.</li>
+          <li><strong>CutRank Pro ($66.99/year):</strong> annual subscription with the same Pro features and limits, billed upfront and automatically renewed until cancelled. Existing lifetime purchases retain their access.</li>
         </ul>
 
         <h3>5. Billing and cancellation</h3>
-        <p>Payments are processed by Stripe. Pro renews at your selected monthly or yearly interval and you can cancel at any time from your Stripe customer portal — cancellation takes effect at the end of your current billing period. One-time purchases (Full Body Audit, Lifetime) are charged once.</p>
+        <p>Payments are processed by Stripe. Pro renews monthly and you can cancel at any time from your Stripe customer portal — cancellation takes effect at the end of your current billing period. The Full Body Audit is a one-time purchase. Existing Lifetime purchases remain available on those accounts, but Lifetime is no longer offered for sale.</p>
 
         <h3>6. Refunds</h3>
         <p>Because CutRank is a digital service delivered immediately on payment, you expressly consent to immediate performance and waive your right to a 14-day cooling-off period for the parts of the service you have used. We will consider refund requests on a case-by-case basis where the service has not been used or where there has been a genuine technical failure. Email <a href="mailto:support@cutrank.app">support@cutrank.app</a>.</p>
@@ -1011,9 +1038,11 @@
   </footer>
 
 <script src="/photo-normalization.js"></script>
+<script src="/scan-animation.js"></script>
 <script src="/app.js"></script>
 <script src="/login.js"></script>
 <script src="/dashboard.js"></script>
 <script src="/dev-access.js"></script>
+<script src="/affiliate.js"></script>
 </body>
 </html>
