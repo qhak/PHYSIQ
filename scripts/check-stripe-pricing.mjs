@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
-const source = readFileSync(new URL('../worker/payments-api.mjs', import.meta.url), 'utf8');
+if (!process.env.CUTRANK_API_SOURCE) throw new Error('Set CUTRANK_API_SOURCE to worker.js in the private qhak/callout-worker checkout.');
+const source = readFileSync(process.env.CUTRANK_API_SOURCE, 'utf8');
 const start = source.indexOf('function resolveTierFromStripeObject(');
 const end = source.indexOf('function periodEndFromInvoice(', start);
 const context = vm.createContext({});

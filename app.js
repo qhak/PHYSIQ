@@ -3,11 +3,10 @@
 // ============================================================
 const WORKER_URL   = "https://calloutapp.callout-ai.workers.dev";
 const EMAIL_ENDPOINT = WORKER_URL;
-const PAYMENT_LINK_SCAN     = "https://buy.stripe.com/dRmaEZ7Ik7HB1MV1OVb3q04"; // $6.99 one-time
-const PAYMENT_LINK_PRO      = "https://buy.stripe.com/7sY7sN5AcbXRcrz1OVb3q05"; // $14.99/month
-const PAYMENT_LINK_LIFETIME = "https://buy.stripe.com/aFa3cx9Qsfa34Z7517b3q03"; // £29.99 lifetime
+const PAYMENT_LINK_SCAN     = "https://buy.stripe.com/dRmaEZ7Ik7HB1MV1OVb3q04"; // $7.99 one-time
+const PAYMENT_LINK_PRO      = "https://buy.stripe.com/7sY7sN5AcbXRcrz1OVb3q05"; // $16.99/month
 const PAYMENT_LINK_YEARLY = "https://buy.stripe.com/6oU00l7Ike5ZbnvgJPb3q06";
-const UNLOCK_PRICE   = "$6.99";
+const UNLOCK_PRICE   = "$7.99";
 // Cloudflare Turnstile sitekey (dashboard → Turnstile → your widget).
 // Leave empty to skip the bot check client-side; the worker only enforces
 // it when TURNSTILE_SECRET is set, so configure both together.
@@ -137,6 +136,7 @@ VIEWS.forEach(v=>{
 
 // ---- init ----
 window.addEventListener('DOMContentLoaded',()=>{
+  captureAffiliateReferral();
   loadState();
   userTierDisplay=null; // paid UI must relock until the worker re-issues a token
   refreshHome();
@@ -373,6 +373,7 @@ document.getElementById('filein').addEventListener('change',async e=>{
   document.getElementById('aStatus').textContent='preparing photo…';
   show('screen-analyse');
   try{
+    window.CutRankScan?.start(view,photoURL);
     const data=await analyzeView(view,file);
     if(data.refused){renderRefusal(data.reason);show('screen-result');return;}
     if(data.entitlement && data.entitlement.tier) userTierDisplay=data.entitlement.tier;
@@ -397,6 +398,8 @@ document.getElementById('filein').addEventListener('change',async e=>{
     if(err && err.code==='bad_image'){renderBadImage();show('screen-result');return;}
     if(err && err.message==='image_processing_failed'){renderBadImage();show('screen-result');return;}
     renderError(String(err));show('screen-result');
+  }finally{
+    window.CutRankScan?.stop();
   }
 });
 
@@ -567,6 +570,7 @@ function mergeIntoProfile(view,data){
 }
 
 function show(id){
+  if(id!=='screen-analyse') window.CutRankScan?.stop();
   if(document.getElementById(id)?.classList.contains('workspace-screen') && !hasVerifiedAccount()){
     workspaceDestination=id;
     id='screen-login';
@@ -594,6 +598,7 @@ async function requireWorkspaceAccess(id){
 }
 function openWorkspaceDestination(){
   const id=workspaceDestination;
+  if(id==='screen-affiliate') return showAffiliateDashboard();
   if(id==='screen-history') return showHistory();
   if(id==='screen-progress') return showProgress();
   if(id==='screen-improve') return showImprove();
@@ -992,7 +997,7 @@ function showPaywall(){
   document.getElementById('resultBody').innerHTML=
     '<div class="refuse" style="padding:20px 0 12px">'+
       '<h2 style="margin-bottom:8px">One angle is free.</h2>'+
-      '<p>That was the free one. The other three angles are $6.99, once.</p>'+
+      '<p>That was the free one. The other three angles are $7.99, once.</p>'+
     '</div>';
   const btn=document.getElementById('resPrimary');
   btn.style.display='none';
@@ -1034,6 +1039,19 @@ function injectUpsell(paywallMode){
 // ============================================================
 //  PURCHASE HANDLER
 // ============================================================
+function captureAffiliateReferral(){
+  const ref=new URLSearchParams(location.search).get('ref');
+  if(!ref||!/^[a-z0-9][a-z0-9_-]{2,39}$/.test(ref))return;
+  try{localStorage.setItem('cutrank_affiliate_ref',JSON.stringify({id:ref,expires:Date.now()+30*86400000}));}catch(e){}
+}
+function activeAffiliateReferral(){
+  try{
+    const saved=JSON.parse(localStorage.getItem('cutrank_affiliate_ref')||'null');
+    if(saved?.expires>Date.now()&&/^[a-z0-9][a-z0-9_-]{2,39}$/.test(saved.id))return saved.id;
+    localStorage.removeItem('cutrank_affiliate_ref');
+  }catch(e){}
+  return null;
+}
 function handlePurchase(tier){
   if(['localhost','127.0.0.1','[::1]'].includes(location.hostname)){
     showToast('Local preview only — checkout opens after payment access is verified.');
@@ -1042,14 +1060,20 @@ function handlePurchase(tier){
   const links={
     scan:     PAYMENT_LINK_SCAN,
     pro:      PAYMENT_LINK_PRO,
-    yearly:   PAYMENT_LINK_YEARLY,
-    lifetime: PAYMENT_LINK_LIFETIME
+    yearly:   PAYMENT_LINK_YEARLY
   };
-  const url=links[tier]||PAYMENT_LINK_SCAN;
+  const url=Object.hasOwn(links,tier)?links[tier]:null;
+  if(!url){
+    showToast('That plan is no longer available. Existing lifetime access is unchanged.');
+    return;
+  }
   track('checkout_start',{tier:tier,transport_type:'beacon'});
   if(url){
     sessionStorage.setItem('callout_checkout_started','1');
-    window.location.href=url;
+    const checkout=new URL(url);
+    const affiliateId=activeAffiliateReferral();
+    if(affiliateId)checkout.searchParams.set('client_reference_id','aff_'+affiliateId);
+    window.location.href=checkout.toString();
     return;
   }
   renderError('Checkout is not configured yet. Please contact support@cutrank.app.');
@@ -1081,7 +1105,7 @@ function showConfirmScreen(){
 // ============================================================
 function shareGrade(grade, score, fromMoment){
   track('share_click',{grade:grade,score:score,surface:fromMoment?'share_moment':'overall'});
-  const text='I just got ranked. '+grade+'-tier, '+score+'/10 against people who actually train, on CutRank — the AI that grades your physique. No flattery. Get your verdict: '+(location.origin+location.pathname);
+  const text='I got a '+grade+'-tier visual estimate, with a '+score+'/10 modelled score on CutRank. Here is my result: '+(location.origin+location.pathname);
   if(navigator.share){
     navigator.share({title:'My CutRank Grade',text,url:location.origin+location.pathname})
       .then(()=>{ if(fromMoment){ const m=document.getElementById('shareMoment'); if(m) m.remove(); }})
@@ -1578,7 +1602,7 @@ function buildUpsellHTML(){
       '<p class="rp-desc">'+description+'</p><ul class="rp-list">'+features.map(f=>'<li>'+f+'</li>').join('')+'</ul>'+
       '<button class="btn '+(featured?'gold-btn':'ghost')+' rp-btn" onclick="handlePurchase(\''+tier+'\')">'+cta+'</button></article>';
   }
-  const audit=paid?'':plan('Full Body Audit','$6.99','one-time','Complete the picture. No subscription.',
+  const audit=paid?'':plan('Full Body Audit','$7.99','one-time','Complete the picture. No subscription.',
     ['All four angles','Overall physique grade','Muscle-by-muscle breakdown','Estimated body-fat range','Keep this audit'], 'scan','Unlock my audit',false);
   const proFeatures=['Everything in the full audit','Rescans · up to 20 per day','Scan history & comparisons','Improve reports · up to 6 per day'];
   const pro='<article class="res-plan rp-featured">'+
@@ -1586,8 +1610,8 @@ function buildUpsellHTML(){
     '<div class="rp-billing" role="group" aria-label="Pro billing interval">'+
       '<button type="button" aria-pressed="true" onclick="selectProBilling(this,\'monthly\')">Monthly</button>'+
       '<button type="button" aria-pressed="false" onclick="selectProBilling(this,\'yearly\')">Yearly <span>Save 67%</span></button></div>'+
-    '<div class="rp-pro-summary" aria-live="polite"><div class="rp-price">$14.99<small>/ month</small></div>'+
-    '<p class="rp-billing-note">$14.99 billed monthly. Renews monthly until cancelled.</p></div>'+
+    '<div class="rp-pro-summary" aria-live="polite"><div class="rp-price">$16.99<small>/ month</small></div>'+
+    '<p class="rp-billing-note">$16.99 billed monthly. Renews monthly until cancelled.</p></div>'+
     '<p class="rp-desc">Track your progress, one training block at a time.</p>'+
     '<ul class="rp-list">'+proFeatures.map(f=>'<li>'+f+'</li>').join('')+'</ul>'+
     '<button class="btn gold-btn rp-btn" data-pro-checkout onclick="handlePurchase(\'pro\')">Get Pro — monthly</button></article>';
@@ -1605,8 +1629,8 @@ function selectProBilling(button,interval){
   const yearly=interval==='yearly';
   card.querySelectorAll('.rp-billing button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
   card.querySelector('.rp-pro-summary').innerHTML=yearly?
-    '<div class="rp-price">$59.99<small>/ year · about $5/month</small></div><p class="rp-billing-note">$59.99 billed upfront annually. Renews yearly until cancelled.</p>':
-    '<div class="rp-price">$14.99<small>/ month</small></div><p class="rp-billing-note">$14.99 billed monthly. Renews monthly until cancelled.</p>';
+    '<div class="rp-price">$66.99<small>/ year · about $5.58/month</small></div><p class="rp-billing-note">$66.99 billed upfront annually. Renews yearly until cancelled.</p>':
+    '<div class="rp-price">$16.99<small>/ month</small></div><p class="rp-billing-note">$16.99 billed monthly. Renews monthly until cancelled.</p>';
   const checkout=card.querySelector('[data-pro-checkout]');
   checkout.textContent=yearly?'Get Pro — yearly':'Get Pro — monthly';
   checkout.setAttribute('onclick',yearly?"handlePurchase('yearly')":"handlePurchase('pro')");

@@ -1,12 +1,17 @@
 // Private presentation; every generation is authorized again by the worker.
-let devAllowed=false, devBusy=false, devPhoto=null, devResult=null, devFrame=0;
+let devAllowed=false, affiliateAllowed=false, devBusy=false, devPhoto=null, devResult=null, devFrame=0;
 function resetDevAccess(){
-  devAllowed=false;cancelAnimationFrame(devFrame);
+  devAllowed=false;affiliateAllowed=false;cancelAnimationFrame(devFrame);
   document.getElementById('devAccessTab').hidden=true;
+  document.getElementById('affiliateTab').hidden=true;
+  document.getElementById('affiliateWorkspaceTab').hidden=true;
+  document.getElementById('devDobField').hidden=true;
+  document.getElementById('affiliateBody').textContent='Sign in with an approved affiliate account to see your activity.';
   document.getElementById('devCard').replaceChildren();
   devResult=null;
   if(devPhoto){URL.revokeObjectURL(devPhoto);devPhoto=null;}
   if(document.getElementById('screen-dev').classList.contains('active')) show('screen-home');
+  if(document.getElementById('screen-affiliate').classList.contains('active')) show('screen-home');
 }
 async function refreshDevAccess(){
   const token=entitlementToken;
@@ -16,7 +21,11 @@ async function refreshDevAccess(){
     const data=await res.json();
     if(token!==entitlementToken)return false;
     devAllowed=res.ok&&data.dev_access===true;
+    affiliateAllowed=res.ok&&data.affiliate_access===true;
     document.getElementById('devAccessTab').hidden=!devAllowed;
+    document.getElementById('affiliateTab').hidden=!affiliateAllowed;
+    document.getElementById('affiliateWorkspaceTab').hidden=!affiliateAllowed;
+    document.getElementById('devDobField').hidden=!affiliateAllowed;
     if(!devAllowed)resetDevAccess();
     return devAllowed;
   }catch(e){if(token===entitlementToken)resetDevAccess();return false;}
@@ -75,15 +84,17 @@ document.getElementById('devUpload').addEventListener('change',async event=>{
     status.textContent='Checking access…';
     if(!hasFreshEntitlementToken())await refreshEntitlementToken();
     if(!await refreshDevAccess())throw new Error('Dev Access is unavailable. Sign in with your authorized account.');
+    const dob=affiliateAllowed?document.getElementById('devDob').value:undefined;
+    if(affiliateAllowed&&!dob)throw new Error('Enter your date of birth before uploading. This studio is for adults only.');
     if(devPhoto)URL.revokeObjectURL(devPhoto);
     devPhoto=URL.createObjectURL(file);renderDevCard('—',view,true);
     status.textContent='Grading your photo…';
     const prepared=window.CutRankPhotos?await window.CutRankPhotos.prepare(file):{image:await normaliseToJpeg(file)};
-    async function request(){return fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+entitlementToken},body:JSON.stringify({action:'dev_grade',region:viewId,...prepared,media_type:'image/jpeg'})});}
+    async function request(){return fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+entitlementToken},body:JSON.stringify({action:'dev_grade',region:viewId,...prepared,media_type:'image/jpeg',dob})});}
     let res=await request();
     if(res.status===401&&await refreshEntitlementToken())res=await request();
     const data=await res.json();
-    if(!res.ok)throw new Error(res.status===429?'Daily scan limit reached. Try again tomorrow.':res.status===403?'This account does not have Dev Access.':'Generation failed. Please try again.');
+    if(!res.ok)throw new Error(data.error==='age_requirement_failed'?'Enter a valid date of birth. You must be 18 or older.':res.status===429?'Daily scan limit reached. Try again tomorrow.':res.status===403?'This account does not have Dev Access.':'Generation failed. Please try again.');
     if(data.refused)throw new Error('This photo could not be graded ('+String(data.reason||'unclear photo')+'). Choose another adult physique photo.');
     if(!devAllowed)throw new Error('Access changed. Sign in again.');
     devResult={metrics:devMetrics(data),view};devBusy=false;replay.disabled=false;replayDevReveal();
