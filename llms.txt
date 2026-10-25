@@ -1,6 +1,6 @@
 # CutRank
 
-> AI physique grading from a single photo. Upload a photo and get a blunt letter grade (S–E), a score for every visible muscle group, a body-fat estimate, and an honest weakest-point callout — no flattery, no generic AI-SaaS positivity. 18+ only; results are an AI estimate, not medical advice.
+> AI physique grading from a single photo. Upload a photo and get an S–E letter grade, scores for visible muscle groups, and a direct weakest-point callout. The free first scan covers one angle; a photo-based body-fat estimate is part of the paid Full Body Audit. 18+ only; results are AI estimates, not medical advice.
 
 ## Product
 
@@ -12,6 +12,7 @@
 ## Pages
 
 - [Homepage](https://cutrank.app/): the grading app itself.
+- [CutRank: AI physique grading app](https://cutrank.app/ai-physique-grading-app.html): what the product does, how the scan works, what is free or paid, and the limits of AI photo feedback.
 - [What is an S-tier physique?](https://cutrank.app/s-tier-physique.html): explains the S–E grading tiers.
 - [What is an A-tier physique?](https://cutrank.app/a-tier-physique.html): the second tier, and what separates it from S above and B below.
 - [What tier is my physique?](https://cutrank.app/what-tier-is-my-physique.html): a self-check against the S–E ladder, and why self-assessment is unreliable.
