@@ -1,0 +1,41 @@
+.editorial-visual {
+  margin: -8px 0 40px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.editorial-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.editorial-visual figcaption {
+  padding: 12px 16px;
+  color: var(--dim);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.editorial-visual--torso img {
+  height: min(34vw, 270px);
+  aspect-ratio: auto;
+  object-position: center 46%;
+}
+
+.editorial-visual--inset {
+  max-width: 480px;
+  margin: 24px auto;
+}
+
+.editorial-visual--inset img {
+  aspect-ratio: auto;
+}
+
+@media (max-width: 640px) {
+  .editorial-visual { margin: 0 0 28px; }
+}

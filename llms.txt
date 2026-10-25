@@ -1,25 +1,27 @@
 # CutRank
 
-> AI physique grading from a single photo. Upload a photo and get a blunt letter grade (S–E), a score for every visible muscle group, a body-fat estimate, and an honest weakest-point callout — no flattery, no generic AI-SaaS positivity. 18+ only; results are an AI estimate, not medical advice.
+> AI physique grading from a single photo. Upload a photo and get an S–E letter grade, scores for visible muscle groups, and a direct weakest-point callout. The free first scan covers one angle; a photo-based body-fat estimate is part of the paid Full Body Audit. 18+ only; results are AI estimates, not medical advice.
 
 ## Product
 
 - Free tier: one scan, one angle, email-gated.
-- Full Body Audit (£5.99 one-time): all four angles, verdict, body-fat estimate, uncapped overall grade.
-- Pro (£9.99/mo) and Lifetime (£29.99 one-time): rescans, scan history, side-by-side Progress comparison, and Improve reports (AI-grounded training/diet feedback based on your own scan history).
+- Full Body Audit ($7.99 USD one-time): all four angles, verdict, body-fat estimate, uncapped overall grade.
+- Pro ($16.99 USD/month or $66.99 USD/year): rescans, scan history, side-by-side Progress comparison, and Improve reports (AI-grounded training/diet feedback based on your own scan history).
+- Lifetime is no longer sold; existing lifetime purchases retain their access.
 - Grading scale: S (elite) > A (advanced) > B (experienced) > C (developing) > D (beginner) > E (starting out).
 
 ## Pages
 
 - [Homepage](https://cutrank.app/): the grading app itself.
+- [CutRank: AI physique grading app](https://cutrank.app/ai-physique-grading-app.html): what the product does, how the scan works, what is free or paid, and the limits of AI photo feedback.
 - [What is an S-tier physique?](https://cutrank.app/s-tier-physique.html): explains the S–E grading tiers.
 - [What is an A-tier physique?](https://cutrank.app/a-tier-physique.html): the second tier, and what separates it from S above and B below.
 - [What tier is my physique?](https://cutrank.app/what-tier-is-my-physique.html): a self-check against the S–E ladder, and why self-assessment is unreliable.
 - [What makes a physique aesthetic?](https://cutrank.app/what-makes-a-physique-aesthetic.html): proportion, balance, conditioning and structure — why size alone doesn't do it.
 - [The golden ratio physique](https://cutrank.app/golden-ratio-physique.html): the 1.618 shoulder-to-waist standard, with a free ratio calculator.
 - [Brutally honest physique rating](https://cutrank.app/brutally-honest-physique-rating.html): what the grading approach is and isn't.
-- [Should I bulk or cut?](https://cutrank.app/should-i-bulk-or-cut.html): body-fat thresholds for choosing a phase, when recomposition applies, and realistic rates for each.
-- [What body fat % do abs show at?](https://cutrank.app/body-fat-percentage-for-abs.html): visibility ranges for men and women, and why abdominal development matters alongside leanness.
+- [Should I bulk or cut?](https://cutrank.app/should-i-bulk-or-cut.html): a decision checklist covering goals, recovery and the limits of photo-based estimates.
+- [What body fat % do abs show at?](https://cutrank.app/body-fat-percentage-for-abs.html): why no universal percentage guarantees visible abs, fair photo comparisons and the limits of visual estimates.
 - [Is 25 FFMI the natural limit?](https://cutrank.app/natural-ffmi-limit.html): where the figure came from, what the 1995 research showed, and why it can't classify an individual.
 - [Free fitness calculators](https://cutrank.app/tools.html): index of free tools below.
 - [FFMI calculator](https://cutrank.app/ffmi-calculator.html)
