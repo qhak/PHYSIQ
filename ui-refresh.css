@@ -78,7 +78,7 @@ body{background:var(--bg)}
 #screen-home .home-signature-card .vc-footer{margin:0 26px;padding:17px 0 20px}
 #screen-home .home-signature-card .vc-grade-letter{font-size:clamp(90px,10vw,126px)}
 .home-result-photo{--photo-size:210px;display:block;position:relative;flex:none;width:var(--photo-size);height:var(--photo-size);overflow:hidden;border-radius:50%;background:#322216;margin:0 auto}
-.home-result-photo img{display:block;position:absolute;max-width:none;width:calc(var(--photo-size) * 2.876);height:auto;left:calc(var(--photo-size) * -.34);top:calc(var(--photo-size) * -.4)}
+.home-result-photo img{display:block;position:absolute;max-width:none;width:calc(var(--photo-size) * 2.9511);height:auto;left:calc(var(--photo-size) * -.337);top:calc(var(--photo-size) * -.386)}
 .sample-insight{
   background:var(--surface);border:1px solid var(--line2);border-radius:18px;
   margin:-2px 22px 0;padding:20px 23px 21px;
@@ -134,7 +134,7 @@ body{background:var(--bg)}
 #screen-home .prow-desc{font-size:13px;line-height:1.6;max-width:50ch}
 #screen-home .prow-price{font-size:23px;letter-spacing:-.04em}
 #screen-home .prow-cta{grid-column:1/-1;align-self:end;margin:0}
-.result-wrap,.analyse-wrap{max-width:1000px}
+.result-wrap,.analyse-wrap{max-width:1000px;margin-inline:auto}
 .result-wrap h1,.result-wrap h2,.analyse-wrap h1{letter-spacing:-.045em}
 .signature-card.result-vc{border-radius:18px}
 .signature-breakdown,.rank-single.res-rank,.res-mc,.res-plan,.hist-row,.str-form,.str-groups,.pf-tile{border-radius:16px;box-shadow:0 8px 26px rgba(27,62,103,.04)}
