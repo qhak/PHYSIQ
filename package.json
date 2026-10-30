@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-site.mjs",
+    "test": "npm run build && node --test",
     "dev": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy"
   },
